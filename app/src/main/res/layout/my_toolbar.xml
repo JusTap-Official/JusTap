@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:fontFamily="@font/roboto_bold"
-        android:textSize="50px"
+        android:textSize="20dp"
         android:text="Toolbar Title"
         android:textColor="@color/black" />
 
