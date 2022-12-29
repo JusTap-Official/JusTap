@@ -10,9 +10,12 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Patterns
 import android.view.MotionEvent
+import android.view.View
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
@@ -33,6 +36,9 @@ class SignIn_Screen : AppCompatActivity() {
     private var isDarkMode: Boolean = true
     private var isFirstTime: Boolean = true
     private var isCurrentThemeIsDarkMode: Boolean = true
+    private lateinit var buttonLayout: ConstraintLayout
+    private lateinit var buttonText: TextView
+    private lateinit var buttonProgress: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,15 +46,15 @@ class SignIn_Screen : AppCompatActivity() {
         binding = ActivitySignInScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setTheme()
+        initialization()
 
-        supportActionBar?.hide()
-        auth = FirebaseAuth.getInstance()
-        findViewById<TextView>(R.id.toolbar_title).text = "Log In"
+        setTheme()
 
         passwordVisibilityHandler()
 
-        binding.btnLogIn.setOnClickListener {
+        buttonLayout.setOnClickListener {
+            buttonText.visibility = View.GONE
+            buttonProgress.visibility = View.VISIBLE
             loginUser()
         }
 
@@ -59,6 +65,17 @@ class SignIn_Screen : AppCompatActivity() {
         binding.forgotPassword.setOnClickListener {
             startActivity(Intent(this@SignIn_Screen, ForgotPassword_Screen::class.java))
         }
+    }
+
+    private fun initialization() {
+        supportActionBar?.hide()
+        auth = FirebaseAuth.getInstance()
+        findViewById<TextView>(R.id.toolbar_title).text = "Log In"
+        buttonLayout = findViewById(R.id.progress_button_bg)
+        buttonText = findViewById(R.id.buttonText)
+        buttonText.text = "Sign In"
+        buttonProgress = findViewById(R.id.buttonProgress)
+
     }
 
     private fun setTheme() {
@@ -88,29 +105,39 @@ class SignIn_Screen : AppCompatActivity() {
 
 
     private fun loginUser() {
-        val userEmail = binding.etEmail.text.toString()
-        val userPassword = binding.etPassword.text.toString()
-        if (userEmail.isNotEmpty() && userPassword.isNotEmpty()
-            && Patterns.EMAIL_ADDRESS.matcher(userEmail).matches() && userPassword.length > 7
-        ) {
+        val userEmail = binding.etEmail.text.toString().trim()
+        val userPassword = binding.etPassword.text.toString().trim()
+
+        if (userEmail.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
+            Toast.makeText(this@SignIn_Screen, "Check your email", Toast.LENGTH_SHORT).show()
+            buttonText.visibility = View.VISIBLE
+            buttonProgress.visibility = View.GONE
+        } else if (userPassword.isEmpty() || userPassword.length < 8) {
+            Toast.makeText(this@SignIn_Screen, "Check your password", Toast.LENGTH_SHORT).show()
+            buttonText.visibility = View.VISIBLE
+            buttonProgress.visibility = View.GONE
+        } else {
+
             CoroutineScope(Dispatchers.IO).launch {
                 try {
                     auth.signInWithEmailAndPassword(userEmail, userPassword).await()
+
                     withContext(Dispatchers.Main) {
                         checkLoggedInState()
-                        Toast.makeText(this@SignIn_Screen, "Successfully Logged In", Toast.LENGTH_LONG).show()
+                        buttonText.visibility = View.VISIBLE
+                        buttonProgress.visibility = View.GONE
+                        Toast.makeText(this@SignIn_Screen, "Successfully Logged In", Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this@SignIn_Screen, MainActivity::class.java)).also { finish() }
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(this@SignIn_Screen, e.message, Toast.LENGTH_LONG).show()
+                        buttonText.visibility = View.VISIBLE
+                        buttonProgress.visibility = View.GONE
+                        Toast.makeText(this@SignIn_Screen, e.message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
-        } else if (userEmail.isEmpty() || Patterns.EMAIL_ADDRESS.matcher(userEmail).matches())
-            Toast.makeText(this@SignIn_Screen, "Check your email", Toast.LENGTH_LONG).show()
-        else if (userPassword.isEmpty() || userPassword.length < 8)
-            Toast.makeText(this@SignIn_Screen, "Check your password", Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun checkLoggedInState() : Boolean {

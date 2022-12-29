@@ -13,10 +13,17 @@
         android:theme="@style/Theme.App.Starting"
         tools:targetApi="31">
         <activity
+            android:name=".BaseActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".ui.authentication.ForgotPassword_Screen"
             android:exported="true"
-            android:theme="@style/Theme.JusTap"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.JusTap">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -24,13 +31,14 @@
         <activity
             android:name=".ui.authentication.SignIn_Screen"
             android:exported="true"
-            android:theme="@style/Theme.App.Starting"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.App.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -38,8 +46,8 @@
         <activity
             android:name=".ui.authentication.SignUp_Screen"
             android:exported="true"
-            android:theme="@style/Theme.JusTap"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.JusTap">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -47,13 +55,14 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.JusTap"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.JusTap">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

@@ -42,7 +42,8 @@
             android:hint="Enter your email"
             android:inputType="textEmailAddress"
             android:paddingStart="16dp"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:ignore="RtlSymmetry" />
 
         <EditText
             android:id="@+id/etPassword"
@@ -50,13 +51,13 @@
             android:layout_height="50dp"
             android:layout_marginBottom="15dp"
             android:background="@drawable/edittext_box"
-            android:drawableRight="@drawable/visibility_on"
+            android:drawableEnd="@drawable/visibility_on"
             android:fontFamily="@font/roboto"
             android:hint="Enter your password"
             android:inputType="textPassword"
             android:longClickable="false"
             android:paddingStart="16dp"
-            android:paddingRight="15dp"
+            android:paddingEnd="15dp"
             android:textSize="16sp" />
 
         <LinearLayout
@@ -76,22 +77,17 @@
                 android:text="Forgot password?"
                 android:fontFamily="@font/roboto_bold"
                 android:textColor="@color/medium_blue"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:ignore="RtlSymmetry" />
 
         </LinearLayout>
 
-        <Button
+        <include
             android:id="@+id/btnLogIn"
+            layout="@layout/primary_progress_button"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/normal_button"
-            android:fontFamily="@font/roboto"
-            android:gravity="center"
-            android:text="Sign In"
-            android:textAllCaps="false"
-            android:textColor="@color/bg_color"
-            android:textSize="16sp" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp" />
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -8,8 +8,11 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Patterns
 import android.view.MotionEvent
+import android.view.View
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.Util
 import com.binay.shaw.justap.databinding.ActivitySignUpScreenBinding
@@ -24,18 +27,23 @@ class SignUp_Screen : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignUpScreenBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var buttonLayout: ConstraintLayout
+    private lateinit var buttonText: TextView
+    private lateinit var buttonProgress: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.hide()
-        auth = FirebaseAuth.getInstance()
-        findViewById<TextView>(R.id.toolbar_title).text = "Create Account"
+
+        initialization()
 
         passwordVisibilityHandler()
 
-        binding.btnCreateAccount.setOnClickListener {
+        buttonLayout.setOnClickListener {
+            buttonText.visibility = View.GONE
+            buttonProgress.visibility = View.VISIBLE
             createNewAccount()
         }
 
@@ -45,36 +53,58 @@ class SignUp_Screen : AppCompatActivity() {
 
     }
 
-    private fun createNewAccount() {
-        val userName = binding.etName.text.toString()
-        val userEmail = binding.etEmail.text.toString()
-        val userPassword = binding.etPassword.text.toString()
+    private fun initialization() {
+        auth = FirebaseAuth.getInstance()
+        findViewById<TextView>(R.id.toolbar_title).text = "Create Account"
+        buttonLayout = findViewById(R.id.progress_button_bg)
+        buttonText = findViewById(R.id.buttonText)
+        buttonText.text = "Create a new account"
+        buttonProgress = findViewById(R.id.buttonProgress)
+    }
 
-        if (userName.isNotEmpty() && userEmail.isNotEmpty() && userPassword.isNotEmpty()
-            && Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
-            if (userPassword.length > 7) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    try {
-                        auth.createUserWithEmailAndPassword(userEmail, userPassword).await()
-                        withContext(Dispatchers.Main) {
-                            if (checkLoggedInState()) {
-                                auth.signOut()
-                                Toast.makeText(this@SignUp_Screen, "Successfully Registered", Toast.LENGTH_LONG).show()
-                                startActivity(Intent(this@SignUp_Screen, SignIn_Screen::class.java))
-                            }
+    private fun createNewAccount() {
+        val userName = binding.etName.text.toString().trim()
+        val userEmail = binding.etEmail.text.toString().trim()
+        val userPassword = binding.etPassword.text.toString().trim()
+
+        if (userName.isEmpty()) {
+            Toast.makeText(this@SignUp_Screen, "Enter name first", Toast.LENGTH_SHORT).show()
+            buttonText.visibility = View.VISIBLE
+            buttonProgress.visibility = View.GONE
+        } else if (userEmail.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
+            Toast.makeText(this@SignUp_Screen, "Check your email", Toast.LENGTH_SHORT).show()
+            buttonText.visibility = View.VISIBLE
+            buttonProgress.visibility = View.GONE
+        } else if (userPassword.isEmpty() || userPassword.length < 8) {
+            Toast.makeText(this@SignUp_Screen, "Check your password", Toast.LENGTH_SHORT).show()
+            buttonText.visibility = View.VISIBLE
+            buttonProgress.visibility = View.GONE
+        } else {
+
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    auth.createUserWithEmailAndPassword(userEmail, userPassword).await()
+                    withContext(Dispatchers.Main) {
+                        if (checkLoggedInState()) {
+                            auth.signOut()
+                            buttonText.visibility = View.VISIBLE
+                            buttonProgress.visibility = View.GONE
+                            Toast.makeText(this@SignUp_Screen, "Successfully Registered", Toast.LENGTH_LONG).show()
+                            startActivity(Intent(this@SignUp_Screen, SignIn_Screen::class.java))
                         }
-                    } catch (e: Exception) {
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(this@SignUp_Screen, e.message, Toast.LENGTH_LONG).show()
-                        }
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        buttonText.visibility = View.VISIBLE
+                        buttonProgress.visibility = View.GONE
+                        Toast.makeText(this@SignUp_Screen, e.message, Toast.LENGTH_LONG).show()
                     }
                 }
             }
         }
-
     }
 
-    private fun checkLoggedInState() : Boolean{
+    private fun checkLoggedInState(): Boolean {
         // not logged in
         return if (auth.currentUser == null) {
             Util.log("You are not logged in")
@@ -104,16 +134,20 @@ class SignUp_Screen : AppCompatActivity() {
                     if (passwordVisible) {
                         //set drawable image here
                         binding.etPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                            0, 0, R.drawable.visibility_on, 0)
+                            0, 0, R.drawable.visibility_on, 0
+                        )
                         //for hide password
-                        binding.etPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                        binding.etPassword.transformationMethod =
+                            PasswordTransformationMethod.getInstance()
                         passwordVisible = false
                     } else {
                         //set drawable image here
                         binding.etPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                            0, 0, R.drawable.visibility_off, 0)
+                            0, 0, R.drawable.visibility_off, 0
+                        )
                         //for show password
-                        binding.etPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                        binding.etPassword.transformationMethod =
+                            HideReturnsTransformationMethod.getInstance()
                         passwordVisible = true
                     }
                     binding.etPassword.isLongClickable = false //Handles Multiple option popups
