@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context=".ui.authentication.SignUp_Screen">
+    tools:context=".ui.authentication.SignIn_Screen">
 
     <!--ToolBar-->
     <include
@@ -28,22 +28,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:fontFamily="@font/roboto_bold"
-            android:text="Sign Up"
+            android:text="Sign In"
             android:textColor="@color/text_color"
             android:textSize="40sp" />
-
-        <EditText
-            android:id="@+id/etName"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/edittext_box"
-            android:fontFamily="@font/roboto"
-            android:hint="Enter your name"
-            android:inputType="textPersonName"
-            android:paddingStart="16dp"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/etEmail"
@@ -61,7 +48,7 @@
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginBottom="25dp"
+            android:layout_marginBottom="15dp"
             android:background="@drawable/edittext_box"
             android:drawableRight="@drawable/visibility_on"
             android:fontFamily="@font/roboto"
@@ -72,15 +59,36 @@
             android:paddingRight="15dp"
             android:textSize="16sp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_marginBottom="20dp" >
+
+            <TextView
+                android:id="@+id/forgotPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:paddingStart="25dp"
+                android:text="Forgot password?"
+                android:fontFamily="@font/roboto_bold"
+                android:textColor="@color/medium_blue"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
         <Button
-            android:id="@+id/btnCreateAccount"
+            android:id="@+id/btnLogIn"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/normal_button"
             android:fontFamily="@font/roboto"
             android:gravity="center"
-            android:text="Create a new account"
+            android:text="Sign In"
             android:textAllCaps="false"
             android:textColor="@color/bg_color"
             android:textSize="16sp" />
@@ -96,12 +104,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
-                android:text="Already have and account?"
+                android:text="Don't have and account?"
                 android:textColor="@color/text_color"
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/loginInstead"
+                android:id="@+id/createAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="5dp"
@@ -109,7 +117,7 @@
                 android:paddingEnd="15dp"
                 android:paddingStart="15dp"
                 android:fontFamily="@font/roboto_bold"
-                android:text="LogIn"
+                android:text="Create"
                 android:textColor="@color/medium_blue"
                 android:textSize="16sp" />
 
@@ -128,9 +136,8 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="20dp"
-            android:src="@drawable/signupbtngoogle" />
+            android:src="@drawable/loginbtngoogle" />
 
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

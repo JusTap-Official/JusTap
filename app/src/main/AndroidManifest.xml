@@ -6,12 +6,28 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo_dark_bg"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/logo_light_mode"
+        android:roundIcon="@drawable/logo_dark_bg"
         android:supportsRtl="true"
         android:theme="@style/Theme.App.Starting"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.authentication.ForgotPassword_Screen"
+            android:exported="true"
+            android:theme="@style/Theme.JusTap">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ui.authentication.SignIn_Screen"
+            android:exported="true"
+            android:theme="@style/Theme.JusTap">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".ui.authentication.SignUp_Screen"
             android:exported="true"
@@ -29,8 +45,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.App.Starting">
-
+            android:theme="@style/Theme.JusTap">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
