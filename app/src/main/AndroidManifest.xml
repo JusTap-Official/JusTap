@@ -15,7 +15,8 @@
         <activity
             android:name=".ui.authentication.ForgotPassword_Screen"
             android:exported="true"
-            android:theme="@style/Theme.JusTap">
+            android:theme="@style/Theme.JusTap"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -23,7 +24,8 @@
         <activity
             android:name=".ui.authentication.SignIn_Screen"
             android:exported="true"
-            android:theme="@style/Theme.App.Starting">
+            android:theme="@style/Theme.App.Starting"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,7 +38,8 @@
         <activity
             android:name=".ui.authentication.SignUp_Screen"
             android:exported="true"
-            android:theme="@style/Theme.JusTap">
+            android:theme="@style/Theme.JusTap"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -44,7 +47,8 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.JusTap">
+            android:theme="@style/Theme.JusTap"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
