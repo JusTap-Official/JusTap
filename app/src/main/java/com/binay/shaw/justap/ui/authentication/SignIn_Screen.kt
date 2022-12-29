@@ -1,7 +1,9 @@
 package com.binay.shaw.justap.ui.authentication
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
@@ -10,6 +12,7 @@ import android.util.Patterns
 import android.view.MotionEvent
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
@@ -26,12 +29,19 @@ class SignIn_Screen : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignInScreenBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var sharedPreferences: SharedPreferences
+    private var isDarkMode: Boolean = true
+    private var isFirstTime: Boolean = true
+    private var isCurrentThemeIsDarkMode: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         binding = ActivitySignInScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setTheme()
+
         supportActionBar?.hide()
         auth = FirebaseAuth.getInstance()
         findViewById<TextView>(R.id.toolbar_title).text = "Log In"
@@ -48,6 +58,31 @@ class SignIn_Screen : AppCompatActivity() {
 
         binding.forgotPassword.setOnClickListener {
             startActivity(Intent(this@SignIn_Screen, ForgotPassword_Screen::class.java))
+        }
+    }
+
+    private fun setTheme() {
+        isCurrentThemeIsDarkMode = Util.isDarkMode(baseContext) //Gives the current theme
+        sharedPreferences =  getSharedPreferences("ThemeHandler", Context.MODE_PRIVATE)
+        isDarkMode = sharedPreferences.getBoolean("DARK_MODE", true)    //Last edited theme
+        isFirstTime = sharedPreferences.getBoolean("FIRST_TIME", true)  //First time changes the theme
+
+        //Opened more than one time
+        if (!isFirstTime) {
+            //Changes needed are to be dark mode
+            if (isDarkMode) {
+                //if Current Theme is not dark mode
+                if (!isCurrentThemeIsDarkMode) {
+                    //Set to dark mode
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                }
+            } else {
+                //Changes require are to be light mode
+                if (isCurrentThemeIsDarkMode) {
+                    //Set to light mode
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                }
+            }
         }
     }
 
@@ -80,19 +115,21 @@ class SignIn_Screen : AppCompatActivity() {
 
     private fun checkLoggedInState() : Boolean {
         // not logged in
-        if (auth.currentUser == null) {
+        return if (auth.currentUser == null) {
             Util.log("You are not logged in")
-            return false
+            false
         } else {
             Util.log("You are logged in!")
-            return true
+            true
         }
     }
 
     override fun onStart() {
         super.onStart()
-        if (checkLoggedInState())
+        if (checkLoggedInState()) {
+            setTheme()
             startActivity(Intent(this@SignIn_Screen, MainActivity::class.java)).also { finish() }
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")

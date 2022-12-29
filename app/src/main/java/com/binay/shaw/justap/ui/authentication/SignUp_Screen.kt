@@ -57,9 +57,11 @@ class SignUp_Screen : AppCompatActivity() {
                     try {
                         auth.createUserWithEmailAndPassword(userEmail, userPassword).await()
                         withContext(Dispatchers.Main) {
-                            checkLoggedInState()
-                            Toast.makeText(this@SignUp_Screen, "Successfully Registered", Toast.LENGTH_LONG).show()
-                            startActivity(Intent(this@SignUp_Screen, SignIn_Screen::class.java))
+                            if (checkLoggedInState()) {
+                                auth.signOut()
+                                Toast.makeText(this@SignUp_Screen, "Successfully Registered", Toast.LENGTH_LONG).show()
+                                startActivity(Intent(this@SignUp_Screen, SignIn_Screen::class.java))
+                            }
                         }
                     } catch (e: Exception) {
                         withContext(Dispatchers.Main) {
@@ -72,12 +74,14 @@ class SignUp_Screen : AppCompatActivity() {
 
     }
 
-    private fun checkLoggedInState() {
+    private fun checkLoggedInState() : Boolean{
         // not logged in
-        if (auth.currentUser == null) {
+        return if (auth.currentUser == null) {
             Util.log("You are not logged in")
+            false
         } else {
             Util.log("You are logged in!")
+            true
         }
     }
 
