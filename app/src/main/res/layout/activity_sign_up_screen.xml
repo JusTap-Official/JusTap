@@ -29,13 +29,13 @@
             android:layout_marginBottom="20dp"
             android:fontFamily="@font/roboto_bold"
             android:text="Sign Up"
-            android:textColor="@color/black"
+            android:textColor="@color/text_color"
             android:textSize="40sp" />
 
         <EditText
             android:id="@+id/etName"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="50dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/edittext_box"
             android:fontFamily="@font/roboto"
@@ -48,7 +48,7 @@
         <EditText
             android:id="@+id/etEmail"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="50dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/edittext_box"
             android:fontFamily="@font/roboto"
@@ -60,7 +60,7 @@
         <EditText
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="50dp"
             android:layout_marginBottom="25dp"
             android:background="@drawable/edittext_box"
             android:drawableRight="@drawable/visibility_on"
@@ -82,7 +82,7 @@
             android:gravity="center"
             android:text="Create a new account"
             android:textAllCaps="false"
-            android:textColor="@color/white"
+            android:textColor="@color/bg_color"
             android:textSize="16sp" />
 
         <LinearLayout
@@ -97,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
                 android:text="Already have and account?"
-                android:textColor="@color/black"
+                android:textColor="@color/text_color"
                 android:textSize="16sp" />
 
             <TextView
@@ -107,7 +107,7 @@
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/roboto_bold"
                 android:text="LogIn"
-                android:textColor="#0094FF"
+                android:textColor="@color/medium_blue"
                 android:textSize="16sp" />
 
         </LinearLayout>

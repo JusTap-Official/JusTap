@@ -3,7 +3,7 @@
     android:id="@+id/myToolBar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@android:color/transparent"
     android:minHeight="?android:attr/actionBarSize">
 
     <TextView
@@ -14,6 +14,6 @@
         android:fontFamily="@font/roboto_bold"
         android:textSize="20dp"
         android:text="Toolbar Title"
-        android:textColor="@color/black" />
+        android:textColor="@color/text_color" />
 
 </androidx.appcompat.widget.Toolbar>

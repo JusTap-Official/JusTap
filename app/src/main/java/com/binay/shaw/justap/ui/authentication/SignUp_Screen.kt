@@ -5,16 +5,26 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.util.Patterns
 import android.view.MotionEvent
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.binay.shaw.justap.R
+import com.binay.shaw.justap.Util
 import com.binay.shaw.justap.databinding.ActivitySignUpScreenBinding
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class SignUp_Screen : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignUpScreenBinding
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,10 +33,54 @@ class SignUp_Screen : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setContentView(binding.root)
         supportActionBar?.hide()
+        auth = FirebaseAuth.getInstance()
         findViewById<TextView>(R.id.toolbar_title).text = "Create Account"
 
         passwordVisibilityHandler()
 
+        binding.btnCreateAccount.setOnClickListener {
+            createNewAccount()
+        }
+
+    }
+
+    private fun createNewAccount() {
+        val userName = binding.etName.text.toString()
+        val userEmail = binding.etEmail.text.toString()
+        val userPassword = binding.etPassword.text.toString()
+
+        if (userName.isNotEmpty() && userEmail.isNotEmpty() && userPassword.isNotEmpty()
+            && Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
+            if (userPassword.length > 7) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        auth.createUserWithEmailAndPassword(userEmail, userPassword).await()
+                        withContext(Dispatchers.Main) {
+                            checkLoggedInState()
+                        }
+                    } catch (e: Exception) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(this@SignUp_Screen, e.message, Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    private fun checkLoggedInState() {
+        // not logged in
+        if (auth.currentUser == null) {
+            Util.log("You are not logged in")
+        } else {
+            Util.log("You are logged in!")
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        checkLoggedInState()
     }
 
     @SuppressLint("ClickableViewAccessibility")

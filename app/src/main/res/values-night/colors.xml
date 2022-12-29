@@ -7,12 +7,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">@color/bnw</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="medium_blue">#0094FF</color>
-    <color name="et_box_color">#E5EDF4</color>
+    <color name="medium_blue">#37ABFF</color>
+    <color name="et_box_color">#212121</color>
     <color name="et_text">#ffffff</color>
-    <color name="text_color">#272D33</color>
-    <color name="bg_color">#ffffff</color>
-    <color name="card_color">#E5EDF4</color>
-    <color name="bnw">#000000</color>
-    <color name="btn_primary">#272D33</color>
+    <color name="text_color">#ffffff</color>
+    <color name="bg_color">#272D33</color>
+    <color name="card_color">#343B42</color>
+    <color name="bnw">#ffffff</color>
+    <color name="btn_primary">#FFFFFF</color>
 </resources>
