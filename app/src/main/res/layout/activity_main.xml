@@ -16,6 +16,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/normal_button"
+        android:fontFamily="@font/roboto"
+        android:gravity="center"
+        android:text="Logout"
+        android:textAllCaps="false"
+        android:textColor="@color/bg_color"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/UIModeSwitch"
+        app:layout_constraintStart_toStartOf="@+id/UIModeSwitch"
+        app:layout_constraintTop_toBottomOf="@+id/UIModeSwitch" />
+
     <Switch
         android:id="@+id/UIModeSwitch"
         android:layout_width="wrap_content"

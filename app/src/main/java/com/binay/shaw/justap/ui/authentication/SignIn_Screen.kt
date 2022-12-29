@@ -10,7 +10,7 @@ import android.util.Patterns
 import android.view.MotionEvent
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.Util
@@ -29,8 +29,8 @@ class SignIn_Screen : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen()
         binding = ActivitySignInScreenBinding.inflate(layoutInflater)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setContentView(binding.root)
         supportActionBar?.hide()
         auth = FirebaseAuth.getInstance()
@@ -43,7 +43,7 @@ class SignIn_Screen : AppCompatActivity() {
         }
 
         binding.createAccount.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
+            startActivity(Intent(this@SignIn_Screen, SignUp_Screen::class.java))
         }
 
         binding.forgotPassword.setOnClickListener {
@@ -60,17 +60,11 @@ class SignIn_Screen : AppCompatActivity() {
         ) {
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    auth.signInWithEmailAndPassword(userEmail, userPassword).addOnSuccessListener {
-                        Toast.makeText(
-                            this@SignIn_Screen,
-                            "Successfully Logged In",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        startActivity(Intent(this@SignIn_Screen, MainActivity::class.java))
-                            .also { finish() }
-                    }.await()
+                    auth.signInWithEmailAndPassword(userEmail, userPassword).await()
                     withContext(Dispatchers.Main) {
                         checkLoggedInState()
+                        Toast.makeText(this@SignIn_Screen, "Successfully Logged In", Toast.LENGTH_LONG).show()
+                        startActivity(Intent(this@SignIn_Screen, MainActivity::class.java)).also { finish() }
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
@@ -84,13 +78,21 @@ class SignIn_Screen : AppCompatActivity() {
             Toast.makeText(this@SignIn_Screen, "Check your password", Toast.LENGTH_LONG).show()
     }
 
-    private fun checkLoggedInState() {
+    private fun checkLoggedInState() : Boolean {
         // not logged in
         if (auth.currentUser == null) {
             Util.log("You are not logged in")
+            return false
         } else {
             Util.log("You are logged in!")
+            return true
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (checkLoggedInState())
+            startActivity(Intent(this@SignIn_Screen, MainActivity::class.java)).also { finish() }
     }
 
     @SuppressLint("ClickableViewAccessibility")

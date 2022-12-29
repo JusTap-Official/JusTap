@@ -10,8 +10,6 @@ import android.util.Patterns
 import android.view.MotionEvent
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.Util
 import com.binay.shaw.justap.databinding.ActivitySignUpScreenBinding
@@ -29,9 +27,7 @@ class SignUp_Screen : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        installSplashScreen()
         binding = ActivitySignUpScreenBinding.inflate(layoutInflater)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setContentView(binding.root)
         supportActionBar?.hide()
         auth = FirebaseAuth.getInstance()
@@ -44,7 +40,7 @@ class SignUp_Screen : AppCompatActivity() {
         }
 
         binding.loginInstead.setOnClickListener {
-            startActivity(Intent(this@SignUp_Screen, SignIn_Screen::class.java))
+            onBackPressedDispatcher.onBackPressed()
         }
 
     }
@@ -59,14 +55,11 @@ class SignUp_Screen : AppCompatActivity() {
             if (userPassword.length > 7) {
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
-                        auth.createUserWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener {
-                            if (it.isSuccessful) {
-                                Toast.makeText(this@SignUp_Screen, "Successfully Registered", Toast.LENGTH_LONG).show()
-                                startActivity(Intent(this@SignUp_Screen, SignIn_Screen::class.java))
-                            }
-                        }.await()
+                        auth.createUserWithEmailAndPassword(userEmail, userPassword).await()
                         withContext(Dispatchers.Main) {
                             checkLoggedInState()
+                            Toast.makeText(this@SignUp_Screen, "Successfully Registered", Toast.LENGTH_LONG).show()
+                            startActivity(Intent(this@SignUp_Screen, SignIn_Screen::class.java))
                         }
                     } catch (e: Exception) {
                         withContext(Dispatchers.Main) {
