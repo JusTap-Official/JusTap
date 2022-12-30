@@ -26,14 +26,6 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.BaseActivity"
-            android:exported="false"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".ui.authentication.ForgotPassword_Screen"
             android:exported="true"
             android:screenOrientation="portrait">

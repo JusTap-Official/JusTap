@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/home"
-        android:icon="@drawable/home_icon"
+        android:icon="@drawable/home_fullscale_icon"
         android:title="Home"/>
     <item android:id="@+id/scanner"
-        android:icon="@drawable/scanner_icon"
+        android:icon="@drawable/scanner_fullscale_icon"
         android:title="Statistics"/>
     <item android:id="@+id/history"
-        android:icon="@drawable/history_icon"
+        android:icon="@drawable/history_fullscale_icon"
         android:title="Appointment"/>
     <item android:id="@+id/settings"
-        android:icon="@drawable/settings_icon"
+        android:icon="@drawable/settings_fullscale_icon"
         android:title="Profile"/>
 </menu>
