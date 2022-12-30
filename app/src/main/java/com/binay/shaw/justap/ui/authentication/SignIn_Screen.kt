@@ -13,9 +13,12 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.ViewModelProvider
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
+import com.binay.shaw.justap.Util
 import com.binay.shaw.justap.databinding.ActivitySignInScreenBinding
+import com.binay.shaw.justap.viewModel.SignIn_ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +33,7 @@ class SignIn_Screen : AppCompatActivity() {
     private lateinit var buttonLayout: ConstraintLayout
     private lateinit var buttonText: TextView
     private lateinit var buttonProgress: ProgressBar
+    private lateinit var viewModel: SignIn_ViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,9 +45,36 @@ class SignIn_Screen : AppCompatActivity() {
         passwordVisibilityHandler()
 
         buttonLayout.setOnClickListener {
+            if (!Util.checkForInternet(this)) {
+                Toast.makeText(this@SignIn_Screen, "You're offline!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             buttonText.visibility = View.GONE
             buttonProgress.visibility = View.VISIBLE
-            loginUser()
+            viewModel.loginUser(
+                binding.etEmail.text.toString().trim(),
+                binding.etPassword.text.toString().trim()
+            )
+
+        }
+
+        viewModel.status.observe(this@SignIn_Screen) {
+            when(it) {
+                1 -> {
+                    Toast.makeText(this@SignIn_Screen, "Check your email", Toast.LENGTH_SHORT).show()
+                    stopProgress()
+                } 2 -> {
+                    Toast.makeText(this@SignIn_Screen, "Check your password", Toast.LENGTH_SHORT).show()
+                    stopProgress()
+                } 3 -> {
+                    stopProgress()
+                    Toast.makeText(this@SignIn_Screen, "Successfully Logged In", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this@SignIn_Screen, MainActivity::class.java)).also { finish() }
+                } 4 -> {
+                    stopProgress()
+                    Toast.makeText(this@SignIn_Screen, viewModel.getErrorMessage(), Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         binding.createAccount.setOnClickListener {
@@ -55,6 +86,11 @@ class SignIn_Screen : AppCompatActivity() {
         }
     }
 
+    private fun stopProgress() {
+        buttonText.visibility = View.VISIBLE
+        buttonProgress.visibility = View.GONE
+    }
+
     private fun initialization() {
         supportActionBar?.hide()
         auth = FirebaseAuth.getInstance()
@@ -63,43 +99,8 @@ class SignIn_Screen : AppCompatActivity() {
         buttonText = findViewById(R.id.buttonText)
         buttonText.text = "Sign In"
         buttonProgress = findViewById(R.id.buttonProgress)
+        viewModel = ViewModelProvider(this@SignIn_Screen)[SignIn_ViewModel::class.java]
 
-    }
-
-    private fun loginUser() {
-        val userEmail = binding.etEmail.text.toString().trim()
-        val userPassword = binding.etPassword.text.toString().trim()
-
-        if (userEmail.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
-            Toast.makeText(this@SignIn_Screen, "Check your email", Toast.LENGTH_SHORT).show()
-            buttonText.visibility = View.VISIBLE
-            buttonProgress.visibility = View.GONE
-        } else if (userPassword.isEmpty() || userPassword.length < 8) {
-            Toast.makeText(this@SignIn_Screen, "Check your password", Toast.LENGTH_SHORT).show()
-            buttonText.visibility = View.VISIBLE
-            buttonProgress.visibility = View.GONE
-        } else {
-
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    auth.signInWithEmailAndPassword(userEmail, userPassword).await()
-
-                    withContext(Dispatchers.Main) {
-//                        checkLoggedInState()
-                        buttonText.visibility = View.VISIBLE
-                        buttonProgress.visibility = View.GONE
-                        Toast.makeText(this@SignIn_Screen, "Successfully Logged In", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this@SignIn_Screen, MainActivity::class.java)).also { finish() }
-                    }
-                } catch (e: Exception) {
-                    withContext(Dispatchers.Main) {
-                        buttonText.visibility = View.VISIBLE
-                        buttonProgress.visibility = View.GONE
-                        Toast.makeText(this@SignIn_Screen, e.message, Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
     }
 
     @SuppressLint("ClickableViewAccessibility")

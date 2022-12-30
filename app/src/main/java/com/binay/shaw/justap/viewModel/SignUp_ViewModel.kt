@@ -3,6 +3,7 @@ package com.binay.shaw.justap.viewModel
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.binay.shaw.justap.Util
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
@@ -47,8 +48,7 @@ class SignUp_ViewModel : ViewModel() {
         } else if (passwordString.isEmpty() || passwordString.length < 8) {
             status.value = 3
         } else {
-
-            CoroutineScope(Dispatchers.IO).launch {
+            viewModelScope.launch(Dispatchers.IO) {
                 try {
                     auth.createUserWithEmailAndPassword(emailString, passwordString).await()
                     withContext(Dispatchers.Main) {
@@ -59,8 +59,8 @@ class SignUp_ViewModel : ViewModel() {
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
-                        status.value = 5
                         errorMessage.value = e.message.toString()
+                        status.value = 5
                     }
                 }
             }
