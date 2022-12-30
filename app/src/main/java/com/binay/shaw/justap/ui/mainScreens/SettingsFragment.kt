@@ -1,5 +1,6 @@
 package com.binay.shaw.justap.ui.mainScreens
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -8,7 +9,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
+import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.Util
 import com.binay.shaw.justap.databinding.FragmentSettingsBinding
@@ -22,13 +25,13 @@ class SettingsFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var sharedPreferences: SharedPreferences
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentSettingsBinding.inflate(layoutInflater, container, false)
-        // Inflate the layout for this fragment
-        auth = FirebaseAuth.getInstance()
+    ): View {
+
+        initialization(container)
 
         binding.logout.setOnClickListener {
             auth.signOut()
@@ -43,6 +46,15 @@ class SettingsFragment : Fragment() {
             switchTheme()
         }
         return binding.root
+    }
+
+    private fun initialization(container: ViewGroup?) {
+
+        _binding = FragmentSettingsBinding.inflate(layoutInflater, container, false)
+        (activity as MainActivity).supportActionBar?.hide()
+        binding.root.findViewById<TextView>(R.id.toolbar_title)?.text = "Settings"
+        auth = FirebaseAuth.getInstance()
+
     }
 
     private fun switchTheme() {

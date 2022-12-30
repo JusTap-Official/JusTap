@@ -7,6 +7,14 @@
     android:background="@drawable/background"
     tools:context=".MainActivity">
 
+    <!--ToolBar-->
+    <!--include
+        android:id="@+id/include"
+        layout="@layout/my_toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" /-->
+
     <fragment
         android:id="@+id/fragmentContainerView"
         android:name="androidx.navigation.fragment.NavHostFragment"
