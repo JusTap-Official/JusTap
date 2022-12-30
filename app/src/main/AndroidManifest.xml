@@ -10,11 +10,25 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/logo_dark_bg"
         android:supportsRtl="true"
-        android:theme="@style/Theme.App.Starting"
+        android:theme="@style/Theme.JusTap"
         tools:targetApi="31">
         <activity
-            android:name=".BaseActivity"
-            android:exported="false">
+            android:name=".ui.SplashActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ui.BaseActivity"
+            android:exported="false"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -22,8 +36,7 @@
         <activity
             android:name=".ui.authentication.ForgotPassword_Screen"
             android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.JusTap">
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -31,13 +44,7 @@
         <activity
             android:name=".ui.authentication.SignIn_Screen"
             android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.App.Starting">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:screenOrientation="portrait">
 
             <meta-data
                 android:name="android.app.lib_name"
@@ -46,8 +53,7 @@
         <activity
             android:name=".ui.authentication.SignUp_Screen"
             android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.JusTap">
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -55,14 +61,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.JusTap">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

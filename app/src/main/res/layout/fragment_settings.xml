@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.mainScreens.SettingsFragment">
 
     <TextView
         android:id="@+id/textView"
@@ -21,7 +21,7 @@
         android:id="@+id/logout"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginBottom="172dp"
         android:background="@drawable/normal_button"
         android:fontFamily="@font/roboto"
         android:gravity="center"
@@ -29,22 +29,26 @@
         android:textAllCaps="false"
         android:textColor="@color/bg_color"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/UIModeSwitch"
-        app:layout_constraintHorizontal_bias="0.45"
-        app:layout_constraintStart_toStartOf="@+id/UIModeSwitch"
-        app:layout_constraintTop_toBottomOf="@+id/UIModeSwitch" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/UIModeSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="52dp"
+        android:textOff="Off"
+        android:textOn="On"
         android:thumb="@drawable/switch_thumb"
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:track="@drawable/switch_track" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
