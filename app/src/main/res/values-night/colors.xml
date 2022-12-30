@@ -15,4 +15,5 @@
     <color name="card_color">#343B42</color>
     <color name="bnw">#ffffff</color>
     <color name="btn_primary">#FFFFFF</color>
+    <color name="negative_red">#FF5959</color>
 </resources>

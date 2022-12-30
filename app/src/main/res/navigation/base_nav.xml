@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/base_nav"
+    app:startDestination="@id/home">
+
+    <fragment
+        android:id="@+id/home"
+        android:name="com.binay.shaw.justap.ui.mainScreens.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/history"
+        android:name="com.binay.shaw.justap.ui.mainScreens.HistoryFragment"
+        android:label="fragment_history"
+        tools:layout="@layout/fragment_history" />
+    <fragment
+        android:id="@+id/settings"
+        android:name="com.binay.shaw.justap.ui.mainScreens.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/scanner"
+        android:name="com.binay.shaw.justap.ui.mainScreens.QRGeneratorFragment"
+        android:label="fragment_q_r_generator"
+        tools:layout="@layout/fragment_q_r_generator" />
+</navigation>

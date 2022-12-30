@@ -71,32 +71,6 @@ class SignIn_Screen : AppCompatActivity() {
 
     }
 
-//    private fun setTheme() {
-//        isCurrentThemeIsDarkMode = Util.isDarkMode(baseContext) //Gives the current theme
-//        sharedPreferences =  getSharedPreferences("ThemeHandler", Context.MODE_PRIVATE)
-//        isDarkMode = sharedPreferences.getBoolean("DARK_MODE", true)    //Last edited theme
-//        isFirstTime = sharedPreferences.getBoolean("FIRST_TIME", true)  //First time changes the theme
-//
-//        //Opened more than one time
-//        if (!isFirstTime) {
-//            //Changes needed are to be dark mode
-//            if (isDarkMode) {
-//                //if Current Theme is not dark mode
-//                if (!isCurrentThemeIsDarkMode) {
-//                    //Set to dark mode
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-//                }
-//            } else {
-//                //Changes require are to be light mode
-//                if (isCurrentThemeIsDarkMode) {
-//                    //Set to light mode
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-//                }
-//            }
-//        }
-//    }
-
-
     private fun loginUser() {
         val userEmail = binding.etEmail.text.toString().trim()
         val userPassword = binding.etPassword.text.toString().trim()
@@ -132,24 +106,6 @@ class SignIn_Screen : AppCompatActivity() {
             }
         }
     }
-
-//    private fun checkLoggedInState() : Boolean {
-//        // not logged in
-//        return if (auth.currentUser == null) {
-//            Util.log("You are not logged in")
-//            false
-//        } else {
-//            Util.log("You are logged in!")
-//            true
-//        }
-//    }
-
-//    override fun onStart() {
-//        super.onStart()
-//        if (checkLoggedInState()) {
-//            startActivity(Intent(this@SignIn_Screen, MainActivity::class.java)).also { finish() }
-//        }
-//    }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun passwordVisibilityHandler() {
