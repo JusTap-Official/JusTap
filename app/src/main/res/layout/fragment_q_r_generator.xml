@@ -14,4 +14,88 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/text_color"
+            android:fontFamily="@font/roboto"
+            android:textSize="16sp"
+            android:layout_marginBottom="20dp"
+            android:text="Share this QR to exchange contacts"/>
+
+        <ImageView
+            android:id="@+id/qrCodePreview"
+            android:layout_width="280dp"
+            android:layout_height="280dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include"
+            android:layout_marginBottom="25dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="30dp"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/qrInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/info_icon"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/text_color"
+                android:fontFamily="@font/roboto"
+                android:textSize="16sp"
+                android:text="Online mode"/>
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/onlineOfflineModeSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOff="Off"
+                android:textOn="On"
+                android:thumb="@drawable/switch_thumb"
+                app:track="@drawable/switch_track" />
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="175dp"
+            android:layout_height="55dp"
+            android:text="Scan QR"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:textAllCaps="false"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/normal_button"
+            android:textColor="@color/bg_color"
+            android:fontFamily="@font/roboto"
+            android:textSize="16sp"
+            android:gravity="center" />
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

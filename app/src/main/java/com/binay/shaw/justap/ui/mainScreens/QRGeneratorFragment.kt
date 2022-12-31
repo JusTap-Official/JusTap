@@ -1,21 +1,32 @@
 package com.binay.shaw.justap.ui.mainScreens
 
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.DisplayMetrics
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
+import androidx.lifecycle.ViewModelProvider
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentQRGeneratorBinding
 import com.binay.shaw.justap.helper.Encryption
 import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.helper.Util.Companion.dpToPx
+import com.binay.shaw.justap.helper.Util.Companion.encodeAsQrCodeBitmap
+import com.binay.shaw.justap.viewModel.QRGenerator_ViewModel
 
 class QRGeneratorFragment : Fragment() {
 
     private lateinit var _binding: FragmentQRGeneratorBinding
     private val binding get() = _binding
+    private lateinit var viewModel : QRGenerator_ViewModel
+    private lateinit var displayMetrics: DisplayMetrics
+    private var overlay: Bitmap? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,13 +34,11 @@ class QRGeneratorFragment : Fragment() {
     ): View? {
         initialization(container)
 
+        viewModel.generateQR(displayMetrics, overlay)
 
-        val message = "binayshaw7777@gmail.com"
-
-        val encryption = Encryption.getDefault("Key", "Salt", ByteArray(16))
-
-        val encrypted = encryption.encryptOrNull(message)
-        Util.log("Encrypted Key $encrypted")
+        viewModel.status.observe(viewLifecycleOwner) {
+            binding.qrCodePreview.setImageBitmap(viewModel.bitmap.value)
+        }
 
         return binding.root
     }
@@ -38,7 +47,12 @@ class QRGeneratorFragment : Fragment() {
 
         _binding = FragmentQRGeneratorBinding.inflate(layoutInflater, container, false)
         (activity as MainActivity).supportActionBar?.hide()
-        binding.root.findViewById<TextView>(R.id.toolbar_title)?.text = "Generate QR"
+        binding.root.findViewById<TextView>(R.id.toolbar_title)?.text = "My QR Code"
+        viewModel = ViewModelProvider(this@QRGeneratorFragment)[QRGenerator_ViewModel::class.java]
+        displayMetrics = DisplayMetrics()
+        activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
+        overlay = ContextCompat.getDrawable(requireContext(), R.drawable.logo_black_stroke)
+            ?.toBitmap(72.dpToPx(), 72.dpToPx())
 
     }
 }

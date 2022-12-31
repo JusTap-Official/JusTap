@@ -8,9 +8,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/logo_dark_bg"
+        android:icon="@drawable/logo_black_square"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/logo_dark_bg"
+        android:roundIcon="@drawable/logo_black_circle"
         android:supportsRtl="true"
         android:theme="@style/Theme.JusTap"
         tools:targetApi="31">

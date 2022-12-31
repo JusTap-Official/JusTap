@@ -3,10 +3,22 @@ package com.binay.shaw.justap.helper
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
+import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Matrix
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.util.Log
+import androidx.annotation.ColorInt
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.EncodeHintType
+import com.google.zxing.MultiFormatWriter
+import com.google.zxing.WriterException
+import com.google.zxing.common.BitMatrix
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 
 /**
  * Created by binay on 29,December,2022
@@ -26,7 +38,8 @@ class Util {
         fun checkForInternet(context: Context): Boolean {
 
             // register activity with the connectivity manager service
-            val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val connectivityManager =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
             // if the android version is equal to M
             // or greater we need to use the
@@ -39,7 +52,8 @@ class Util {
                 val network = connectivityManager.activeNetwork ?: return false
 
                 // Representation of the capabilities of an active network.
-                val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+                val activeNetwork =
+                    connectivityManager.getNetworkCapabilities(network) ?: return false
 
                 return when {
                     // Indicates this network uses a Wi-Fi transport,
@@ -60,6 +74,64 @@ class Util {
                 @Suppress("DEPRECATION")
                 return networkInfo.isConnected
             }
+        }
+
+
+        @Throws(WriterException::class)
+        fun String.encodeAsQrCodeBitmap(
+            dimension: Int,
+            overlayBitmap: Bitmap? = null,
+            @ColorInt color1: Int = Color.BLACK,
+            @ColorInt color2: Int = Color.WHITE
+        ): Bitmap? {
+
+            val result: BitMatrix
+            try {
+                result = MultiFormatWriter().encode(
+                    this,
+                    BarcodeFormat.QR_CODE,
+                    dimension,
+                    dimension,
+                    hashMapOf(EncodeHintType.ERROR_CORRECTION to ErrorCorrectionLevel.H)
+                )
+            } catch (e: IllegalArgumentException) {
+                // Unsupported format
+                return null
+            }
+
+            val w = result.width
+            val h = result.height
+            val pixels = IntArray(w * h)
+            for (y in 0 until h) {
+                val offset = y * w
+                for (x in 0 until w) {
+                    pixels[offset + x] = if (result.get(x, y)) color1 else color2
+                }
+            }
+            val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+            bitmap.setPixels(pixels, 0, dimension, 0, 0, w, h)
+
+            return if (overlayBitmap != null) {
+                bitmap.addOverlayToCenter(overlayBitmap)
+            } else {
+                bitmap
+            }
+        }
+
+        private fun Bitmap.addOverlayToCenter(overlayBitmap: Bitmap): Bitmap {
+
+            val bitmap2Width = overlayBitmap.width
+            val bitmap2Height = overlayBitmap.height
+            val marginLeft = (this.width * 0.5 - bitmap2Width * 0.5).toFloat()
+            val marginTop = (this.height * 0.5 - bitmap2Height * 0.5).toFloat()
+            val canvas = Canvas(this)
+            canvas.drawBitmap(this, Matrix(), null)
+            canvas.drawBitmap(overlayBitmap, marginLeft, marginTop, null)
+            return this
+        }
+
+        fun Int.dpToPx(): Int {
+            return (this * Resources.getSystem().displayMetrics.density).toInt()
         }
     }
 }
