@@ -1,16 +1,11 @@
 package com.binay.shaw.justap.viewModel
 
-import android.content.Intent
 import android.util.Patterns
-import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.binay.shaw.justap.MainActivity
-import com.binay.shaw.justap.Util
+import com.binay.shaw.justap.helper.Util
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await

@@ -9,6 +9,8 @@ import android.widget.TextView
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentQRGeneratorBinding
+import com.binay.shaw.justap.helper.Encryption
+import com.binay.shaw.justap.helper.Util
 
 class QRGeneratorFragment : Fragment() {
 
@@ -20,6 +22,14 @@ class QRGeneratorFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         initialization(container)
+
+
+        val message = "binayshaw7777@gmail.com"
+
+        val encryption = Encryption.getDefault("Key", "Salt", ByteArray(16))
+
+        val encrypted = encryption.encryptOrNull(message)
+        Util.log("Encrypted Key $encrypted")
 
         return binding.root
     }

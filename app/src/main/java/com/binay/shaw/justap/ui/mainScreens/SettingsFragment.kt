@@ -13,7 +13,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
-import com.binay.shaw.justap.Util
+import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.databinding.FragmentSettingsBinding
 import com.binay.shaw.justap.ui.authentication.SignIn_Screen
 import com.google.firebase.auth.FirebaseAuth

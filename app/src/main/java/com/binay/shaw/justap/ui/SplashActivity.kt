@@ -1,23 +1,22 @@
 package com.binay.shaw.justap.ui
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import androidx.appcompat.app.AppCompatDelegate
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
-import com.binay.shaw.justap.Util
+import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.ui.authentication.SignIn_Screen
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.*
 
 @SuppressLint("CustomSplashScreen")
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : Activity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var sharedPreferences: SharedPreferences
@@ -30,7 +29,7 @@ class SplashActivity : AppCompatActivity() {
         setTheme()
         setContentView(R.layout.activity_splash)
 
-        supportActionBar?.hide()
+//        supportActionBar?.hide()
         auth = FirebaseAuth.getInstance(); //initialize Firebase Auth
 
         if (checkLoggedInState()) {

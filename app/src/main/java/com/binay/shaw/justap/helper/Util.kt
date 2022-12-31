@@ -1,7 +1,6 @@
-package com.binay.shaw.justap
+package com.binay.shaw.justap.helper
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
 import android.net.ConnectivityManager
