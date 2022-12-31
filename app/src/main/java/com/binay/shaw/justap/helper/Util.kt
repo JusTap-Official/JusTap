@@ -1,6 +1,7 @@
 package com.binay.shaw.justap.helper
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
@@ -10,7 +11,10 @@ import android.graphics.Color
 import android.graphics.Matrix
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.Uri
 import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import androidx.annotation.ColorInt
 import com.google.zxing.BarcodeFormat
@@ -19,6 +23,9 @@ import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStream
 
 /**
  * Created by binay on 29,December,2022
@@ -132,6 +139,36 @@ class Util {
 
         fun Int.dpToPx(): Int {
             return (this * Resources.getSystem().displayMetrics.density).toInt()
+        }
+
+
+        fun saveMediaToStorage(bitmap: Bitmap, context: Context) : Boolean {
+            var success = false
+            val filename = "${System.currentTimeMillis()}.jpg"
+            var fos: OutputStream? = null
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                context.contentResolver?.also { resolver ->
+                    val contentValues = ContentValues().apply {
+                        put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+                        put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
+                        put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+                    }
+                    val imageUri: Uri? =
+                        resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+                    fos = imageUri?.let { resolver.openOutputStream(it) }
+                }
+            } else {
+                val imagesDir =
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                val image = File(imagesDir, filename)
+                fos = FileOutputStream(image)
+            }
+            fos?.use {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+                log("Saved to Photos")
+                success = true
+            }
+            return success
         }
     }
 }

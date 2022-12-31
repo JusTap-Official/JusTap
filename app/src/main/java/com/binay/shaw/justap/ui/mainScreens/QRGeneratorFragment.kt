@@ -8,17 +8,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.ViewModelProvider
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentQRGeneratorBinding
-import com.binay.shaw.justap.helper.Encryption
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.Companion.dpToPx
-import com.binay.shaw.justap.helper.Util.Companion.encodeAsQrCodeBitmap
 import com.binay.shaw.justap.viewModel.QRGenerator_ViewModel
+
 
 class QRGeneratorFragment : Fragment() {
 
@@ -38,6 +38,13 @@ class QRGeneratorFragment : Fragment() {
 
         viewModel.status.observe(viewLifecycleOwner) {
             binding.qrCodePreview.setImageBitmap(viewModel.bitmap.value)
+        }
+
+        binding.qrCodePreview.setOnClickListener {
+            Util.saveMediaToStorage(viewModel.bitmap.value as Bitmap, requireContext()).also {
+                if (it)
+                    Toast.makeText(requireContext(), "Saved to photos", Toast.LENGTH_SHORT).show()
+            }
         }
 
         return binding.root
