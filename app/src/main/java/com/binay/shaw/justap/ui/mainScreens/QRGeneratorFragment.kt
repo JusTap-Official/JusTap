@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentQRGeneratorBinding
@@ -45,6 +46,10 @@ class QRGeneratorFragment : Fragment() {
                 if (it)
                     Toast.makeText(requireContext(), "Saved to photos", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        binding.scanQRCode.setOnClickListener {
+            Navigation.findNavController(binding.root).navigate(R.id.action_scanner_to_scannerFragment)
         }
 
         return binding.root

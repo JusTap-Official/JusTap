@@ -142,7 +142,7 @@ class Util {
         }
 
 
-        fun saveMediaToStorage(bitmap: Bitmap, context: Context) : Boolean {
+        fun saveMediaToStorage(bitmap: Bitmap, context: Context): Boolean {
             var success = false
             val filename = "${System.currentTimeMillis()}.jpg"
             var fos: OutputStream? = null
@@ -170,5 +170,6 @@ class Util {
             }
             return success
         }
+
     }
 }

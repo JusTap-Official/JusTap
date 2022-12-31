@@ -24,5 +24,18 @@
         android:id="@+id/scanner"
         android:name="com.binay.shaw.justap.ui.mainScreens.QRGeneratorFragment"
         android:label="fragment_q_r_generator"
-        tools:layout="@layout/fragment_q_r_generator" />
+        tools:layout="@layout/fragment_q_r_generator" >
+        <action
+            android:id="@+id/action_scanner_to_scannerFragment"
+            app:destination="@id/scannerFragment"
+            app:restoreState="true"
+            app:popUpTo="@id/scanner"
+            app:popUpToSaveState="true"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/scannerFragment"
+        android:name="com.binay.shaw.justap.ui.mainScreens.ScannerFragment"
+        android:label="fragment_q_r_scanner"
+        tools:layout="@layout/fragment_q_r_scanner" />
 </navigation>

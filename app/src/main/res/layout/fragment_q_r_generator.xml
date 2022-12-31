@@ -83,6 +83,7 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/scanQRCode"
             android:layout_width="175dp"
             android:layout_height="55dp"
             android:text="Scan QR"
