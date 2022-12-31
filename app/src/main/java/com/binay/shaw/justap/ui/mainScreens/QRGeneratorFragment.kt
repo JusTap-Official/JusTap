@@ -42,8 +42,16 @@ class QRGeneratorFragment : Fragment() {
         }
 
         binding.qrCodePreview.setOnClickListener {
-            Util.saveMediaToStorage(viewModel.bitmap.value as Bitmap, requireContext()).also {
-                if (it)
+            Toast.makeText(requireContext(), "Long press to save in Gallery", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.qrInfo.setOnClickListener {
+            Toast.makeText(requireContext(), "Add info here", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.qrCodePreview.setOnLongClickListener {
+            Util.saveMediaToStorage(viewModel.bitmap.value as Bitmap, requireContext()).also { status ->
+                if (status)
                     Toast.makeText(requireContext(), "Saved to photos", Toast.LENGTH_SHORT).show()
             }
         }

@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
@@ -66,10 +67,15 @@ class ScannerFragment : Fragment() {
         scanResultTextView = binding.scanResultTextView
         pvScan = binding.scanPreview
 
+        binding.scannerInfo.setOnClickListener {
+            Toast.makeText(requireContext(), "Add info here", Toast.LENGTH_SHORT).show()
+        }
+
         setupCamera()
 
         return binding.root
     }
+
 
     private fun setupCamera() {
         cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()

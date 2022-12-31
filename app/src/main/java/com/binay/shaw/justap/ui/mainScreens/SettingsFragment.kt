@@ -1,6 +1,7 @@
 package com.binay.shaw.justap.ui.mainScreens
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -9,7 +10,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
@@ -34,8 +38,13 @@ class SettingsFragment : Fragment() {
         initialization(container)
 
         binding.logout.setOnClickListener {
-            auth.signOut()
-            startActivity(Intent(requireContext(), SignIn_Screen::class.java)).also { requireActivity().finish() }
+            Util.showDialog(requireContext(), "Logout", "Are you sure you want to logout?", "Logout", "Cancel", { _, it ->
+                auth.signOut()
+                Toast.makeText(requireContext(), "Logged out", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(requireContext(), SignIn_Screen::class.java)).also { requireActivity().finish() }
+            }, { _, it ->
+                Toast.makeText(requireContext(), "Logout cancelled", Toast.LENGTH_SHORT).show()
+            })
         }
 
         if (Util.isDarkMode(requireContext())) {
@@ -47,6 +56,7 @@ class SettingsFragment : Fragment() {
         }
         return binding.root
     }
+
 
     private fun initialization(container: ViewGroup?) {
 
