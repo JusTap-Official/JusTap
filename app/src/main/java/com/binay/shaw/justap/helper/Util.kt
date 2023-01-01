@@ -89,8 +89,8 @@ class Util {
         fun String.encodeAsQrCodeBitmap(
             dimension: Int,
             overlayBitmap: Bitmap? = null,
-            @ColorInt color1: Int = Color.BLACK,
-            @ColorInt color2: Int = Color.WHITE
+            color1: Int,
+            color2: Int
         ): Bitmap? {
 
             val result: BitMatrix

@@ -2,14 +2,10 @@ package com.binay.shaw.justap.viewModel
 
 import android.graphics.Bitmap
 import android.util.DisplayMetrics
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.binay.shaw.justap.R
 import com.binay.shaw.justap.helper.Encryption
 import com.binay.shaw.justap.helper.Util
-import com.binay.shaw.justap.helper.Util.Companion.dpToPx
 import com.binay.shaw.justap.helper.Util.Companion.encodeAsQrCodeBitmap
 
 /**
@@ -18,7 +14,7 @@ import com.binay.shaw.justap.helper.Util.Companion.encodeAsQrCodeBitmap
 class QRGenerator_ViewModel : ViewModel() {
     var status = MutableLiveData<Int>()
     private val errorMessage = MutableLiveData<String>()
-    var bitmap = MutableLiveData<Bitmap>()
+    var bitmap = MutableLiveData<Bitmap?>()
 
     init {
         status.value = 0
@@ -31,7 +27,12 @@ class QRGenerator_ViewModel : ViewModel() {
     * 2 - Error
     */
 
-    fun generateQR(displayMetrics: DisplayMetrics, overlay: Bitmap?) {
+    fun generateQR(
+        displayMetrics: DisplayMetrics,
+        overlay: Bitmap?,
+        color1: Int,
+        color2: Int
+    ) {
         val message = "binayshaw7777@gmail.com"
 
         val encryption = Encryption.getDefault("Key", "Salt", ByteArray(16))
@@ -42,7 +43,7 @@ class QRGenerator_ViewModel : ViewModel() {
 
             val size = displayMetrics.widthPixels.coerceAtMost(displayMetrics.heightPixels)
 
-            bitmap.value = encrypted.encodeAsQrCodeBitmap(size, overlay)
+            bitmap.value = encrypted.encodeAsQrCodeBitmap(size, overlay, color1, color2)
 
             status.value = 1
         } catch (e: Exception) {

@@ -7,11 +7,11 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -39,7 +39,9 @@ class QRGeneratorFragment : Fragment() {
     ): View? {
         initialization(container)
 
-        viewModel.generateQR(displayMetrics, overlay)
+        viewModel.generateQR(displayMetrics, overlay,
+            ResourcesCompat.getColor(resources, R.color.text_color, null),
+            ResourcesCompat.getColor(resources, R.color.bg_color, null))
 
         viewModel.status.observe(viewLifecycleOwner) {
             binding.qrCodePreview.setImageBitmap(viewModel.bitmap.value)
