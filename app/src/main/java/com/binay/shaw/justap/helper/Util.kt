@@ -1,11 +1,8 @@
 package com.binay.shaw.justap.helper
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.app.Dialog
 import android.content.ContentValues
 import android.content.Context
-import android.content.DialogInterface
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Bitmap
@@ -19,19 +16,13 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import androidx.annotation.ColorInt
-import com.binay.shaw.justap.R
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
-import kotlinx.coroutines.NonCancellable.cancel
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -179,25 +170,6 @@ class Util {
                 success = true
             }
             return success
-        }
-
-
-        fun showDialog(
-            context: Context, title: String, msg: String,
-            positiveBtnText: String, negativeBtnText: String?,
-            positiveBtnClickListener: DialogInterface.OnClickListener,
-            negativeBtnClickListener: DialogInterface.OnClickListener?
-        ): AlertDialog {
-            val builder = AlertDialog.Builder(context)
-                .setTitle(title)
-                .setMessage(msg)
-                .setCancelable(true)
-                .setPositiveButton(positiveBtnText, positiveBtnClickListener)
-            if (negativeBtnText != null)
-                builder.setNegativeButton(negativeBtnText, negativeBtnClickListener)
-            val alert = builder.create()
-            alert.show()
-            return alert
         }
 
     }

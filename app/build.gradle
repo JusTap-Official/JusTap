@@ -77,4 +77,7 @@ dependencies {
     implementation "androidx.camera:camera-lifecycle:$cameraX"
     implementation "androidx.camera:camera-view:$cameraX"
 
+    //Custom Dialog
+    implementation 'com.github.chnouman:AwesomeDialog:1.0.5'
+
 }
