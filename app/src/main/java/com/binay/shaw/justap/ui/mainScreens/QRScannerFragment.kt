@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.camera.core.*
@@ -58,19 +59,20 @@ class ScannerFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var toolbarTitle: TextView
+    private lateinit var toolBarButton: ImageView
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentQRScannerBinding.inflate(layoutInflater, container, false)
-        // Inflate the layout for this fragment
 
-        (activity as MainActivity).supportActionBar?.hide()
-        binding.root.findViewById<TextView>(R.id.toolbar_title)?.text = "Scanner"
+        initialization(container)
 
-        scanResultTextView = binding.scanResultTextView
-        pvScan = binding.scanPreview
+        toolBarButton.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
 
         binding.scannerInfo.setOnClickListener {
             Toast.makeText(requireContext(), "Add info here", Toast.LENGTH_SHORT).show()
@@ -79,6 +81,18 @@ class ScannerFragment : Fragment() {
         setupCamera()
 
         return binding.root
+    }
+
+    private fun initialization(container: ViewGroup?) {
+        _binding = FragmentQRScannerBinding.inflate(layoutInflater, container, false)
+        (activity as MainActivity).supportActionBar?.hide()
+        toolbarTitle = binding.root.findViewById(R.id.toolbar_title)
+        toolbarTitle.text = "Scanner"
+        toolBarButton = binding.root.findViewById(R.id.goBack)
+        toolBarButton.visibility = View.VISIBLE
+        scanResultTextView = binding.scanResultTextView
+        pvScan = binding.scanPreview
+
     }
 
 

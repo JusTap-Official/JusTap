@@ -89,4 +89,11 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.14.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
 
+    //Circular ImageView
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    //Blurry Image
+    implementation 'jp.wasabeef:glide-transformations:4.3.0'
+
+
 }

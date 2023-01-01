@@ -6,6 +6,14 @@
     android:background="@android:color/transparent"
     android:minHeight="?android:attr/actionBarSize">
 
+    <ImageView
+        android:id="@+id/goBack"
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/back_arrow"
+        android:visibility="gone"/>
+
     <TextView
         android:id="@+id/toolbar_title"
         android:layout_width="wrap_content"
