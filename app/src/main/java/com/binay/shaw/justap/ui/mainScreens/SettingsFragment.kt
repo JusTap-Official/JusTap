@@ -11,10 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentSettingsBinding
@@ -38,6 +40,10 @@ class SettingsFragment : Fragment() {
     ): View {
 
         initialization(container)
+
+        binding.toProfile.setOnClickListener {
+            Navigation.findNavController(binding.root).navigate(R.id.action_settings_to_profileFragment)
+        }
 
         binding.logout.setOnClickListener {
             showDialog()
@@ -99,8 +105,7 @@ class SettingsFragment : Fragment() {
 
         _binding = FragmentSettingsBinding.inflate(layoutInflater, container, false)
         (activity as MainActivity).supportActionBar?.hide()
-        binding.root.findViewById<TextView>(com.binay.shaw.justap.R.id.toolbar_title)?.text =
-            "Settings"
+        binding.root.findViewById<TextView>(R.id.toolbar_title)?.text = "Settings"
         auth = FirebaseAuth.getInstance()
 
     }

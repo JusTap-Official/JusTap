@@ -2,6 +2,7 @@ package com.binay.shaw.justap
 
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -9,10 +10,12 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.binay.shaw.justap.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 
+    private var timer = 0L
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         //Hides action bar
         supportActionBar?.hide()
 
+
         val bottomNavigationView = binding.bottomNav
         val navController: NavController = findNavController(R.id.fragmentContainerView)
         val appBarConfiguration =
@@ -32,6 +36,37 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigationView.setupWithNavController(navController)
 
+        bottomNavigationView.setupWithNavController2(navController)
+
+    }
+
+    fun BottomNavigationView.setupWithNavController2(navController: NavController) {
+        val bottomNavigationView = this
+        bottomNavigationView.setOnItemReselectedListener { item ->
+            // Pop everything up to the reselected item
+            val reselectedDestinationId = item.itemId
+            navController.popBackStack(reselectedDestinationId, false)
+        }
+    }
+
+    override fun onBackPressed() {
+
+        val navController: NavController = findNavController(R.id.fragmentContainerView)
+        val count = navController.backQueue.size
+
+        if (count <= 2) {
+            if (timer + 2000L > System.currentTimeMillis()) {
+                onBackPressedDispatcher.onBackPressed()
+            } else {
+                Toast.makeText(
+                    applicationContext, "Press once again to exit!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            timer = System.currentTimeMillis()
+        } else {
+            navController.popBackStack()
+        }
     }
 }
 

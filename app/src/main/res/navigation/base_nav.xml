@@ -19,7 +19,11 @@
         android:id="@+id/settings"
         android:name="com.binay.shaw.justap.ui.mainScreens.SettingsFragment"
         android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settings_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/scanner"
         android:name="com.binay.shaw.justap.ui.mainScreens.QRGeneratorFragment"
@@ -27,15 +31,16 @@
         tools:layout="@layout/fragment_q_r_generator" >
         <action
             android:id="@+id/action_scanner_to_scannerFragment"
-            app:destination="@id/scannerFragment"
-            app:restoreState="true"
-            app:popUpTo="@id/scanner"
-            app:popUpToSaveState="true"
-            app:popUpToInclusive="true"/>
+            app:destination="@id/scannerFragment" />
     </fragment>
     <fragment
         android:id="@+id/scannerFragment"
         android:name="com.binay.shaw.justap.ui.mainScreens.ScannerFragment"
         android:label="fragment_q_r_scanner"
         tools:layout="@layout/fragment_q_r_scanner" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.binay.shaw.justap.ui.mainScreens.appSettingsFragments.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

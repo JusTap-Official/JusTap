@@ -17,6 +17,8 @@ import android.widget.Toast
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import com.binay.shaw.justap.MainActivity
+import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentQRScannerBinding
 import com.binay.shaw.justap.helper.Encryption
 import com.google.firebase.auth.FirebaseAuth
@@ -63,6 +65,9 @@ class ScannerFragment : Fragment() {
     ): View? {
         _binding = FragmentQRScannerBinding.inflate(layoutInflater, container, false)
         // Inflate the layout for this fragment
+
+        (activity as MainActivity).supportActionBar?.hide()
+        binding.root.findViewById<TextView>(R.id.toolbar_title)?.text = "Scanner"
 
         scanResultTextView = binding.scanResultTextView
         pvScan = binding.scanPreview
