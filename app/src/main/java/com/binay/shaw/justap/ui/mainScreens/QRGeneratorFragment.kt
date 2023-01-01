@@ -1,16 +1,19 @@
 package com.binay.shaw.justap.ui.mainScreens
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.DisplayMetrics
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.binay.shaw.justap.MainActivity
@@ -29,6 +32,7 @@ class QRGeneratorFragment : Fragment() {
     private lateinit var displayMetrics: DisplayMetrics
     private var overlay: Bitmap? = null
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,6 +58,14 @@ class QRGeneratorFragment : Fragment() {
                 if (status)
                     Toast.makeText(requireContext(), "Saved to photos", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        binding.onlineOfflineModeSwitch.setOnTouchListener{
+                _, event -> event.actionMasked == MotionEvent.ACTION_MOVE
+        }
+
+        binding.onlineOfflineModeSwitch.setOnClickListener {
+            Toast.makeText(requireContext(), "Tapped", Toast.LENGTH_SHORT).show()
         }
 
         binding.scanQRCode.setOnClickListener {

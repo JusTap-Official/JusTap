@@ -1,26 +1,24 @@
 package com.binay.shaw.justap.ui.mainScreens
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.fragment.app.Fragment
 import com.binay.shaw.justap.MainActivity
-import com.binay.shaw.justap.R
-import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.databinding.FragmentSettingsBinding
+import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.ui.authentication.SignIn_Screen
 import com.google.firebase.auth.FirebaseAuth
+
 
 class SettingsFragment : Fragment() {
 
@@ -29,7 +27,7 @@ class SettingsFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var sharedPreferences: SharedPreferences
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,8 +45,13 @@ class SettingsFragment : Fragment() {
             })
         }
 
+
         if (Util.isDarkMode(requireContext())) {
             binding.UIModeSwitch.isChecked = true
+        }
+
+        binding.UIModeSwitch.setOnTouchListener{
+                _, event -> event.actionMasked == MotionEvent.ACTION_MOVE
         }
 
         binding.UIModeSwitch.setOnClickListener {
@@ -57,12 +60,11 @@ class SettingsFragment : Fragment() {
         return binding.root
     }
 
-
     private fun initialization(container: ViewGroup?) {
 
         _binding = FragmentSettingsBinding.inflate(layoutInflater, container, false)
         (activity as MainActivity).supportActionBar?.hide()
-        binding.root.findViewById<TextView>(R.id.toolbar_title)?.text = "Settings"
+        binding.root.findViewById<TextView>(com.binay.shaw.justap.R.id.toolbar_title)?.text = "Settings"
         auth = FirebaseAuth.getInstance()
 
     }
