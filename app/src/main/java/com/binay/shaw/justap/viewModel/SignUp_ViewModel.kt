@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.model.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -29,7 +31,7 @@ class SignUp_ViewModel : ViewModel() {
     * 5 - fail!
     */
 
-    fun getErrorMessage() : String{
+    fun getErrorMessage(): String {
         return errorMessage.value.toString()
     }
 
@@ -42,7 +44,9 @@ class SignUp_ViewModel : ViewModel() {
 
         if (nameString.isEmpty()) {
             status.value = 1
-        } else if (emailString.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(emailString).matches()) {
+        } else if (emailString.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(emailString)
+                .matches()
+        ) {
             status.value = 2
         } else if (passwordString.isEmpty() || passwordString.length < 8) {
             status.value = 3
@@ -52,9 +56,27 @@ class SignUp_ViewModel : ViewModel() {
                     auth.createUserWithEmailAndPassword(emailString, passwordString).await()
                     withContext(Dispatchers.Main) {
                         if (checkLoggedInState()) {
-                            auth.signOut()
-                            status.value = 4
+
+                            val firebaseUser = auth.currentUser
+                            val uid = firebaseUser?.uid.toString()
+                            Util.log("user id is: $uid")
+                            //Create user object
+                            val user = User(uid, nameString, emailString)
+                            Util.log("user is: $user")
+                            val db = FirebaseDatabase.getInstance().reference
+                            //add user data in the Realtime Database
+
+                            db.child("Users").child(uid).setValue(user).addOnSuccessListener {
+                                Util.log("User added Successful")
+                                auth.signOut()
+                                status.value = 4
+                            }
+                                .addOnFailureListener {
+                                    Util.log("Unsuccessful")
+                                    status.value = 5
+                                }
                         }
+
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {

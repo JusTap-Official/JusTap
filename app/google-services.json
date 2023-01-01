@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "142637459628",
+    "firebase_url": "https://justap-7777-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "justap-7777",
     "storage_bucket": "justap-7777.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "142637459628-ong789nskgka293n3vt54j3gqptif3ob.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.binay.shaw.justap",
+            "certificate_hash": "d33fbdd153ab477f1763b72f4ada93c1d542d3ba"
+          }
+        },
         {
           "client_id": "142637459628-fn3us8vn9kt5gq6leil5r1kn79knl1is.apps.googleusercontent.com",
           "client_type": 3
