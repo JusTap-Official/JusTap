@@ -2,6 +2,7 @@ package com.binay.shaw.justap
 
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -27,7 +28,11 @@ class MainActivity : AppCompatActivity() {
         //Hides action bar
         supportActionBar?.hide()
 
+        setUpNav()
 
+    }
+
+    private fun setUpNav() {
         val bottomNavigationView = binding.bottomNav
         val navController: NavController = findNavController(R.id.fragmentContainerView)
         val appBarConfiguration =
@@ -36,7 +41,26 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigationView.setupWithNavController(navController)
 
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.home -> showBottomNav(bottomNavigationView)
+                R.id.scanner -> showBottomNav(bottomNavigationView)
+                R.id.history -> showBottomNav(bottomNavigationView)
+                R.id.settings -> showBottomNav(bottomNavigationView)
+                else -> hideBottomNav(bottomNavigationView)
+            }
+        }
+
         bottomNavigationView.setupWithNavController2(navController)
+    }
+
+    private fun showBottomNav(bottomNavigationView: BottomNavigationView) {
+        bottomNavigationView.visibility = View.VISIBLE
+
+    }
+
+    private fun hideBottomNav(bottomNavigationView: BottomNavigationView) {
+        bottomNavigationView.visibility = View.GONE
 
     }
 
