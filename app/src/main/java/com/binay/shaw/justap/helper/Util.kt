@@ -7,7 +7,6 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Matrix
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -16,7 +15,10 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
-import androidx.annotation.ColorInt
+import android.widget.ImageView
+import com.binay.shaw.justap.R
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
@@ -170,6 +172,26 @@ class Util {
                 success = true
             }
             return success
+        }
+
+        fun loadImagesWithGlide(imageView: ImageView, url: String) {
+            Glide.with(imageView)
+                .load(url)
+                .centerCrop()
+                .error(R.drawable.default_user)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .placeholder(R.drawable.movie_loading_animation)
+                .into(imageView)
+        }
+
+        fun ImageView.loadImagesWithGlideExt(url: String) {
+            Glide.with(this)
+                .load(url)
+                .centerCrop()
+                .error(R.drawable.default_user)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .placeholder(R.drawable.movie_loading_animation)
+                .into(this)
         }
 
     }

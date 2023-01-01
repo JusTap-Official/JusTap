@@ -26,8 +26,8 @@ import com.binay.shaw.justap.viewModel.QRGenerator_ViewModel
 
 class QRGeneratorFragment : Fragment() {
 
-    private lateinit var _binding: FragmentQRGeneratorBinding
-    private val binding get() = _binding
+    private var _binding: FragmentQRGeneratorBinding? = null
+    private val binding get() = _binding!!
     private lateinit var viewModel : QRGenerator_ViewModel
     private lateinit var displayMetrics: DisplayMetrics
     private var overlay: Bitmap? = null
@@ -88,5 +88,10 @@ class QRGeneratorFragment : Fragment() {
         overlay = ContextCompat.getDrawable(requireContext(), R.drawable.logo_black_stroke)
             ?.toBitmap(72.dpToPx(), 72.dpToPx())
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

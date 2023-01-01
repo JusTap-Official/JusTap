@@ -54,8 +54,8 @@ class ScannerFragment : Fragment() {
             return aspectRatio(metrics.widthPixels, metrics.heightPixels)
         }
 
-    private lateinit var _binding: FragmentQRScannerBinding
-    private val binding get() = _binding
+    private var _binding: FragmentQRScannerBinding? = null
+    private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -213,4 +213,9 @@ class ScannerFragment : Fragment() {
     private fun isCameraPermissionGranted(): Boolean = this.let {
         ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.CAMERA)
     } == PackageManager.PERMISSION_GRANTED
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

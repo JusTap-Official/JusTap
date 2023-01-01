@@ -12,8 +12,8 @@ import com.binay.shaw.justap.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
 
-    private lateinit var _binding: FragmentHomeBinding
-    private val binding get() = _binding
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,5 +30,10 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         binding.root.findViewById<TextView>(R.id.toolbar_title)?.text = "Home"
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

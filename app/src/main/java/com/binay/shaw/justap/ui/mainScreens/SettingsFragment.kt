@@ -28,8 +28,8 @@ import com.google.firebase.auth.FirebaseAuth
 
 class SettingsFragment : Fragment() {
 
-    private lateinit var _binding: FragmentSettingsBinding
-    private val binding get() = _binding
+    private var _binding: FragmentSettingsBinding? = null
+    private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -123,5 +123,10 @@ class SettingsFragment : Fragment() {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
         editor.apply()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
