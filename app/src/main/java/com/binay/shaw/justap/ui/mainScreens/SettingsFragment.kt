@@ -55,7 +55,7 @@ class SettingsFragment : Fragment() {
         settingsItemList.add(SettingsItem(2, R.drawable.moon,"Dark mode", true))
         settingsItemList.add(SettingsItem(3, R.drawable.scanner_fullscale_icon,"Customize QR", false))
         settingsItemList.add(SettingsItem(4, R.drawable.info_icon, "About us", false))
-        settingsItemList.add(SettingsItem(5, R.drawable.logout_icon,"Log out", false))
+        settingsItemList.add(SettingsItem(5, R.drawable.logout_icon,"Log out", false, activity))
         /**set find Id*/
         recyclerView = binding.settingsRV
         /**set Adapter*/
@@ -65,57 +65,13 @@ class SettingsFragment : Fragment() {
         recyclerView.adapter = settingsItemAdapter
 
 
-
-
-
         binding.toProfile.setOnClickListener {
             Navigation.findNavController(binding.root).navigate(R.id.action_settings_to_profileFragment)
-        }
-
-        binding.logout.setOnClickListener {
-            showDialog()
         }
 
         return binding.root
     }
 
-    private fun showDialog() {
-        AwesomeDialog.build(requireActivity())
-            .title(
-                "Logout", ResourcesCompat.getFont(requireContext(), R.font.roboto_medium),
-                ContextCompat.getColor(requireContext(), R.color.text_color)
-            )
-            .body(
-                "Are you sure you want to logout?",
-                ResourcesCompat.getFont(requireContext(), R.font.roboto),
-                ContextCompat.getColor(requireContext(), R.color.text_color)
-            )
-            .background(R.drawable.card_drawable)
-            .onPositive(
-                "Logout",
-                R.color.bg_color,
-                ContextCompat.getColor(requireContext(), R.color.negative_red)
-            ) {
-                auth.signOut()
-                Toast.makeText(requireContext(), "Logged out", Toast.LENGTH_SHORT).show()
-                startActivity(
-                    Intent(
-                        requireContext(),
-                        SignIn_Screen::class.java
-                    )
-                ).also { requireActivity().finish() }
-                Util.log("positive")
-            }
-            .onNegative(
-                "Cancel",
-                R.color.bg_color,
-                ContextCompat.getColor(requireContext(), R.color.text_color)
-            ) {
-                Toast.makeText(requireContext(), "Logout cancelled", Toast.LENGTH_SHORT).show()
-                Util.log("negative ")
-            }
-
-    }
 
     private fun initialization(container: ViewGroup?) {
 
