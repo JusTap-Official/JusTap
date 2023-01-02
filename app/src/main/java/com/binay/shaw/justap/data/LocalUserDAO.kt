@@ -14,6 +14,24 @@ interface LocalUserDAO {
     @Update
     suspend fun updateUser(user: LocalUser)
 
+    @Query("SELECT userName FROM localDB")
+    fun getName() : List<String>
+
+    @Query("SELECT userEmail FROM localDB")
+    fun getEmail() : LiveData<String>
+
+    @Query("SELECT userPhone FROM localDB")
+    fun getPhone() : LiveData<String>
+
+    @Query("SELECT userBio FROM localDB")
+    fun getBio() : LiveData<String>
+
+    @Query("SELECT userProfileBase64 FROM localDB")
+    fun getPFP() : LiveData<String>
+
+    @Query("SELECT userID FROM localDB")
+    fun getID() : LiveData<String>
+
     @Query("SELECT * FROM localDB")
     fun fetchLocalUser(): LiveData<List<LocalUser>>
 

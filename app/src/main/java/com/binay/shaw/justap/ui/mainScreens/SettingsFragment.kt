@@ -19,15 +19,20 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.SettingsItemAdapter
+import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.databinding.FragmentSettingsBinding
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.SettingsItem
 import com.binay.shaw.justap.ui.authentication.SignIn_Screen
 import com.example.awesomedialog.*
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class SettingsFragment : Fragment() {
@@ -39,6 +44,7 @@ class SettingsFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var settingsItemList:ArrayList<SettingsItem>
     private lateinit var settingsItemAdapter: SettingsItemAdapter
+    private lateinit var localUserDatabase: LocalUserDatabase
 
     @SuppressLint("SetTextI18n", "ClickableViewAccessibility")
     override fun onCreateView(
@@ -47,6 +53,11 @@ class SettingsFragment : Fragment() {
     ): View {
 
         initialization(container)
+
+        GlobalScope.launch(Dispatchers.IO) {
+            val name = localUserDatabase.localUserDao().getName()[0]
+            binding.settingsUserName.text = name
+        }
 
         /**set List*/
         settingsItemList = ArrayList()
@@ -79,6 +90,9 @@ class SettingsFragment : Fragment() {
         (activity as MainActivity).supportActionBar?.hide()
         binding.root.findViewById<TextView>(R.id.toolbar_title)?.text = "Settings"
         auth = FirebaseAuth.getInstance()
+        localUserDatabase = Room.databaseBuilder(requireContext(), LocalUserDatabase::class.java,
+            "localDB").build()
+
 
     }
 

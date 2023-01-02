@@ -27,7 +27,7 @@ class HomeFragment : Fragment() {
     private lateinit var userID: String
     private lateinit var auth: FirebaseAuth
     private lateinit var databaseReference: DatabaseReference
-    private lateinit var database: LocalUserDatabase
+    private lateinit var localUserDatabase: LocalUserDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,18 +36,13 @@ class HomeFragment : Fragment() {
 
         initialization(container)
 
-//        viewModel.fetchUserData(userID, databaseReference)
-//
-//        viewModel.status.observe(viewLifecycleOwner) {
-//            if (it == 1) {
-//                val user = viewModel.firebaseUser.value
-//                if (user != null) {
-//                    viewModel.saveData(database, user)
-//                }
-//            } else if (it == 2) {
-//                Toast.makeText(requireContext(), "Failed to fetch data from firebase", Toast.LENGTH_SHORT).show()
-//            }
-//        }
+        viewModel.getUser(localUserDatabase)
+
+        viewModel.firstName.observe(viewLifecycleOwner) {
+            binding.profileNameTV.text = "Hi, $it"
+        }
+
+
 
         return binding.root
     }
@@ -60,7 +55,7 @@ class HomeFragment : Fragment() {
         databaseReference = FirebaseDatabase.getInstance().reference
         userID = auth.uid.toString()
         viewModel = ViewModelProvider(this@HomeFragment)[Home_ViewModel::class.java]
-        database = Room.databaseBuilder(requireContext(), LocalUserDatabase::class.java,
+        localUserDatabase = Room.databaseBuilder(requireContext(), LocalUserDatabase::class.java,
         "localDB").build()
 
     }
