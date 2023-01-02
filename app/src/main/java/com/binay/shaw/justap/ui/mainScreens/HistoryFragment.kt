@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
@@ -17,6 +18,8 @@ class HistoryFragment : Fragment() {
 
     private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
+    private lateinit var toolbarText: TextView
+    private lateinit var toolbarBackButton: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +36,10 @@ class HistoryFragment : Fragment() {
 
         _binding = FragmentHistoryBinding.inflate(layoutInflater, container, false)
         (activity as MainActivity).supportActionBar?.hide()
-        binding.root.findViewById<TextView>(R.id.toolbar_title)?.text = "History"
+        toolbarText = binding.root.findViewById(R.id.toolbar_title)
+        toolbarText.text = "History"
+        toolbarBackButton = binding.root.findViewById(R.id.rightIcon)
+        toolbarBackButton.visibility = View.VISIBLE
 
     }
 

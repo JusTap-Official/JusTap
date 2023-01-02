@@ -88,7 +88,7 @@ class ScannerFragment : Fragment() {
         (activity as MainActivity).supportActionBar?.hide()
         toolbarTitle = binding.root.findViewById(R.id.toolbar_title)
         toolbarTitle.text = "Scanner"
-        toolBarButton = binding.root.findViewById(R.id.goBack)
+        toolBarButton = binding.root.findViewById(R.id.leftIcon)
         toolBarButton.visibility = View.VISIBLE
         scanResultTextView = binding.scanResultTextView
         pvScan = binding.scanPreview

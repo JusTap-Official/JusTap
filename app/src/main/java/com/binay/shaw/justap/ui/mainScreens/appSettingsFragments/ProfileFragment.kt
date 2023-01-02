@@ -43,7 +43,7 @@ class ProfileFragment : Fragment() {
         (activity as MainActivity).supportActionBar?.hide()
         toolbarText = binding.root.findViewById(R.id.toolbar_title)
         toolbarText.text = "Profile"
-        toolbarBackButton = binding.root.findViewById(R.id.goBack)
+        toolbarBackButton = binding.root.findViewById(R.id.leftIcon)
         toolbarBackButton.visibility = View.VISIBLE
         auth = FirebaseAuth.getInstance()
 

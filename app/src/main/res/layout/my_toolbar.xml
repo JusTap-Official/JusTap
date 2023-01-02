@@ -3,11 +3,12 @@
     android:id="@+id/myToolBar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center"
     android:background="@android:color/transparent"
     android:minHeight="?android:attr/actionBarSize">
 
     <ImageView
-        android:id="@+id/goBack"
+        android:id="@+id/leftIcon"
         android:padding="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,5 +24,15 @@
         android:textSize="20dp"
         android:text="Toolbar Title"
         android:textColor="@color/text_color" />
+
+    <ImageView
+        android:id="@+id/rightIcon"
+        android:padding="10dp"
+        android:layout_marginEnd="16dp"
+        android:layout_gravity="end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/delete"
+        android:visibility="gone"/>
 
 </androidx.appcompat.widget.Toolbar>

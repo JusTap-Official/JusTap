@@ -17,10 +17,14 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
+import com.binay.shaw.justap.adapter.SettingsItemAdapter
 import com.binay.shaw.justap.databinding.FragmentSettingsBinding
 import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.model.SettingsItem
 import com.binay.shaw.justap.ui.authentication.SignIn_Screen
 import com.example.awesomedialog.*
 import com.google.firebase.auth.FirebaseAuth
@@ -32,6 +36,9 @@ class SettingsFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var settingsItemList:ArrayList<SettingsItem>
+    private lateinit var settingsItemAdapter: SettingsItemAdapter
 
     @SuppressLint("SetTextI18n", "ClickableViewAccessibility")
     override fun onCreateView(
@@ -41,6 +48,26 @@ class SettingsFragment : Fragment() {
 
         initialization(container)
 
+        /**set List*/
+        settingsItemList = ArrayList()
+
+        settingsItemList.add(SettingsItem(1, R.drawable.edit_icon,"Edit profile", false))
+        settingsItemList.add(SettingsItem(2, R.drawable.moon,"Dark mode", true))
+        settingsItemList.add(SettingsItem(3, R.drawable.scanner_fullscale_icon,"Customize QR", false))
+        settingsItemList.add(SettingsItem(4, R.drawable.info_icon, "About us", false))
+        settingsItemList.add(SettingsItem(5, R.drawable.logout_icon,"Log out", false))
+        /**set find Id*/
+        recyclerView = binding.settingsRV
+        /**set Adapter*/
+        settingsItemAdapter = SettingsItemAdapter(requireContext(), settingsItemList)
+        /**setRecycler view Adapter*/
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = settingsItemAdapter
+
+
+
+
+
         binding.toProfile.setOnClickListener {
             Navigation.findNavController(binding.root).navigate(R.id.action_settings_to_profileFragment)
         }
@@ -49,17 +76,6 @@ class SettingsFragment : Fragment() {
             showDialog()
         }
 
-        if (Util.isDarkMode(requireContext())) {
-            binding.UIModeSwitch.isChecked = true
-        }
-
-        binding.UIModeSwitch.setOnTouchListener { _, event ->
-            event.actionMasked == MotionEvent.ACTION_MOVE
-        }
-
-        binding.UIModeSwitch.setOnClickListener {
-            switchTheme()
-        }
         return binding.root
     }
 
@@ -108,21 +124,6 @@ class SettingsFragment : Fragment() {
         binding.root.findViewById<TextView>(R.id.toolbar_title)?.text = "Settings"
         auth = FirebaseAuth.getInstance()
 
-    }
-
-    private fun switchTheme() {
-        sharedPreferences =
-            requireContext().getSharedPreferences("ThemeHandler", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putBoolean("FIRST_TIME", false)
-        if (Util.isDarkMode(requireContext())) {
-            editor.putBoolean("DARK_MODE", false)
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        } else {
-            editor.putBoolean("DARK_MODE", true)
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        }
-        editor.apply()
     }
 
     override fun onDestroy() {
