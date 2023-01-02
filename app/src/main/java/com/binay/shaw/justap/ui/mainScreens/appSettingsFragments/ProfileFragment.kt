@@ -10,10 +10,7 @@ import androidx.fragment.app.Fragment
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentProfileBinding
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
-import jp.wasabeef.glide.transformations.BlurTransformation
 
 
 class ProfileFragment : Fragment() {
@@ -46,10 +43,6 @@ class ProfileFragment : Fragment() {
         toolbarBackButton = binding.root.findViewById(R.id.leftIcon)
         toolbarBackButton.visibility = View.VISIBLE
         auth = FirebaseAuth.getInstance()
-
-        Glide.with(this).load(R.drawable.default_banner)
-            .apply(RequestOptions.bitmapTransform(BlurTransformation(15, 3)))
-            .into(binding.profileBannerIV)
 
     }
 

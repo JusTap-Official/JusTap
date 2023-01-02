@@ -8,10 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.helper.Util
@@ -44,19 +42,6 @@ class SettingsItemAdapter(val context: Context, val settingsItemList: ArrayList<
                 switchTheme()
             }
 
-            itemView.setOnClickListener {
-                when(id) {
-                    1 -> {
-                        Toast.makeText(itemView.context, "Edit profile", Toast.LENGTH_SHORT).show()
-                    } 3 -> {
-                        Toast.makeText(itemView.context, "Customize QR", Toast.LENGTH_SHORT).show()
-                    } 4 -> {
-                        Toast.makeText(itemView.context, "About us", Toast.LENGTH_SHORT).show()
-                    } 5 -> {
-                        Toast.makeText(itemView.context, "Logout", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
         }
 
         private fun switchTheme() {

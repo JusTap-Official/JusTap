@@ -31,7 +31,6 @@
             android:id="@+id/profileBannerIV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="TODO"
             android:scaleType="fitXY"
             android:src="@drawable/default_banner"
             app:layout_constraintEnd_toEndOf="parent"

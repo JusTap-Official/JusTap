@@ -92,8 +92,5 @@ dependencies {
     //Circular ImageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
-    //Blurry Image
-    implementation 'jp.wasabeef:glide-transformations:4.3.0'
-
 
 }
