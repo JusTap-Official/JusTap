@@ -1,5 +1,6 @@
 package com.binay.shaw.justap.adapter
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -51,6 +52,10 @@ class SettingsItemAdapter(
             icon = itemView.findViewById(R.id.settingsItemIcon)
             id = itemView.id
 
+            switch.setOnTouchListener { _, event ->
+                event.actionMasked == MotionEvent.ACTION_MOVE
+            }
+
             switch.setOnClickListener {
                 switchTheme()
             }
@@ -58,16 +63,15 @@ class SettingsItemAdapter(
             itemView.rootView.setOnClickListener {
                 when (id) {
                     0 -> {
-                        Toast.makeText(it.context, "Edit Profile", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(it.context, "Edit Profile", Toast.LENGTH_SHORT).show()
                     }
                     2 -> {
-                        Toast.makeText(it.context, "Customize QR", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(it.context, "Customize QR", Toast.LENGTH_SHORT).show()
                     }
                     3 -> {
-                        Toast.makeText(it.context, "About us", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(it.context, "About us", Toast.LENGTH_SHORT).show()
                     }
                     4 -> {
-//                        Toast.makeText(it.context, "Log out", Toast.LENGTH_SHORT).show()
                         logout()
                     }
                 }
@@ -76,6 +80,7 @@ class SettingsItemAdapter(
 
         }
 
+        @SuppressLint("SuspiciousIndentation")
         private fun logout() {
             val context = itemView.rootView.context
             AwesomeDialog.build(activity)
