@@ -16,12 +16,17 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.binay.shaw.justap.R
+import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.SettingsItem
 import com.binay.shaw.justap.ui.authentication.SignIn_Screen
 import com.example.awesomedialog.*
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * Created by binay on 02,January,2023
@@ -90,6 +95,11 @@ class SettingsItemAdapter(
                     ContextCompat.getColor(context, R.color.negative_red)
                 ) {
                     FirebaseAuth.getInstance().signOut()
+                    CoroutineScope(Dispatchers.IO).launch {
+                    val database = Room.databaseBuilder(context, LocalUserDatabase::class.java,
+                        "localDB").build()
+                        database.localUserDao().deleteUser()
+                    }
                     Toast.makeText(context, "Logged out", Toast.LENGTH_SHORT).show()
                     val intent = Intent(context, SignIn_Screen::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK

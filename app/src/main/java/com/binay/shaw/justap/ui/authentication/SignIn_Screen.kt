@@ -13,12 +13,16 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
+import androidx.room.Room
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
+import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.databinding.ActivitySignInScreenBinding
 import com.binay.shaw.justap.viewModel.SignIn_ViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class SignIn_Screen : AppCompatActivity() {
 
@@ -28,6 +32,8 @@ class SignIn_Screen : AppCompatActivity() {
     private lateinit var buttonText: TextView
     private lateinit var buttonProgress: ProgressBar
     private lateinit var viewModel: SignIn_ViewModel
+    private lateinit var firebaseDatabase: DatabaseReference
+    private lateinit var localDatabase: LocalUserDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +53,9 @@ class SignIn_Screen : AppCompatActivity() {
             buttonProgress.visibility = View.VISIBLE
             viewModel.loginUser(
                 binding.etEmail.text.toString().trim(),
-                binding.etPassword.text.toString().trim()
+                binding.etPassword.text.toString().trim(),
+                firebaseDatabase,
+                localDatabase
             )
 
         }
@@ -62,6 +70,10 @@ class SignIn_Screen : AppCompatActivity() {
                     stopProgress()
                 } 3 -> {
                     stopProgress()
+                    val user = viewModel.firebaseUser.value
+                    if (user != null) {
+                        viewModel.saveData(localDatabase, user)
+                    }
                     Toast.makeText(this@SignIn_Screen, "Successfully Logged In", Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this@SignIn_Screen, MainActivity::class.java)).also { finish() }
                 } 4 -> {
@@ -94,6 +106,9 @@ class SignIn_Screen : AppCompatActivity() {
         buttonText.text = "Sign In"
         buttonProgress = findViewById(R.id.buttonProgress)
         viewModel = ViewModelProvider(this@SignIn_Screen)[SignIn_ViewModel::class.java]
+        firebaseDatabase = FirebaseDatabase.getInstance().reference
+        localDatabase = Room.databaseBuilder(applicationContext, LocalUserDatabase::class.java,
+            "localDB").build()
 
     }
 

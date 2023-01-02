@@ -4,8 +4,13 @@ import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.model.LocalUser
+import com.binay.shaw.justap.model.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -18,6 +23,7 @@ class SignIn_ViewModel : ViewModel() {
     var status = MutableLiveData<Int>()
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val errorMessage = MutableLiveData<String>()
+    var firebaseUser = MutableLiveData<User>()
 
     /*
     * 0 - Default
@@ -31,11 +37,11 @@ class SignIn_ViewModel : ViewModel() {
         status.value = 0
     }
 
-    fun getErrorMessage() : String {
+    fun getErrorMessage(): String {
         return errorMessage.value.toString()
     }
 
-    fun loginUser(userEmail: String, userPassword: String) {
+    fun loginUser(userEmail: String, userPassword: String, firebaseDatabase: DatabaseReference, localUserDatabase: LocalUserDatabase) {
 
         if (userEmail.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
             status.value = 1
@@ -46,10 +52,28 @@ class SignIn_ViewModel : ViewModel() {
             viewModelScope.launch(Dispatchers.IO) {
                 try {
                     auth.signInWithEmailAndPassword(userEmail, userPassword).await()
+                    if (checkLoggedInState()) {
+                        val userID = FirebaseAuth.getInstance().uid.toString()
+                        firebaseDatabase.child("Users").child(userID).get().addOnSuccessListener {
+                            val id = it.child("userID").value.toString()
+                            val name = it.child("name").value.toString()
+                            val email = it.child("email").value.toString()
+                            val phone = it.child("phone").value.toString()
+                            val profilePicture = it.child("pfpBase64").value.toString()
+                            val bio = it.child("bio").value.toString()
 
-                    withContext(Dispatchers.Main) {
-                        if (checkLoggedInState())
-                            status.value = 3
+                            firebaseUser.value = User(
+                                id, name,
+                                email, bio, phone, profilePicture
+                            )
+
+                            Util.log(it.value.toString())
+
+                            status.value = 3    //Success
+                        }.addOnFailureListener {
+                            Util.log("Failed to fetch user data")
+                            status.value = 4    //Failed
+                        }
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
@@ -58,6 +82,15 @@ class SignIn_ViewModel : ViewModel() {
                     }
                 }
             }
+        }
+    }
+
+    fun saveData(database: LocalUserDatabase, user: User) {
+        viewModelScope.launch(Dispatchers.IO) {
+            database.localUserDao().insertUser(
+                LocalUser(user.userID, user.name,
+                user.email, user.bio, user.phone, user.pfpBase64)
+            )
         }
     }
 
