@@ -1,6 +1,5 @@
 package com.binay.shaw.justap.data
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.binay.shaw.justap.model.LocalUser
 
@@ -15,25 +14,25 @@ interface LocalUserDAO {
     suspend fun updateUser(user: LocalUser)
 
     @Query("SELECT userName FROM localDB")
-    fun getName() : List<String>
+    fun getName(): List<String>
 
     @Query("SELECT userEmail FROM localDB")
-    fun getEmail() : LiveData<String>
+    fun getEmail(): List<String>
 
     @Query("SELECT userPhone FROM localDB")
-    fun getPhone() : LiveData<String>
+    fun getPhone(): List<String>
 
     @Query("SELECT userBio FROM localDB")
-    fun getBio() : LiveData<String>
+    fun getBio(): List<String>
 
     @Query("SELECT userProfileBase64 FROM localDB")
-    fun getPFP() : LiveData<String>
+    fun getPFP(): List<String>
 
     @Query("SELECT userID FROM localDB")
-    fun getID() : LiveData<String>
+    fun getID(): List<String>
 
     @Query("SELECT * FROM localDB")
-    fun fetchLocalUser(): LiveData<List<LocalUser>>
+    fun fetchLocalUser(): List<LocalUser>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertUser(user: LocalUser)
