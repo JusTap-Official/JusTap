@@ -10,7 +10,6 @@ import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -41,7 +40,7 @@ class SignIn_ViewModel : ViewModel() {
         return errorMessage.value.toString()
     }
 
-    fun loginUser(userEmail: String, userPassword: String, firebaseDatabase: DatabaseReference, localUserDatabase: LocalUserDatabase) {
+    fun loginUser(userEmail: String, userPassword: String, firebaseDatabase: DatabaseReference) {
 
         if (userEmail.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
             status.value = 1
@@ -82,15 +81,6 @@ class SignIn_ViewModel : ViewModel() {
                     }
                 }
             }
-        }
-    }
-
-    fun saveData(database: LocalUserDatabase, user: User) {
-        viewModelScope.launch(Dispatchers.IO) {
-            database.localUserDao().insertUser(
-                LocalUser(user.userID, user.name,
-                user.email, user.bio, user.phone, user.pfpBase64)
-            )
         }
     }
 

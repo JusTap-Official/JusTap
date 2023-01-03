@@ -1,33 +1,31 @@
 package com.binay.shaw.justap.repository
 
-import com.binay.shaw.justap.data.LocalUserDatabase
+import androidx.lifecycle.LiveData
+import com.binay.shaw.justap.data.LocalUserDAO
 import com.binay.shaw.justap.model.LocalUser
 
 /**
  * Created by binay on 03,January,2023
  */
 class LocalUserRepository(
-    private val localUserDatabase: LocalUserDatabase
+    private val localUserDAO: LocalUserDAO
 ) {
 
-    suspend fun insertUser(user: LocalUser) = localUserDatabase.localUserDao().insertUser(user)
+    val fetchUser: LiveData<LocalUser> = localUserDAO.fetchLocalUser()
 
 
-    suspend fun updateUser(user: LocalUser) = localUserDatabase.localUserDao().updateUser(user)
+    suspend fun insertUser(localUser: LocalUser) {
+        localUserDAO.insertUser(localUser)
+    }
 
-    suspend fun deleteUser() = localUserDatabase.localUserDao().deleteUser()
+    suspend fun deleteUser() {
+        localUserDAO.deleteUser()
+    }
 
-    fun getName(): List<String> = localUserDatabase.localUserDao().getName()
+    suspend fun updateUser(localUser: LocalUser) {
+        localUserDAO.updateUser(localUser)
+    }
 
-    fun getEmail(): List<String> = localUserDatabase.localUserDao().getEmail()
+    fun getName() : LiveData<String> = localUserDAO.getName()
 
-    fun getPhone(): List<String> = localUserDatabase.localUserDao().getPhone()
-
-    fun getBio(): List<String> = localUserDatabase.localUserDao().getBio()
-
-    fun getPFP(): List<String> = localUserDatabase.localUserDao().getPFP()
-
-    fun getID(): List<String> = localUserDatabase.localUserDao().getID()
-
-    fun fetchUser(): List<LocalUser> = localUserDatabase.localUserDao().fetchLocalUser()
 }

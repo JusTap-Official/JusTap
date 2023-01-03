@@ -11,5 +11,4 @@ data class SettingsItem(
     val drawableInt: Int,
     val itemName: String,
     val isSwitchOn: Boolean,
-    val activity: Activity? = null
 )

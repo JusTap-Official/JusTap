@@ -1,5 +1,6 @@
 package com.binay.shaw.justap.data
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.binay.shaw.justap.model.LocalUser
 
@@ -10,11 +11,20 @@ import com.binay.shaw.justap.model.LocalUser
 @Dao
 interface LocalUserDAO {
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertUser(user: LocalUser)
+
+    @Query("DELETE FROM localDB")
+    suspend fun deleteUser()
+
     @Update
     suspend fun updateUser(user: LocalUser)
 
+    @Query("SELECT * FROM localDB")
+    fun fetchLocalUser(): LiveData<LocalUser>
+
     @Query("SELECT userName FROM localDB")
-    fun getName(): List<String>
+    fun getName(): LiveData<String>
 
     @Query("SELECT userEmail FROM localDB")
     fun getEmail(): List<String>
@@ -30,14 +40,5 @@ interface LocalUserDAO {
 
     @Query("SELECT userID FROM localDB")
     fun getID(): List<String>
-
-    @Query("SELECT * FROM localDB")
-    fun fetchLocalUser(): List<LocalUser>
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertUser(user: LocalUser)
-
-    @Query("DELETE FROM localDB")
-    suspend fun deleteUser()
 
 }

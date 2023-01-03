@@ -19,6 +19,8 @@ import com.binay.shaw.justap.R
 import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.databinding.ActivitySignInScreenBinding
+import com.binay.shaw.justap.model.LocalUser
+import com.binay.shaw.justap.viewModel.LocalUserViewModel
 import com.binay.shaw.justap.viewModel.SignIn_ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -54,8 +56,7 @@ class SignIn_Screen : AppCompatActivity() {
             viewModel.loginUser(
                 binding.etEmail.text.toString().trim(),
                 binding.etPassword.text.toString().trim(),
-                firebaseDatabase,
-                localDatabase
+                firebaseDatabase
             )
 
         }
@@ -72,7 +73,11 @@ class SignIn_Screen : AppCompatActivity() {
                     stopProgress()
                     val user = viewModel.firebaseUser.value
                     if (user != null) {
-                        viewModel.saveData(localDatabase, user)
+                        var localUserViewModel: LocalUserViewModel =
+                            ViewModelProvider(this@SignIn_Screen, ViewModelProvider.AndroidViewModelFactory.getInstance(application))[LocalUserViewModel::class.java]
+                        val lu = LocalUser(user.userID, user.name,
+                            user.email, user.bio, user.phone, user.pfpBase64)
+                        localUserViewModel.insertUser(lu)
                     }
                     Toast.makeText(this@SignIn_Screen, "Successfully Logged In", Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this@SignIn_Screen, MainActivity::class.java)).also { finish() }

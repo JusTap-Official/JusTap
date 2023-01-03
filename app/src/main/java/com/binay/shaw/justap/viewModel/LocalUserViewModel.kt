@@ -1,35 +1,47 @@
 package com.binay.shaw.justap.viewModel
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
+import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.repository.LocalUserRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * Created by binay on 03,January,2023
  */
 
 class LocalUserViewModel(
-    private val repository: LocalUserRepository
-) : ViewModel() {
+    application: Application
+) : AndroidViewModel(application) {
 
-    suspend fun insertUser(user: LocalUser) = repository.insertUser(user)
 
-    suspend fun updateUser(user: LocalUser) = repository.updateUser(user)
+    val fetchUser: LiveData<LocalUser>
+    val name: LiveData<String>
 
-    suspend fun deleteUser() = repository.deleteUser()
+    val repository: LocalUserRepository
 
-    fun getID() = repository.getID()
 
-    fun getName() = repository.getName()
+    init {
+        val dao = LocalUserDatabase.getDatabase(application).localUserDao()
+        repository = LocalUserRepository(dao)
+        fetchUser = repository.fetchUser
+        name = repository.getName()
+    }
 
-    fun getEmail() = repository.getEmail()
+    fun deleteUser() = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteUser()
+    }
 
-    fun getPhone() = repository.getPhone()
+    fun updateUser(localUser: LocalUser) = viewModelScope.launch(Dispatchers.IO) {
+        repository.updateUser(localUser)
+    }
 
-    fun getBio() = repository.getBio()
-
-    fun getPFP() = repository.getPFP()
-
-    fun fetchUser() = repository.fetchUser()
+    fun insertUser(localUser: LocalUser) = viewModelScope.launch(Dispatchers.IO) {
+        repository.insertUser(localUser)
+    }
 
 }
