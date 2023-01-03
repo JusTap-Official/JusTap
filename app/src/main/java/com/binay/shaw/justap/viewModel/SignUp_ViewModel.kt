@@ -22,14 +22,17 @@ class SignUp_ViewModel : ViewModel() {
     var status = MutableLiveData<Int>()
     private val errorMessage = MutableLiveData<String>()
 
-    /*
+    /** Status values
     * 0 - Default
-    * 1 - Name missing
-    * 2 - Email missing
-    * 3 - Password missing
-    * 4 - Successful
-    * 5 - fail!
-    */
+    * 1 - name is empty
+    * 2 - email is empty
+    * 3 - email is not valid
+    * 4 - password is empty
+    * 5 - password is less than 8 characters
+    * 6 - Use upper & lowercase with digit & symbols
+    * 7 - success
+    * 8 - Fail
+    * */
 
     fun getErrorMessage(): String {
         return errorMessage.value.toString()
@@ -42,46 +45,59 @@ class SignUp_ViewModel : ViewModel() {
 
     fun createNewAccount(nameString: String, emailString: String, passwordString: String) {
 
-        if (nameString.isEmpty()) {
-            status.value = 1
-        } else if (emailString.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(emailString)
-                .matches()
-        ) {
-            status.value = 2
-        } else if (passwordString.isEmpty() || passwordString.length < 8) {
-            status.value = 3
-        } else {
-            viewModelScope.launch(Dispatchers.IO) {
-                try {
-                    auth.createUserWithEmailAndPassword(emailString, passwordString).await()
-                    withContext(Dispatchers.Main) {
-                        if (checkLoggedInState()) {
+        val isValid = Util.validateUserAuthInput(nameString, emailString, passwordString)
+        when (isValid) {
+            1 -> {
+                status.value = 1
+            }
+            2 -> {
+                status.value = 2
+            }
+            3 -> {
+                status.value = 3
+            }
+            4 -> {
+                status.value = 4
+            }
+            5 -> {
+                status.value = 5
+            }
+            6 -> {
+                status.value = 6
+            }
+            7 -> {
+                viewModelScope.launch(Dispatchers.IO) {
+                    try {
+                        auth.createUserWithEmailAndPassword(emailString, passwordString).await()
+                        withContext(Dispatchers.Main) {
+                            if (checkLoggedInState()) {
 
-                            val firebaseUser = auth.currentUser
-                            val uid = firebaseUser?.uid.toString()
-                            Util.log("user id is: $uid")
-                            //Create user object
-                            val user = User(uid, nameString, emailString)
-                            Util.log("user is: $user")
-                            val db = FirebaseDatabase.getInstance().reference
-                            //add user data in the Realtime Database
+                                val firebaseUser = auth.currentUser
+                                val uid = firebaseUser?.uid.toString()
+                                Util.log("user id is: $uid")
+                                //Create user object
+                                val user = User(uid, nameString, emailString)
+                                Util.log("user is: $user")
+                                val db = FirebaseDatabase.getInstance().reference
+                                //add user data in the Realtime Database
 
-                            db.child("Users").child(uid).setValue(user).addOnSuccessListener {
-                                Util.log("User added Successful")
-                                auth.signOut()
-                                status.value = 4
-                            }
-                                .addOnFailureListener {
-                                    Util.log("Unsuccessful")
-                                    status.value = 5
+                                db.child("Users").child(uid).setValue(user).addOnSuccessListener {
+                                    Util.log("User added Successful")
+                                    auth.signOut()
+                                    status.value = 7
                                 }
-                        }
+                                    .addOnFailureListener {
+                                        Util.log("Unsuccessful")
+                                        status.value = 8
+                                    }
+                            }
 
-                    }
-                } catch (e: Exception) {
-                    withContext(Dispatchers.Main) {
-                        errorMessage.value = e.message.toString()
-                        status.value = 5
+                        }
+                    } catch (e: Exception) {
+                        withContext(Dispatchers.Main) {
+                            errorMessage.value = e.message.toString()
+                            status.value = 8
+                        }
                     }
                 }
             }

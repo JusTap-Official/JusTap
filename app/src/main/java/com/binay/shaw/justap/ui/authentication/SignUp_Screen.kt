@@ -19,6 +19,7 @@ import com.binay.shaw.justap.databinding.ActivitySignUpScreenBinding
 import com.binay.shaw.justap.viewModel.SignUp_ViewModel
 import com.google.firebase.auth.FirebaseAuth
 
+@SuppressLint("SetTextI18n")
 class SignUp_Screen : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignUpScreenBinding
@@ -45,33 +46,52 @@ class SignUp_Screen : AppCompatActivity() {
             }
             buttonText.visibility = View.GONE
             buttonProgress.visibility = View.VISIBLE
+            binding.passwordHelperTV.visibility = View.GONE
+            binding.nameHelperTV.visibility = View.GONE
+            binding.emailHelperTV.visibility = View.GONE
             viewModel.createNewAccount(
                 binding.etName.text.toString().trim(),
                 binding.etEmail.text.toString().trim(),
-                binding.etPassword.text.toString().trim())
+                binding.etPassword.text.toString().trim()
+            )
         }
 
         viewModel.status.observe(this) {
-            when(it) {
+            stopProgress()
+            when (it) {
                 1 -> {
-                    Toast.makeText(this@SignUp_Screen, "Enter name first", Toast.LENGTH_SHORT).show()
-                    stopProgress()
+                    binding.nameHelperTV.text = "Enter your name"
+                    binding.nameHelperTV.visibility = View.VISIBLE
                 }
                 2 -> {
-                    Toast.makeText(this@SignUp_Screen, "Check your email", Toast.LENGTH_SHORT).show()
-                    stopProgress()
+                    binding.emailHelperTV.text = "Enter your email"
+                    binding.emailHelperTV.visibility = View.VISIBLE
                 }
                 3 -> {
-                    Toast.makeText(this@SignUp_Screen, "Check your password", Toast.LENGTH_SHORT).show()
-                    stopProgress()
+                    binding.emailHelperTV.text = "Your email is not valid"
+                    binding.emailHelperTV.visibility = View.VISIBLE
                 }
                 4 -> {
-                    stopProgress()
-                    startActivity(Intent(this@SignUp_Screen, SignIn_Screen::class.java))
+                    binding.passwordHelperTV.text = "Enter your password"
+                    binding.passwordHelperTV.visibility = View.VISIBLE
                 }
                 5 -> {
-                    stopProgress()
-                    Toast.makeText(this@SignUp_Screen, viewModel.getErrorMessage(), Toast.LENGTH_LONG).show()
+                    binding.passwordHelperTV.text = "Password length less than 8 letters"
+                    binding.passwordHelperTV.visibility = View.VISIBLE
+                }
+                6 -> {
+                    binding.passwordHelperTV.text = "Password must contains uppercase, lowercase, digit and symbol"
+                    binding.passwordHelperTV.visibility = View.VISIBLE
+                }
+                7 -> {
+                    startActivity(Intent(this@SignUp_Screen, SignIn_Screen::class.java))
+                }
+                8 -> {
+                    Toast.makeText(
+                        this@SignUp_Screen,
+                        viewModel.getErrorMessage(),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
@@ -94,7 +114,7 @@ class SignUp_Screen : AppCompatActivity() {
         buttonText = findViewById(R.id.buttonText)
         buttonText.text = "Create a new account"
         buttonProgress = findViewById(R.id.buttonProgress)
-        viewModel = ViewModelProvider(this,)[SignUp_ViewModel::class.java]
+        viewModel = ViewModelProvider(this)[SignUp_ViewModel::class.java]
     }
 
 

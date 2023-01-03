@@ -24,13 +24,17 @@ class SignIn_ViewModel : ViewModel() {
     private val errorMessage = MutableLiveData<String>()
     var firebaseUser = MutableLiveData<User>()
 
-    /*
-    * 0 - Default
-    * 1 - Email missing
-    * 2 - Password missing
-    * 3 - Successful
-    * 4 - fail!
-    */
+    /** Status values
+     * 0 - Default
+     * 1 - name is empty
+     * 2 - email is empty
+     * 3 - email is not valid
+     * 4 - password is empty
+     * 5 - password is less than 8 characters
+     * 6 - Use upper & lowercase with digit & symbols
+     * 7 - success
+     * 8 - Fail
+     * */
 
     init {
         status.value = 0
@@ -42,42 +46,64 @@ class SignIn_ViewModel : ViewModel() {
 
     fun loginUser(userEmail: String, userPassword: String, firebaseDatabase: DatabaseReference) {
 
-        if (userEmail.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
-            status.value = 1
-        } else if (userPassword.isEmpty() || userPassword.length < 8) {
-            status.value = 2
-        } else {
+        val checkValidity = Util.validateUserAuthInput(null, userEmail, userPassword)
 
-            viewModelScope.launch(Dispatchers.IO) {
-                try {
-                    auth.signInWithEmailAndPassword(userEmail, userPassword).await()
-                    if (checkLoggedInState()) {
-                        val userID = FirebaseAuth.getInstance().uid.toString()
-                        firebaseDatabase.child("Users").child(userID).get().addOnSuccessListener {
-                            val id = it.child("userID").value.toString()
-                            val name = it.child("name").value.toString()
-                            val email = it.child("email").value.toString()
-                            val phone = it.child("phone").value.toString()
-                            val profilePicture = it.child("pfpBase64").value.toString()
-                            val bio = it.child("bio").value.toString()
+        when (checkValidity) {
+            2 -> {
+                //email is empty
+                status.value = 2
+            }
+            3 -> {
+                //email is not valid
+                status.value = 3
+            }
+            4 -> {
+                //password is empty
+                status.value = 4
+            }
+            5 -> {
+                //password is less than 8 characters
+                status.value = 5
+            }
+            6 -> {
+                //password must contains Uppercase, lowercase and symbols
+                status.value = 6
+            }
+            7 -> {
+                //Success
 
-                            firebaseUser.value = User(
-                                id, name,
-                                email, bio, phone, profilePicture
-                            )
+                viewModelScope.launch(Dispatchers.IO) {
+                    try {
+                        auth.signInWithEmailAndPassword(userEmail, userPassword).await()
+                        if (checkLoggedInState()) {
+                            val userID = FirebaseAuth.getInstance().uid.toString()
+                            firebaseDatabase.child("Users").child(userID).get()
+                                .addOnSuccessListener {
+                                    val id = it.child("userID").value.toString()
+                                    val name = it.child("name").value.toString()
+                                    val email = it.child("email").value.toString()
+                                    val phone = it.child("phone").value.toString()
+                                    val profilePicture = it.child("pfpBase64").value.toString()
+                                    val bio = it.child("bio").value.toString()
 
-                            Util.log(it.value.toString())
+                                    firebaseUser.value = User(
+                                        id, name,
+                                        email, bio, phone, profilePicture
+                                    )
 
-                            status.value = 3    //Success
-                        }.addOnFailureListener {
-                            Util.log("Failed to fetch user data")
-                            status.value = 4    //Failed
+                                    Util.log(it.value.toString())
+
+                                    status.value = 7    //Success
+                                }.addOnFailureListener {
+                                    Util.log("Failed to fetch user data")
+                                    status.value = 8    //Failed
+                                }
                         }
-                    }
-                } catch (e: Exception) {
-                    withContext(Dispatchers.Main) {
-                        errorMessage.value = e.message.toString()
-                        status.value = 4
+                    } catch (e: Exception) {
+                        withContext(Dispatchers.Main) {
+                            errorMessage.value = e.message.toString()
+                            status.value = 8
+                        }
                     }
                 }
             }

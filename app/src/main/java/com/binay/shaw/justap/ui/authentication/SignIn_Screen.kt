@@ -26,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
+@SuppressLint("SetTextI18n")
 class SignIn_Screen : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignInScreenBinding
@@ -53,6 +54,8 @@ class SignIn_Screen : AppCompatActivity() {
             }
             buttonText.visibility = View.GONE
             buttonProgress.visibility = View.VISIBLE
+            binding.emailHelperTV.visibility = View.GONE
+            binding.passwordHelperTV.visibility = View.GONE
             viewModel.loginUser(
                 binding.etEmail.text.toString().trim(),
                 binding.etPassword.text.toString().trim(),
@@ -62,28 +65,57 @@ class SignIn_Screen : AppCompatActivity() {
         }
 
         viewModel.status.observe(this@SignIn_Screen) {
-            when(it) {
-                1 -> {
-                    Toast.makeText(this@SignIn_Screen, "Check your email", Toast.LENGTH_SHORT).show()
-                    stopProgress()
-                } 2 -> {
-                    Toast.makeText(this@SignIn_Screen, "Check your password", Toast.LENGTH_SHORT).show()
-                    stopProgress()
-                } 3 -> {
-                    stopProgress()
+            stopProgress()
+            when (it) {
+                2 -> {
+                    binding.emailHelperTV.text = "Enter your email"
+                    binding.emailHelperTV.visibility = View.VISIBLE
+                }
+                3 -> {
+                    binding.emailHelperTV.text = "Email is not valid"
+                    binding.emailHelperTV.visibility = View.VISIBLE
+                }
+                4 -> {
+                    binding.passwordHelperTV.text = "Password is empty"
+                    binding.passwordHelperTV.visibility = View.VISIBLE
+                }
+                5 -> {
+                    binding.passwordHelperTV.text = "Password length less than 8 letters"
+                    binding.passwordHelperTV.visibility = View.VISIBLE
+                }
+                6 -> {
+                    binding.passwordHelperTV.text = "Password must contains uppercase, lowercase, digit and symbol"
+                    binding.passwordHelperTV.visibility = View.VISIBLE
+                }
+                7 -> {
                     val user = viewModel.firebaseUser.value
                     if (user != null) {
-                        var localUserViewModel: LocalUserViewModel =
-                            ViewModelProvider(this@SignIn_Screen, ViewModelProvider.AndroidViewModelFactory.getInstance(application))[LocalUserViewModel::class.java]
-                        val lu = LocalUser(user.userID, user.name,
-                            user.email, user.bio, user.phone, user.pfpBase64)
+                        val localUserViewModel: LocalUserViewModel =
+                            ViewModelProvider(
+                                this@SignIn_Screen,
+                                ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+                            )[LocalUserViewModel::class.java]
+                        val lu = LocalUser(
+                            user.userID, user.name,
+                            user.email, user.bio, user.phone, user.pfpBase64
+                        )
                         localUserViewModel.insertUser(lu)
                     }
-                    Toast.makeText(this@SignIn_Screen, "Successfully Logged In", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this@SignIn_Screen, MainActivity::class.java)).also { finish() }
-                } 4 -> {
-                    stopProgress()
-                    Toast.makeText(this@SignIn_Screen, viewModel.getErrorMessage(), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@SignIn_Screen, "Successfully Logged In", Toast.LENGTH_SHORT)
+                        .show()
+                    startActivity(
+                        Intent(
+                            this@SignIn_Screen,
+                            MainActivity::class.java
+                        )
+                    ).also { finish() }
+                }
+                8 -> {
+                    Toast.makeText(
+                        this@SignIn_Screen,
+                        viewModel.getErrorMessage(),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
@@ -112,8 +144,10 @@ class SignIn_Screen : AppCompatActivity() {
         buttonProgress = findViewById(R.id.buttonProgress)
         viewModel = ViewModelProvider(this@SignIn_Screen)[SignIn_ViewModel::class.java]
         firebaseDatabase = FirebaseDatabase.getInstance().reference
-        localDatabase = Room.databaseBuilder(applicationContext, LocalUserDatabase::class.java,
-            "localDB").build()
+        localDatabase = Room.databaseBuilder(
+            applicationContext, LocalUserDatabase::class.java,
+            "localDB"
+        ).build()
 
     }
 

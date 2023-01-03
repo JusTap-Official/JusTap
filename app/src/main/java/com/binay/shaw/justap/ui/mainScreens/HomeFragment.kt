@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.binay.shaw.justap.R
@@ -37,7 +36,6 @@ class HomeFragment : Fragment() {
         initialization(container)
 
         localUserViewModel.name.observe(viewLifecycleOwner) {
-            Toast.makeText(requireContext(), "NAME IS : $it", Toast.LENGTH_SHORT).show()
             binding.profileNameTV.text = "Hi ${it.split(" ")[0]}"
         }
 

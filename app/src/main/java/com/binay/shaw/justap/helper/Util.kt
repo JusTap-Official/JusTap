@@ -15,6 +15,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.util.Patterns
 import android.widget.ImageView
 import com.binay.shaw.justap.R
 import com.bumptech.glide.Glide
@@ -192,6 +193,45 @@ class Util {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
 //                .placeholder(R.drawable.movie_loading_animation)
                 .into(this)
+        }
+
+        /** Status values
+         * 0 - Default
+         * 1 - name is empty
+         * 2 - email is empty
+         * 3 - email is not valid
+         * 4 - password is empty
+         * 5 - password is less than 8 characters
+         * 6 - password must contains Uppercase, lowercase and symbols
+         * 7 - success
+         * */
+        fun validateUserAuthInput(name: String?, email: String, password: String) : Int {
+
+            if (name != null)
+                if (name.isEmpty())
+                    return 1
+
+            if (email.isEmpty())
+                return 2
+            else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())
+                return 3
+            else if (password.isEmpty())
+                return 4
+            else if (password.length < 8)
+                return 5
+            else if (!isValidPassword(password))
+                return 6
+            return 7
+        }
+
+        private fun isValidPassword(password: String): Boolean {
+            if (password.length < 8) return false
+            if (password.filter { it.isDigit() }.firstOrNull() == null) return false
+            if (password.filter { it.isLetter() }.filter { it.isUpperCase() }.firstOrNull() == null) return false
+            if (password.filter { it.isLetter() }.filter { it.isLowerCase() }.firstOrNull() == null) return false
+            if (password.filter { !it.isLetterOrDigit() }.firstOrNull() == null) return false
+
+            return true
         }
 
     }
