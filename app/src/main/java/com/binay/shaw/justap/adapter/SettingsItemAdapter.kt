@@ -46,6 +46,14 @@ class SettingsItemAdapter(
                 switchTheme()
             }
 
+            /** IDs relation
+             * 0 -> Edit profile Fragment
+             * 1 -> DarK Mode
+             * 2 -> Customize QR
+             * 3 -> About us
+             * 4 -> Need help?
+             * */
+
             itemView.rootView.setOnClickListener {
                 when (id) {
                     0 -> {
@@ -53,10 +61,12 @@ class SettingsItemAdapter(
                             .navigate(R.id.action_settings_to_editProfileFragment)
                     }
                     2 -> {
-//                        Toast.makeText(it.context, "Customize QR", Toast.LENGTH_SHORT).show()
+
                     }
                     3 -> {
-//                        Toast.makeText(it.context, "About us", Toast.LENGTH_SHORT).show()
+
+                    } 4 -> {
+
                     }
                 }
 

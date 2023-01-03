@@ -2,6 +2,7 @@ package com.binay.shaw.justap.ui.mainScreens
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -40,6 +41,7 @@ class SettingsFragment : Fragment() {
     private lateinit var localUserDatabase: LocalUserDatabase
     private lateinit var localUserViewModel: LocalUserViewModel
     private lateinit var logoutIV: ImageView
+    private lateinit var feedback: ImageView
 
     @SuppressLint("SetTextI18n", "ClickableViewAccessibility")
     override fun onCreateView(
@@ -67,6 +69,7 @@ class SettingsFragment : Fragment() {
             )
         )
         settingsItemList.add(SettingsItem(4, R.drawable.info_icon, "About us", false))
+        settingsItemList.add(SettingsItem(5, R.drawable.help_icon, "Need help?", false))
         /**set find Id*/
         recyclerView = binding.settingsRV
         /**set Adapter*/
@@ -83,6 +86,12 @@ class SettingsFragment : Fragment() {
 
         logoutIV.setOnClickListener {
             logout()
+        }
+
+        feedback.setOnClickListener {
+            val openURL = Intent(Intent.ACTION_VIEW)
+            openURL.data = Uri.parse("mailto:binayshaw7777@gmail.com?Subject=JusTap%20Android%20application%20feedback%20main&Body=Your%20feedback%20is%20important%20to%20us%21")
+            startActivity(openURL)
         }
 
         return binding.root
@@ -103,9 +112,12 @@ class SettingsFragment : Fragment() {
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
         )[LocalUserViewModel::class.java]
-        logoutIV = binding.root.findViewById(R.id.leftIcon)
+        logoutIV = binding.root.findViewById(R.id.rightIcon)
         logoutIV.setImageResource(R.drawable.logout_icon)
         logoutIV.visibility = View.VISIBLE
+        feedback = binding.root.findViewById(R.id.leftIcon)
+        feedback.setImageResource(R.drawable.feedback_icon)
+        feedback.visibility = View.VISIBLE
 
 
     }
