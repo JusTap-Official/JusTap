@@ -55,7 +55,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_bold"
-                        android:text="Hi, Binay"
+                        android:text="Hi, User Name"
                         android:textColor="@color/text_color"
                         android:textSize="24sp" />
 
@@ -73,7 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto"
-                    android:text="Ex. Android Developer @Edvora"
+                    tools:text="User bio goes here..."
                     android:textColor="@color/text_color"
                     android:textSize="16sp" />
 

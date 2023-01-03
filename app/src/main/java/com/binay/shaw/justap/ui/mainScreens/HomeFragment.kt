@@ -21,10 +21,6 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private lateinit var userID: String
-    private lateinit var auth: FirebaseAuth
-    private lateinit var databaseReference: DatabaseReference
-    private lateinit var localUserDatabase: LocalUserDatabase
     private lateinit var localUserViewModel: LocalUserViewModel
 
     @SuppressLint("SetTextI18n")
@@ -39,6 +35,10 @@ class HomeFragment : Fragment() {
             binding.profileNameTV.text = "Hi ${it.split(" ")[0]}"
         }
 
+        localUserViewModel.bio.observe(viewLifecycleOwner) {
+            binding.profileBioTV.text = it.toString()
+        }
+
 
         return binding.root
     }
@@ -47,11 +47,6 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         binding.root.findViewById<TextView>(R.id.toolbar_title)?.text = "Home"
-        auth = FirebaseAuth.getInstance()
-        databaseReference = FirebaseDatabase.getInstance().reference
-        userID = auth.uid.toString()
-        localUserDatabase = Room.databaseBuilder(requireContext(), LocalUserDatabase::class.java,
-        "localDB").build()
         localUserViewModel = ViewModelProvider(
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)

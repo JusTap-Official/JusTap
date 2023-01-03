@@ -1,7 +1,5 @@
 package com.binay.shaw.justap.model
 
-import android.app.Activity
-
 /**
  * Created by binay on 02,January,2023
  */

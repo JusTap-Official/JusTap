@@ -21,6 +21,7 @@ class LocalUserViewModel(
 
     val fetchUser: LiveData<LocalUser>
     val name: LiveData<String>
+    val bio: LiveData<String>
 
     val repository: LocalUserRepository
 
@@ -30,6 +31,7 @@ class LocalUserViewModel(
         repository = LocalUserRepository(dao)
         fetchUser = repository.fetchUser
         name = repository.getName()
+        bio = repository.getBio()
     }
 
     fun deleteUser() = viewModelScope.launch(Dispatchers.IO) {

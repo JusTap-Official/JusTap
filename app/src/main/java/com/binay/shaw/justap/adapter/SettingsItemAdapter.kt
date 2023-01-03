@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.helper.Util
@@ -48,7 +49,8 @@ class SettingsItemAdapter(
             itemView.rootView.setOnClickListener {
                 when (id) {
                     0 -> {
-//                        Toast.makeText(it.context, "Edit Profile", Toast.LENGTH_SHORT).show()
+                        Navigation.findNavController(it)
+                            .navigate(R.id.action_settings_to_editProfileFragment)
                     }
                     2 -> {
 //                        Toast.makeText(it.context, "Customize QR", Toast.LENGTH_SHORT).show()

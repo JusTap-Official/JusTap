@@ -28,4 +28,6 @@ class LocalUserRepository(
 
     fun getName() : LiveData<String> = localUserDAO.getName()
 
+    fun getBio() : LiveData<String> = localUserDAO.getBio()
+
 }

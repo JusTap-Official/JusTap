@@ -27,18 +27,18 @@ interface LocalUserDAO {
     fun getName(): LiveData<String>
 
     @Query("SELECT userEmail FROM localDB")
-    fun getEmail(): List<String>
+    fun getEmail(): LiveData<String>
 
     @Query("SELECT userPhone FROM localDB")
-    fun getPhone(): List<String>
+    fun getPhone(): LiveData<String>
 
     @Query("SELECT userBio FROM localDB")
-    fun getBio(): List<String>
+    fun getBio(): LiveData<String>
 
     @Query("SELECT userProfileBase64 FROM localDB")
-    fun getPFP(): List<String>
+    fun getPFP(): LiveData<String>
 
     @Query("SELECT userID FROM localDB")
-    fun getID(): List<String>
+    fun getID(): LiveData<String>
 
 }
