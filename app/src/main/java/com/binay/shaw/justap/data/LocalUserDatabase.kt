@@ -10,7 +10,7 @@ import com.binay.shaw.justap.model.LocalUser
  * Created by binay on 02,January,2023
  */
 
-@Database(entities = [LocalUser::class], version = 1)
+@Database(entities = [LocalUser::class], version = 2)
 abstract class LocalUserDatabase : RoomDatabase() {
 
     abstract fun localUserDao(): LocalUserDAO

@@ -83,12 +83,13 @@ class SignIn_ViewModel : ViewModel() {
                                     val name = it.child("name").value.toString()
                                     val email = it.child("email").value.toString()
                                     val phone = it.child("phone").value.toString()
-                                    val profilePicture = it.child("pfpBase64").value.toString()
+                                    val profilePicture = it.child("profilePictureURI").value.toString()
+                                    val profileBanner = it.child("profileBannerURI").value.toString()
                                     val bio = it.child("bio").value.toString()
 
                                     firebaseUser.value = User(
                                         id, name,
-                                        email, bio, phone, profilePicture
+                                        email, bio, phone, profilePicture, profileBanner
                                     )
 
                                     Util.log(it.value.toString())

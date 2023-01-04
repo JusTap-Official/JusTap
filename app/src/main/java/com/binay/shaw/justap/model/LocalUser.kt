@@ -15,5 +15,6 @@ data class LocalUser(
     val userEmail: String,
     val userBio: String?,
     val userPhone: String?,
-    val userProfileBase64: String?
+    val userProfilePicture: String?,
+    val userBannerPicture: String?
 )

@@ -1,17 +1,30 @@
 package com.binay.shaw.justap.ui.mainScreens.appSettingsFragments
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentEditProfileBinding
+import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.model.LocalUser
+import com.binay.shaw.justap.viewModel.EditProfile_ViewModel
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
+
 
 class EditProfileFragment : Fragment() {
 
@@ -20,15 +33,20 @@ class EditProfileFragment : Fragment() {
     private lateinit var toolbarText: TextView
     private lateinit var toolbarBackButton: ImageView
     private lateinit var localUserViewModel: LocalUserViewModel
-    private lateinit var userName: StringBuilder
-    private lateinit var userBio: StringBuilder
-    private lateinit var userBannerBase64: StringBuilder
-    private lateinit var userProfileBase64: StringBuilder
+    private var profilePictureURI: Uri? = null
+    private var profileBannerURI: Uri? = null
+    private lateinit var localUser: LocalUser
+    private lateinit var storageRef: StorageReference
+    private lateinit var firebaseDatabase: FirebaseDatabase
+    private lateinit var editprofileViewmodel: EditProfile_ViewModel
+    private var editImageMode = 0   // 0 - Default, 1 - Profile picture, 2 - Banner picture
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
 
         initialization(container)
 
@@ -41,50 +59,138 @@ class EditProfileFragment : Fragment() {
         }
 
         binding.confirmChanges.setOnClickListener {
-            editChanges()
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
 
-        localUserViewModel.name.observe(viewLifecycleOwner) {
-            userName.setLength(0)
-            userName.append(it)
-            binding.newNameET.hint = userName
-        }
-
-        localUserViewModel.bio.observe(viewLifecycleOwner) {
-            if (it.toString().isNotEmpty()) {
-                userBio.setLength(0)
-                userBio.append(it)
-                binding.newBioET.hint = userBio
-            }
-        }
-
-        binding.confirmChanges.setOnClickListener {
             val inputName = binding.newNameET.text.toString().trim()
             val inputBio = binding.newBioET.text.toString().trim()
-//            if (checkValidChanges(inputName, inputBio)) {
-//
-//
-//
-//            }
+            val inputPhone = binding.newPhoneET.text.toString().trim()
+
+            if (!Util.checkForInternet(requireContext())) {
+                Toast.makeText(requireContext(), "You're offline!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            editChanges(inputName, inputBio, inputPhone, profilePictureURI, profileBannerURI)
+
+        }
+
+        binding.editBanner.setOnClickListener {
+            val galleryIntent = Intent(Intent.ACTION_PICK)
+            galleryIntent.type = "image/*"
+            editImageMode = 2
+            imagePickerActivityResult.launch(galleryIntent)
+        }
+
+        binding.editPFP.setOnClickListener {
+            val galleryIntent = Intent(Intent.ACTION_PICK)
+            galleryIntent.type = "image/*"
+            editImageMode = 1
+            imagePickerActivityResult.launch(galleryIntent)
         }
 
 
-
-        // Inflate the layout for this fragment
         return binding.root
     }
 
-    private fun checkValidChanges(inputName: String, inputBio: String) : Boolean{
-        if (inputName.isEmpty() && inputBio.isEmpty())
-            return false
-        else if ((inputName.equals(userName)) || (inputBio.equals(userBio)))
-            return false
-        return true
+    private fun editChanges(
+        inputName: String,
+        inputBio: String,
+        inputPhone: String,
+        profilePictureURI: Uri?,
+        profileBannerURI: Uri?,
+    ) {
+
+        val originalID = localUser.userID
+        val originalEmail = localUser.userEmail
+        val originalPhone = localUser.userPhone
+        val originalName = localUser.userName
+        val originalBio = localUser.userBio
+        var originalPFP = localUser.userProfilePicture
+        var originalBanner = localUser.userBannerPicture
+
+        if (isInvalidData(inputName, inputBio, inputPhone, profilePictureURI, profileBannerURI))
+            return
+
+        val hashMap: MutableMap<String, Any> = HashMap()
+        hashMap["userID"] = originalID
+        hashMap["email"] = originalEmail
+
+        if (inputName.isNotEmpty())
+            hashMap["name"] = inputName
+        else hashMap["name"] = originalName
+
+
+        if (inputBio.isNotEmpty())
+            hashMap["bio"] = inputBio
+        else if (originalBio?.isNotEmpty() == true)
+            hashMap["bio"] = originalBio
+        else
+            hashMap["bio"] = ""
+
+
+        if (inputPhone.isNotEmpty())
+            hashMap["phone"] = inputPhone
+        else if (originalPhone?.isNotEmpty() == true)
+            hashMap["phone"] = originalPhone
+        else
+            hashMap["phone"] = ""
+
+        if (originalPFP.isNullOrEmpty())
+            originalPFP = ""
+
+        if (originalBanner.isNullOrEmpty()) {
+            originalBanner = ""
+        }
+
+
+        editprofileViewmodel.updateUserProfile(firebaseDatabase, storageRef,
+            originalID, hashMap, originalPFP, originalBanner,
+            profilePictureURI, profileBannerURI, localUserViewModel)
+
+
+//        val localUserUpdated = LocalUser(userID, userName, userEmail, userBio, userPhone, userProfilePictureURL.toString(), userBannerPictureURL)
+//        localUserViewModel.updateUser(localUserUpdated)
+
     }
 
-    private fun editChanges() {
+    private var imagePickerActivityResult: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result != null) {
+                val imageUri: Uri? = result.data?.data
+                if (imageUri != null) {
+                    if (editImageMode == 1) {
+                        profilePictureURI = imageUri
+                        binding.profileImage.setImageURI(imageUri)
+                    } else {
+                        profileBannerURI = imageUri
+                        binding.profileBannerIV.setImageURI(imageUri)
+                    }
+                    editImageMode = 0
+                }
+            }
+        }
+
+
+    private fun isInvalidData(
+        inputName: String,
+        inputBio: String,
+        inputPhone: String,
+        profilePictureURI: Uri?,
+        profileBannerURI: Uri?
+    ): Boolean {
+        if (inputName.isEmpty() && inputBio.isEmpty() && inputPhone.isEmpty() && (profilePictureURI == null ||
+            profilePictureURI.toString()
+                .isEmpty()) && (profileBannerURI == null || profileBannerURI.toString().isEmpty())
+        ) {
+            Toast.makeText(requireContext(), "Make changes to update", Toast.LENGTH_SHORT).show()
+            return true
+        }
+        if (inputPhone.isNotEmpty() && inputPhone.length != 10) {
+            Toast.makeText(requireContext(), "Phone number must be 10 digits", Toast.LENGTH_SHORT)
+                .show()
+            return true
+        }
+        return false
     }
+
 
     private fun initialization(container: ViewGroup?) {
         _binding = FragmentEditProfileBinding.inflate(layoutInflater, container, false)
@@ -97,11 +203,23 @@ class EditProfileFragment : Fragment() {
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
         )[LocalUserViewModel::class.java]
-        userName = StringBuilder()
-        userBio = StringBuilder()
-        userProfileBase64 = StringBuilder()
-        userBannerBase64 = StringBuilder()
-
+        localUserViewModel.fetchUser.observe(viewLifecycleOwner) {
+            localUser = LocalUser(
+                it.userID,
+                it.userName,
+                it.userEmail,
+                it.userBio,
+                it.userPhone,
+                it.userProfilePicture,
+                it.userBannerPicture
+            )
+            binding.newNameET.hint = localUser.userName
+            binding.newBioET.hint = localUser.userBio
+        }
+        storageRef = Firebase.storage.reference
+        firebaseDatabase = FirebaseDatabase.getInstance()
+        editprofileViewmodel =
+            ViewModelProvider(this@EditProfileFragment)[EditProfile_ViewModel::class.java]
     }
 
 }

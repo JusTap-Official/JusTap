@@ -181,7 +181,6 @@ class Util {
                 .centerCrop()
                 .error(R.drawable.default_user)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                .placeholder(R.drawable.movie_loading_animation)
                 .into(imageView)
         }
 
@@ -191,7 +190,6 @@ class Util {
                 .centerCrop()
                 .error(R.drawable.default_user)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                .placeholder(R.drawable.movie_loading_animation)
                 .into(this)
         }
 

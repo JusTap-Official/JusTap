@@ -35,8 +35,11 @@ interface LocalUserDAO {
     @Query("SELECT userBio FROM localDB")
     fun getBio(): LiveData<String>
 
-    @Query("SELECT userProfileBase64 FROM localDB")
+    @Query("SELECT userProfilePicture FROM localDB")
     fun getPFP(): LiveData<String>
+
+    @Query("SELECT userBannerPicture FROM localDB")
+    fun getBanner(): LiveData<String>
 
     @Query("SELECT userID FROM localDB")
     fun getID(): LiveData<String>

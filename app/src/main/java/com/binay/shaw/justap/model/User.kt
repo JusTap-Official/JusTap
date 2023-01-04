@@ -9,5 +9,6 @@ data class User(
     val email: String,
     val bio: String? = "",
     val phone: String? = "",
-    val pfpBase64: String? = ""
+    val profilePictureURI: String? = "",
+    val profileBannerURI: String? = ""
 )
