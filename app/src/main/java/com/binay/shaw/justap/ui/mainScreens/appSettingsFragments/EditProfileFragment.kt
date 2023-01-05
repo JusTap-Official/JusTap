@@ -157,13 +157,6 @@ class EditProfileFragment : Fragment() {
             }
         }
 
-
-
-//        editprofileViewmodel.updateUserProfile(firebaseDatabase, storageRef,
-//            originalID, hashMap, originalPFP, originalBanner,
-//            profilePictureURI, profileBannerURI, localUserViewModel)
-
-
     }
 
     private var imagePickerActivityResult: ActivityResultLauncher<Intent> =
