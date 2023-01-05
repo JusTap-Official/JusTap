@@ -13,6 +13,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentEditProfileBinding
@@ -24,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.launch
 
 
 class EditProfileFragment : Fragment() {
@@ -141,13 +143,26 @@ class EditProfileFragment : Fragment() {
         }
 
 
-        editprofileViewmodel.updateUserProfile(firebaseDatabase, storageRef,
-            originalID, hashMap, originalPFP, originalBanner,
-            profilePictureURI, profileBannerURI, localUserViewModel)
+        lifecycleScope.launch {
+            editprofileViewmodel.updateUser(
+                firebaseDatabase, storageRef, originalID,
+                hashMap, originalPFP, originalBanner, profilePictureURI,
+                profileBannerURI, localUserViewModel)
+        }
+
+        editprofileViewmodel.status.observe(viewLifecycleOwner) {
+            if (it == 3) {
+                Toast.makeText(requireContext(), "Updated Successfully", Toast.LENGTH_SHORT).show()
+                requireActivity().onBackPressedDispatcher.onBackPressed()
+            }
+        }
 
 
-//        val localUserUpdated = LocalUser(userID, userName, userEmail, userBio, userPhone, userProfilePictureURL.toString(), userBannerPictureURL)
-//        localUserViewModel.updateUser(localUserUpdated)
+
+//        editprofileViewmodel.updateUserProfile(firebaseDatabase, storageRef,
+//            originalID, hashMap, originalPFP, originalBanner,
+//            profilePictureURI, profileBannerURI, localUserViewModel)
+
 
     }
 
