@@ -1,82 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="125dp"
-    android:outlineAmbientShadowColor="@color/card_shadow_color"
-    android:outlineSpotShadowColor="@color/card_shadow_color"
-    app:cardBackgroundColor="@color/card_color"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="10dp"
-    app:cardUseCompatPadding="true">
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:outlineAmbientShadowColor="@color/card_shadow_color"
+        android:outlineSpotShadowColor="@color/card_shadow_color"
+        app:cardBackgroundColor="@color/card_color"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginStart="16dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/accountLogo"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/logo_black_circle" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/accountTitle"
+                <ImageView
+                    android:id="@+id/accountLogo"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/logo_black_circle" />
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_black"
-                    android:text="Account name"
-                    android:textColor="@color/text_color"
-                    android:textSize="16sp" />
+                    android:layout_marginStart="16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/accountValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/roboto_medium"
-                    android:text="Account name"
-                    android:textColor="@color/text_color"
-                    android:textSize="14sp" />
+                    <TextView
+                        android:id="@+id/accountTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_black"
+                        android:text="Account name"
+                        android:textColor="@color/text_color"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/accountValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Account name"
+                        android:textColor="@color/text_color"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
 
             </LinearLayout>
 
-
-        </LinearLayout>
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/accountSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:textOff="Off"
-            android:textOn="On"
-            android:thumb="@drawable/switch_thumb"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:track="@drawable/switch_track" />
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/accountSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:textOff="Off"
+                android:textOn="On"
+                android:thumb="@drawable/switch_thumb"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:track="@drawable/switch_track" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
