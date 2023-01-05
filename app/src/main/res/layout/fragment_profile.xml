@@ -20,8 +20,8 @@
         android:layout_height="150dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        app:cardElevation="0dp"
         app:cardCornerRadius="5dp"
+        app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/include"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,6 +45,8 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:src="@drawable/default_user"
+        app:civ_border_color="@color/bg_color"
+        app:civ_border_width="4dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageCard"
         app:layout_constraintEnd_toEndOf="@+id/imageCard"
         app:layout_constraintHorizontal_bias="0.05"
@@ -84,18 +86,18 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:fontFamily="@font/roboto_bold"
-                    tools:text="User full name"
                     android:textColor="@color/text_color"
-                    android:textSize="24sp" />
+                    android:textSize="24sp"
+                    tools:text="User full name" />
 
                 <TextView
                     android:id="@+id/profileBioTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto"
-                    tools:text="User bio goes here..."
                     android:textColor="@color/text_color"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    tools:text="User bio goes here..." />
 
             </LinearLayout>
 
@@ -103,9 +105,9 @@
                 android:id="@+id/editProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/edit_icon"
                 android:layout_marginEnd="5dp"
                 android:padding="10dp"
+                android:src="@drawable/edit_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

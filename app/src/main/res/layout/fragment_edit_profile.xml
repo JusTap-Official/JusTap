@@ -57,6 +57,8 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:src="@drawable/default_user"
+        app:civ_border_color="@color/bg_color"
+        app:civ_border_width="4dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageCard"
         app:layout_constraintEnd_toEndOf="@+id/imageCard"
         app:layout_constraintHorizontal_bias="0.05"
@@ -162,9 +164,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal"
-            android:layout_marginBottom="40dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">

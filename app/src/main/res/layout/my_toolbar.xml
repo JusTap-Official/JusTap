@@ -3,17 +3,17 @@
     android:id="@+id/myToolBar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
     android:background="@android:color/transparent"
+    android:gravity="center"
     android:minHeight="?android:attr/actionBarSize">
 
     <ImageView
         android:id="@+id/leftIcon"
-        android:padding="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="10dp"
         android:src="@drawable/back_arrow"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/toolbar_title"
@@ -21,18 +21,18 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:fontFamily="@font/roboto_bold"
-        android:textSize="20dp"
         android:text="Toolbar Title"
-        android:textColor="@color/text_color" />
+        android:textColor="@color/text_color"
+        android:textSize="20dp" />
 
     <ImageView
         android:id="@+id/rightIcon"
-        android:padding="10dp"
-        android:layout_marginEnd="16dp"
-        android:layout_gravity="end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginEnd="16dp"
+        android:padding="10dp"
         android:src="@drawable/delete"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </androidx.appcompat.widget.Toolbar>

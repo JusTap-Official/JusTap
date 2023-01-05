@@ -2,13 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="10dp"
-        app:cardElevation="0dp" >
+        app:cardElevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,8 +23,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/roboto_bold"
-                android:text="Title"
                 android:gravity="center"
+                android:text="Title"
                 android:textColor="@color/text_color"
                 android:textSize="20sp" />
 
@@ -33,8 +33,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="25dp"
-                android:gravity="center"
                 android:fontFamily="@font/roboto"
+                android:gravity="center"
                 android:text="Message goes here..."
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
