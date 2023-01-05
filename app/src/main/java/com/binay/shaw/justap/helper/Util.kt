@@ -179,6 +179,8 @@ class Util {
             Glide.with(imageView)
                 .load(url)
                 .centerCrop()
+//                .skipMemoryCache(true)
+//                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .error(R.drawable.default_user)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageView)

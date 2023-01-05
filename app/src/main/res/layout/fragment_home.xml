@@ -81,11 +81,11 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/default_user"
-                app:civ_border_color="@color/bg_color"
+                app:civ_border_color="@color/white"
                 app:civ_border_width="4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

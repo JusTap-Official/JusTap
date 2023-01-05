@@ -21,6 +21,7 @@ import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.viewModel.EditProfile_ViewModel
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
+import com.bumptech.glide.Glide
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
@@ -152,6 +153,7 @@ class EditProfileFragment : Fragment() {
 
         editprofileViewmodel.status.observe(viewLifecycleOwner) {
             if (it == 3) {
+                Glide.get(requireContext()).clearMemory()
                 Toast.makeText(requireContext(), "Updated Successfully", Toast.LENGTH_SHORT).show()
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
@@ -223,6 +225,12 @@ class EditProfileFragment : Fragment() {
             )
             binding.newNameET.hint = localUser.userName
             binding.newBioET.hint = localUser.userBio
+            val profileURL = localUser.userProfilePicture.toString()
+            val bannerURL = localUser.userBannerPicture.toString()
+            if (profileURL.isNotEmpty())
+                Util.loadImagesWithGlide(binding.profileImage, profileURL)
+            if (bannerURL.isNotEmpty())
+                Util.loadImagesWithGlide(binding.profileBannerIV, bannerURL)
         }
         storageRef = Firebase.storage.reference
         firebaseDatabase = FirebaseDatabase.getInstance()

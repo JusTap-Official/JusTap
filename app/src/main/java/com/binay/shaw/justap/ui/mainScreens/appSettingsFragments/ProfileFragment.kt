@@ -12,6 +12,8 @@ import androidx.navigation.Navigation
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentProfileBinding
+import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
 import com.google.firebase.auth.FirebaseAuth
 
@@ -24,6 +26,7 @@ class ProfileFragment : Fragment() {
     private lateinit var toolbarText: TextView
     private lateinit var toolbarBackButton: ImageView
     private lateinit var localUserViewModel: LocalUserViewModel
+    private lateinit var localUser: LocalUser
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,13 +39,13 @@ class ProfileFragment : Fragment() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
-        localUserViewModel.bio.observe(viewLifecycleOwner) {
-            binding.profileBioTV.text = it.toString()
-        }
-
-        localUserViewModel.name.observe(viewLifecycleOwner) {
-            binding.profileNameTV.text = it.toString()
-        }
+//        localUserViewModel.bio.observe(viewLifecycleOwner) {
+//            binding.profileBioTV.text = it.toString()
+//        }
+//
+//        localUserViewModel.name.observe(viewLifecycleOwner) {
+//            binding.profileNameTV.text = it.toString()
+//        }
 
 
 
@@ -66,6 +69,26 @@ class ProfileFragment : Fragment() {
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
         )[LocalUserViewModel::class.java]
+        localUserViewModel.fetchUser.observe(viewLifecycleOwner) {
+            localUser = LocalUser(
+                it.userID,
+                it.userName,
+                it.userEmail,
+                it.userBio,
+                it.userPhone,
+                it.userProfilePicture,
+                it.userBannerPicture
+            )
+            binding.profileNameTV.text = localUser.userName
+            binding.profileBioTV.text = localUser.userBio
+            val profileURL = localUser.userProfilePicture.toString()
+            val bannerURL = localUser.userBannerPicture.toString()
+            if (profileURL.isNotEmpty())
+                Util.loadImagesWithGlide(binding.profileImage, profileURL)
+            if (bannerURL.isNotEmpty())
+                Util.loadImagesWithGlide(binding.profileBannerIV, bannerURL)
+        }
+
 
     }
 

@@ -23,6 +23,7 @@ import com.binay.shaw.justap.adapter.SettingsItemAdapter
 import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.databinding.FragmentSettingsBinding
 import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.model.SettingsItem
 import com.binay.shaw.justap.ui.authentication.SignIn_Screen
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
@@ -42,6 +43,7 @@ class SettingsFragment : Fragment() {
     private lateinit var localUserViewModel: LocalUserViewModel
     private lateinit var logoutIV: ImageView
     private lateinit var feedback: ImageView
+    private lateinit var localUser: LocalUser
 
     @SuppressLint("SetTextI18n", "ClickableViewAccessibility")
     override fun onCreateView(
@@ -51,9 +53,9 @@ class SettingsFragment : Fragment() {
 
         initialization(container)
 
-        localUserViewModel.name.observe(viewLifecycleOwner) {
-            binding.settingsUserName.text = it
-        }
+//        localUserViewModel.name.observe(viewLifecycleOwner) {
+//            binding.settingsUserName.text = it
+//        }
 
         /**set List*/
         settingsItemList = ArrayList()
@@ -112,6 +114,23 @@ class SettingsFragment : Fragment() {
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
         )[LocalUserViewModel::class.java]
+
+        localUserViewModel.fetchUser.observe(viewLifecycleOwner) {
+            localUser = LocalUser(
+                it.userID,
+                it.userName,
+                it.userEmail,
+                it.userBio,
+                it.userPhone,
+                it.userProfilePicture,
+                it.userBannerPicture
+            )
+            binding.settingsUserName.text = localUser.userName
+            val profileURL = localUser.userProfilePicture.toString()
+            if (profileURL.isNotEmpty())
+                Util.loadImagesWithGlide(binding.profileImage, profileURL)
+        }
+
         logoutIV = binding.root.findViewById(R.id.rightIcon)
         logoutIV.setImageResource(R.drawable.logout_icon)
         logoutIV.visibility = View.VISIBLE
