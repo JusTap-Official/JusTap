@@ -62,7 +62,6 @@ class HomeFragment : Fragment() {
             binding.profileNameTV.text  = localUser.userName
             binding.profileBioTV.text = localUser.userBio
             val profileURL = localUser.userProfilePicture!!
-            Util.log("Profile URL is : $profileURL")
             if (profileURL.isNotEmpty()) {
                 Util.loadImagesWithGlide(binding.profileImage, profileURL)
             }
