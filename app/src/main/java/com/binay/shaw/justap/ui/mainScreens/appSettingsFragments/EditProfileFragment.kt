@@ -3,6 +3,7 @@ package com.binay.shaw.justap.ui.mainScreens.appSettingsFragments
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -95,6 +96,17 @@ class EditProfileFragment : Fragment() {
 
 
         return binding.root
+    }
+    override fun onResume() {
+        super.onResume()
+        requireView().isFocusableInTouchMode = true
+        requireView().requestFocus()
+        requireView().setOnKeyListener { _, keyCode, event ->
+            if (event.action === KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                handleBackButtonPress()
+                true
+            } else false
+        }
     }
 
     private fun handleBackButtonPress() {
