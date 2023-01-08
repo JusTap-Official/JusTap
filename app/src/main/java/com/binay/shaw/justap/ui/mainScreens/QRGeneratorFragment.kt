@@ -19,8 +19,11 @@ import androidx.navigation.Navigation
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentQRGeneratorBinding
+import com.binay.shaw.justap.databinding.ParagraphModalBinding
 import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
 import com.binay.shaw.justap.helper.Util.Companion.dpToPx
+import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
 import com.binay.shaw.justap.viewModel.QRGenerator_ViewModel
 
 
@@ -52,7 +55,13 @@ class QRGeneratorFragment : Fragment() {
         }
 
         binding.qrInfo.setOnClickListener {
-            Toast.makeText(requireContext(), "Add info here", Toast.LENGTH_SHORT).show()
+            val dialog = ParagraphModalBinding.inflate(layoutInflater)
+            val bottomSheet = requireActivity().createBottomSheet()
+            dialog.apply {
+                paragraphHeading.text = "Offline Mode"
+                paragraphContent.text = "Turn on the switch if you're not connected to Internet and still want to share contacts using JusTap.\nThis is totally up to you and optional, this does not affects you data or QR Code."
+            }
+            dialog.root.setBottomSheet(bottomSheet)
         }
 
         binding.qrCodePreview.setOnLongClickListener {

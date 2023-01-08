@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -23,12 +22,14 @@ import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.SettingsItemAdapter
 import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.databinding.FragmentSettingsBinding
+import com.binay.shaw.justap.databinding.OptionsDialogBinding
 import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
+import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.model.SettingsItem
 import com.binay.shaw.justap.ui.authentication.SignIn_Screen
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
-import com.example.awesomedialog.*
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -149,22 +150,20 @@ class SettingsFragment : Fragment() {
 
 
     private fun logout() {
-        AwesomeDialog.build(requireActivity())
-            .title(
-                "Logout", ResourcesCompat.getFont(requireContext(), R.font.roboto_medium),
-                ContextCompat.getColor(requireContext(), R.color.text_color)
-            )
-            .body(
-                "Are you sure you want to logout?",
-                ResourcesCompat.getFont(requireContext(), R.font.roboto),
-                ContextCompat.getColor(requireContext(), R.color.text_color)
-            )
-            .background(R.drawable.card_drawable)
-            .onPositive(
-                "Logout",
-                R.color.bg_color,
-                ContextCompat.getColor(requireContext(), R.color.negative_red)
-            ) {
+
+        val dialog = OptionsDialogBinding.inflate(layoutInflater)
+        val bottomSheet = requireContext().createBottomSheet()
+        dialog.apply {
+
+            optionsHeading.text = "Logout"
+            optionsContent.text = "Are you sure you want to logout?"
+            positiveOption.text = "Logout"
+            positiveOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
+            negativeOption.text = "Cancel"
+            negativeOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_color))
+            positiveOption.setOnClickListener {
+                bottomSheet.dismiss()
+
                 lifecycleScope.launch(Dispatchers.Main) {
                     val signOutFromFirebase = launch(Dispatchers.IO) { FirebaseAuth.getInstance().signOut() }
                     signOutFromFirebase.join()
@@ -173,20 +172,18 @@ class SettingsFragment : Fragment() {
                     withContext(Dispatchers.Main) {
                         val intent = Intent(requireContext(), SignIn_Screen::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                        startActivity(
-                            intent
-                        ).also { requireActivity().finish() }
+                        startActivity(intent).also { requireActivity().finish() }
                         Util.log("Logged out")
+
                     }
                 }
             }
-            .onNegative(
-                "Cancel",
-                R.color.bg_color,
-                ContextCompat.getColor(requireContext(), R.color.text_color)
-            ) {
+            negativeOption.setOnClickListener {
+                bottomSheet.dismiss()
                 Util.log("Logout cancelled")
             }
+        }
+        dialog.root.setBottomSheet(bottomSheet)
     }
 
 

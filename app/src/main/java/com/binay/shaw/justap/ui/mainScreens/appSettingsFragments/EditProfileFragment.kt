@@ -48,7 +48,7 @@ class EditProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
 
         initialization(container)
@@ -237,6 +237,11 @@ class EditProfileFragment : Fragment() {
         firebaseDatabase = FirebaseDatabase.getInstance()
         editprofileViewmodel =
             ViewModelProvider(this@EditProfileFragment)[EditProfile_ViewModel::class.java]
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
 }

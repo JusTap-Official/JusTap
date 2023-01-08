@@ -6,17 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentHistoryBinding
+import com.binay.shaw.justap.databinding.OptionsDialogBinding
 import com.binay.shaw.justap.helper.Util
-import com.example.awesomedialog.*
+import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
+import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
 
 
 class HistoryFragment : Fragment() {
@@ -42,33 +42,27 @@ class HistoryFragment : Fragment() {
     }
 
     private fun clearHistory() {
-        AwesomeDialog.build(requireActivity())
-            .title(
-                "Clear history", ResourcesCompat.getFont(requireContext(), R.font.roboto_medium),
-                ContextCompat.getColor(requireContext(), R.color.text_color)
-            )
-            .body(
-                "Are you sure you want to clear history?",
-                ResourcesCompat.getFont(requireContext(), R.font.roboto),
-                ContextCompat.getColor(requireContext(), R.color.text_color)
-            )
-            .background(R.drawable.card_drawable)
-            .onPositive(
-                "Clear",
-                R.color.bg_color,
-                ContextCompat.getColor(requireContext(), R.color.negative_red)
-            ) {
-                Toast.makeText(requireContext(), "Positive task", Toast.LENGTH_SHORT).show()
+
+        val dialog = OptionsDialogBinding.inflate(layoutInflater)
+        val bottomSheet = requireContext().createBottomSheet()
+        dialog.apply {
+
+            optionsHeading.text = "Clear history"
+            optionsContent.text = "Are you sure you want to clear history?"
+            positiveOption.text = "Clear"
+            positiveOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
+            negativeOption.text = "Cancel"
+            negativeOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_color))
+            positiveOption.setOnClickListener {
+                bottomSheet.dismiss()
                 Util.log("positive")
             }
-            .onNegative(
-                "Cancel",
-                R.color.bg_color,
-                ContextCompat.getColor(requireContext(), R.color.text_color)
-            ) {
-                Toast.makeText(context, "Negative task", Toast.LENGTH_SHORT).show()
-                Util.log("negative ")
+            negativeOption.setOnClickListener {
+                bottomSheet.dismiss()
+                Util.log("negative")
             }
+        }
+        dialog.root.setBottomSheet(bottomSheet)
 
     }
 

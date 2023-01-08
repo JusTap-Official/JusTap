@@ -1,6 +1,7 @@
 package com.binay.shaw.justap.helper
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.res.Configuration
@@ -16,10 +17,13 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.util.Patterns
+import android.view.View
 import android.widget.ImageView
 import com.binay.shaw.justap.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
@@ -232,6 +236,21 @@ class Util {
             if (password.filter { !it.isLetterOrDigit() }.firstOrNull() == null) return false
 
             return true
+        }
+
+        fun Context.createBottomSheet(): BottomSheetDialog {
+            return BottomSheetDialog(this, R.style.BottomSheetDialogTheme)
+        }
+
+        fun Activity.createBottomSheet(): BottomSheetDialog {
+            return BottomSheetDialog(this, R.style.BottomSheetDialogTheme)
+        }
+
+        fun View.setBottomSheet(bottomSheet: BottomSheetDialog) {
+            bottomSheet.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+            bottomSheet.setContentView(this)
+            bottomSheet.create()
+            bottomSheet.show()
         }
 
     }

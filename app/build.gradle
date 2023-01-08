@@ -86,9 +86,6 @@ dependencies {
     implementation "androidx.camera:camera-lifecycle:$cameraX"
     implementation "androidx.camera:camera-view:$cameraX"
 
-    //Custom Dialog
-    implementation 'com.github.chnouman:AwesomeDialog:1.0.5'
-
     //ImagePicker
     implementation 'com.github.dhaval2404:imagepicker:2.1'
 
