@@ -49,9 +49,9 @@ class HistoryFragment : Fragment() {
 
             optionsHeading.text = "Clear history"
             optionsContent.text = "Are you sure you want to clear history?"
-            positiveOption.text = "Clear"
+            positiveOption.text = "Clear history"
             positiveOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
-            negativeOption.text = "Cancel"
+            negativeOption.text = "Don't clear"
             negativeOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_color))
             positiveOption.setOnClickListener {
                 bottomSheet.dismiss()

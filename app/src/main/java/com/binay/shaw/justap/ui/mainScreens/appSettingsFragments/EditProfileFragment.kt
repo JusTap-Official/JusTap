@@ -11,13 +11,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentEditProfileBinding
+import com.binay.shaw.justap.databinding.OptionsDialogBinding
 import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
+import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.viewModel.EditProfile_ViewModel
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
@@ -54,7 +58,7 @@ class EditProfileFragment : Fragment() {
         initialization(container)
 
         toolbarBackButton.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            handleBackButtonPress()
         }
 
         binding.cancelChanges.setOnClickListener {
@@ -93,6 +97,50 @@ class EditProfileFragment : Fragment() {
         return binding.root
     }
 
+    private fun handleBackButtonPress() {
+        val inputName = binding.newNameET.text.toString().trim()
+        val inputBio = binding.newBioET.text.toString().trim()
+        val inputPhone = binding.newPhoneET.text.toString().trim()
+
+        if (inputName.isNotEmpty() || inputBio.isNotEmpty()
+            || inputPhone.isNotEmpty() || profileBannerURI != null || profilePictureURI != null) {
+
+            val dialog = OptionsDialogBinding.inflate(layoutInflater)
+            val bottomSheet = requireContext().createBottomSheet()
+            dialog.apply {
+
+                optionsHeading.text = "Discard changes"
+                optionsContent.text = "Are you sure you discard changes?"
+                positiveOption.text = "Discard"
+                positiveOption.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.negative_red
+                    )
+                )
+                negativeOption.text = "Continue editing"
+                negativeOption.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.text_color
+                    )
+                )
+                positiveOption.setOnClickListener {
+                    bottomSheet.dismiss()
+                    Util.log("Go back")
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                }
+                negativeOption.setOnClickListener {
+                    bottomSheet.dismiss()
+                    Util.log("Stay")
+                }
+            }
+            dialog.root.setBottomSheet(bottomSheet)
+        }
+        else
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+    }
+
     private fun editChanges(
         inputName: String,
         inputBio: String,
@@ -112,52 +160,73 @@ class EditProfileFragment : Fragment() {
         if (isInvalidData(inputName, inputBio, inputPhone, profilePictureURI, profileBannerURI))
             return
 
-        val hashMap: MutableMap<String, Any> = HashMap()
-        hashMap["userID"] = originalID
-        hashMap["email"] = originalEmail
+        val dialog = OptionsDialogBinding.inflate(layoutInflater)
+        val bottomSheet = requireContext().createBottomSheet()
+        dialog.apply {
 
-        if (inputName.isNotEmpty())
-            hashMap["name"] = inputName
-        else hashMap["name"] = originalName
+            optionsHeading.text = "Confirm changed"
+            optionsContent.text = "Are you sure you want to make changed?"
+            positiveOption.text = "Save changes"
+            positiveOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
+            negativeOption.text = "Don't save"
+            negativeOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_color))
+            positiveOption.setOnClickListener {
+                bottomSheet.dismiss()
+                Util.log("Save")
 
+                val hashMap: MutableMap<String, Any> = HashMap()
+                hashMap["userID"] = originalID
+                hashMap["email"] = originalEmail
 
-        if (inputBio.isNotEmpty())
-            hashMap["bio"] = inputBio
-        else if (originalBio?.isNotEmpty() == true)
-            hashMap["bio"] = originalBio
-        else
-            hashMap["bio"] = ""
-
-
-        if (inputPhone.isNotEmpty())
-            hashMap["phone"] = inputPhone
-        else if (originalPhone?.isNotEmpty() == true)
-            hashMap["phone"] = originalPhone
-        else
-            hashMap["phone"] = ""
-
-        if (originalPFP.isNullOrEmpty())
-            originalPFP = ""
-
-        if (originalBanner.isNullOrEmpty()) {
-            originalBanner = ""
-        }
+                if (inputName.isNotEmpty())
+                    hashMap["name"] = inputName
+                else hashMap["name"] = originalName
 
 
-        lifecycleScope.launch {
-            editprofileViewmodel.updateUser(
-                firebaseDatabase, storageRef, originalID,
-                hashMap, originalPFP, originalBanner, profilePictureURI,
-                profileBannerURI, localUserViewModel)
-        }
+                if (inputBio.isNotEmpty())
+                    hashMap["bio"] = inputBio
+                else if (originalBio?.isNotEmpty() == true)
+                    hashMap["bio"] = originalBio
+                else
+                    hashMap["bio"] = ""
 
-        editprofileViewmodel.status.observe(viewLifecycleOwner) {
-            if (it == 3) {
-                Glide.get(requireContext()).clearMemory()
-                Toast.makeText(requireContext(), "Updated Successfully", Toast.LENGTH_SHORT).show()
-                requireActivity().onBackPressedDispatcher.onBackPressed()
+
+                if (inputPhone.isNotEmpty())
+                    hashMap["phone"] = inputPhone
+                else if (originalPhone?.isNotEmpty() == true)
+                    hashMap["phone"] = originalPhone
+                else
+                    hashMap["phone"] = ""
+
+                if (originalPFP.isNullOrEmpty())
+                    originalPFP = ""
+
+                if (originalBanner.isNullOrEmpty()) {
+                    originalBanner = ""
+                }
+
+
+                lifecycleScope.launch {
+                    editprofileViewmodel.updateUser(
+                        firebaseDatabase, storageRef, originalID,
+                        hashMap, originalPFP!!, originalBanner!!, profilePictureURI,
+                        profileBannerURI, localUserViewModel)
+                }
+
+                editprofileViewmodel.status.observe(viewLifecycleOwner) {
+                    if (it == 3) {
+                        Glide.get(requireContext()).clearMemory()
+                        Toast.makeText(requireContext(), "Updated Successfully", Toast.LENGTH_SHORT).show()
+                        requireActivity().onBackPressedDispatcher.onBackPressed()
+                    }
+                }
+            }
+            negativeOption.setOnClickListener {
+                bottomSheet.dismiss()
+                Util.log("Don't Save")
             }
         }
+        dialog.root.setBottomSheet(bottomSheet)
 
     }
 

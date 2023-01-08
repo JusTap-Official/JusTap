@@ -199,7 +199,7 @@
                 android:fontFamily="@font/roboto"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                android:text="Confirm changes"
+                android:text="Save changes"
                 android:textAllCaps="false"
                 android:textColor="@color/bg_color" />
 

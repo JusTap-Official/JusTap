@@ -159,7 +159,7 @@ class SettingsFragment : Fragment() {
             optionsContent.text = "Are you sure you want to logout?"
             positiveOption.text = "Logout"
             positiveOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
-            negativeOption.text = "Cancel"
+            negativeOption.text = "Cancel logout"
             negativeOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_color))
             positiveOption.setOnClickListener {
                 bottomSheet.dismiss()

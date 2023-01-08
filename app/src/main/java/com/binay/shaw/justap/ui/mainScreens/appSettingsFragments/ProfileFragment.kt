@@ -39,16 +39,6 @@ class ProfileFragment : Fragment() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
-//        localUserViewModel.bio.observe(viewLifecycleOwner) {
-//            binding.profileBioTV.text = it.toString()
-//        }
-//
-//        localUserViewModel.name.observe(viewLifecycleOwner) {
-//            binding.profileNameTV.text = it.toString()
-//        }
-
-
-
         binding.editProfile.setOnClickListener {
             Navigation.findNavController(it)
                 .navigate(R.id.action_profileFragment_to_editProfileFragment)
@@ -96,4 +86,6 @@ class ProfileFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
+
+
 }
