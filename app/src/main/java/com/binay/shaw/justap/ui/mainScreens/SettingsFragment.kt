@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,6 +30,9 @@ import com.binay.shaw.justap.ui.authentication.SignIn_Screen
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
 import com.example.awesomedialog.*
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class SettingsFragment : Fragment() {
@@ -116,15 +120,17 @@ class SettingsFragment : Fragment() {
         )[LocalUserViewModel::class.java]
 
         localUserViewModel.fetchUser.observe(viewLifecycleOwner) {
-            localUser = LocalUser(
-                it.userID,
-                it.userName,
-                it.userEmail,
-                it.userBio,
-                it.userPhone,
-                it.userProfilePicture,
-                it.userBannerPicture
-            )
+            if (it != null) {
+                localUser = LocalUser(
+                    it.userID,
+                    it.userName,
+                    it.userEmail,
+                    it.userBio,
+                    it.userPhone,
+                    it.userProfilePicture,
+                    it.userBannerPicture
+                )
+            }
             binding.settingsUserName.text = localUser.userName
             val profileURL = localUser.userProfilePicture.toString()
             if (profileURL.isNotEmpty())
@@ -159,14 +165,20 @@ class SettingsFragment : Fragment() {
                 R.color.bg_color,
                 ContextCompat.getColor(requireContext(), R.color.negative_red)
             ) {
-                FirebaseAuth.getInstance().signOut()
-                localUserViewModel.deleteUser()
-                val intent = Intent(requireContext(), SignIn_Screen::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(
-                    intent
-                ).also { requireActivity().finish() }
-                Util.log("Logged out")
+                lifecycleScope.launch(Dispatchers.Main) {
+                    val signOutFromFirebase = launch(Dispatchers.IO) { FirebaseAuth.getInstance().signOut() }
+                    signOutFromFirebase.join()
+                    val removeLocalUserData = launch(Dispatchers.IO) { localUserViewModel.deleteUser() }
+                    removeLocalUserData.join()
+                    withContext(Dispatchers.Main) {
+                        val intent = Intent(requireContext(), SignIn_Screen::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(
+                            intent
+                        ).also { requireActivity().finish() }
+                        Util.log("Logged out")
+                    }
+                }
             }
             .onNegative(
                 "Cancel",

@@ -172,6 +172,7 @@ class EditProfileFragment : Fragment() {
                     } else {
                         profileBannerURI = imageUri
                         binding.profileBannerIV.setImageURI(imageUri)
+                        binding.profileBannerIV.scaleType = ImageView.ScaleType.CENTER_CROP
                     }
                     editImageMode = 0
                 }

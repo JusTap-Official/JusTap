@@ -42,8 +42,6 @@
                 android:layout_height="80dp"
                 android:layout_marginBottom="10dp"
                 android:src="@drawable/default_user"
-                app:civ_border_color="@color/bg_color"
-                app:civ_border_width="4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.05"

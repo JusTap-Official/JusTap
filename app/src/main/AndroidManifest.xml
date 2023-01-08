@@ -17,6 +17,7 @@
         android:roundIcon="@drawable/logo_black_square"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
+        android:hardwareAccelerated="true"
         android:theme="@style/Theme.JusTap"
         tools:targetApi="31">
         <activity
