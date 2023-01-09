@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun BottomNavigationView.setupWithNavController2(navController: NavController) {
+    private fun BottomNavigationView.setupWithNavController2(navController: NavController) {
         val bottomNavigationView = this
         bottomNavigationView.setOnItemReselectedListener { item ->
             // Pop everything up to the reselected item
@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
 
         val navController: NavController = findNavController(R.id.fragmentContainerView)

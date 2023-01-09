@@ -121,16 +121,16 @@ class EditProfileFragment : Fragment() {
             val bottomSheet = requireContext().createBottomSheet()
             dialog.apply {
 
-                optionsHeading.text = "Discard changes"
-                optionsContent.text = "Are you sure you discard changes?"
-                positiveOption.text = "Discard"
+                optionsHeading.text = requireContext().resources.getString(R.string.DiscardChanged)
+                optionsContent.text = requireContext().resources.getString(R.string.DiscardChangedDescription)
+                positiveOption.text = requireContext().resources.getString(R.string.Discard)
                 positiveOption.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.negative_red
                     )
                 )
-                negativeOption.text = "Continue editing"
+                negativeOption.text = requireContext().resources.getString(R.string.ContinueEditing)
                 negativeOption.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
@@ -176,11 +176,11 @@ class EditProfileFragment : Fragment() {
         val bottomSheet = requireContext().createBottomSheet()
         dialog.apply {
 
-            optionsHeading.text = "Confirm changed"
-            optionsContent.text = "Are you sure you want to make changed?"
-            positiveOption.text = "Save changes"
+            optionsHeading.text = requireContext().resources.getString(R.string.ConfirmChanges)
+            optionsContent.text = requireContext().resources.getString(R.string.ConfirmChangesDescription)
+            positiveOption.text = requireContext().resources.getString(R.string.SaveChanges)
             positiveOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
-            negativeOption.text = "Don't save"
+            negativeOption.text = requireContext().resources.getString(R.string.DontSave)
             negativeOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_color))
             positiveOption.setOnClickListener {
                 bottomSheet.dismiss()
@@ -288,7 +288,7 @@ class EditProfileFragment : Fragment() {
         _binding = FragmentEditProfileBinding.inflate(layoutInflater, container, false)
         (activity as MainActivity).supportActionBar?.hide()
         toolbarText = binding.root.findViewById(R.id.toolbar_title)
-        toolbarText.text = "Edit Profile"
+        toolbarText.text = requireContext().resources.getString(R.string.EditProfile)
         toolbarBackButton = binding.root.findViewById(R.id.leftIcon)
         toolbarBackButton.visibility = View.VISIBLE
         localUserViewModel = ViewModelProvider(

@@ -7,20 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
-import androidx.room.Room
 import com.binay.shaw.justap.R
-import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.databinding.FragmentHomeBinding
 import com.binay.shaw.justap.helper.Util
-import com.binay.shaw.justap.helper.Util.Companion.loadImagesWithGlideExt
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
-import com.bumptech.glide.Glide
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 
 class HomeFragment : Fragment() {
 
@@ -33,7 +25,7 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         initialization(container)
 
@@ -44,7 +36,7 @@ class HomeFragment : Fragment() {
     private fun initialization(container: ViewGroup?) {
 
         _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
-        binding.root.findViewById<TextView>(R.id.toolbar_title)?.text = "Home"
+        binding.root.findViewById<TextView>(R.id.toolbar_title)?.text = requireContext().resources.getString(R.string.Home)
         localUserViewModel = ViewModelProvider(
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)

@@ -1,5 +1,33 @@
 <resources>
     <string name="app_name">JusTap</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="scanner_info_title">How to scan?</string>
+    <string name="scanner_info_content">Give camera access to JusTap by allowing the permission and then hold the phone facing the QR.\nDon\'t worry about the orientation of QR Code.\nNote:\n1. Stay online if the other person has turned on Offline Mode\n2. Stay online to access the result links\n3.The scanned result will be saved in History which you can check out anytime.</string>
+    <string name="Scanner">Scanner</string>
+    <string name="OfflineMode">Offline Mode</string>
+    <string name="OfflineModeInfo">Turn on the switch if you\'re not connected to Internet and still want to share contacts using JusTap.This is totally up to you and optional, this does not affects you data or QR Code.</string>
+    <string name="MyQRCode">My QR Code</string>
+    <string name="LogoutTitle">Logout</string>
+    <string name="LogoutDescription">Are you sure you want to logout?</string>
+    <string name="LogoutCancel">Cancel logout</string>
+    <string name="Settings">Settings</string>
+    <string name="mailTo">mailto:binayshaw7777@gmail.com?Subject=JusTap%20Android%20application%20feedback%20main&amp;Body=Your%20feedback%20is%20important%20to%20us%21</string>
+    <string name="Home">Home</string>
+    <string name="ClearHistory">Clear History</string>
+    <string name="ClearHistoryDescription">Are you sure you want to clear history?</string>
+    <string name="DontClearHistory">Don\'t clear</string>
+    <string name="History">History</string>
+    <string name="Profile">Profile</string>
+    <string name="DiscardChanged">Discard Changes</string>
+    <string name="Discard">Discard</string>
+    <string name="DiscardChangedDescription">Are you sure you discard changes?</string>
+    <string name="ContinueEditing">Continue editing</string>
+    <string name="ConfirmChanges">Confirm change</string>
+    <string name="SaveChanges">Save Changes</string>
+    <string name="DontSave">Don\'t save</string>
+    <string name="ConfirmChangesDescription">Are you sure you want to make changed?</string>
+    <string name="EditProfile">Edit Profile</string>
+    <string name="AboutMe">About me</string>
+    <string name="LogIn">Log In</string>
+    <string name="SendResetLink">Send reset link</string>
 </resources>

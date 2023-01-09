@@ -29,7 +29,7 @@ class HistoryFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         initialization(container)
 
@@ -47,11 +47,11 @@ class HistoryFragment : Fragment() {
         val bottomSheet = requireContext().createBottomSheet()
         dialog.apply {
 
-            optionsHeading.text = "Clear history"
-            optionsContent.text = "Are you sure you want to clear history?"
-            positiveOption.text = "Clear history"
+            optionsHeading.text = requireContext().resources.getString(R.string.ClearHistory)
+            optionsContent.text = requireContext().resources.getString(R.string.ClearHistoryDescription)
+            positiveOption.text = requireContext().resources.getString(R.string.ClearHistory)
             positiveOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
-            negativeOption.text = "Don't clear"
+            negativeOption.text = requireContext().resources.getString(R.string.DontClearHistory)
             negativeOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_color))
             positiveOption.setOnClickListener {
                 bottomSheet.dismiss()
@@ -71,7 +71,7 @@ class HistoryFragment : Fragment() {
         _binding = FragmentHistoryBinding.inflate(layoutInflater, container, false)
         (activity as MainActivity).supportActionBar?.hide()
         toolbarText = binding.root.findViewById(R.id.toolbar_title)
-        toolbarText.text = "History"
+        toolbarText.text = requireContext().resources.getString(R.string.History)
         toolbarClearHistoryButton = binding.root.findViewById(R.id.rightIcon)
         toolbarClearHistoryButton.visibility = View.VISIBLE
 

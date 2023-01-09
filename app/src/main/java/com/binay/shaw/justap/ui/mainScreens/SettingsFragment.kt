@@ -58,23 +58,13 @@ class SettingsFragment : Fragment() {
 
         initialization(container)
 
-//        localUserViewModel.name.observe(viewLifecycleOwner) {
-//            binding.settingsUserName.text = it
-//        }
 
         /**set List*/
         settingsItemList = ArrayList()
 
         settingsItemList.add(SettingsItem(1, R.drawable.edit_icon, "Edit profile", false))
         settingsItemList.add(SettingsItem(2, R.drawable.moon, "Dark mode", true))
-        settingsItemList.add(
-            SettingsItem(
-                3,
-                R.drawable.scanner_fullscale_icon,
-                "Customize QR",
-                false
-            )
-        )
+        settingsItemList.add(SettingsItem(3, R.drawable.scanner_icon, "Customize QR", false))
         settingsItemList.add(SettingsItem(4, R.drawable.info_icon, "About us", false))
         settingsItemList.add(SettingsItem(5, R.drawable.help_icon, "Need help?", false))
         /**set find Id*/
@@ -97,7 +87,7 @@ class SettingsFragment : Fragment() {
 
         feedback.setOnClickListener {
             val openURL = Intent(Intent.ACTION_VIEW)
-            openURL.data = Uri.parse("mailto:binayshaw7777@gmail.com?Subject=JusTap%20Android%20application%20feedback%20main&Body=Your%20feedback%20is%20important%20to%20us%21")
+            openURL.data = Uri.parse(requireContext().resources.getString(R.string.mailTo))
             startActivity(openURL)
         }
 
@@ -109,7 +99,7 @@ class SettingsFragment : Fragment() {
 
         _binding = FragmentSettingsBinding.inflate(layoutInflater, container, false)
         (activity as MainActivity).supportActionBar?.hide()
-        binding.root.findViewById<TextView>(R.id.toolbar_title)?.text = "Settings"
+        binding.root.findViewById<TextView>(R.id.toolbar_title)?.text = requireContext().resources.getString(R.string.Settings)
         auth = FirebaseAuth.getInstance()
         localUserDatabase = Room.databaseBuilder(
             requireContext(), LocalUserDatabase::class.java,
@@ -155,11 +145,11 @@ class SettingsFragment : Fragment() {
         val bottomSheet = requireContext().createBottomSheet()
         dialog.apply {
 
-            optionsHeading.text = "Logout"
-            optionsContent.text = "Are you sure you want to logout?"
-            positiveOption.text = "Logout"
+            optionsHeading.text = requireContext().resources.getString(R.string.LogoutTitle)
+            optionsContent.text = requireContext().resources.getString(R.string.LogoutDescription)
+            positiveOption.text = requireContext().resources.getString(R.string.LogoutTitle)
             positiveOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
-            negativeOption.text = "Cancel logout"
+            negativeOption.text = requireContext().resources.getString(R.string.LogoutCancel)
             negativeOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_color))
             positiveOption.setOnClickListener {
                 bottomSheet.dismiss()

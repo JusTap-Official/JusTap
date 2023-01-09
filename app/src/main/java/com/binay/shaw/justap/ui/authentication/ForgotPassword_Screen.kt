@@ -74,10 +74,10 @@ class ForgotPassword_Screen : AppCompatActivity() {
     private fun initialization() {
         supportActionBar?.hide()
         auth = FirebaseAuth.getInstance()
-        findViewById<TextView>(R.id.toolbar_title).text = "Log In"
+        findViewById<TextView>(R.id.toolbar_title).text = resources.getString(R.string.LogIn)
         buttonLayout = findViewById(R.id.progress_button_bg)
         buttonText = findViewById(R.id.buttonText)
-        buttonText.text = "Send reset link"
+        buttonText.text = resources.getString(R.string.SendResetLink)
         buttonProgress = findViewById(R.id.buttonProgress)
 
     }

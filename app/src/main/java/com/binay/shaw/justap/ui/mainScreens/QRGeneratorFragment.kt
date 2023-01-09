@@ -39,7 +39,7 @@ class QRGeneratorFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         initialization(container)
 
         viewModel.generateQR(displayMetrics, overlay,
@@ -58,8 +58,8 @@ class QRGeneratorFragment : Fragment() {
             val dialog = ParagraphModalBinding.inflate(layoutInflater)
             val bottomSheet = requireActivity().createBottomSheet()
             dialog.apply {
-                paragraphHeading.text = "Offline Mode"
-                paragraphContent.text = "Turn on the switch if you're not connected to Internet and still want to share contacts using JusTap.\nThis is totally up to you and optional, this does not affects you data or QR Code."
+                paragraphHeading.text = requireContext().resources.getString(R.string.OfflineMode)
+                paragraphContent.text = requireContext().resources.getString(R.string.OfflineModeInfo)
             }
             dialog.root.setBottomSheet(bottomSheet)
         }
@@ -90,7 +90,7 @@ class QRGeneratorFragment : Fragment() {
 
         _binding = FragmentQRGeneratorBinding.inflate(layoutInflater, container, false)
         (activity as MainActivity).supportActionBar?.hide()
-        binding.root.findViewById<TextView>(R.id.toolbar_title)?.text = "My QR Code"
+        binding.root.findViewById<TextView>(R.id.toolbar_title)?.text = requireContext().resources.getString(R.string.MyQRCode)
         viewModel = ViewModelProvider(this@QRGeneratorFragment)[QRGenerator_ViewModel::class.java]
         displayMetrics = DisplayMetrics()
         activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)

@@ -22,7 +22,7 @@ class AboutMeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         initialization(container)
 
@@ -39,7 +39,7 @@ class AboutMeFragment : Fragment() {
         _binding = FragmentAboutMeBinding.inflate(layoutInflater, container, false)
         (activity as MainActivity).supportActionBar?.hide()
         toolbarText = binding.root.findViewById(R.id.toolbar_title)
-        toolbarText.text = "About me"
+        toolbarText.text = requireContext().resources.getString(R.string.AboutMe)
         toolbarBackButton = binding.root.findViewById(R.id.leftIcon)
         toolbarBackButton.visibility = View.VISIBLE
 

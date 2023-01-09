@@ -3,7 +3,6 @@ package com.binay.shaw.justap.ui.mainScreens.qrReciever
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -16,7 +15,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
@@ -24,8 +22,10 @@ import androidx.navigation.fragment.findNavController
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentQRScannerBinding
+import com.binay.shaw.justap.databinding.ParagraphModalBinding
 import com.binay.shaw.justap.helper.Encryption
-import com.google.firebase.auth.FirebaseAuth
+import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
+import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
@@ -60,15 +60,13 @@ class ScannerFragment : Fragment() {
 
     private var _binding: FragmentQRScannerBinding? = null
     private val binding get() = _binding!!
-    private lateinit var auth: FirebaseAuth
-    private lateinit var sharedPreferences: SharedPreferences
     private lateinit var toolbarTitle: TextView
     private lateinit var toolBarButton: ImageView
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         initialization(container)
 
@@ -78,7 +76,13 @@ class ScannerFragment : Fragment() {
 
 
         binding.scannerInfo.setOnClickListener {
-            Toast.makeText(requireContext(), "Add info here", Toast.LENGTH_SHORT).show()
+            val dialog = ParagraphModalBinding.inflate(layoutInflater)
+            val bottomSheet = requireActivity().createBottomSheet()
+            dialog.apply {
+                paragraphHeading.text = requireContext().resources.getString(R.string.scanner_info_title)
+                paragraphContent.text = requireContext().resources.getString(R.string.scanner_info_content)
+            }
+            dialog.root.setBottomSheet(bottomSheet)
         }
 
         setupCamera()
@@ -90,7 +94,7 @@ class ScannerFragment : Fragment() {
         _binding = FragmentQRScannerBinding.inflate(layoutInflater, container, false)
         (activity as MainActivity).supportActionBar?.hide()
         toolbarTitle = binding.root.findViewById(R.id.toolbar_title)
-        toolbarTitle.text = "Scanner"
+        toolbarTitle.text = requireContext().resources.getString(R.string.Scanner)
         toolBarButton = binding.root.findViewById(R.id.leftIcon)
         toolBarButton.visibility = View.VISIBLE
         scanResultTextView = binding.scanResultTextView

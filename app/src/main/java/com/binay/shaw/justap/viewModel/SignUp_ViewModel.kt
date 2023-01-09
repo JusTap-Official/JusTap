@@ -1,6 +1,5 @@
 package com.binay.shaw.justap.viewModel
 
-import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -47,25 +46,14 @@ class SignUp_ViewModel : ViewModel() {
 
         val isValid = Util.validateUserAuthInput(nameString, emailString, passwordString)
         when (isValid) {
-            1 -> {
-                status.value = 1
-            }
-            2 -> {
-                status.value = 2
-            }
-            3 -> {
-                status.value = 3
-            }
-            4 -> {
-                status.value = 4
-            }
-            5 -> {
-                status.value = 5
-            }
-            6 -> {
-                status.value = 6
-            }
-            7 -> {
+
+            1 -> status.value = 1   //name is empty
+            2 -> status.value = 2   //email is empty
+            3 -> status.value = 3   //email is not valid
+            4 -> status.value = 4   //password is empty
+            5 -> status.value = 5   //password is less than 8 characters
+            6 -> status.value = 6   //Use upper & lowercase with digit & symbols
+            7 -> {  //success
                 viewModelScope.launch(Dispatchers.IO) {
                     try {
                         auth.createUserWithEmailAndPassword(emailString, passwordString).await()

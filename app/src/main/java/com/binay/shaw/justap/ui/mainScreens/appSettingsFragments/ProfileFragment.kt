@@ -51,7 +51,7 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(layoutInflater, container, false)
         (activity as MainActivity).supportActionBar?.hide()
         toolbarText = binding.root.findViewById(R.id.toolbar_title)
-        toolbarText.text = "Profile"
+        toolbarText.text = requireContext().resources.getString(R.string.Profile)
         toolbarBackButton = binding.root.findViewById(R.id.leftIcon)
         toolbarBackButton.visibility = View.VISIBLE
         auth = FirebaseAuth.getInstance()

@@ -1,12 +1,9 @@
 package com.binay.shaw.justap.viewModel
 
-import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.helper.Util
-import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
