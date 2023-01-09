@@ -38,9 +38,13 @@
     </fragment>
     <fragment
         android:id="@+id/scannerFragment"
-        android:name="com.binay.shaw.justap.ui.mainScreens.ScannerFragment"
+        android:name="com.binay.shaw.justap.ui.mainScreens.qrReciever.ScannerFragment"
         android:label="fragment_q_r_scanner"
-        tools:layout="@layout/fragment_q_r_scanner" />
+        tools:layout="@layout/fragment_q_r_scanner" >
+        <action
+            android:id="@+id/action_scannerFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.binay.shaw.justap.ui.mainScreens.appSettingsFragments.ProfileFragment"
@@ -55,4 +59,13 @@
         android:name="com.binay.shaw.justap.ui.mainScreens.appSettingsFragments.EditProfileFragment"
         android:label="fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile" />
+    <fragment
+        android:id="@+id/resultFragment"
+        android:name="com.binay.shaw.justap.ui.mainScreens.qrReciever.ResultFragment"
+        android:label="fragment_scan_result"
+        tools:layout="@layout/fragment_scan_result" >
+        <argument
+            android:name="resultString"
+            app:argType="string" />
+    </fragment>
 </navigation>

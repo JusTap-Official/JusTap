@@ -1,11 +1,13 @@
-package com.binay.shaw.justap.ui.mainScreens
+package com.binay.shaw.justap.ui.mainScreens.qrReciever
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Vibrator
 import android.util.DisplayMetrics
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -18,6 +20,7 @@ import android.widget.Toast
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentQRScannerBinding
@@ -191,9 +194,16 @@ class ScannerFragment : Fragment() {
         barcodeScanner.process(inputImage).addOnSuccessListener { barcodes ->
                 val barcode = barcodes.getOrNull(0)
                 barcode?.rawValue?.let { code ->
+                    cameraProvider?.unbindAll()
+
+                    val vibratorService = requireContext().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                    vibratorService.vibrate(500)
                     val encryption = Encryption.getDefault("Key", "Salt", ByteArray(16))
                     val decrypted = encryption.decryptOrNull(code)
-                    scanResultTextView.text = decrypted
+
+                    val bundle = Bundle()
+                    bundle.putString("decryptedString", decrypted)
+                    findNavController().navigate(R.id.resultFragment, bundle)
                 }
             }.addOnFailureListener {
 
