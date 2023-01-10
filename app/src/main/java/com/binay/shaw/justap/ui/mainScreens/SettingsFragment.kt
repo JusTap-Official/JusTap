@@ -22,7 +22,7 @@ import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.SettingsItemAdapter
 import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.databinding.FragmentSettingsBinding
-import com.binay.shaw.justap.databinding.OptionsDialogBinding
+import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
 import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
@@ -141,7 +141,7 @@ class SettingsFragment : Fragment() {
 
     private fun logout() {
 
-        val dialog = OptionsDialogBinding.inflate(layoutInflater)
+        val dialog = OptionsModalBinding.inflate(layoutInflater)
         val bottomSheet = requireContext().createBottomSheet()
         dialog.apply {
 

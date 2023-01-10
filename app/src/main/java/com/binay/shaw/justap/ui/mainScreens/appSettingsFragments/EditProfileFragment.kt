@@ -19,7 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentEditProfileBinding
-import com.binay.shaw.justap.databinding.OptionsDialogBinding
+import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
 import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
@@ -117,7 +117,7 @@ class EditProfileFragment : Fragment() {
         if (inputName.isNotEmpty() || inputBio.isNotEmpty()
             || inputPhone.isNotEmpty() || profileBannerURI != null || profilePictureURI != null) {
 
-            val dialog = OptionsDialogBinding.inflate(layoutInflater)
+            val dialog = OptionsModalBinding.inflate(layoutInflater)
             val bottomSheet = requireContext().createBottomSheet()
             dialog.apply {
 
@@ -172,7 +172,7 @@ class EditProfileFragment : Fragment() {
         if (isInvalidData(inputName, inputBio, inputPhone, profilePictureURI, profileBannerURI))
             return
 
-        val dialog = OptionsDialogBinding.inflate(layoutInflater)
+        val dialog = OptionsModalBinding.inflate(layoutInflater)
         val bottomSheet = requireContext().createBottomSheet()
         dialog.apply {
 

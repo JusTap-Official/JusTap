@@ -11,11 +11,13 @@
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:src="@drawable/drag_handle" />
 
         <TextView
@@ -23,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:fontFamily="@font/roboto_black"
+            android:fontFamily="@font/roboto_medium"
             android:text="What do you want to do?"
             android:textColor="@color/text_color"
             android:textSize="20sp" />
