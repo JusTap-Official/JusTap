@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.auth.FirebaseAuth
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
@@ -47,6 +48,17 @@ class Util {
         fun isDarkMode(context: Context): Boolean {
             return context.resources.configuration.uiMode and
                     Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+        }
+
+        fun isUserLoggedIn(auth: FirebaseAuth) : Boolean {
+            // not logged in
+            return if (auth.currentUser == null) {
+                log("You are not logged in")
+                false
+            } else {
+                log("You are logged in!")
+                true
+            }
         }
 
         @SuppressLint("ServiceCast")

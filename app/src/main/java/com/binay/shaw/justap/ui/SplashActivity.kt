@@ -31,28 +31,24 @@ class SplashActivity : Activity() {
         //initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
 
-        if (checkLoggedInState())
+        if (Util.isUserLoggedIn(auth))
             splashToBase()
         else
             splashToLogIn()
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     private fun splashToLogIn() {
-        GlobalScope.launch {
-            delay(2000)
-
+        CoroutineScope(Dispatchers.Main).launch {
+        delay(2000)
             val intent = Intent(this@SplashActivity, SignIn_Screen::class.java)
             startActivity(intent)
             finish()
         }
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     private fun splashToBase() {
-        GlobalScope.launch {
+        CoroutineScope(Dispatchers.Main).launch {
             delay(2000)
-
             val intent = Intent(this@SplashActivity, MainActivity::class.java)
             startActivity(intent)
             finish()
@@ -83,16 +79,4 @@ class SplashActivity : Activity() {
             }
         }
     }
-
-    private fun checkLoggedInState() : Boolean {
-        // not logged in
-        return if (auth.currentUser == null) {
-            Util.log("You are not logged in")
-            false
-        } else {
-            Util.log("You are logged in!")
-            true
-        }
-    }
-
 }
