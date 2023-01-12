@@ -25,7 +25,8 @@ class SplashActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTheme()
+//        setTheme()
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setContentView(R.layout.activity_splash)
 
         //initialize Firebase Auth
@@ -55,28 +56,28 @@ class SplashActivity : Activity() {
         }
     }
 
-    private fun setTheme() {
-        isCurrentThemeIsDarkMode = Util.isDarkMode(baseContext) //Gives the current theme
-        sharedPreferences =  getSharedPreferences("ThemeHandler", Context.MODE_PRIVATE)
-        isDarkMode = sharedPreferences.getBoolean("DARK_MODE", true)    //Last edited theme
-        isFirstTime = sharedPreferences.getBoolean("FIRST_TIME", true)  //First time changes the theme
-
-        //Opened more than one time
-        if (!isFirstTime) {
-            //Changes needed are to be dark mode
-            if (isDarkMode) {
-                //if Current Theme is not dark mode
-                if (!isCurrentThemeIsDarkMode) {
-                    //Set to dark mode
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                }
-            } else {
-                //Changes require are to be light mode
-                if (isCurrentThemeIsDarkMode) {
-                    //Set to light mode
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                }
-            }
-        }
-    }
+//    private fun setTheme() {
+//        isCurrentThemeIsDarkMode = Util.isDarkMode(baseContext) //Gives the current theme
+//        sharedPreferences =  getSharedPreferences("ThemeHandler", Context.MODE_PRIVATE)
+//        isDarkMode = sharedPreferences.getBoolean("DARK_MODE", true)    //Last edited theme
+//        isFirstTime = sharedPreferences.getBoolean("FIRST_TIME", true)  //First time changes the theme
+//
+//        //Opened more than one time
+//        if (!isFirstTime) {
+//            //Changes needed are to be dark mode
+//            if (isDarkMode) {
+//                //if Current Theme is not dark mode
+//                if (!isCurrentThemeIsDarkMode) {
+//                    //Set to dark mode
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+//                }
+//            } else {
+//                //Changes require are to be light mode
+//                if (isCurrentThemeIsDarkMode) {
+//                    //Set to light mode
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+//                }
+//            }
+//        }
+//    }
 }

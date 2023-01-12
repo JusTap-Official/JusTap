@@ -63,7 +63,7 @@ class SettingsFragment : Fragment() {
         settingsItemList = ArrayList()
 
         settingsItemList.add(SettingsItem(1, R.drawable.edit_icon, "Edit profile", false))
-        settingsItemList.add(SettingsItem(2, R.drawable.moon, "Dark mode", true))
+//        settingsItemList.add(SettingsItem(2, R.drawable.moon, "Dark mode", true))
         settingsItemList.add(SettingsItem(3, R.drawable.scanner_icon, "Customize QR", false))
         settingsItemList.add(SettingsItem(4, R.drawable.info_icon, "About us", false))
         settingsItemList.add(SettingsItem(5, R.drawable.help_icon, "Need help?", false))

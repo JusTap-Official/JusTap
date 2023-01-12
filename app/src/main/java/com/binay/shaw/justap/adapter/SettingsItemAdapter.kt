@@ -27,24 +27,24 @@ class SettingsItemAdapter(
 
     class SettingsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var itemName: TextView
-        var switch: SwitchCompat
+//        var switch: SwitchCompat
         lateinit var sharedPreferences: SharedPreferences
         var icon: ImageView
         var id: Int = 0
 
         init {
             itemName = itemView.findViewById(R.id.settingsItemName)
-            switch = itemView.findViewById(R.id.settingsSwitch)
+//            switch = itemView.findViewById(R.id.settingsSwitch)
             icon = itemView.findViewById(R.id.settingsItemIcon)
             id = itemView.id
 
-            switch.setOnTouchListener { _, event ->
-                event.actionMasked == MotionEvent.ACTION_MOVE
-            }
-
-            switch.setOnClickListener {
-                switchTheme()
-            }
+//            switch.setOnTouchListener { _, event ->
+//                event.actionMasked == MotionEvent.ACTION_MOVE
+//            }
+//
+//            switch.setOnClickListener {
+//                switchTheme()
+//            }
 
             /** IDs relation
              * 0 -> Edit profile Fragment
@@ -75,20 +75,20 @@ class SettingsItemAdapter(
         }
 
 
-        private fun switchTheme() {
-            sharedPreferences =
-                switch.context.getSharedPreferences("ThemeHandler", Context.MODE_PRIVATE)
-            val editor = sharedPreferences.edit()
-            editor.putBoolean("FIRST_TIME", false)
-            if (Util.isDarkMode(switch.context)) {
-                editor.putBoolean("DARK_MODE", false)
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            } else {
-                editor.putBoolean("DARK_MODE", true)
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            }
-            editor.apply()
-        }
+//        private fun switchTheme() {
+//            sharedPreferences =
+//                switch.context.getSharedPreferences("ThemeHandler", Context.MODE_PRIVATE)
+//            val editor = sharedPreferences.edit()
+//            editor.putBoolean("FIRST_TIME", false)
+//            if (Util.isDarkMode(switch.context)) {
+//                editor.putBoolean("DARK_MODE", false)
+//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+//            } else {
+//                editor.putBoolean("DARK_MODE", true)
+//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+//            }
+//            editor.apply()
+//        }
 
 
     }
@@ -102,12 +102,12 @@ class SettingsItemAdapter(
     override fun onBindViewHolder(holder: SettingsViewHolder, position: Int) {
         val newList = settingsItemList[position]
         holder.itemName.text = newList.itemName
-        if (newList.isSwitchOn) {
-            holder.switch.visibility = View.VISIBLE
-            if (Util.isDarkMode(holder.switch.context)) {
-                holder.switch.isChecked = true
-            }
-        }
+//        if (newList.isSwitchOn) {
+//            holder.switch.visibility = View.VISIBLE
+//            if (Util.isDarkMode(holder.switch.context)) {
+//                holder.switch.isChecked = true
+//            }
+//        }
         holder.icon.setImageResource(newList.drawableInt)
         holder.id = position
     }
