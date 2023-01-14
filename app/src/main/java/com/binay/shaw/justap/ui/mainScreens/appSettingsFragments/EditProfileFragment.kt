@@ -184,6 +184,7 @@ class EditProfileFragment : Fragment() {
             negativeOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_color))
             positiveOption.setOnClickListener {
                 bottomSheet.dismiss()
+                binding.progressAnimation.progressParent.visibility = View.VISIBLE
                 Util.log("Save")
 
                 val hashMap: MutableMap<String, Any> = HashMap()
@@ -228,6 +229,7 @@ class EditProfileFragment : Fragment() {
                 editprofileViewmodel.status.observe(viewLifecycleOwner) {
                     if (it == 3) {
                         Glide.get(requireContext()).clearMemory()
+                        binding.progressAnimation.progressParent.visibility = View.GONE
                         Toast.makeText(requireContext(), "Updated Successfully", Toast.LENGTH_SHORT).show()
                         requireActivity().onBackPressedDispatcher.onBackPressed()
                     }
