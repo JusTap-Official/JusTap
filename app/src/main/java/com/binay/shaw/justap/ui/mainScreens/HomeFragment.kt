@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentHomeBinding
@@ -20,6 +21,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var localUserViewModel: LocalUserViewModel
     private lateinit var localUser: LocalUser
+    private var fabTitle: TextView? = null
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -29,6 +31,7 @@ class HomeFragment : Fragment() {
 
         initialization(container)
 
+        handleFab()
 
         return binding.root
     }
@@ -37,6 +40,7 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         binding.root.findViewById<TextView>(R.id.toolbar_title)?.text = requireContext().resources.getString(R.string.Home)
+        fabTitle = binding.fabText
         localUserViewModel = ViewModelProvider(
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
@@ -59,6 +63,24 @@ class HomeFragment : Fragment() {
             }
 
         }
+
+    }
+
+    private fun handleFab() {
+        binding.nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+
+            if (scrollY > oldScrollY) {
+                fabTitle!!.visibility = View.GONE
+//                appbar!!.elevation = 10.0f
+            } else if (scrollX == scrollY) {
+                fabTitle!!.visibility = View.VISIBLE
+//                appbar!!.elevation = 0.0f
+            } else {
+                fabTitle!!.visibility = View.VISIBLE
+
+            }
+
+        })
 
     }
 
