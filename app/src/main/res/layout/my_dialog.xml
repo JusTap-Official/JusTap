@@ -44,7 +44,7 @@
                 android:layout_height="1dp"
                 android:background="@color/card_borderStripe" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/dialogPositive"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
                 android:layout_height="1dp"
                 android:background="@color/card_borderStripe" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/dialogNegative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

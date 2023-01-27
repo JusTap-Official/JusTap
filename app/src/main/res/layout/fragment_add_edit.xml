@@ -31,6 +31,7 @@
             android:id="@+id/account_logo"
             android:layout_width="120dp"
             android:layout_height="120dp"
+            android:visibility="gone"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/logo_black_square" />
 
@@ -50,11 +51,7 @@
             android:layout_height="60dp"
             android:layout_marginTop="10dp"
             android:textColorHint="@android:color/darker_gray"
-            app:boxBackgroundColor="#F5F8FA"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title">
+            app:boxBackgroundColor="#F5F8FA">
 
             <AutoCompleteTextView
                 android:id="@+id/account_name"
@@ -114,7 +111,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/cancelChanges"
                 android:layout_width="160dp"
                 android:layout_height="50dp"
@@ -127,7 +124,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/text_color" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/confirmChanges"
                 android:layout_width="160dp"
                 android:layout_height="50dp"

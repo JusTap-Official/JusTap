@@ -82,7 +82,7 @@
 
         </LinearLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/scanQRCode"
             android:layout_width="175dp"
             android:layout_height="55dp"

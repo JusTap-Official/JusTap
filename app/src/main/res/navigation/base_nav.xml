@@ -9,7 +9,11 @@
         android:id="@+id/home"
         android:name="com.binay.shaw.justap.ui.mainScreens.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_home_to_addEditFragment"
+            app:destination="@id/addEditFragment" />
+    </fragment>
     <fragment
         android:id="@+id/history"
         android:name="com.binay.shaw.justap.ui.mainScreens.HistoryFragment"
@@ -67,5 +71,15 @@
         <argument
             android:name="resultString"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/addEditFragment"
+        android:name="com.binay.shaw.justap.ui.mainScreens.accountFragments.AddEditFragment"
+        android:label="fragment_add_edit"
+        tools:layout="@layout/fragment_add_edit" >
+        <argument
+            android:name="mode"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 </navigation>

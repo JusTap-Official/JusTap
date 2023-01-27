@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.fragment.navArgs
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentAddEditBinding
@@ -18,7 +19,7 @@ class AddEditFragment : Fragment() {
     private lateinit var toolbarText: TextView
     private lateinit var toolbarBackButton: ImageView
     private lateinit var toolbarDeleteIcon: ImageView
-    private val mode: Int = 0
+    private val args: AddEditFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,12 +39,13 @@ class AddEditFragment : Fragment() {
         _binding = FragmentAddEditBinding.inflate(layoutInflater, container, false)
         (activity as MainActivity).supportActionBar?.hide()
         toolbarText = binding.root.findViewById(R.id.toolbar_title)
-        if (mode == 0)
+        if (args.mode == 0)
             toolbarText.text = "Add account"
         else {
             toolbarText.text = "Edit account"
             toolbarDeleteIcon = binding.root.findViewById(R.id.rightIcon)
             toolbarDeleteIcon.visibility = View.VISIBLE
+            binding.confirmChanges.text = "Save changes"
         }
         toolbarBackButton = binding.root.findViewById(R.id.leftIcon)
         toolbarBackButton.visibility = View.VISIBLE

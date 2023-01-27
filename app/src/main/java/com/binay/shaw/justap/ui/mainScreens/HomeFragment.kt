@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentHomeBinding
 import com.binay.shaw.justap.helper.Util
@@ -31,7 +32,12 @@ class HomeFragment : Fragment() {
 
         initialization(container)
 
-        handleFab()
+        binding.fabLayout.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeToAddEditFragment(0)
+            findNavController().navigate(action)
+            binding.fabLayout.visibility = View.GONE
+        }
+
 
         return binding.root
     }
@@ -63,6 +69,8 @@ class HomeFragment : Fragment() {
             }
 
         }
+
+        handleFab()
 
     }
 

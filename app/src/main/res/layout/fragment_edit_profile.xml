@@ -177,7 +177,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/cancelChanges"
                 android:layout_width="160dp"
                 android:layout_height="50dp"
@@ -190,7 +190,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/text_color" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/confirmChanges"
                 android:layout_width="160dp"
                 android:layout_height="50dp"
