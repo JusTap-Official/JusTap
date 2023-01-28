@@ -309,6 +309,7 @@ class EditProfileFragment : Fragment() {
             )
             binding.newNameET.hint = localUser.userName
             binding.newBioET.hint = localUser.userBio
+            binding.newPhoneET.hint = localUser.userPhone
             val profileURL = localUser.userProfilePicture.toString()
             val bannerURL = localUser.userBannerPicture.toString()
             if (profileURL.isNotEmpty())

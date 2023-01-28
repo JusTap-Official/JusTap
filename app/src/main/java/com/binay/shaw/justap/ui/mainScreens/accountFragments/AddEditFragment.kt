@@ -47,6 +47,10 @@ class AddEditFragment : Fragment() {
     ): View {
         initialization(container)
 
+        binding.cancelChanges.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
 
         binding.info.setOnClickListener {
             val dialog = ParagraphModalBinding.inflate(layoutInflater)
@@ -219,7 +223,13 @@ class AddEditFragment : Fragment() {
             binding.confirmChanges.text = "Save changes"
         }
         toolbarBackButton = binding.root.findViewById(R.id.leftIcon)
-        toolbarBackButton.visibility = View.VISIBLE
+        toolbarBackButton.apply {
+            visibility = View.VISIBLE
+            setOnClickListener {
+                requireActivity().onBackPressedDispatcher.onBackPressed()
+            }
+        }
+
 
 //        accountNameList = Arrays.asList(resources.getStringArray(R.array.account_names))
         // Account List
