@@ -7,5 +7,6 @@ package com.binay.shaw.justap.model
 data class Accounts(
     val accountID: Int,
     val accountName: String,
-    val accountData: String
+    val accountData: String,
+    val showAccount: Boolean
 )

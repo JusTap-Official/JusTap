@@ -33,7 +33,7 @@ class HomeFragment : Fragment() {
         initialization(container)
 
         binding.fabLayout.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeToAddEditFragment(0)
+            val action = HomeFragmentDirections.actionHomeToAddEditFragment(localUser.userID, 0)
             findNavController().navigate(action)
             binding.fabLayout.visibility = View.GONE
         }

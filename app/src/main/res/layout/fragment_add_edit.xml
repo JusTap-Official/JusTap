@@ -59,6 +59,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/roboto"
                 android:hint="Select"
+                android:textSize="16sp"
                 android:inputType="none"
                 android:paddingStart="16dp"
                 android:textColor="@color/black" />
@@ -81,7 +82,7 @@
                 android:textSize="16sp" />
 
             <ImageView
-                android:id="@+id/qrInfo"
+                android:id="@+id/info"
                 android:layout_marginStart="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -140,6 +141,14 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <include
+        android:id="@+id/progress_animation"
+        layout="@layout/progress_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 

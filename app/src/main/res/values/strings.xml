@@ -30,4 +30,23 @@
     <string name="AboutMe">About me</string>
     <string name="LogIn">Log In</string>
     <string name="SendResetLink">Send reset link</string>
+
+    <string-array name="account_names">
+        <item>Phone</item>
+        <item>Email</item>
+        <item>Instagram</item>
+        <item>LinkedIn</item>
+        <item>Facebook</item>
+        <item>Twitter</item>
+        <item>YouTube</item>
+        <item>Snapchat</item>
+        <item>Twitch</item>
+        <item>Website</item>
+        <item>Discord</item>
+        <item>LinkTree</item>
+        <item>Custom Link</item>
+        <item>Telegram</item>
+        <item>Spotify</item>
+        <item>WhatsApp</item>
+    </string-array>
 </resources>
