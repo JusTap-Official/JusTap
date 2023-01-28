@@ -12,13 +12,16 @@ import android.widget.AutoCompleteTextView
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentAddEditBinding
+import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
+import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
 import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
 import com.binay.shaw.justap.viewModel.AddEditViewModel
@@ -84,24 +87,7 @@ class AddEditFragment : Fragment() {
             val accountData = binding.accountData.text.toString()
             if (dataIsValid(selectedAccount, accountData)) {
                 //Save data here
-                lifecycleScope.launch {
-                    selectedAccount?.let { it1 ->
-                        getStringIndex(it1)
-                    }?.let { index ->
-                        if (args.mode == 0) {
-                            viewModel.saveData(firebaseDatabase, args.userID, index, selectedAccount!!, accountData)
-                            viewModel.status.observe(viewLifecycleOwner) {
-                                if (it == 1) {
-                                    Toast.makeText(requireContext(), "Saved Data", Toast.LENGTH_SHORT).show()
-                                    requireActivity().onBackPressedDispatcher.onBackPressed()
-                                } else if (it == 2) {
-                                    Toast.makeText(requireContext(), "Failed to add", Toast.LENGTH_SHORT).show()
-                                }
-                            }
-                        } else
-                            viewModel.updateData(firebaseDatabase, args.userID, index, selectedAccount!!, accountData)
-                    }
-                }
+                saveData(accountData)
             } else {
                 Toast.makeText(requireContext(), "Fill all input fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -111,6 +97,89 @@ class AddEditFragment : Fragment() {
 
 
         return binding.root
+    }
+
+    private fun saveData(accountData: String) {
+
+        val dialog = OptionsModalBinding.inflate(layoutInflater)
+        val bottomSheet = requireContext().createBottomSheet()
+        dialog.apply {
+
+            optionsHeading.text = requireContext().resources.getString(R.string.ConfirmChanges)
+            optionsContent.text =
+                requireContext().resources.getString(R.string.ConfirmChangesDescription)
+            positiveOption.text = requireContext().resources.getString(R.string.SaveChanges)
+            positiveOption.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.negative_red
+                )
+            )
+            negativeOption.text = requireContext().resources.getString(R.string.DontSave)
+            negativeOption.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.text_color
+                )
+            )
+            positiveOption.setOnClickListener {
+                bottomSheet.dismiss()
+                binding.progressAnimation.progressParent.visibility = View.VISIBLE
+
+                //Saving Data
+                lifecycleScope.launch {
+                    selectedAccount?.let { it1 ->
+                        getStringIndex(it1)
+                    }?.let { index ->
+                        if (args.mode == 0) {
+                            //Save new Data
+                            viewModel.saveData(
+                                firebaseDatabase,
+                                args.userID,
+                                index,
+                                selectedAccount!!,
+                                accountData
+                            )
+                            viewModel.status.observe(viewLifecycleOwner) {
+                                if (it == 1) {
+                                    //Success
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Saved Data",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    binding.progressAnimation.progressParent.visibility = View.GONE
+                                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                                } else if (it == 2) {
+                                    //Fail
+                                    binding.progressAnimation.progressParent.visibility = View.GONE
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Failed to add",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                        } else {
+                            //Update current Data
+                            viewModel.updateData(
+                                firebaseDatabase,
+                                args.userID,
+                                index,
+                                selectedAccount!!,
+                                accountData
+                            )
+                        }
+                    }
+                }
+
+            }
+            negativeOption.setOnClickListener {
+                bottomSheet.dismiss()
+                Util.log("Don't Save")
+            }
+            dialog.root.setBottomSheet(bottomSheet)
+        }
     }
 
     private fun getStringIndex(string: String): Int {
