@@ -29,6 +29,7 @@ import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.model.SettingsItem
 import com.binay.shaw.justap.ui.authentication.SignIn_Screen
+import com.binay.shaw.justap.viewModel.AccountsViewModel
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
@@ -46,6 +47,7 @@ class SettingsFragment : Fragment() {
     private lateinit var settingsItemAdapter: SettingsItemAdapter
     private lateinit var localUserDatabase: LocalUserDatabase
     private lateinit var localUserViewModel: LocalUserViewModel
+    private lateinit var accountsViewModel: AccountsViewModel
     private lateinit var logoutIV: ImageView
     private lateinit var feedback: ImageView
     private lateinit var localUser: LocalUser
@@ -110,6 +112,11 @@ class SettingsFragment : Fragment() {
             ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
         )[LocalUserViewModel::class.java]
 
+        accountsViewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+        )[AccountsViewModel::class.java]
+
         localUserViewModel.fetchUser.observe(viewLifecycleOwner) {
             if (it != null) {
                 localUser = LocalUser(
@@ -157,8 +164,7 @@ class SettingsFragment : Fragment() {
                 lifecycleScope.launch(Dispatchers.Main) {
                     val signOutFromFirebase = launch(Dispatchers.IO) { FirebaseAuth.getInstance().signOut() }
                     signOutFromFirebase.join()
-                    val removeLocalUserData = launch(Dispatchers.IO) { localUserViewModel.deleteUser() }
-                    removeLocalUserData.join()
+                    LocalUserDatabase.getDatabase(requireContext()).clearTables()
                     withContext(Dispatchers.Main) {
                         val intent = Intent(requireContext(), SignIn_Screen::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK

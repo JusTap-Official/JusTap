@@ -49,14 +49,13 @@ class AddEditViewModel : ViewModel() {
                 saveInRoomDB(accountsViewModel, account)
             }
 
-            status.apply {
-                value = value?.plus(createAccountObjectInFirebase.await())
-//                postValue(createAccountObjectInRoomDB.await())
-            }
+            status.value = createAccountObjectInFirebase.await() + createAccountObjectInRoomDB.await()
 
         }
 
         createNewDataInFirebaseAndRoomDB.join()
+        status.value = status.value?.plus(1)
+
 
 
     }

@@ -149,7 +149,7 @@ class AddEditFragment : Fragment() {
                                 accountData
                             )
                             viewModel.status.observe(viewLifecycleOwner) {
-                                if (it == 1) {
+                                if (it == 3) {
                                     //Success
                                     Toast.makeText(
                                         requireContext(),
@@ -158,15 +158,16 @@ class AddEditFragment : Fragment() {
                                     ).show()
                                     binding.progressAnimation.progressParent.visibility = View.GONE
                                     requireActivity().onBackPressedDispatcher.onBackPressed()
-                                } else if (it == 2) {
-                                    //Fail
-                                    binding.progressAnimation.progressParent.visibility = View.GONE
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Failed to add",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
                                 }
+//                                else {
+//                                    //Fail
+//                                    binding.progressAnimation.progressParent.visibility = View.GONE
+//                                    Toast.makeText(
+//                                        requireContext(),
+//                                        "Failed to add",
+//                                        Toast.LENGTH_SHORT
+//                                    ).show()
+//                                }
                             }
                         } else {
                             //Update current Data

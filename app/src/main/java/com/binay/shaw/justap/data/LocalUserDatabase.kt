@@ -6,6 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.model.LocalUser
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /**
  * Created by binay on 02,January,2023
@@ -39,6 +42,12 @@ abstract class LocalUserDatabase : RoomDatabase() {
                 INSTANCE = instance
                 return instance
             }
+        }
+    }
+
+    fun clearTables() {
+        CoroutineScope(Dispatchers.IO).launch {
+            this@LocalUserDatabase.clearAllTables()
         }
     }
 }
