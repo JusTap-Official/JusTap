@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.Accounts
+import com.binay.shaw.justap.model.LocalUser
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
@@ -28,6 +29,7 @@ class AddEditViewModel : ViewModel() {
      * */
 
     suspend fun saveData(
+        accountsViewModel: AccountsViewModel,
         firebaseDatabase: FirebaseDatabase,
         userID: String,
         accountID: Int,
@@ -43,9 +45,9 @@ class AddEditViewModel : ViewModel() {
                 saveInFirebase(firebaseDatabase, userID, account)
             }
 
-//            val createAccountObjectInRoomDB = viewModelScope.async(Dispatchers.IO) {
-//                saveInRoomDB(account)
-//            }
+            val createAccountObjectInRoomDB = viewModelScope.async(Dispatchers.IO) {
+                saveInRoomDB(accountsViewModel, account)
+            }
 
             status.apply {
                 value = value?.plus(createAccountObjectInFirebase.await())
@@ -67,17 +69,13 @@ class AddEditViewModel : ViewModel() {
     ): Int {
 
         return withContext(Dispatchers.IO) {
-            var postUpdate = 0
             val ref = firebaseDatabase.getReference("/Users/$userID/accounts/${account.accountID}")
             ref.setValue(account).addOnSuccessListener {
                 Util.log("Successfully updated data in firebase")
-                postUpdate = 1
             }.addOnFailureListener {
                 Util.log("Failed to update data in firebase")
-                postUpdate = 2
             }.await()
-            postUpdate
-
+            1
         }
 
     }
@@ -93,12 +91,15 @@ class AddEditViewModel : ViewModel() {
     }
 
 
-//    private suspend fun saveInRoomDB(account: Accounts) : Int {
-//        return withContext(Dispatchers.IO) {
-//
-//            1
-//        }
-//    }
+    private suspend fun saveInRoomDB(
+        accountsViewModel: AccountsViewModel,
+        account: Accounts
+    ): Int {
+        return withContext(Dispatchers.IO) {
+            accountsViewModel.insertAccount(account)
+            1
+        }
+    }
 
 
 }

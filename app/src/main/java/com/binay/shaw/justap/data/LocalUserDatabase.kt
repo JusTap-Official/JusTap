@@ -4,16 +4,19 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.model.LocalUser
 
 /**
  * Created by binay on 02,January,2023
  */
 
-@Database(entities = [LocalUser::class], version = 2)
+@Database(entities = [LocalUser::class, Accounts::class], version = 3)
 abstract class LocalUserDatabase : RoomDatabase() {
 
     abstract fun localUserDao(): LocalUserDAO
+
+    abstract fun accountsDao(): AccountsDAO
 
     companion object {
         @Volatile

@@ -24,6 +24,7 @@ import com.binay.shaw.justap.databinding.ParagraphModalBinding
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
 import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
+import com.binay.shaw.justap.viewModel.AccountsViewModel
 import com.binay.shaw.justap.viewModel.AddEditViewModel
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.launch
@@ -39,12 +40,14 @@ class AddEditFragment : Fragment() {
     private var selectedAccount: String? = null
     private lateinit var viewModel: AddEditViewModel
     private lateinit var firebaseDatabase: FirebaseDatabase
+    private lateinit var accountsViewModel: AccountsViewModel
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         initialization(container)
 
         binding.cancelChanges.setOnClickListener {
@@ -138,6 +141,7 @@ class AddEditFragment : Fragment() {
                         if (args.mode == 0) {
                             //Save new Data
                             viewModel.saveData(
+                                accountsViewModel,
                                 firebaseDatabase,
                                 args.userID,
                                 index,
@@ -209,6 +213,11 @@ class AddEditFragment : Fragment() {
     private fun initialization(container: ViewGroup?) {
         _binding = FragmentAddEditBinding.inflate(layoutInflater, container, false)
         viewModel = ViewModelProvider(requireActivity())[AddEditViewModel::class.java]
+        accountsViewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.AndroidViewModelFactory
+                .getInstance(requireActivity().application)
+        )[AccountsViewModel::class.java]
         firebaseDatabase = FirebaseDatabase.getInstance()
         //Top app bar
         (activity as MainActivity).supportActionBar?.hide()
