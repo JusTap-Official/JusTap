@@ -31,9 +31,9 @@
             android:id="@+id/account_logo"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:visibility="gone"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/logo_black_square" />
+            android:src="@drawable/logo_black_square"
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -59,84 +59,93 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/roboto"
                 android:hint="Select"
-                android:textSize="16sp"
                 android:inputType="none"
                 android:paddingStart="16dp"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
+            android:id="@+id/remainingLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="start"
-            android:layout_marginTop="40dp"
-            android:orientation="horizontal">
+            android:visibility="gone"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto"
-                android:text="Account Url / Username"
-                android:textColor="@color/text_color"
-                android:textSize="16sp" />
+                android:layout_marginTop="40dp"
+                android:gravity="start"
+                android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/info"
-                android:layout_marginStart="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/info_icon" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto"
+                    android:text="Account Url / Username"
+                    android:textColor="@color/text_color"
+                    android:textSize="16sp" />
 
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/info_icon" />
 
-        <EditText
-            android:id="@+id/account_data"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edittext_box"
-            android:hint="\@username123"
-            android:paddingStart="16dp"
-            tools:ignore="RtlSymmetry" />
+            </LinearLayout>
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/cancelChanges"
-                android:layout_width="160dp"
+            <EditText
+                android:id="@+id/account_data"
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/secondary_button"
-                android:fontFamily="@font/roboto"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:text="Cancel"
-                android:textAllCaps="false"
-                android:textColor="@color/text_color" />
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edittext_box"
+                android:hint="\@username123"
+                android:paddingStart="16dp"
+                tools:ignore="RtlSymmetry" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/confirmChanges"
-                android:layout_width="160dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="10dp"
-                android:background="@drawable/normal_button"
-                android:fontFamily="@font/roboto"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:text="Add account"
-                android:textAllCaps="false"
-                android:textColor="@color/bg_color" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="20dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/cancelChanges"
+                    android:layout_width="160dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/secondary_button"
+                    android:fontFamily="@font/roboto"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="Cancel"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_color" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/confirmChanges"
+                    android:layout_width="160dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/normal_button"
+                    android:fontFamily="@font/roboto"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="Add account"
+                    android:textAllCaps="false"
+                    android:textColor="@color/bg_color" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -149,8 +158,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

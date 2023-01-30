@@ -208,6 +208,7 @@ class AddEditFragment : Fragment() {
             setImageResource(imageID)
             visibility = View.VISIBLE
         }
+        binding.remainingLayout.visibility = View.VISIBLE
     }
 
     private fun initialization(container: ViewGroup?) {

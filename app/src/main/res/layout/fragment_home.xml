@@ -95,32 +95,22 @@
 
     </LinearLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nested_scroll_view"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/accounts_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:fillViewport="true"
-        android:layout_marginBottom="100dp"
-        android:layout_marginTop="16dp"
+        android:background="@android:color/white"
+        android:nestedScrollingEnabled="false"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/accounts_rv"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@android:color/white"
-                tools:listitem="@layout/social_account_layout"
-                android:nestedScrollingEnabled="false" />
-
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+        android:paddingBottom="130dp"
+        android:paddingTop="10dp"
+        android:clipToPadding="false"
+        tools:listitem="@layout/social_account_layout" />
 
     <LinearLayout
         android:id="@+id/fab_layout"
@@ -159,12 +149,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
-            android:text="Add account"
             android:paddingEnd="10dp"
-            android:textSize="14sp"
+            android:text="Add account"
             android:textAllCaps="false"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
 
     </LinearLayout>
 

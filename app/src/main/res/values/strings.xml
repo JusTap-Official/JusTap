@@ -49,4 +49,23 @@
         <item>Spotify</item>
         <item>WhatsApp</item>
     </string-array>
+
+    <string-array name="icon_id">
+        <item>R.drawable.phone</item>
+        <item>R.drawable.email</item>
+        <item>R.drawable.instagram</item>
+        <item>R.drawable.linkedin</item>
+        <item>R.drawable.facebook</item>
+        <item>R.drawable.twitter</item>
+        <item>R.drawable.twitter</item>
+        <item>R.drawable.snapchat</item>
+        <item>R.drawable.twitch</item>
+        <item>R.drawable.website</item>
+        <item>R.drawable.discord</item>
+        <item>R.drawable.linktree</item>
+        <item>R.drawable.custom_link</item>
+        <item>R.drawable.telegram</item>
+        <item>R.drawable.spotify</item>
+        <item>R.drawable.whatsapp</item>
+    </string-array>
 </resources>

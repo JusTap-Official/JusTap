@@ -20,6 +20,6 @@ interface AccountsDAO {
     @Query("UPDATE accountsDB SET accountData = :data WHERE accountID = :id")
     fun updateAccount(data: String, id: Int)
 
-    @Query("SELECT * FROM accountsDB")
+    @Query(value = "SELECT * FROM accountsDB")
     fun getAccountsList() : LiveData<List<Accounts>>
 }
