@@ -2,12 +2,11 @@ package com.binay.shaw.justap.ui.mainScreens
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.widget.NestedScrollView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -51,6 +50,7 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initialization(container: ViewGroup?) {
 
         _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
@@ -80,7 +80,7 @@ class HomeFragment : Fragment() {
                 it.userProfilePicture,
                 it.userBannerPicture
             )
-            binding.profileNameTV.text  = localUser.userName
+            binding.profileNameTV.text  = "Hi ${localUser.userName.split(" ")[0]}"
             binding.profileBioTV.text = localUser.userBio
             val profileURL = localUser.userProfilePicture!!
             if (profileURL.isNotEmpty()) {
@@ -90,34 +90,28 @@ class HomeFragment : Fragment() {
         }
 
         accountsViewModel.getAllUser.observe(viewLifecycleOwner, Observer {
-//            accountsList = it
             Util.log(it.toString())
-//            recyclerViewAdapter = AccountsItemAdapter(requireContext(), it)
             recyclerViewAdapter.setData(it)
             recyclerViewAdapter.notifyDataSetChanged()
         })
 
-//        handleFab()
+        handleOnScrollFAB()
 
     }
 
-//    private fun handleFab() {
-//        binding.nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-//
-//            if (scrollY > oldScrollY) {
-//                fabTitle!!.visibility = View.GONE
-////                appbar!!.elevation = 10.0f
-//            } else if (scrollX == scrollY) {
-//                fabTitle!!.visibility = View.VISIBLE
-////                appbar!!.elevation = 0.0f
-//            } else {
-//                fabTitle!!.visibility = View.VISIBLE
-//
-//            }
-//
-//        })
-//
-//    }
+    private fun handleOnScrollFAB() {
+        binding.accountsRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0 && binding.fabText.visibility == View.VISIBLE) {
+                    binding.fabText.visibility = View.GONE
+                } else if (dy < 0 && binding.fabText.visibility != View.VISIBLE) {
+                    binding.fabText.visibility = View.VISIBLE
+                }
+            }
+        })
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
