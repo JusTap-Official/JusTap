@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -20,6 +21,7 @@ class SignIn_ViewModel : ViewModel() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val errorMessage = MutableLiveData<String>()
     var firebaseUser = MutableLiveData<User>()
+    var firebaseAccounts = MutableLiveData<List<Accounts>>()
 
     /** Status values
      * 0 - Default
@@ -83,6 +85,25 @@ class SignIn_ViewModel : ViewModel() {
                                     val profilePicture = it.child("profilePictureURI").value.toString()
                                     val profileBanner = it.child("profileBannerURI").value.toString()
                                     val bio = it.child("bio").value.toString()
+
+                                    if (it.hasChild("accounts")) {
+                                        val accountList = mutableListOf<Accounts>()
+                                        val listOfAccounts = it.child("accounts").value as List<*>
+                                        for (account in listOfAccounts.listIterator()) {
+                                            if (account != null) {
+                                                val map = account as HashMap<*, *>
+                                                val acc = Accounts(
+                                                    (map["accountID"] as Long).toInt(),
+                                                    map["accountName"] as String,
+                                                    map["accountData"] as String,
+                                                    map["showAccount"] as Boolean
+                                                )
+                                                Util.log("\n ${map.values}")
+                                                accountList.add(acc)
+                                            }
+                                        }
+                                        firebaseAccounts.value = accountList
+                                    }
 
                                     firebaseUser.value = User(
                                         id, name,

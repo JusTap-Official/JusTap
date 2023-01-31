@@ -20,6 +20,7 @@ import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.databinding.ActivitySignInScreenBinding
 import com.binay.shaw.justap.model.LocalUser
+import com.binay.shaw.justap.viewModel.AccountsViewModel
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
 import com.binay.shaw.justap.viewModel.SignIn_ViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -89,6 +90,7 @@ class SignIn_Screen : AppCompatActivity() {
                 }
                 7 -> {
                     val user = viewModel.firebaseUser.value
+                    val listAccounts = viewModel.firebaseAccounts.value
                     if (user != null) {
                         val localUserViewModel: LocalUserViewModel =
                             ViewModelProvider(
@@ -100,6 +102,18 @@ class SignIn_Screen : AppCompatActivity() {
                             user.email, user.bio, user.phone, user.profilePictureURI, user.profileBannerURI
                         )
                         localUserViewModel.insertUser(lu)
+
+
+                        val accountsViewModel: AccountsViewModel =
+                            ViewModelProvider(
+                                this@SignIn_Screen,
+                                ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+                            )[AccountsViewModel::class.java]
+                        if (listAccounts != null) {
+                            for (singleAccount in listAccounts) {
+                                accountsViewModel.insertAccount(singleAccount)
+                            }
+                        }
                     }
                     Toast.makeText(this@SignIn_Screen, "Successfully Logged In", Toast.LENGTH_SHORT)
                         .show()
