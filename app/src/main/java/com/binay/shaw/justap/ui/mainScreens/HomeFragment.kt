@@ -42,12 +42,20 @@ class HomeFragment : Fragment() {
         initialization(container)
 
         binding.fabLayout.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeToAddEditFragment(localUser.userID, 0)
-            findNavController().navigate(action)
-            binding.fabLayout.visibility = View.GONE
+            gotoAddAccountFragment()
+        }
+
+        binding.fabCircle.setOnClickListener {
+            gotoAddAccountFragment()
         }
 
         return binding.root
+    }
+
+    private fun gotoAddAccountFragment() {
+        val action = HomeFragmentDirections.actionHomeToAddEditFragment(0)
+        findNavController().navigate(action)
+        binding.fabLayout.visibility = View.GONE
     }
 
     @SuppressLint("SetTextI18n")
@@ -80,6 +88,7 @@ class HomeFragment : Fragment() {
                 it.userProfilePicture,
                 it.userBannerPicture
             )
+            Util.userID = it.userID
             binding.profileNameTV.text  = "Hi ${localUser.userName.split(" ")[0]}"
             binding.profileBioTV.text = localUser.userBio
             val profileURL = localUser.userProfilePicture!!

@@ -5,6 +5,7 @@
     android:layout_height="100dp"
     android:paddingStart="16dp"
     android:layout_marginTop="5dp"
+    android:background="@android:color/transparent"
     android:paddingEnd="16dp">
 
     <androidx.cardview.widget.CardView

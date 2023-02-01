@@ -2,17 +2,14 @@ package com.binay.shaw.justap.ui.mainScreens.accountFragments
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
@@ -43,6 +40,37 @@ class AddEditFragment : Fragment() {
     private lateinit var accountsViewModel: AccountsViewModel
 
 
+    private fun chooseAccount(it: String) {
+
+        when (it) {
+            "Phone" -> {
+                binding.accountData.inputType = InputType.TYPE_CLASS_PHONE
+                setImageOnAccountNameChange(R.drawable.phone)
+            }
+            "Email" -> {
+                binding.accountData.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+                setImageOnAccountNameChange(R.drawable.email)
+            }
+            "Instagram" -> setImageOnAccountNameChange(R.drawable.instagram)
+            "LinkedIn" -> setImageOnAccountNameChange(R.drawable.linkedin)
+            "Facebook" -> setImageOnAccountNameChange(R.drawable.facebook)
+            "Twitter" -> setImageOnAccountNameChange(R.drawable.twitter)
+            "YouTube" -> setImageOnAccountNameChange(R.drawable.youtube)
+            "Snapchat" -> setImageOnAccountNameChange(R.drawable.snapchat)
+            "Twitch" -> setImageOnAccountNameChange(R.drawable.twitch)
+            "Website" -> setImageOnAccountNameChange(R.drawable.website)
+            "Discord" -> setImageOnAccountNameChange(R.drawable.discord)
+            "LinkTree" -> setImageOnAccountNameChange(R.drawable.linktree)
+            "Custom Link" -> setImageOnAccountNameChange(R.drawable.custom_link)
+            "Telegram" -> setImageOnAccountNameChange(R.drawable.telegram)
+            "Spotify" -> setImageOnAccountNameChange(R.drawable.spotify)
+            "WhatsApp" -> {
+                binding.accountData.inputType = InputType.TYPE_CLASS_PHONE
+                setImageOnAccountNameChange(R.drawable.whatsapp)
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -69,24 +97,7 @@ class AddEditFragment : Fragment() {
 
         binding.accountName.afterTextChanged {
             selectedAccount = it
-            when (it) {
-                "Phone" -> setImageOnAccountNameChange(R.drawable.phone)
-                "Email" -> setImageOnAccountNameChange(R.drawable.email)
-                "Instagram" -> setImageOnAccountNameChange(R.drawable.instagram)
-                "LinkedIn" -> setImageOnAccountNameChange(R.drawable.linkedin)
-                "Facebook" -> setImageOnAccountNameChange(R.drawable.facebook)
-                "Twitter" -> setImageOnAccountNameChange(R.drawable.twitter)
-                "YouTube" -> setImageOnAccountNameChange(R.drawable.youtube)
-                "Snapchat" -> setImageOnAccountNameChange(R.drawable.snapchat)
-                "Twitch" -> setImageOnAccountNameChange(R.drawable.twitch)
-                "Website" -> setImageOnAccountNameChange(R.drawable.website)
-                "Discord" -> setImageOnAccountNameChange(R.drawable.discord)
-                "LinkTree" -> setImageOnAccountNameChange(R.drawable.linktree)
-                "Custom Link" -> setImageOnAccountNameChange(R.drawable.custom_link)
-                "Telegram" -> setImageOnAccountNameChange(R.drawable.telegram)
-                "Spotify" -> setImageOnAccountNameChange(R.drawable.spotify)
-                "WhatsApp" -> setImageOnAccountNameChange(R.drawable.whatsapp)
-            }
+            chooseAccount(it)
         }
 
 
@@ -100,8 +111,6 @@ class AddEditFragment : Fragment() {
                 return@setOnClickListener
             }
         }
-
-
 
         return binding.root
     }
@@ -143,13 +152,14 @@ class AddEditFragment : Fragment() {
                             viewModel.saveData(
                                 accountsViewModel,
                                 firebaseDatabase,
-                                args.userID,
+                                Util.userID,
                                 index,
                                 selectedAccount!!,
                                 accountData
                             )
                             viewModel.status.observe(viewLifecycleOwner) {
                                 if (it == 3) {
+                                    viewModel.status.value = 0
                                     //Success
                                     Toast.makeText(
                                         requireContext(),
@@ -173,7 +183,7 @@ class AddEditFragment : Fragment() {
                             //Update current Data
                             viewModel.updateData(
                                 firebaseDatabase,
-                                args.userID,
+                                Util.userID,
                                 index,
                                 selectedAccount!!,
                                 accountData
@@ -205,11 +215,13 @@ class AddEditFragment : Fragment() {
     }
 
     private fun setImageOnAccountNameChange(imageID: Int) {
-        binding.accountLogo.apply {
-            setImageResource(imageID)
-            visibility = View.VISIBLE
+        binding.apply {
+            accountLogo.apply {
+                setImageResource(imageID)
+                visibility = View.VISIBLE
+            }
+            remainingLayout.visibility = View.VISIBLE
         }
-        binding.remainingLayout.visibility = View.VISIBLE
     }
 
     private fun initialization(container: ViewGroup?) {
@@ -227,11 +239,22 @@ class AddEditFragment : Fragment() {
         //Mode = 0 -> Add | Mode = 1 -> Edit
         if (args.mode == 0)
             toolbarText.text = "Add account"
-        else {
+        else if (args.mode == 1) {
             toolbarText.text = "Edit account"
             toolbarDeleteIcon = binding.root.findViewById(R.id.rightIcon)
             toolbarDeleteIcon.visibility = View.VISIBLE
             binding.confirmChanges.text = "Save changes"
+            args.accounts?.let {
+                chooseAccount(it.accountName)
+                binding.apply {
+                    remainingLayout.visibility = View.VISIBLE
+                    menuAccount.visibility = View.GONE
+                    accountNameHeader.visibility = View.GONE
+                    accountData.hint = it.accountData
+                    confirmChanges.text = "Update changes"
+                }
+            }
+
         }
         toolbarBackButton = binding.root.findViewById(R.id.leftIcon)
         toolbarBackButton.apply {
@@ -242,7 +265,6 @@ class AddEditFragment : Fragment() {
         }
 
 
-//        accountNameList = Arrays.asList(resources.getStringArray(R.array.account_names))
         // Account List
         val accounts = resources.getStringArray(R.array.account_names)
         val arrayAdapter = ArrayAdapter(

@@ -41,6 +41,8 @@ import java.io.OutputStream
  */
 class Util {
     companion object {
+
+        var userID: String = "0"
         fun log(message: String) {
             Log.d("", message)
         }
