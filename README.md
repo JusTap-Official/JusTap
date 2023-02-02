@@ -1,5 +1,9 @@
-# JusTap 🔒
-JusTap is simple android app used to share a bunch of your contact / social media links or usernames via a single QR Code. It can also replace normal Business cards and used a mode to socialize easily in events.
+
+![Cover](https://user-images.githubusercontent.com/62587060/216439920-a319c685-58ed-4a06-9699-874594f9fbb2.png)
+
+# JusTap 📱
+JusTap is simple app used to share a bunch of contact/social links/username via a single QR Code. <br/>
+It can also replace normal Business cards and used a mode to socialize easily in events.
 
 ## About this app 🎯
 JusTap is a contacts exchanging app that is meant to solve the issue of exchanging contacts, business cards and related issues with QR Code Technology with is highly encrypted.
