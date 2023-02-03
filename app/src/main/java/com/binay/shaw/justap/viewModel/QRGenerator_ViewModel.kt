@@ -33,7 +33,7 @@ class QRGenerator_ViewModel : ViewModel() {
         color1: Int,
         color2: Int
     ) {
-        val message = "binayshaw7777@gmail.com"
+        val message = Util.userID
 
         val encryption = Encryption.getDefault("Key", "Salt", ByteArray(16))
 

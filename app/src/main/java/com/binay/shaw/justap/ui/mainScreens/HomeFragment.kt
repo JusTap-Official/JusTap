@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -53,9 +54,35 @@ class HomeFragment : Fragment() {
     }
 
     private fun gotoAddAccountFragment() {
+        getUnusedAccountsList()
+        if (Util.unusedAccounts.size == 0) {
+            Toast.makeText(requireContext(), "You've used all accounts", Toast.LENGTH_SHORT).show()
+            return
+        }
         val action = HomeFragmentDirections.actionHomeToAddEditFragment(0)
         findNavController().navigate(action)
         binding.fabLayout.visibility = View.GONE
+    }
+
+    private fun getUnusedAccountsList() {
+        val unusedAccounts = mutableListOf<String>()
+        val usedAccounts = mutableListOf<String>()
+
+        accountsViewModel.getAllUser.observe(viewLifecycleOwner) {
+            val allAccounts = resources.getStringArray(R.array.account_names)
+            for (l in it) {
+                usedAccounts.add(l.accountName)
+            }
+
+            for (account in allAccounts) {
+                if (!usedAccounts.contains(account))
+                    unusedAccounts.add(account)
+            }
+
+        }
+
+        Util.unusedAccounts = unusedAccounts
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -98,11 +125,11 @@ class HomeFragment : Fragment() {
 
         }
 
-        accountsViewModel.getAllUser.observe(viewLifecycleOwner, Observer {
+        accountsViewModel.getAllUser.observe(viewLifecycleOwner) {
             Util.log(it.toString())
             recyclerViewAdapter.setData(it)
             recyclerViewAdapter.notifyDataSetChanged()
-        })
+        }
 
         handleOnScrollFAB()
 

@@ -266,7 +266,8 @@ class AddEditFragment : Fragment() {
 
 
         // Account List
-        val accounts = resources.getStringArray(R.array.account_names)
+//        val accounts = resources.getStringArray(R.array.account_names)
+        val accounts = Util.unusedAccounts
         val arrayAdapter = ArrayAdapter(
             requireContext(),
             com.google.android.material.R.layout.support_simple_spinner_dropdown_item,

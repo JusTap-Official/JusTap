@@ -43,6 +43,9 @@ class Util {
     companion object {
 
         var userID: String = "0"
+
+        var unusedAccounts = mutableListOf<String>()
+
         fun log(message: String) {
             Log.d("", message)
         }
