@@ -88,20 +88,18 @@ class SignIn_ViewModel : ViewModel() {
 
                                     if (it.hasChild("accounts")) {
                                         val accountList = mutableListOf<Accounts>()
-                                        val listOfAccounts = it.child("accounts").value as List<*>
-                                        for (account in listOfAccounts.listIterator()) {
-                                            if (account != null) {
-                                                val map = account as HashMap<*, *>
-                                                val acc = Accounts(
-                                                    (map["accountID"] as Long).toInt(),
-                                                    map["accountName"] as String,
-                                                    map["accountData"] as String,
-                                                    map["showAccount"] as Boolean
-                                                )
-                                                Util.log("\n ${map.values}")
-                                                accountList.add(acc)
-                                            }
+
+                                        it.child("accounts").children.forEach { iter ->
+                                            val tempMap = iter.value as java.util.HashMap<*, *>
+                                            val acc = Accounts(
+                                                (tempMap["accountID"] as Long).toInt(),
+                                                tempMap["accountName"] as String,
+                                                tempMap["accountData"] as String,
+                                                tempMap["showAccount"] as Boolean
+                                            )
+                                            accountList.add(acc)
                                         }
+
                                         firebaseAccounts.value = accountList
                                     }
 

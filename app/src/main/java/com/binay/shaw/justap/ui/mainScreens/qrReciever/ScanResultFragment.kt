@@ -10,14 +10,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentScanResultBinding
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.Accounts
-import com.binay.shaw.justap.ui.mainScreens.accountFragments.AddEditFragmentArgs
+import com.binay.shaw.justap.model.User
+import com.binay.shaw.justap.viewModel.ScanResultViewModel
 
 class ResultFragment : Fragment() {
 
@@ -27,7 +28,9 @@ class ResultFragment : Fragment() {
     private lateinit var toolbarTitle: TextView
     private lateinit var toolBarButton: ImageView
     private var showCaseAccountsList = mutableListOf<Accounts>()
+    private lateinit var resultUser: User
     private val RESUME_URL: String = "https://binayshaw7777.github.io/BinayShaw.github.io/Binay%20Shaw%20CSE%2024.pdf"
+    private lateinit var viewModel: ScanResultViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,17 +39,11 @@ class ResultFragment : Fragment() {
 
         initialization(container)
 
-        if (args.isResult) {
-            setUpResultView()
+        if (args.isResult && !args.resultString.isNullOrEmpty()) {
+            setUpResultView(args.resultString!!)
         } else {
             setUpAboutMe()
         }
-
-        val userID = args.resultString
-        Util.log("UserID: $userID")
-
-
-
 
 
         return binding.root
@@ -66,43 +63,43 @@ class ResultFragment : Fragment() {
                 }
             }
         }
-        showCaseAccountsList = getDeveloperAccounts()
+        viewModel.getDevelopersAccount()
+        viewModel.showCaseAccountsList.observe(viewLifecycleOwner) {
+            showCaseAccountsList.addAll(it)
+        }
     }
 
-    private fun getDeveloperAccounts(): MutableList<Accounts> {
-        val accounts = mutableListOf<Accounts>()
 
-        accounts.add(Accounts(
-            1,
-            "Email",
-            "binayshaw7777@gmail.com",
-            true
-        ))
-        accounts.add(Accounts(
-            3,
-            "LinkedIn",
-            "https://www.linkedin.com/in/binayshaw7777/",
-            true
-        ))
-        accounts.add(
-            Accounts(
-            5,
-            "Twitter",
-                "https://twitter.com/binayplays7777",
-                true
-        ))
-        accounts.add(
-            Accounts(
-            9,
-            "Website",
-                "https://binayshaw7777.github.io/BinayShaw.github.io/",
-                true
-        ))
 
-        return accounts
-    }
+    private fun setUpResultView(resultString: String) {
 
-    private fun setUpResultView() {
+
+        viewModel.getDataFromUserID(resultString)
+
+        viewModel.showCaseAccountsList.observe(viewLifecycleOwner) {
+            showCaseAccountsList.addAll(it)
+            Util.log("ACCCCCC: $showCaseAccountsList")
+        }
+
+        viewModel.scanResultUser.observe(viewLifecycleOwner) {
+            val tempUser = it
+            Util.log("usersss: $tempUser")
+
+            binding.apply {
+                profileNameTV.text = tempUser.name
+                if (!tempUser.bio.isNullOrEmpty())
+                    profileBioTV.text = tempUser.bio
+                else
+                    profileBioTV.visibility = View.GONE
+
+                if (!tempUser.profilePictureURI.isNullOrEmpty()) {
+                    Util.loadImagesWithGlide(binding.profileImage, tempUser.profilePictureURI)
+                }
+                if (!tempUser.profileBannerURI.isNullOrEmpty()) {
+                    Util.loadImagesWithGlide(binding.profileBannerIV, tempUser.profileBannerURI)
+                }
+            }
+        }
 
     }
 
@@ -112,15 +109,13 @@ class ResultFragment : Fragment() {
         toolbarTitle = binding.root.findViewById(R.id.toolbar_title)
         toolBarButton = binding.root.findViewById(R.id.leftIcon)
         toolBarButton.visibility = View.VISIBLE
+        viewModel = ViewModelProvider(this@ResultFragment)[ScanResultViewModel::class.java]
 
         if (args.isResult) {
             toolbarTitle.text = "Scan completed"
         } else {
             toolbarTitle.text = "About me"
         }
-
-
-
 
     }
 
