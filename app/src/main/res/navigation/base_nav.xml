@@ -31,8 +31,8 @@
             android:id="@+id/action_settings_to_editProfileFragment"
             app:destination="@id/editProfileFragment" />
         <action
-            android:id="@+id/action_settings_to_aboutMeFragment"
-            app:destination="@id/aboutMeFragment" />
+            android:id="@+id/action_settings_to_resultFragment"
+            app:destination="@id/resultFragment" />
     </fragment>
     <fragment
         android:id="@+id/scanner"
@@ -73,7 +73,12 @@
         tools:layout="@layout/fragment_scan_result" >
         <argument
             android:name="resultString"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="isResult"
+            app:argType="boolean"
+            android:defaultValue="true" />
     </fragment>
     <fragment
         android:id="@+id/addEditFragment"
@@ -90,9 +95,5 @@
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>
-    <fragment
-        android:id="@+id/aboutMeFragment"
-        android:name="com.binay.shaw.justap.ui.mainScreens.appSettingsFragments.AboutMeFragment"
-        android:label="fragment_about_me"
-        tools:layout="@layout/fragment_about_me" />
+
 </navigation>

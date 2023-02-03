@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.SettingsItem
+import com.binay.shaw.justap.ui.mainScreens.SettingsFragmentDirections
 
 /**
  * Created by binay on 02,January,2023
@@ -61,7 +62,11 @@ class SettingsItemAdapter(
                             .navigate(R.id.action_settings_to_editProfileFragment)
                     }
                     2 -> {
-
+                        val action = SettingsFragmentDirections.actionSettingsToResultFragment(
+                            resultString = null,
+                            isResult = false
+                        )
+                        Navigation.findNavController(it).navigate(action)
                     }
                     3 -> {
 

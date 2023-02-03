@@ -45,7 +45,6 @@ class ScannerFragment : Fragment() {
 
 
     private lateinit var pvScan: androidx.camera.view.PreviewView
-    private lateinit var scanResultTextView: TextView
     private var cameraProvider: ProcessCameraProvider? = null
     private var cameraSelector: CameraSelector? = null
     private var lensFacing = CameraSelector.LENS_FACING_BACK
@@ -97,7 +96,6 @@ class ScannerFragment : Fragment() {
         toolbarTitle.text = requireContext().resources.getString(R.string.Scanner)
         toolBarButton = binding.root.findViewById(R.id.leftIcon)
         toolBarButton.visibility = View.VISIBLE
-        scanResultTextView = binding.scanResultTextView
         pvScan = binding.scanPreview
 
     }
@@ -205,9 +203,11 @@ class ScannerFragment : Fragment() {
                     val encryption = Encryption.getDefault("Key", "Salt", ByteArray(16))
                     val decrypted = encryption.decryptOrNull(code)
 
-                    val bundle = Bundle()
-                    bundle.putString("decryptedString", decrypted)
-                    findNavController().navigate(R.id.resultFragment, bundle)
+                    val action = ScannerFragmentDirections.actionScannerFragmentToResultFragment(
+                        resultString = decrypted,
+                        isResult = true
+                    )
+                    findNavController().navigate(action)
                 }
             }.addOnFailureListener {
 
