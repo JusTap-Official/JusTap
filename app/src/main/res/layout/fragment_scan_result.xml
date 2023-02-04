@@ -61,6 +61,7 @@
         app:layout_constraintVertical_bias="0.4" />
 
     <LinearLayout
+        android:id="@+id/linearLayout6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -95,15 +96,39 @@
             android:id="@+id/downloadResume"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Download Resume"
+            android:layout_marginTop="20dp"
             android:background="@drawable/normal_button"
-            android:textColor="@color/white"
-            android:textAllCaps="false"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
-            android:layout_marginTop="20dp"
-            android:visibility="gone"/>
+            android:text="Download Resume"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:visibility="gone" />
 
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/accounts_rv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/transparent"
+        android:clipToPadding="false"
+        android:nestedScrollingEnabled="false"
+        android:paddingBottom="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout6"
+        tools:listitem="@layout/social_account_layout" />
+
+    <include
+        android:id="@+id/progress_animation"
+        layout="@layout/progress_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

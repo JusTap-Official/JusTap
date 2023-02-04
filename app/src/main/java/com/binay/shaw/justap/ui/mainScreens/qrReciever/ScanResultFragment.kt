@@ -12,8 +12,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
+import com.binay.shaw.justap.adapter.AccountsItemAdapter
+import com.binay.shaw.justap.adapter.ResultItemAdapter
 import com.binay.shaw.justap.databinding.FragmentScanResultBinding
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.Accounts
@@ -31,6 +35,8 @@ class ResultFragment : Fragment() {
     private lateinit var resultUser: User
     private val RESUME_URL: String = "https://binayshaw7777.github.io/BinayShaw.github.io/Binay%20Shaw%20CSE%2024.pdf"
     private lateinit var viewModel: ScanResultViewModel
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerViewAdapter: ResultItemAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,7 +71,10 @@ class ResultFragment : Fragment() {
         }
         viewModel.getDevelopersAccount()
         viewModel.showCaseAccountsList.observe(viewLifecycleOwner) {
+            binding.progressAnimation.progressParent.visibility = View.GONE
             showCaseAccountsList.addAll(it)
+            recyclerViewAdapter.setData(it)
+            recyclerViewAdapter.notifyDataSetChanged()
         }
     }
 
@@ -79,9 +88,12 @@ class ResultFragment : Fragment() {
         viewModel.showCaseAccountsList.observe(viewLifecycleOwner) {
             showCaseAccountsList.addAll(it)
             Util.log("ACCCCCC: $showCaseAccountsList")
+            recyclerViewAdapter.setData(it)
+            recyclerViewAdapter.notifyDataSetChanged()
         }
 
         viewModel.scanResultUser.observe(viewLifecycleOwner) {
+            binding.progressAnimation.progressParent.visibility = View.GONE
             val tempUser = it
             Util.log("usersss: $tempUser")
 
@@ -110,6 +122,12 @@ class ResultFragment : Fragment() {
         toolBarButton = binding.root.findViewById(R.id.leftIcon)
         toolBarButton.visibility = View.VISIBLE
         viewModel = ViewModelProvider(this@ResultFragment)[ScanResultViewModel::class.java]
+        recyclerViewAdapter = ResultItemAdapter(requireContext())
+        recyclerView = binding.accountsRv
+        recyclerView.adapter = recyclerViewAdapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.progressAnimation.progressParent.visibility = View.VISIBLE
+        binding.progressAnimation.progressText.text = "Preparing Result"
 
         if (args.isResult) {
             toolbarTitle.text = "Scan completed"

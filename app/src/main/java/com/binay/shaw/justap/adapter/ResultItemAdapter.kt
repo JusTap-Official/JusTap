@@ -1,28 +1,31 @@
 package com.binay.shaw.justap.adapter
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
-import androidx.navigation.findNavController
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.model.Accounts
-import com.binay.shaw.justap.ui.mainScreens.HomeFragmentDirections
 
 /**
- * Created by binay on 30,January,2023
+ * Created by binay on 04,February,2023
  */
+
 private var accountsList: List<Accounts> = ArrayList()
 private lateinit var currentAccount: Accounts
 
-class AccountsItemAdapter(
-    val context: Context
-) : RecyclerView.Adapter<AccountsItemAdapter.AccountsViewHolder>() {
 
+class ResultItemAdapter(
+    val context: Context
+) : RecyclerView.Adapter<ResultItemAdapter.AccountsViewHolder>(){
 
     class AccountsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val accountName: TextView
@@ -37,13 +40,20 @@ class AccountsItemAdapter(
             showAccount = itemView.findViewById(R.id.accountSwitch)
 
             itemView.rootView.setOnClickListener {
-                val action = HomeFragmentDirections.actionHomeToAddEditFragment(1, Accounts(
-                    -1,
-                    accountName.text.toString(),
-                    accountData.text.toString(),
-                    showAccount.isEnabled)
-                )
-                it.findNavController().navigate(action)
+                Toast.makeText(itemView.context, "Toast", Toast.LENGTH_SHORT).show()
+
+
+
+
+
+
+
+
+
+                val URLString = ""
+                val download = Intent(
+                Intent.ACTION_VIEW, Uri.parse(URLString))
+                itemView.context.startActivity(download)
             }
         }
     }
@@ -54,12 +64,15 @@ class AccountsItemAdapter(
         return AccountsViewHolder(view)
     }
 
+
+
     override fun onBindViewHolder(holder: AccountsViewHolder, position: Int) {
         val account = accountsList[position]
         currentAccount = account
         holder.accountName.text = account.accountName
         holder.accountData.text = account.accountData
         holder.showAccount.isChecked = account.showAccount
+        holder.showAccount.visibility = View.GONE
         when (account.accountName) {
             "Phone" -> holder.accountsIcon.setImageResource(R.drawable.phone)
             "Email" -> holder.accountsIcon.setImageResource(R.drawable.email)
@@ -88,5 +101,4 @@ class AccountsItemAdapter(
         accountsList = accounts
         notifyDataSetChanged()
     }
-
 }
