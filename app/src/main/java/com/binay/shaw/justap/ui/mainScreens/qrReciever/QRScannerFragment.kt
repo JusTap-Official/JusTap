@@ -3,7 +3,9 @@ package com.binay.shaw.justap.ui.mainScreens.qrReciever
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Vibrator
@@ -24,6 +26,7 @@ import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentQRScannerBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
 import com.binay.shaw.justap.helper.Encryption
+import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
 import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
 import com.google.mlkit.vision.barcode.BarcodeScanner
@@ -43,7 +46,8 @@ class ScannerFragment : Fragment() {
         private const val RATIO_16_9_VALUE = 16.0 / 9.0
     }
 
-
+    private var preDefinedListOfSocialQRData = mutableListOf<String>()
+    private var dataFound = false
     private lateinit var pvScan: androidx.camera.view.PreviewView
     private var cameraProvider: ProcessCameraProvider? = null
     private var cameraSelector: CameraSelector? = null
@@ -98,6 +102,22 @@ class ScannerFragment : Fragment() {
         toolBarButton.visibility = View.VISIBLE
         pvScan = binding.scanPreview
 
+        preDefinedListOfSocialQRData.apply {
+            add("https://wa.me/qr/")
+            add("http://wa.me/qr/")
+            add("http://instagram")
+            add("https://instagram")
+            add("https://facebook")
+            add("https://twitter")
+            add("http://facebook")
+            add("http://twitter")
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (dataFound)
+            requireActivity().onBackPressedDispatcher.onBackPressed()
     }
 
 
@@ -195,25 +215,50 @@ class ScannerFragment : Fragment() {
 
         barcodeScanner.process(inputImage).addOnSuccessListener { barcodes ->
                 val barcode = barcodes.getOrNull(0)
-                barcode?.rawValue?.let { code ->
+                barcode?.rawValue?.let { data ->
                     cameraProvider?.unbindAll()
+                    dataFound = true
 
                     val vibratorService = requireContext().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
                     vibratorService.vibrate(500)
                     val encryption = Encryption.getDefault("Key", "Salt", ByteArray(16))
-                    val decrypted = encryption.decryptOrNull(code)
+                    Util.log("Scanned Result: $data")
 
-                    val action = ScannerFragmentDirections.actionScannerFragmentToResultFragment(
-                        resultString = decrypted,
-                        isResult = true
-                    )
-                    findNavController().navigate(action)
+                    if (isLink(data)) {
+                        Util.log("IS LINK")
+                        for (regex in preDefinedListOfSocialQRData) {
+                            if (data.contains(regex))
+                                openLink(data)
+                        }
+
+                    } else {
+                        val decrypted = encryption.decryptOrNull(data)
+
+                        val action =
+                            ScannerFragmentDirections.actionScannerFragmentToResultFragment(
+                                resultString = decrypted,
+                                isResult = true
+                            )
+                        findNavController().navigate(action)
+                    }
                 }
             }.addOnFailureListener {
 
             }.addOnCompleteListener {
                 imageProxy.close()
             }
+    }
+
+    private fun isLink(data: String) : Boolean {
+        if (data.contains("https://") || data.contains("http://"))
+            return true
+        return false
+    }
+
+    private fun openLink(link: String) {
+        Util.log("Link Opened is: $link")
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+        startActivity(intent)
     }
 
     private fun aspectRatio(width: Int, height: Int): Int {

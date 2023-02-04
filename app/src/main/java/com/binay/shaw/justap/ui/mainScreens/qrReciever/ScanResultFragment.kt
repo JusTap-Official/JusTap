@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
-import com.binay.shaw.justap.adapter.AccountsItemAdapter
 import com.binay.shaw.justap.adapter.ResultItemAdapter
 import com.binay.shaw.justap.databinding.FragmentScanResultBinding
 import com.binay.shaw.justap.helper.Util
@@ -32,7 +31,6 @@ class ResultFragment : Fragment() {
     private lateinit var toolbarTitle: TextView
     private lateinit var toolBarButton: ImageView
     private var showCaseAccountsList = mutableListOf<Accounts>()
-    private lateinit var resultUser: User
     private val RESUME_URL: String = "https://binayshaw7777.github.io/BinayShaw.github.io/Binay%20Shaw%20CSE%2024.pdf"
     private lateinit var viewModel: ScanResultViewModel
     private lateinit var recyclerView: RecyclerView
@@ -45,7 +43,10 @@ class ResultFragment : Fragment() {
 
         initialization(container)
 
-        if (args.isResult && !args.resultString.isNullOrEmpty()) {
+        val data = args.resultString
+        Util.log("Scanned Result: $data")
+
+        if (args.isResult && !data.isNullOrEmpty()) {
             setUpResultView(args.resultString!!)
         } else {
             setUpAboutMe()
@@ -79,13 +80,13 @@ class ResultFragment : Fragment() {
     }
 
 
-
     private fun setUpResultView(resultString: String) {
 
 
         viewModel.getDataFromUserID(resultString)
 
         viewModel.showCaseAccountsList.observe(viewLifecycleOwner) {
+            recyclerViewAdapter
             showCaseAccountsList.addAll(it)
             Util.log("ACCCCCC: $showCaseAccountsList")
             recyclerViewAdapter.setData(it)
@@ -95,7 +96,7 @@ class ResultFragment : Fragment() {
         viewModel.scanResultUser.observe(viewLifecycleOwner) {
             binding.progressAnimation.progressParent.visibility = View.GONE
             val tempUser = it
-            Util.log("usersss: $tempUser")
+            recyclerViewAdapter.setUserData(it.name, it.email)
 
             binding.apply {
                 profileNameTV.text = tempUser.name
