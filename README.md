@@ -2,15 +2,18 @@
 ![Cover](https://user-images.githubusercontent.com/62587060/216439920-a319c685-58ed-4a06-9699-874594f9fbb2.png)
 
 # JusTap 📱
-JusTap is simple app used to share a bunch of contact/social links/username via a single QR Code. <br/>
-It can also replace normal Business cards and used a mode to socialize easily in events.
+JusTap is a mobile app for secure and easy exchange of contact information and social links using QR codes, replacing traditional business cards.<br>
+Ideal for networking events.
 
-## About this app 🎯
-JusTap is a contacts exchanging app that is meant to solve the issue of exchanging contacts, business cards and related issues with QR Code Technology with is highly encrypted.
+<i><b>JusTap makes exchanging contacts a breeze - just tap, scan, and connect!<b></i>
 
-## Purpose of this app 🤨
-I see a lot of people finding it difficult to ask for contacts or socials specially during an event or occaisson. Even in business meetings is a place of gathering of strangers who might want to exchange contacts.
-Well, JusTap is meant to solve this issue with just a tap! User just have to create and account and add their social accounts they want to share with the other person via QR Code.
+## Purpose of this app 🔥
+Meeting new people / person? Want to exchange multiple contacts/socials? JusTap is here for the rescue.
+
+The purpose of JusTap is to provide a simple and secure solution for exchanging contact information and social links.<br>
+Traditional methods such as business cards can be cluttered and difficult to manage, but with JusTap, all of your important details can be shared with others quickly and easily through the use of QR codes.<br>
+Whether you're at an event or just meeting someone new, JusTap makes it simple to exchange contact information and stay connected.<br>
+The app revolutionizes the process of exchanging contacts, and provides a sophisticated, yet straightforward solution for sharing your details with others.
 
 ## Made With 🛠
 
@@ -35,7 +38,8 @@ Well, JusTap is meant to solve this issue with just a tap! User just have to cre
 
 This app uses [MVVM(Model View View-Model)](https://developer.android.com/topic/architecture#recommended-app-arch) architecture.
 
-![68747470733a2f2f646576656c6f7065722e616e64726f69642e636f6d2f746f7069632f6c69627261726965732f6172636869746563747572652f696d616765732f66696e616c2d6172636869746563747572652e706e67 (1)](https://user-images.githubusercontent.com/80090908/210182757-555d34a6-4771-46d5-80b4-d362491c5a2b.png)
+![Architecture Flow](https://user-images.githubusercontent.com/62587060/216827577-bca54a6a-80c0-4ece-ba06-ac885a1e7f55.png)
+
 
 ## Connect with me:
 - [LinkedIn](https://www.linkedin.com/in/binayshaw7777/) ![Linkedin](https://i.stack.imgur.com/gVE0j.png)
