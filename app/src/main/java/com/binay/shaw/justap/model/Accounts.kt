@@ -11,7 +11,7 @@ import java.io.Serializable
 @Entity(tableName = "accountsDB")
 data class Accounts(
     @PrimaryKey(autoGenerate = false)
-    val accountID: Int,
+    var accountID: Int,
     val accountName: String,
     val accountData: String,
     val showAccount: Boolean

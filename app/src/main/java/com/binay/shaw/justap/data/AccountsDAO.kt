@@ -17,6 +17,9 @@ interface AccountsDAO {
     @Delete
     suspend fun deleteAccount(accounts: Accounts)
 
+    @Query("DELETE FROM accountsDB WHERE accountID = :accountID")
+    suspend fun deleteEntryById(accountID: Int)
+
     @Query("UPDATE accountsDB SET accountData = :data WHERE accountID = :id")
     fun updateAccount(data: String, id: Int)
 

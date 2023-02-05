@@ -12,6 +12,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
@@ -82,7 +84,6 @@ class AddEditFragment : Fragment() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
-
         binding.info.setOnClickListener {
             val dialog = ParagraphModalBinding.inflate(layoutInflater)
             val bottomSheet = requireActivity().createBottomSheet()
@@ -93,6 +94,11 @@ class AddEditFragment : Fragment() {
             }
             dialog.root.setBottomSheet(bottomSheet)
         }
+
+        toolbarDeleteIcon.setOnClickListener {
+            deleteAccount()
+        }
+
 
 
         binding.accountName.afterTextChanged {
@@ -115,13 +121,76 @@ class AddEditFragment : Fragment() {
         return binding.root
     }
 
-    private fun saveData(accountData: String) {
+    private fun deleteAccount() {
 
         val dialog = OptionsModalBinding.inflate(layoutInflater)
         val bottomSheet = requireContext().createBottomSheet()
         dialog.apply {
 
             optionsHeading.text = requireContext().resources.getString(R.string.ConfirmChanges)
+            optionsContent.text =
+                "Are you sure you want to delete this account type?"
+            positiveOption.text = "Delete"
+            positiveOption.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.negative_red
+                )
+            )
+            negativeOption.text = "Don't delete"
+            negativeOption.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.text_color
+                )
+            )
+            positiveOption.setOnClickListener {
+                bottomSheet.dismiss()
+                if (Util.checkForInternet(requireContext())) {
+                    binding.progressAnimation.progressParent.visibility = View.VISIBLE
+
+                    args.accounts?.let {
+                        val array = resources.getStringArray(R.array.account_names)
+                        val index = array.indexOf(it.accountName)
+                        it.accountID = index
+
+                        lifecycleScope.launch {
+                            viewModel.deleteEntry(accountsViewModel, firebaseDatabase, it)
+
+                            viewModel.deleteStatus.observe(viewLifecycleOwner) { status ->
+                                if (status == 3) {
+                                    Util.log("Status value = $status")
+                                    viewModel.deleteStatus.postValue(0)
+                                    Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT)
+                                        .show()
+                                    binding.progressAnimation.progressParent.visibility = View.GONE
+                                    findNavController().navigateUp()
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "No Internet!", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+            }
+            negativeOption.setOnClickListener {
+                bottomSheet.dismiss()
+                Util.log("Don't Delete")
+            }
+            dialog.root.setBottomSheet(bottomSheet)
+        }
+    }
+
+
+    private fun saveData(accountData: String) {
+
+        val dialog = OptionsModalBinding.inflate(layoutInflater)
+        val bottomSheet = requireContext().createBottomSheet()
+        dialog.apply {
+
+            optionsHeading.text =
+                requireContext().resources.getString(R.string.ConfirmChanges)
             optionsContent.text =
                 requireContext().resources.getString(R.string.ConfirmChangesDescription)
             positiveOption.text = requireContext().resources.getString(R.string.SaveChanges)
@@ -140,58 +209,59 @@ class AddEditFragment : Fragment() {
             )
             positiveOption.setOnClickListener {
                 bottomSheet.dismiss()
-                binding.progressAnimation.progressParent.visibility = View.VISIBLE
+                if (Util.checkForInternet(requireContext())) {
+                    binding.progressAnimation.progressParent.visibility = View.VISIBLE
 
-                //Saving Data
-                lifecycleScope.launch {
-                    selectedAccount?.let { it1 ->
-                        getStringIndex(it1)
-                    }?.let { index ->
-                        if (args.mode == 0) {
-                            //Save new Data
-                            viewModel.saveData(
-                                accountsViewModel,
-                                firebaseDatabase,
-                                Util.userID,
-                                index,
-                                selectedAccount!!,
-                                accountData
-                            )
-                            viewModel.status.observe(viewLifecycleOwner) {
-                                if (it == 3) {
-                                    viewModel.status.value = 0
-                                    //Success
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Saved Data",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    binding.progressAnimation.progressParent.visibility = View.GONE
-                                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                    //Saving Data
+                    lifecycleScope.launch {
+                        selectedAccount?.let { it1 ->
+                            getStringIndex(it1)
+                        }?.let { index ->
+                            if (args.mode == 0) {
+                                //Save new Data
+                                viewModel.saveData(
+                                    accountsViewModel,
+                                    firebaseDatabase,
+                                    Util.userID,
+                                    index,
+                                    selectedAccount!!,
+                                    accountData
+                                )
+                                viewModel.saveStatus.observe(viewLifecycleOwner) {
+                                    if (it == 3) {
+                                        viewModel.saveStatus.value = 0
+                                        //Success
+                                        Toast.makeText(
+                                            requireContext(),
+                                            "Saved Data",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        binding.progressAnimation.progressParent.visibility =
+                                            View.GONE
+                                        requireActivity().onBackPressedDispatcher.onBackPressed()
+                                    }
                                 }
-//                                else {
-//                                    //Fail
-//                                    binding.progressAnimation.progressParent.visibility = View.GONE
-//                                    Toast.makeText(
-//                                        requireContext(),
-//                                        "Failed to add",
-//                                        Toast.LENGTH_SHORT
-//                                    ).show()
-//                                }
+                            } else {
+                                //Update current Data
+                                viewModel.updateData(
+                                    firebaseDatabase,
+                                    Util.userID,
+                                    index,
+                                    selectedAccount!!,
+                                    accountData
+                                )
                             }
-                        } else {
-                            //Update current Data
-                            viewModel.updateData(
-                                firebaseDatabase,
-                                Util.userID,
-                                index,
-                                selectedAccount!!,
-                                accountData
-                            )
                         }
-                    }
-                }
 
+                    }
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "No Internet!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@setOnClickListener
+                }
             }
             negativeOption.setOnClickListener {
                 bottomSheet.dismiss()
@@ -236,12 +306,12 @@ class AddEditFragment : Fragment() {
         //Top app bar
         (activity as MainActivity).supportActionBar?.hide()
         toolbarText = binding.root.findViewById(R.id.toolbar_title)
+        toolbarDeleteIcon = binding.root.findViewById(R.id.rightIcon)
         //Mode = 0 -> Add | Mode = 1 -> Edit
         if (args.mode == 0)
             toolbarText.text = "Add account"
         else if (args.mode == 1) {
             toolbarText.text = "Edit account"
-            toolbarDeleteIcon = binding.root.findViewById(R.id.rightIcon)
             toolbarDeleteIcon.visibility = View.VISIBLE
             binding.confirmChanges.text = "Save changes"
             args.accounts?.let {
@@ -254,7 +324,6 @@ class AddEditFragment : Fragment() {
                     confirmChanges.text = "Update changes"
                 }
             }
-
         }
         toolbarBackButton = binding.root.findViewById(R.id.leftIcon)
         toolbarBackButton.apply {
@@ -278,9 +347,21 @@ class AddEditFragment : Fragment() {
 
     private fun AutoCompleteTextView.afterTextChanged(afterTextChanged: (String) -> Unit) {
         this.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+            }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
+            }
 
             override fun afterTextChanged(editable: Editable?) {
                 afterTextChanged.invoke(editable.toString())

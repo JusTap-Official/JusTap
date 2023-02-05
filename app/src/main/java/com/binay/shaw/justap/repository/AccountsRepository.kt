@@ -24,4 +24,8 @@ class AccountsRepository(
     suspend fun updateAccount(newData: String, id: Int) {
         accountsDAO.updateAccount(data = newData, id = id)
     }
+
+    suspend fun deleteEntryById(accountID: Int) {
+        accountsDAO.deleteEntryById(accountID)
+    }
 }

@@ -15,10 +15,12 @@ import kotlinx.coroutines.tasks.await
  */
 class AddEditViewModel : ViewModel() {
 
-    var status = MutableLiveData<Int>()
+    val saveStatus = MutableLiveData<Int>()
+    val deleteStatus = MutableLiveData<Int>()
 
     init {
-        status.value = 0
+        saveStatus.value = 0
+        deleteStatus.value = 0
     }
 
     /**
@@ -49,13 +51,13 @@ class AddEditViewModel : ViewModel() {
                 saveInRoomDB(accountsViewModel, account)
             }
 
-            status.value = createAccountObjectInFirebase.await() + createAccountObjectInRoomDB.await()
+            saveStatus.value =
+                createAccountObjectInFirebase.await() + createAccountObjectInRoomDB.await()
 
         }
 
         createNewDataInFirebaseAndRoomDB.join()
-        status.value = status.value?.plus(1)
-
+        saveStatus.value = saveStatus.value?.plus(1)
 
 
     }
@@ -97,6 +99,68 @@ class AddEditViewModel : ViewModel() {
         return withContext(Dispatchers.IO) {
             accountsViewModel.insertAccount(account)
             1
+        }
+    }
+
+
+    suspend fun deleteEntry(
+        accountsViewModel: AccountsViewModel,
+        firebaseDatabase: FirebaseDatabase,
+        account: Accounts
+    ) = viewModelScope.launch {
+
+        val deleteDataInFirebaseAndRoomDB = launch {
+
+            val deleteAccountObjectInFirebase = viewModelScope.async(Dispatchers.IO) {
+                deleteInFirebase(firebaseDatabase, Util.userID, account)
+            }
+
+            val deleteAccountObjectInRoomDB = viewModelScope.async(Dispatchers.IO) {
+                deleteInRoomDB(accountsViewModel, account)
+            }
+
+            deleteStatus.value = (
+                deleteAccountObjectInFirebase.await() + deleteAccountObjectInRoomDB.await()
+            )
+        }
+
+        deleteDataInFirebaseAndRoomDB.join()
+        deleteStatus.value = deleteStatus.value?.plus(1)
+
+    }
+
+    private suspend fun deleteInRoomDB(
+        accountsViewModel: AccountsViewModel,
+        account: Accounts
+    ): Int {
+
+        return withContext(Dispatchers.IO) {
+            try {
+                accountsViewModel.deleteAccount(account)
+                Util.log("Deleted from RoomDB")
+                1
+            } catch (e: java.lang.Exception) {
+                Util.log("Error: $e")
+                5
+            }
+
+        }
+    }
+
+    private suspend fun deleteInFirebase(
+        firebaseDatabase: FirebaseDatabase,
+        userID: String,
+        account: Accounts
+    ): Int {
+        return withContext(Dispatchers.IO) {
+            val ref = firebaseDatabase.getReference("/Users/$userID/accounts/")
+            try {
+                ref.child("${account.accountID}").removeValue()
+                Util.log("Deleted from Firebase")
+                1
+            } catch (e: java.lang.Exception) {
+                5
+            }
         }
     }
 

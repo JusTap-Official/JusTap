@@ -23,6 +23,10 @@ import com.binay.shaw.justap.viewModel.AccountsViewModel
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
 
 class HomeFragment : Fragment() {
+    override fun onResume() {
+        super.onResume()
+        recyclerViewAdapter.notifyDataSetChanged()
+    }
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -41,6 +45,9 @@ class HomeFragment : Fragment() {
     ): View {
 
         initialization(container)
+
+        recyclerViewAdapter.notifyDataSetChanged()
+
 
         binding.fabLayout.setOnClickListener {
             gotoAddAccountFragment()

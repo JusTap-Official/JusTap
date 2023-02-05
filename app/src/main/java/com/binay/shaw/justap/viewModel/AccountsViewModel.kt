@@ -43,4 +43,9 @@ class AccountsViewModel(
             repository.insertAccount(accounts)
         }
 
+    fun deleteEntryById(accountID: Int) =
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteEntryById(accountID)
+    }
+
 }
