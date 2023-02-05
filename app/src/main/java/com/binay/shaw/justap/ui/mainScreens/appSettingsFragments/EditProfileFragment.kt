@@ -3,10 +3,7 @@ package com.binay.shaw.justap.ui.mainScreens.appSettingsFragments
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -185,6 +182,10 @@ class EditProfileFragment : Fragment() {
             positiveOption.setOnClickListener {
                 bottomSheet.dismiss()
                 binding.progressAnimation.progressParent.visibility = View.VISIBLE
+
+                requireActivity().window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+
                 Util.log("Save")
 
                 val hashMap: MutableMap<String, Any> = HashMap()
@@ -230,6 +231,7 @@ class EditProfileFragment : Fragment() {
                     if (it == 3) {
                         Glide.get(requireContext()).clearMemory()
                         binding.progressAnimation.progressParent.visibility = View.GONE
+                        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                         Toast.makeText(requireContext(), "Updated Successfully", Toast.LENGTH_SHORT).show()
                         requireActivity().onBackPressedDispatcher.onBackPressed()
                     }
