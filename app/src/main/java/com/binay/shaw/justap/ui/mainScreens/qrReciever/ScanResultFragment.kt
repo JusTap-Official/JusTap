@@ -96,9 +96,14 @@ class ResultFragment : Fragment() {
 
         viewModel.showCaseAccountsList.observe(viewLifecycleOwner) {
             recyclerViewAdapter
-            showCaseAccountsList.addAll(it)
+            showCaseAccountsList.clear()
+            for (accounts in it) {
+                if (accounts.showAccount == true) {
+                    showCaseAccountsList.add(accounts)
+                }
+            }
             Util.log("ACCCCCC: $showCaseAccountsList")
-            recyclerViewAdapter.setData(it)
+            recyclerViewAdapter.setData(showCaseAccountsList)
             recyclerViewAdapter.notifyDataSetChanged()
         }
 
