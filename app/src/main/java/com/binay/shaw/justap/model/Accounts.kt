@@ -14,5 +14,5 @@ data class Accounts(
     var accountID: Int,
     val accountName: String,
     var accountData: String,
-    val showAccount: Boolean
+    var showAccount: Boolean
 ) : Serializable

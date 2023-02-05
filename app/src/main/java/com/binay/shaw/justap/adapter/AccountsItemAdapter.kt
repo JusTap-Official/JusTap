@@ -2,6 +2,7 @@ package com.binay.shaw.justap.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -20,7 +21,8 @@ private var accountsList: List<Accounts> = ArrayList()
 private lateinit var currentAccount: Accounts
 
 class AccountsItemAdapter(
-    val context: Context
+    val context: Context,
+    private val listener: (Accounts) -> Unit
 ) : RecyclerView.Adapter<AccountsItemAdapter.AccountsViewHolder>() {
 
 
@@ -60,6 +62,14 @@ class AccountsItemAdapter(
         holder.accountName.text = account.accountName
         holder.accountData.text = account.accountData
         holder.showAccount.isChecked = account.showAccount
+
+        holder.showAccount.setOnTouchListener { _, event ->
+                event.actionMasked == MotionEvent.ACTION_MOVE
+        }
+
+        holder.showAccount.setOnClickListener {
+            listener(account)
+        }
         when (account.accountName) {
             "Phone" -> holder.accountsIcon.setImageResource(R.drawable.phone)
             "Email" -> holder.accountsIcon.setImageResource(R.drawable.email)

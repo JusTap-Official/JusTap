@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +21,11 @@ import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.viewModel.AccountsViewModel
+import com.binay.shaw.justap.viewModel.AddEditViewModel
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
+import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
     override fun onResume() {
@@ -34,7 +39,7 @@ class HomeFragment : Fragment() {
     private lateinit var accountsViewModel: AccountsViewModel
     private lateinit var localUser: LocalUser
     private var fabTitle: TextView? = null
-    private lateinit var accountsList: List<Accounts>
+    private var accountsList = mutableListOf<Accounts>()
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdapter: AccountsItemAdapter
 
@@ -98,7 +103,36 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         binding.root.findViewById<TextView>(R.id.toolbar_title)?.text = requireContext().resources.getString(R.string.Home)
         fabTitle = binding.fabText
-        recyclerViewAdapter = AccountsItemAdapter(requireContext())
+//        recyclerViewAdapter = AccountsItemAdapter(requireContext())
+        val addEditViewModel = ViewModelProvider(requireActivity())[AddEditViewModel::class.java]
+        recyclerViewAdapter = AccountsItemAdapter(requireContext()) { newAccount ->
+            // handle item click
+            for (account in accountsList) {
+                if (account.accountID == newAccount.accountID) {
+                    val currentState = account.showAccount
+                    account.showAccount = !currentState
+
+                    Util.log("Current account to be updated = $account\n with a old value of $currentState")
+
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        addEditViewModel.updateEntry(
+                            accountsViewModel,
+                            FirebaseDatabase.getInstance(),
+                            account
+                        )
+                    }
+
+                    addEditViewModel.updateStatus.observe(viewLifecycleOwner) {
+                        if (it == 3) {
+                            Toast.makeText(requireContext(), "Updated", Toast.LENGTH_SHORT).show()
+                            addEditViewModel.updateStatus.value = 0
+                            recyclerViewAdapter.notifyDataSetChanged()
+                        }
+                    }
+                }
+            }
+
+        }
         recyclerView = binding.accountsRv
         recyclerView.adapter = recyclerViewAdapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -134,6 +168,8 @@ class HomeFragment : Fragment() {
 
         accountsViewModel.getAllUser.observe(viewLifecycleOwner) {
             Util.log(it.toString())
+            accountsList.clear()
+            accountsList.addAll(it)
             recyclerViewAdapter.setData(it)
             recyclerViewAdapter.notifyDataSetChanged()
         }
