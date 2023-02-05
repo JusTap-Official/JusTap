@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,7 +19,10 @@ import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.ResultItemAdapter
 import com.binay.shaw.justap.databinding.FragmentScanResultBinding
+import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
+import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
 import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.model.User
 import com.binay.shaw.justap.viewModel.ScanResultViewModel
@@ -26,12 +30,13 @@ import com.binay.shaw.justap.viewModel.ScanResultViewModel
 class ResultFragment : Fragment() {
 
     private val args: ResultFragmentArgs by navArgs()
-    private var _binding: FragmentScanResultBinding ?= null
+    private var _binding: FragmentScanResultBinding? = null
     private val binding get() = _binding!!
     private lateinit var toolbarTitle: TextView
     private lateinit var toolBarButton: ImageView
     private var showCaseAccountsList = mutableListOf<Accounts>()
-    private val RESUME_URL: String = "https://binayshaw7777.github.io/BinayShaw.github.io/Binay%20Shaw%20CSE%2024.pdf"
+    private val RESUME_URL: String =
+        "https://binayshaw7777.github.io/BinayShaw.github.io/Binay%20Shaw%20CSE%2024.pdf"
     private lateinit var viewModel: ScanResultViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdapter: ResultItemAdapter
@@ -42,6 +47,10 @@ class ResultFragment : Fragment() {
     ): View? {
 
         initialization(container)
+
+        toolBarButton.setOnClickListener {
+            handleBackButtonPress()
+        }
 
         val data = args.resultString
         Util.log("Scanned Result: $data")
@@ -144,10 +153,14 @@ class ResultFragment : Fragment() {
         requireView().requestFocus()
         requireView().setOnKeyListener { _, keyCode, event ->
             if (event.action === KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                requireActivity().onBackPressedDispatcher.onBackPressed()
+                handleBackButtonPress()
                 true
             } else false
         }
+    }
+
+    private fun handleBackButtonPress() {
+        requireActivity().onBackPressedDispatcher.onBackPressed()
     }
 
 }

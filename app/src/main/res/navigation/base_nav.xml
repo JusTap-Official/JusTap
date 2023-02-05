@@ -50,7 +50,8 @@
         tools:layout="@layout/fragment_q_r_scanner" >
         <action
             android:id="@+id/action_scannerFragment_to_resultFragment"
-            app:destination="@id/resultFragment" />
+            app:destination="@id/resultFragment"
+            app:popUpTo="@id/scanner" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
