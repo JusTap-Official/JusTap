@@ -33,19 +33,14 @@ class AccountsViewModel(
             repository.deleteAccount(accounts)
         }
 
-    fun updateAccount(newData: String, id: Int) =
+    fun updateAccount(accounts: Accounts) =
         viewModelScope.launch(Dispatchers.IO) {
-            repository.updateAccount(newData, id)
+            repository.updateAccount(accounts)
         }
 
     fun insertAccount(accounts: Accounts) =
         viewModelScope.launch(Dispatchers.IO) {
             repository.insertAccount(accounts)
         }
-
-    fun deleteEntryById(accountID: Int) =
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteEntryById(accountID)
-    }
 
 }

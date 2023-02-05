@@ -13,6 +13,6 @@ data class Accounts(
     @PrimaryKey(autoGenerate = false)
     var accountID: Int,
     val accountName: String,
-    val accountData: String,
+    var accountData: String,
     val showAccount: Boolean
 ) : Serializable

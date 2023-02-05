@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.binay.shaw.justap.MainActivity
@@ -108,17 +107,98 @@ class AddEditFragment : Fragment() {
 
 
         binding.confirmChanges.setOnClickListener {
-            val accountData = binding.accountData.text.toString()
-            if (dataIsValid(selectedAccount, accountData)) {
-                //Save data here
-                saveData(accountData)
+            if (binding.confirmChanges.text.equals("Add account")) {
+                val accountData = binding.accountData.text.toString()
+                if (dataIsValid(selectedAccount, accountData)) {
+                    //Save data here
+                    saveData(accountData)
+                } else {
+                    Toast.makeText(requireContext(), "Fill all input fields", Toast.LENGTH_SHORT)
+                        .show()
+                    return@setOnClickListener
+                }
             } else {
-                Toast.makeText(requireContext(), "Fill all input fields", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+                val newData = binding.accountData.text.toString()
+                if (!newData.isNullOrEmpty()) {
+                    updateData(newData)
+                } else {
+                    Toast.makeText(requireContext(), "Fill all input fields", Toast.LENGTH_SHORT)
+                        .show()
+                    return@setOnClickListener
+                }
             }
         }
 
         return binding.root
+    }
+
+    private fun updateData(newData: String) {
+
+        val dialog = OptionsModalBinding.inflate(layoutInflater)
+        val bottomSheet = requireContext().createBottomSheet()
+        dialog.apply {
+
+            optionsHeading.text = requireContext().resources.getString(R.string.ConfirmChanges)
+            optionsContent.text =
+                "Are you sure you want to update this account?"
+            positiveOption.text = "Update"
+            positiveOption.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.negative_red
+                )
+            )
+            negativeOption.text = "Don't update"
+            negativeOption.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.text_color
+                )
+            )
+            positiveOption.setOnClickListener {
+                bottomSheet.dismiss()
+                if (Util.checkForInternet(requireContext())) {
+                    binding.progressAnimation.progressParent.visibility = View.VISIBLE
+
+                    args.accounts?.let {
+                        val array = resources.getStringArray(R.array.account_names)
+                        val index = array.indexOf(it.accountName)
+                        it.accountID = index
+                        it.accountData = newData
+                        lifecycleScope.launch {
+
+                            viewModel.updateEntry(
+                                accountsViewModel,
+                                firebaseDatabase,
+                                it
+                            )
+
+                            viewModel.updateStatus.observe(viewLifecycleOwner) { status ->
+                                if (status == 3) {
+                                    Util.log("Status value = $status")
+                                    viewModel.updateStatus.postValue(0)
+                                    Toast.makeText(requireContext(), "Updated", Toast.LENGTH_SHORT)
+                                        .show()
+                                    binding.progressAnimation.progressParent.visibility = View.GONE
+                                    findNavController().navigateUp()
+                                }
+                            }
+
+                        }
+
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "No Internet!", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+            }
+            negativeOption.setOnClickListener {
+                bottomSheet.dismiss()
+                Util.log("Don't Delete")
+            }
+            dialog.root.setBottomSheet(bottomSheet)
+        }
+
     }
 
     private fun deleteAccount() {

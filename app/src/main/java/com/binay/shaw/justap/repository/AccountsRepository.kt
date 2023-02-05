@@ -21,11 +21,8 @@ class AccountsRepository(
         accountsDAO.deleteAccount(accounts)
     }
 
-    suspend fun updateAccount(newData: String, id: Int) {
-        accountsDAO.updateAccount(data = newData, id = id)
+    suspend fun updateAccount(accounts: Accounts) {
+        accountsDAO.updateAccount(accounts)
     }
 
-    suspend fun deleteEntryById(accountID: Int) {
-        accountsDAO.deleteEntryById(accountID)
-    }
 }
