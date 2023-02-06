@@ -157,7 +157,7 @@ class HomeFragment : Fragment() {
                 it.userBannerPicture
             )
             Util.userID = it.userID
-            binding.profileNameTV.text  = "Hi ${localUser.userName.split(" ")[0]}"
+            binding.profileNameTV.text  = "Hi ${Util.getFirstName(localUser.userName)}"
             binding.profileBioTV.text = localUser.userBio
             val profileURL = localUser.userProfilePicture!!
             if (profileURL.isNotEmpty()) {

@@ -55,6 +55,12 @@ class Util {
                     Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
         }
 
+        fun getFirstName(fullName: String) : String {
+            if (fullName.isNotEmpty())
+                return fullName.split(" ")[0]
+            return ""
+        }
+
         fun isUserLoggedIn(auth: FirebaseAuth) : Boolean {
             // not logged in
             return if (auth.currentUser == null) {

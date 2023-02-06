@@ -1,5 +1,6 @@
 package com.binay.shaw.justap.ui.mainScreens.qrReciever
 
+import android.app.PendingIntent
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -10,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import androidx.core.app.NotificationCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,12 +20,9 @@ import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.ResultItemAdapter
 import com.binay.shaw.justap.databinding.FragmentScanResultBinding
-import com.binay.shaw.justap.databinding.OptionsModalBinding
+import com.binay.shaw.justap.helper.NotificationHelper
 import com.binay.shaw.justap.helper.Util
-import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
-import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
 import com.binay.shaw.justap.model.Accounts
-import com.binay.shaw.justap.model.User
 import com.binay.shaw.justap.viewModel.ScanResultViewModel
 
 class ResultFragment : Fragment() {
@@ -40,6 +38,11 @@ class ResultFragment : Fragment() {
     private lateinit var viewModel: ScanResultViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdapter: ResultItemAdapter
+
+    private lateinit var notificationHelper: NotificationHelper
+    private val channelId = "NotificationChannelId"
+    private val channelName = "Notification Channel Name"
+    private val notificationId = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -125,9 +128,34 @@ class ResultFragment : Fragment() {
                 if (!tempUser.profileBannerURI.isNullOrEmpty()) {
                     Util.loadImagesWithGlide(binding.profileBannerIV, tempUser.profileBannerURI)
                 }
+
+                val builder = createNotificationBuilder(it.name)
+                notificationHelper.showNotification(notificationId, builder)
+
             }
         }
 
+    }
+
+    private fun createNotificationBuilder(name: String): NotificationCompat.Builder {
+        // Create an Intent for the notification action
+        val intent = Intent(requireContext(), MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent = PendingIntent.getActivity(
+            requireContext(),
+            0,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        // Create a NotificationCompat.Builder object
+        return NotificationCompat.Builder(requireContext(), channelId)
+            .setSmallIcon(R.drawable.notification_icon)
+            .setContentTitle("Successfully Scanned!")
+            .setContentText("${Util.getFirstName(name)} was added in history")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(pendingIntent)
     }
 
     private fun initialization(container: ViewGroup?) {
@@ -143,6 +171,10 @@ class ResultFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.progressAnimation.progressParent.visibility = View.VISIBLE
         binding.progressAnimation.progressText.text = "Preparing Result"
+
+        // Create the Notification Channel
+        notificationHelper = NotificationHelper(requireContext())
+        notificationHelper.createNotificationChannel(channelId, channelName)
 
         if (args.isResult) {
             toolbarTitle.text = "Scan completed"
