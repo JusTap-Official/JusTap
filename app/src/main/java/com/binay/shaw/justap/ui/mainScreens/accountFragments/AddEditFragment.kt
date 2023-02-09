@@ -17,6 +17,7 @@ import androidx.navigation.fragment.navArgs
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentAddEditBinding
+import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
 import com.binay.shaw.justap.helper.Util
@@ -31,53 +32,20 @@ class AddEditFragment : Fragment() {
 
     private var _binding: FragmentAddEditBinding? = null
     private val binding get() = _binding!!
-    private lateinit var toolbarText: TextView
-    private lateinit var toolbarBackButton: ImageView
-    private lateinit var toolbarDeleteIcon: ImageView
     private val args: AddEditFragmentArgs by navArgs()
     private var selectedAccount: String? = null
     private lateinit var viewModel: AddEditViewModel
     private lateinit var firebaseDatabase: FirebaseDatabase
     private lateinit var accountsViewModel: AccountsViewModel
-
-
-    private fun chooseAccount(it: String) {
-
-        when (it) {
-            "Phone" -> {
-                binding.accountData.inputType = InputType.TYPE_CLASS_PHONE
-                setImageOnAccountNameChange(R.drawable.phone)
-            }
-            "Email" -> {
-                binding.accountData.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
-                setImageOnAccountNameChange(R.drawable.email)
-            }
-            "Instagram" -> setImageOnAccountNameChange(R.drawable.instagram)
-            "LinkedIn" -> setImageOnAccountNameChange(R.drawable.linkedin)
-            "Facebook" -> setImageOnAccountNameChange(R.drawable.facebook)
-            "Twitter" -> setImageOnAccountNameChange(R.drawable.twitter)
-            "YouTube" -> setImageOnAccountNameChange(R.drawable.youtube)
-            "Snapchat" -> setImageOnAccountNameChange(R.drawable.snapchat)
-            "Twitch" -> setImageOnAccountNameChange(R.drawable.twitch)
-            "Website" -> setImageOnAccountNameChange(R.drawable.website)
-            "Discord" -> setImageOnAccountNameChange(R.drawable.discord)
-            "LinkTree" -> setImageOnAccountNameChange(R.drawable.linktree)
-            "Custom Link" -> setImageOnAccountNameChange(R.drawable.custom_link)
-            "Telegram" -> setImageOnAccountNameChange(R.drawable.telegram)
-            "Spotify" -> setImageOnAccountNameChange(R.drawable.spotify)
-            "WhatsApp" -> {
-                binding.accountData.inputType = InputType.TYPE_CLASS_PHONE
-                setImageOnAccountNameChange(R.drawable.whatsapp)
-            }
-        }
-    }
+    private lateinit var toolBar: MyToolbarBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        initialization(container)
+        _binding = FragmentAddEditBinding.inflate(layoutInflater, container, false)
+        initialization()
 
         binding.cancelChanges.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -87,30 +55,25 @@ class AddEditFragment : Fragment() {
             val dialog = ParagraphModalBinding.inflate(layoutInflater)
             val bottomSheet = requireActivity().createBottomSheet()
             dialog.apply {
-                paragraphHeading.text = "Enter URL or Username"
-                paragraphContent.text =
-                    "You must either enter your url or username of that account in order to proceed and save your data"
+                paragraphHeading.text = resources.getString(R.string.EnterURLorUsername)
+                paragraphContent.text = resources.getString(R.string.AddEditFragmentBottomModalDescription)
             }
             dialog.root.setBottomSheet(bottomSheet)
         }
 
-        toolbarDeleteIcon.setOnClickListener {
+        toolBar.rightIcon.setOnClickListener {
             deleteAccount()
         }
-
-
 
         binding.accountName.afterTextChanged {
             selectedAccount = it
             chooseAccount(it)
         }
 
-
         binding.confirmChanges.setOnClickListener {
             if (binding.confirmChanges.text.equals("Add account")) {
                 val accountData = binding.accountData.text.toString()
                 if (dataIsValid(selectedAccount, accountData)) {
-                    //Save data here
                     saveData(accountData)
                 } else {
                     Toast.makeText(requireContext(), "Fill all input fields", Toast.LENGTH_SHORT)
@@ -119,7 +82,7 @@ class AddEditFragment : Fragment() {
                 }
             } else {
                 val newData = binding.accountData.text.toString()
-                if (!newData.isNullOrEmpty()) {
+                if (newData.isNotEmpty()) {
                     updateData(newData)
                 } else {
                     Toast.makeText(requireContext(), "Fill all input fields", Toast.LENGTH_SHORT)
@@ -139,16 +102,15 @@ class AddEditFragment : Fragment() {
         dialog.apply {
 
             optionsHeading.text = requireContext().resources.getString(R.string.ConfirmChanges)
-            optionsContent.text =
-                "Are you sure you want to update this account?"
-            positiveOption.text = "Update"
+            optionsContent.text = resources.getString(R.string.AreYouSureYouWantToUpdateThisAccount)
+            positiveOption.text = resources.getString(R.string.Update)
             positiveOption.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.negative_red
                 )
             )
-            negativeOption.text = "Don't update"
+            negativeOption.text = resources.getString(R.string.DontUpdate)
             negativeOption.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
@@ -208,16 +170,15 @@ class AddEditFragment : Fragment() {
         dialog.apply {
 
             optionsHeading.text = requireContext().resources.getString(R.string.ConfirmChanges)
-            optionsContent.text =
-                "Are you sure you want to delete this account type?"
-            positiveOption.text = "Delete"
+            optionsContent.text = resources.getString(R.string.AreYouSureYouWantToDeleteThisAccount)
+            positiveOption.text = resources.getString(R.string.Delete)
             positiveOption.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
                     R.color.negative_red
                 )
             )
-            negativeOption.text = "Don't delete"
+            negativeOption.text = resources.getString(R.string.DontDelete)
             negativeOption.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
@@ -374,8 +335,7 @@ class AddEditFragment : Fragment() {
         }
     }
 
-    private fun initialization(container: ViewGroup?) {
-        _binding = FragmentAddEditBinding.inflate(layoutInflater, container, false)
+    private fun initialization() {
         viewModel = ViewModelProvider(requireActivity())[AddEditViewModel::class.java]
         accountsViewModel = ViewModelProvider(
             this,
@@ -383,17 +343,22 @@ class AddEditFragment : Fragment() {
                 .getInstance(requireActivity().application)
         )[AccountsViewModel::class.java]
         firebaseDatabase = FirebaseDatabase.getInstance()
+
         //Top app bar
         (activity as MainActivity).supportActionBar?.hide()
-        toolbarText = binding.root.findViewById(R.id.toolbar_title)
-        toolbarDeleteIcon = binding.root.findViewById(R.id.rightIcon)
+        toolBar = binding.include
+        toolBar.toolbarTitle.text = resources.getString(R.string.Home)
+        toolBar.rightIcon.apply {
+            setImageResource(R.drawable.info_icon)
+            visibility = View.VISIBLE
+        }
         //Mode = 0 -> Add | Mode = 1 -> Edit
         if (args.mode == 0)
-            toolbarText.text = "Add account"
+            toolBar.toolbarTitle.text = resources.getString(R.string.AddAccount)
         else if (args.mode == 1) {
-            toolbarText.text = "Edit account"
-            toolbarDeleteIcon.visibility = View.VISIBLE
-            binding.confirmChanges.text = "Save changes"
+            toolBar.toolbarTitle.text = resources.getString(R.string.EditAccount)
+            toolBar.rightIcon.visibility = View.VISIBLE
+            binding.confirmChanges.text = resources.getString(R.string.SaveChanges)
             args.accounts?.let {
                 chooseAccount(it.accountName)
                 binding.apply {
@@ -401,12 +366,12 @@ class AddEditFragment : Fragment() {
                     menuAccount.visibility = View.GONE
                     accountNameHeader.visibility = View.GONE
                     accountData.hint = it.accountData
-                    confirmChanges.text = "Update changes"
+                    confirmChanges.text = resources.getString(R.string.UpdateChanges)
                 }
             }
         }
-        toolbarBackButton = binding.root.findViewById(R.id.leftIcon)
-        toolbarBackButton.apply {
+
+        toolBar.leftIcon.apply {
             visibility = View.VISIBLE
             setOnClickListener {
                 requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -415,7 +380,6 @@ class AddEditFragment : Fragment() {
 
 
         // Account List
-//        val accounts = resources.getStringArray(R.array.account_names)
         val accounts = Util.unusedAccounts
         val arrayAdapter = ArrayAdapter(
             requireContext(),
@@ -447,5 +411,36 @@ class AddEditFragment : Fragment() {
                 afterTextChanged.invoke(editable.toString())
             }
         })
+    }
+
+    private fun chooseAccount(it: String) {
+
+        when (it) {
+            "Phone" -> {
+                binding.accountData.inputType = InputType.TYPE_CLASS_PHONE
+                setImageOnAccountNameChange(R.drawable.phone)
+            }
+            "Email" -> {
+                binding.accountData.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+                setImageOnAccountNameChange(R.drawable.email)
+            }
+            "Instagram" -> setImageOnAccountNameChange(R.drawable.instagram)
+            "LinkedIn" -> setImageOnAccountNameChange(R.drawable.linkedin)
+            "Facebook" -> setImageOnAccountNameChange(R.drawable.facebook)
+            "Twitter" -> setImageOnAccountNameChange(R.drawable.twitter)
+            "YouTube" -> setImageOnAccountNameChange(R.drawable.youtube)
+            "Snapchat" -> setImageOnAccountNameChange(R.drawable.snapchat)
+            "Twitch" -> setImageOnAccountNameChange(R.drawable.twitch)
+            "Website" -> setImageOnAccountNameChange(R.drawable.website)
+            "Discord" -> setImageOnAccountNameChange(R.drawable.discord)
+            "LinkTree" -> setImageOnAccountNameChange(R.drawable.linktree)
+            "Custom Link" -> setImageOnAccountNameChange(R.drawable.custom_link)
+            "Telegram" -> setImageOnAccountNameChange(R.drawable.telegram)
+            "Spotify" -> setImageOnAccountNameChange(R.drawable.spotify)
+            "WhatsApp" -> {
+                binding.accountData.inputType = InputType.TYPE_CLASS_PHONE
+                setImageOnAccountNameChange(R.drawable.whatsapp)
+            }
+        }
     }
 }

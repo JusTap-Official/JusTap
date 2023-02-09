@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentEditProfileBinding
+import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
@@ -35,8 +36,7 @@ class EditProfileFragment : Fragment() {
 
     private var _binding: FragmentEditProfileBinding? = null
     private val binding get() = _binding!!
-    private lateinit var toolbarText: TextView
-    private lateinit var toolbarBackButton: ImageView
+    private lateinit var toolBar: MyToolbarBinding
     private lateinit var localUserViewModel: LocalUserViewModel
     private var profilePictureURI: Uri? = null
     private var profileBannerURI: Uri? = null
@@ -52,10 +52,10 @@ class EditProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
+        _binding = FragmentEditProfileBinding.inflate(layoutInflater, container, false)
+        initialization()
 
-        initialization(container)
-
-        toolbarBackButton.setOnClickListener {
+        toolBar.leftIcon.setOnClickListener {
             handleBackButtonPress()
         }
 
@@ -74,7 +74,6 @@ class EditProfileFragment : Fragment() {
                 return@setOnClickListener
             }
             editChanges(inputName, inputBio, inputPhone, profilePictureURI, profileBannerURI)
-
         }
 
         binding.editBanner.setOnClickListener {
@@ -90,7 +89,6 @@ class EditProfileFragment : Fragment() {
             editImageMode = 1
             imagePickerActivityResult.launch(galleryIntent)
         }
-
 
         return binding.root
     }
@@ -196,14 +194,12 @@ class EditProfileFragment : Fragment() {
                     hashMap["name"] = inputName
                 else hashMap["name"] = originalName
 
-
                 if (inputBio.isNotEmpty())
                     hashMap["bio"] = inputBio
                 else if (originalBio?.isNotEmpty() == true)
                     hashMap["bio"] = originalBio
                 else
                     hashMap["bio"] = ""
-
 
                 if (inputPhone.isNotEmpty())
                     hashMap["phone"] = inputPhone
@@ -218,7 +214,6 @@ class EditProfileFragment : Fragment() {
                 if (originalBanner.isNullOrEmpty()) {
                     originalBanner = ""
                 }
-
 
                 lifecycleScope.launch {
                     editprofileViewmodel.updateUser(
@@ -288,13 +283,12 @@ class EditProfileFragment : Fragment() {
     }
 
 
-    private fun initialization(container: ViewGroup?) {
-        _binding = FragmentEditProfileBinding.inflate(layoutInflater, container, false)
+    private fun initialization() {
         (activity as MainActivity).supportActionBar?.hide()
-        toolbarText = binding.root.findViewById(R.id.toolbar_title)
-        toolbarText.text = requireContext().resources.getString(R.string.EditProfile)
-        toolbarBackButton = binding.root.findViewById(R.id.leftIcon)
-        toolbarBackButton.visibility = View.VISIBLE
+
+        toolBar = binding.include
+        toolBar.toolbarTitle.text = requireContext().resources.getString(R.string.EditProfile)
+        toolBar.leftIcon.visibility = View.VISIBLE
         localUserViewModel = ViewModelProvider(
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)

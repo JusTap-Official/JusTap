@@ -12,6 +12,7 @@ import androidx.navigation.Navigation
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentProfileBinding
+import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
@@ -23,8 +24,7 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
-    private lateinit var toolbarText: TextView
-    private lateinit var toolbarBackButton: ImageView
+    private lateinit var toolBar: MyToolbarBinding
     private lateinit var localUserViewModel: LocalUserViewModel
     private lateinit var localUser: LocalUser
 
@@ -33,9 +33,10 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        initialization(container)
+        _binding = FragmentProfileBinding.inflate(layoutInflater, container, false)
+        initialization()
 
-        toolbarBackButton.setOnClickListener {
+        toolBar.leftIcon.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
@@ -47,13 +48,12 @@ class ProfileFragment : Fragment() {
         return binding.root
     }
 
-    private fun initialization(container: ViewGroup?) {
-        _binding = FragmentProfileBinding.inflate(layoutInflater, container, false)
+    private fun initialization() {
         (activity as MainActivity).supportActionBar?.hide()
-        toolbarText = binding.root.findViewById(R.id.toolbar_title)
-        toolbarText.text = requireContext().resources.getString(R.string.Profile)
-        toolbarBackButton = binding.root.findViewById(R.id.leftIcon)
-        toolbarBackButton.visibility = View.VISIBLE
+
+        toolBar = binding.include
+        toolBar.toolbarTitle.text = requireContext().resources.getString(R.string.Profile)
+        toolBar.leftIcon.visibility = View.VISIBLE
         auth = FirebaseAuth.getInstance()
         localUserViewModel = ViewModelProvider(
             this,
@@ -78,14 +78,10 @@ class ProfileFragment : Fragment() {
             if (bannerURL.isNotEmpty())
                 Util.loadImagesWithGlide(binding.profileBannerIV, bannerURL)
         }
-
-
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
-
-
 }

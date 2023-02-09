@@ -31,10 +31,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
-    override fun onResume() {
-        super.onResume()
-        recyclerViewAdapter.notifyDataSetChanged()
-    }
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -56,7 +52,6 @@ class HomeFragment : Fragment() {
         initialization(container)
 
         recyclerViewAdapter.notifyDataSetChanged()
-
 
         binding.fabLayout.setOnClickListener {
             gotoAddAccountFragment()
@@ -112,11 +107,8 @@ class HomeFragment : Fragment() {
                 if (!usedAccounts.contains(account))
                     unusedAccounts.add(account)
             }
-
         }
-
         Util.unusedAccounts = unusedAccounts
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -161,8 +153,10 @@ class HomeFragment : Fragment() {
 
         }
         recyclerView = binding.accountsRv
-        recyclerView.adapter = recyclerViewAdapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.apply {
+            adapter = recyclerViewAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
 
         localUserViewModel = ViewModelProvider(
             this,
@@ -170,7 +164,8 @@ class HomeFragment : Fragment() {
         )[LocalUserViewModel::class.java]
 
         accountsViewModel = ViewModelProvider(
-            this, ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+            this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
         )[AccountsViewModel::class.java]
 
         localUserViewModel.fetchUser.observe(viewLifecycleOwner) {
@@ -184,13 +179,12 @@ class HomeFragment : Fragment() {
                 it.userBannerPicture
             )
             Util.userID = it.userID
-            binding.profileNameTV.text  = "Hi ${Util.getFirstName(localUser.userName)}"
+            binding.profileNameTV.text  = "Hi ${Util.getFirstName(localUser.userName)},"
             binding.profileBioTV.text = localUser.userBio
             val profileURL = localUser.userProfilePicture!!
             if (profileURL.isNotEmpty()) {
                 Util.loadImagesWithGlide(binding.profileImage, profileURL)
             }
-
         }
 
         accountsViewModel.getAllUser.observe(viewLifecycleOwner) {
@@ -200,9 +194,7 @@ class HomeFragment : Fragment() {
             recyclerViewAdapter.setData(it)
             recyclerViewAdapter.notifyDataSetChanged()
         }
-
         handleOnScrollFAB()
-
     }
 
     private fun handleOnScrollFAB() {
@@ -218,9 +210,13 @@ class HomeFragment : Fragment() {
         })
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        recyclerViewAdapter.notifyDataSetChanged()
     }
 }

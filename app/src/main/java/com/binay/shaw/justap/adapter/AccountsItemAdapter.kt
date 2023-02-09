@@ -25,7 +25,6 @@ class AccountsItemAdapter(
     private val listener: (Accounts) -> Unit
 ) : RecyclerView.Adapter<AccountsItemAdapter.AccountsViewHolder>() {
 
-
     class AccountsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val accountName: TextView
         val accountData: TextView

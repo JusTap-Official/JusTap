@@ -40,7 +40,9 @@ class QRGeneratorFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        initialization(container)
+
+        _binding = FragmentQRGeneratorBinding.inflate(layoutInflater, container, false)
+        initialization()
 
         viewModel.generateQR(displayMetrics, overlay,
             ResourcesCompat.getColor(resources, R.color.text_color, null),
@@ -86,11 +88,10 @@ class QRGeneratorFragment : Fragment() {
         return binding.root
     }
 
-    private fun initialization(container: ViewGroup?) {
+    private fun initialization() {
 
-        _binding = FragmentQRGeneratorBinding.inflate(layoutInflater, container, false)
         (activity as MainActivity).supportActionBar?.hide()
-        binding.root.findViewById<TextView>(R.id.toolbar_title)?.text = requireContext().resources.getString(R.string.MyQRCode)
+        binding.include.toolbarTitle.text = requireContext().resources.getString(R.string.MyQRCode)
         viewModel = ViewModelProvider(this@QRGeneratorFragment)[QRGenerator_ViewModel::class.java]
         displayMetrics = DisplayMetrics()
         activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)

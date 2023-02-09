@@ -41,7 +41,6 @@ class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
-    private lateinit var auth: FirebaseAuth
     private lateinit var recyclerView: RecyclerView
     private lateinit var settingsItemList: ArrayList<SettingsItem>
     private lateinit var settingsItemAdapter: SettingsItemAdapter
@@ -58,14 +57,13 @@ class SettingsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        initialization(container)
-
+        _binding = FragmentSettingsBinding.inflate(layoutInflater, container, false)
+        initialization()
 
         /**set List*/
         settingsItemList = ArrayList()
 
         settingsItemList.add(SettingsItem(1, R.drawable.edit_icon, "Edit profile", false))
-//        settingsItemList.add(SettingsItem(2, R.drawable.moon, "Dark mode", true))
         settingsItemList.add(SettingsItem(3, R.drawable.scanner_icon, "Customize QR", false))
         settingsItemList.add(SettingsItem(4, R.drawable.info_icon, "About us", false))
         settingsItemList.add(SettingsItem(5, R.drawable.help_icon, "Need help?", false))
@@ -83,7 +81,7 @@ class SettingsFragment : Fragment() {
                 .navigate(R.id.action_settings_to_profileFragment)
         }
 
-        logoutIV.setOnClickListener {
+        binding.include.rightIcon.setOnClickListener {
             logout()
         }
 
@@ -97,12 +95,10 @@ class SettingsFragment : Fragment() {
     }
 
 
-    private fun initialization(container: ViewGroup?) {
+    private fun initialization() {
 
-        _binding = FragmentSettingsBinding.inflate(layoutInflater, container, false)
         (activity as MainActivity).supportActionBar?.hide()
-        binding.root.findViewById<TextView>(R.id.toolbar_title)?.text = requireContext().resources.getString(R.string.Settings)
-        auth = FirebaseAuth.getInstance()
+        binding.include.toolbarTitle.text = requireContext().resources.getString(R.string.Settings)
         localUserDatabase = Room.databaseBuilder(
             requireContext(), LocalUserDatabase::class.java,
             "localDB"
@@ -135,16 +131,19 @@ class SettingsFragment : Fragment() {
                 Util.loadImagesWithGlide(binding.profileImage, profileURL)
         }
 
-        logoutIV = binding.root.findViewById(R.id.rightIcon)
-        logoutIV.setImageResource(R.drawable.logout_icon)
-        logoutIV.visibility = View.VISIBLE
-        feedback = binding.root.findViewById(R.id.leftIcon)
-        feedback.setImageResource(R.drawable.feedback_icon)
-        feedback.visibility = View.VISIBLE
-
-
+        binding.include.apply {
+            rightIcon.apply {
+                logoutIV = this
+                setImageResource(R.drawable.logout_icon)
+                visibility = View.VISIBLE
+            }
+            leftIcon.apply {
+                feedback = this
+                setImageResource(R.drawable.feedback_icon)
+                visibility = View.VISIBLE
+            }
+        }
     }
-
 
     private fun logout() {
 
@@ -155,14 +154,27 @@ class SettingsFragment : Fragment() {
             optionsHeading.text = requireContext().resources.getString(R.string.LogoutTitle)
             optionsContent.text = requireContext().resources.getString(R.string.LogoutDescription)
             positiveOption.text = requireContext().resources.getString(R.string.LogoutTitle)
-            positiveOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
+            positiveOption.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.negative_red
+                )
+            )
+
             negativeOption.text = requireContext().resources.getString(R.string.LogoutCancel)
-            negativeOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_color))
+            negativeOption.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.text_color
+                )
+            )
+
             positiveOption.setOnClickListener {
                 bottomSheet.dismiss()
 
                 lifecycleScope.launch(Dispatchers.Main) {
-                    val signOutFromFirebase = launch(Dispatchers.IO) { FirebaseAuth.getInstance().signOut() }
+                    val signOutFromFirebase =
+                        launch(Dispatchers.IO) { FirebaseAuth.getInstance().signOut() }
                     signOutFromFirebase.join()
                     LocalUserDatabase.getDatabase(requireContext()).clearTables()
                     withContext(Dispatchers.Main) {
@@ -182,11 +194,8 @@ class SettingsFragment : Fragment() {
         dialog.root.setBottomSheet(bottomSheet)
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
-
-
 }

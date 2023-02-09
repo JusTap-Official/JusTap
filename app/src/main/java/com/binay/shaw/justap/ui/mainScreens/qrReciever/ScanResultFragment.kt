@@ -3,14 +3,14 @@ package com.binay.shaw.justap.ui.mainScreens.qrReciever
 import android.app.PendingIntent
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
@@ -20,6 +20,7 @@ import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.ResultItemAdapter
 import com.binay.shaw.justap.databinding.FragmentScanResultBinding
+import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.binay.shaw.justap.helper.NotificationHelper
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.Accounts
@@ -30,11 +31,8 @@ class ResultFragment : Fragment() {
     private val args: ResultFragmentArgs by navArgs()
     private var _binding: FragmentScanResultBinding? = null
     private val binding get() = _binding!!
-    private lateinit var toolbarTitle: TextView
-    private lateinit var toolBarButton: ImageView
+    private lateinit var toolBar: MyToolbarBinding
     private var showCaseAccountsList = mutableListOf<Accounts>()
-    private val RESUME_URL: String =
-        "https://binayshaw7777.github.io/BinayShaw.github.io/Binay%20Shaw%20CSE%2024.pdf"
     private lateinit var viewModel: ScanResultViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdapter: ResultItemAdapter
@@ -49,9 +47,10 @@ class ResultFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        initialization(container)
+        _binding = FragmentScanResultBinding.inflate(layoutInflater, container, false)
+        initialization()
 
-        toolBarButton.setOnClickListener {
+        toolBar.leftIcon.setOnClickListener {
             handleBackButtonPress()
         }
 
@@ -64,7 +63,6 @@ class ResultFragment : Fragment() {
             setUpAboutMe()
         }
 
-
         return binding.root
     }
 
@@ -72,12 +70,12 @@ class ResultFragment : Fragment() {
         binding.apply {
             profileImage.setImageResource(R.drawable.aboutme_pfp)
             profileBannerIV.setImageResource(R.drawable.aboutme_banner)
-            profileNameTV.text = "Binay Shaw"
-            profileBioTV.text = "Android Intern @HumaraNagar | Ex. @Edvora"
+            profileNameTV.text = getString(R.string.BinayShaw)
+            profileBioTV.text = getString(R.string.AboutMeDescription)
             downloadResume.apply {
                 visibility = View.VISIBLE
                 setOnClickListener {
-                    val download = Intent(Intent.ACTION_VIEW, Uri.parse(RESUME_URL))
+                    val download = Intent(Intent.ACTION_VIEW, Uri.parse(Util.resumeURL))
                     startActivity(download)
                 }
             }
@@ -94,18 +92,16 @@ class ResultFragment : Fragment() {
 
     private fun setUpResultView(resultString: String) {
 
-
         viewModel.getDataFromUserID(resultString)
 
         viewModel.showCaseAccountsList.observe(viewLifecycleOwner) {
             recyclerViewAdapter
             showCaseAccountsList.clear()
             for (accounts in it) {
-                if (accounts.showAccount == true) {
+                if (accounts.showAccount) {
                     showCaseAccountsList.add(accounts)
                 }
             }
-            Util.log("ACCCCCC: $showCaseAccountsList")
             recyclerViewAdapter.setData(showCaseAccountsList)
             recyclerViewAdapter.notifyDataSetChanged()
         }
@@ -137,7 +133,9 @@ class ResultFragment : Fragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun createNotificationBuilder(name: String): NotificationCompat.Builder {
+
         // Create an Intent for the notification action
         val intent = Intent(requireContext(), MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -158,30 +156,32 @@ class ResultFragment : Fragment() {
             .setContentIntent(pendingIntent)
     }
 
-    private fun initialization(container: ViewGroup?) {
-        _binding = FragmentScanResultBinding.inflate(layoutInflater, container, false)
+    private fun initialization() {
         (activity as MainActivity).supportActionBar?.hide()
-        toolbarTitle = binding.root.findViewById(R.id.toolbar_title)
-        toolBarButton = binding.root.findViewById(R.id.leftIcon)
-        toolBarButton.visibility = View.VISIBLE
+
+        toolBar = binding.include
+        toolBar.leftIcon.visibility = View.VISIBLE
         viewModel = ViewModelProvider(this@ResultFragment)[ScanResultViewModel::class.java]
         recyclerViewAdapter = ResultItemAdapter(requireContext())
         recyclerView = binding.accountsRv
-        recyclerView.adapter = recyclerViewAdapter
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.progressAnimation.progressParent.visibility = View.VISIBLE
-        binding.progressAnimation.progressText.text = "Preparing Result"
+        recyclerView.apply {
+            adapter = recyclerViewAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+        binding.progressAnimation.apply {
+            progressParent.visibility = View.VISIBLE
+            progressText.text = resources.getString(R.string.PreparingResult)
+        }
 
         // Create the Notification Channel
         notificationHelper = NotificationHelper(requireContext())
         notificationHelper.createNotificationChannel(channelId, channelName)
 
         if (args.isResult) {
-            toolbarTitle.text = "Scan completed"
+            toolBar.toolbarTitle.text = resources.getString(R.string.ScanCompleted)
         } else {
-            toolbarTitle.text = "About me"
+            toolBar.toolbarTitle.text = resources.getString(R.string.AboutMe)
         }
-
     }
 
     override fun onResume() {

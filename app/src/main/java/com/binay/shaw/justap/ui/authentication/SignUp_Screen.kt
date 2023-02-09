@@ -109,11 +109,15 @@ class SignUp_Screen : AppCompatActivity() {
 
     private fun initialization() {
         auth = FirebaseAuth.getInstance()
-        findViewById<TextView>(R.id.toolbar_title).text = "Create Account"
-        buttonLayout = findViewById(R.id.progress_button_bg)
-        buttonText = findViewById(R.id.buttonText)
-        buttonText.text = "Create a new account"
-        buttonProgress = findViewById(R.id.buttonProgress)
+        binding.apply {
+            include.toolbarTitle.text = resources.getString(R.string.createAccount)
+            btnCreateAccount.apply {
+                this@SignUp_Screen.buttonLayout = this.progressButtonBg
+                this@SignUp_Screen.buttonText = this.buttonText
+                this@SignUp_Screen.buttonText.text = resources.getString(R.string.createANewAccount)
+                this@SignUp_Screen.buttonProgress = this.buttonProgress
+            }
+        }
         viewModel = ViewModelProvider(this)[SignUp_ViewModel::class.java]
     }
 

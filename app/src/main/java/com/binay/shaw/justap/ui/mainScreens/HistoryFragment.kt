@@ -23,20 +23,18 @@ class HistoryFragment : Fragment() {
 
     private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
-    private lateinit var toolbarText: TextView
-    private lateinit var toolbarClearHistoryButton: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        initialization(container)
+        _binding = FragmentHistoryBinding.inflate(layoutInflater, container, false)
+        initialization()
 
-        toolbarClearHistoryButton.setOnClickListener {
+        binding.include.rightIcon.setOnClickListener {
             clearHistory()
         }
-
 
         return binding.root
     }
@@ -66,15 +64,13 @@ class HistoryFragment : Fragment() {
 
     }
 
-    private fun initialization(container: ViewGroup?) {
+    private fun initialization() {
 
-        _binding = FragmentHistoryBinding.inflate(layoutInflater, container, false)
         (activity as MainActivity).supportActionBar?.hide()
-        toolbarText = binding.root.findViewById(R.id.toolbar_title)
-        toolbarText.text = requireContext().resources.getString(R.string.History)
-        toolbarClearHistoryButton = binding.root.findViewById(R.id.rightIcon)
-        toolbarClearHistoryButton.visibility = View.VISIBLE
-
+        binding.include.apply {
+            toolbarTitle.text = requireContext().resources.getString(R.string.History)
+            rightIcon.visibility = View.VISIBLE
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,7 +80,6 @@ class HistoryFragment : Fragment() {
             object : OnBackPressedCallback(true /* enabled by default */) {
                 override fun handleOnBackPressed() {
                     // Handle the back button event
-//                    findNavController().popBackStack()
                     NavHostFragment.findNavController(this@HistoryFragment).popBackStack()
                 }
             }

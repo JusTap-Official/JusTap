@@ -24,6 +24,7 @@ import androidx.navigation.fragment.findNavController
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentQRScannerBinding
+import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
 import com.binay.shaw.justap.helper.Encryption
 import com.binay.shaw.justap.helper.Util
@@ -63,17 +64,17 @@ class ScannerFragment : Fragment() {
 
     private var _binding: FragmentQRScannerBinding? = null
     private val binding get() = _binding!!
-    private lateinit var toolbarTitle: TextView
-    private lateinit var toolBarButton: ImageView
+    private lateinit var toolBar: MyToolbarBinding
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
-        initialization(container)
+        _binding = FragmentQRScannerBinding.inflate(layoutInflater, container, false)
+        initialization()
 
-        toolBarButton.setOnClickListener {
+        toolBar.leftIcon.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
@@ -93,13 +94,12 @@ class ScannerFragment : Fragment() {
         return binding.root
     }
 
-    private fun initialization(container: ViewGroup?) {
-        _binding = FragmentQRScannerBinding.inflate(layoutInflater, container, false)
+    private fun initialization() {
         (activity as MainActivity).supportActionBar?.hide()
-        toolbarTitle = binding.root.findViewById(R.id.toolbar_title)
-        toolbarTitle.text = requireContext().resources.getString(R.string.Scanner)
-        toolBarButton = binding.root.findViewById(R.id.leftIcon)
-        toolBarButton.visibility = View.VISIBLE
+
+        toolBar = binding.include
+        toolBar.toolbarTitle.text = requireContext().resources.getString(R.string.Scanner)
+        toolBar.leftIcon.visibility = View.VISIBLE
         pvScan = binding.scanPreview
 
         preDefinedListOfSocialQRData.apply {
@@ -119,7 +119,6 @@ class ScannerFragment : Fragment() {
         if (dataFound)
             requireActivity().onBackPressedDispatcher.onBackPressed()
     }
-
 
     private fun setupCamera() {
         cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()

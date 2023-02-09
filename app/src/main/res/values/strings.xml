@@ -32,6 +32,23 @@
     <string name="SendResetLink">Send reset link</string>
     <string name="HowToUse">How to use?</string>
     <string name="HowToUseDescription">Once you add the accounts from the floating button at the bottom right corner, you can see all your accounts in the list as shown.\n\nThe list displays:\n1.Name\n2.Logo\n3.Your account data\n4.Switch\n\nTurning on/off the switch will allow/restrict the account to show in the result when your QR is scanned.\nIn other words, turning off the switch will not show it in the scanner\'s result screen, and turning it on will show and will be clickable as well.</string>
+    <string name="EnterURLorUsername">Enter URL or Username</string>
+    <string name="AddEditFragmentBottomModalDescription">You must either enter your url or username of that account in order to proceed and save your data</string>
+    <string name="AreYouSureYouWantToUpdateThisAccount">Are you sure you want to update this account?</string>
+    <string name="Update">Update</string>
+    <string name="DontUpdate">Don\'t update</string>
+    <string name="AreYouSureYouWantToDeleteThisAccount">Are you sure you want to delete this account type?</string>
+    <string name="Delete">Delete</string>
+    <string name="DontDelete">Don\'t delete</string>
+    <string name="AddAccount">Add account</string>
+    <string name="EditAccount">Edit account</string>
+    <string name="UpdateChanges">Update changes</string>
+    <string name="ScanCompleted">Scan completed</string>
+    <string name="PreparingResult">Preparing Result</string>
+    <string name="BinayShaw">Binay Shaw</string>
+    <string name="AboutMeDescription">Android Intern @HumaraNagar | Ex. @Edvora</string>
+    <string name="createAccount">Create Account</string>
+    <string name="createANewAccount">Create a new account</string>
 
     <string-array name="account_names">
         <item>Phone</item>

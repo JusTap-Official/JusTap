@@ -151,11 +151,15 @@ class SignIn_Screen : AppCompatActivity() {
     private fun initialization() {
         supportActionBar?.hide()
         auth = FirebaseAuth.getInstance()
-        findViewById<TextView>(R.id.toolbar_title).text = "Log In"
-        buttonLayout = findViewById(R.id.progress_button_bg)
-        buttonText = findViewById(R.id.buttonText)
-        buttonText.text = "Sign In"
-        buttonProgress = findViewById(R.id.buttonProgress)
+        binding.apply {
+            include.toolbarTitle.text = "Log In"
+            btnLogIn.apply {
+                this@SignIn_Screen.buttonLayout = this.progressButtonBg
+                this@SignIn_Screen.buttonText = this.buttonText
+                this@SignIn_Screen.buttonText.text = "Sign In"
+                this@SignIn_Screen.buttonProgress = this.buttonProgress
+            }
+        }
         viewModel = ViewModelProvider(this@SignIn_Screen)[SignIn_ViewModel::class.java]
         firebaseDatabase = FirebaseDatabase.getInstance().reference
         localDatabase = Room.databaseBuilder(
@@ -167,6 +171,7 @@ class SignIn_Screen : AppCompatActivity() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun passwordVisibilityHandler() {
+
         // Hide and Show Password
         var passwordVisible = false
         binding.etPassword.setOnTouchListener { _, event ->

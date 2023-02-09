@@ -42,6 +42,8 @@ import java.io.OutputStream
 class Util {
     companion object {
 
+        const val resumeURL: String = "https://binayshaw7777.github.io/BinayShaw.github.io/Binay%20Shaw%20CSE%2024.pdf"
+
         var userID: String = "0"
 
         var unusedAccounts = mutableListOf<String>()
@@ -266,7 +268,6 @@ class Util {
         fun Activity.createBottomSheet(): BottomSheetDialog {
             return BottomSheetDialog(this, R.style.BottomSheetDialogTheme)
         }
-
         fun View.setBottomSheet(bottomSheet: BottomSheetDialog) {
             bottomSheet.behavior.state = BottomSheetBehavior.STATE_EXPANDED
             bottomSheet.setContentView(this)

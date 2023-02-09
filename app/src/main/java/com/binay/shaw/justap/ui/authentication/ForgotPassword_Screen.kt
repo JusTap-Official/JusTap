@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.ActivityForgotPasswordScreenBinding
+import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +26,7 @@ class ForgotPassword_Screen : AppCompatActivity() {
     private lateinit var buttonLayout: ConstraintLayout
     private lateinit var buttonText: TextView
     private lateinit var buttonProgress: ProgressBar
+    private lateinit var toolbar: MyToolbarBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,11 +76,13 @@ class ForgotPassword_Screen : AppCompatActivity() {
     private fun initialization() {
         supportActionBar?.hide()
         auth = FirebaseAuth.getInstance()
-        findViewById<TextView>(R.id.toolbar_title).text = resources.getString(R.string.LogIn)
-        buttonLayout = findViewById(R.id.progress_button_bg)
-        buttonText = findViewById(R.id.buttonText)
-        buttonText.text = resources.getString(R.string.SendResetLink)
-        buttonProgress = findViewById(R.id.buttonProgress)
-
+        toolbar = binding.include
+        toolbar.toolbarTitle.text = resources.getString(R.string.LogIn)
+        binding.btnResetPassword.apply {
+            this@ForgotPassword_Screen.buttonText = this.buttonText
+            this@ForgotPassword_Screen.buttonLayout = this.progressButtonBg
+            this@ForgotPassword_Screen.buttonProgress = this.buttonProgress
+            this@ForgotPassword_Screen.buttonText.text = resources.getString(R.string.SendResetLink)
+        }
     }
 }
