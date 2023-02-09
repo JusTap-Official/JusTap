@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -17,7 +16,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.AccountsItemAdapter
 import com.binay.shaw.justap.databinding.FragmentHomeBinding
+import com.binay.shaw.justap.databinding.MyToolbarBinding
+import com.binay.shaw.justap.databinding.ParagraphModalBinding
 import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
+import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
 import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.viewModel.AccountsViewModel
@@ -42,6 +45,7 @@ class HomeFragment : Fragment() {
     private var accountsList = mutableListOf<Accounts>()
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdapter: AccountsItemAdapter
+    private lateinit var toolBar: MyToolbarBinding
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -62,7 +66,25 @@ class HomeFragment : Fragment() {
             gotoAddAccountFragment()
         }
 
+        toolBar.rightIcon.setOnClickListener {
+            showAccountInfoDialog()
+        }
+
         return binding.root
+    }
+
+    private fun showAccountInfoDialog() {
+        val dialog = ParagraphModalBinding.inflate(layoutInflater)
+        val bottomSheet = requireContext().createBottomSheet()
+        dialog.apply {
+            paragraphHeading.text = resources.getString(R.string.HowToUse)
+            paragraphContent.text = resources.getString(R.string.HowToUseDescription)
+            paragraphImageView.apply {
+                setImageResource(R.drawable.account_item_info)
+                visibility = View.VISIBLE
+            }
+        }
+        dialog.root.setBottomSheet(bottomSheet)
     }
 
     private fun gotoAddAccountFragment() {
@@ -101,9 +123,14 @@ class HomeFragment : Fragment() {
     private fun initialization(container: ViewGroup?) {
 
         _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
-        binding.root.findViewById<TextView>(R.id.toolbar_title)?.text = requireContext().resources.getString(R.string.Home)
+        toolBar = binding.include
+        toolBar.toolbarTitle.text = resources.getString(R.string.Home)
+        toolBar.rightIcon.apply {
+            setImageResource(R.drawable.info_icon)
+            visibility = View.VISIBLE
+        }
         fabTitle = binding.fabText
-//        recyclerViewAdapter = AccountsItemAdapter(requireContext())
+
         val addEditViewModel = ViewModelProvider(requireActivity())[AddEditViewModel::class.java]
         recyclerViewAdapter = AccountsItemAdapter(requireContext()) { newAccount ->
             // handle item click
