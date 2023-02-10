@@ -18,7 +18,12 @@
         android:id="@+id/history"
         android:name="com.binay.shaw.justap.ui.mainScreens.HistoryFragment"
         android:label="fragment_history"
-        tools:layout="@layout/fragment_history" />
+        tools:layout="@layout/fragment_history" >
+        <action
+            android:id="@+id/action_history_to_resultFragment"
+            app:destination="@id/resultFragment"
+            app:popUpTo="@id/history"/>
+    </fragment>
     <fragment
         android:id="@+id/settings"
         android:name="com.binay.shaw.justap.ui.mainScreens.SettingsFragment"

@@ -6,11 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.binay.shaw.justap.MainActivity
@@ -24,6 +27,10 @@ import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
 import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.model.LocalHistory
 import com.binay.shaw.justap.viewModel.LocalHistoryViewModel
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class HistoryFragment : Fragment() {
@@ -46,7 +53,11 @@ class HistoryFragment : Fragment() {
         historyAdapter.notifyDataSetChanged()
 
         binding.include.rightIcon.setOnClickListener {
-            clearHistory()
+            if (historyAdapter.itemCount > 0) {
+                clearHistory()
+            } else {
+                Toast.makeText(requireContext(), "No data to clear", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.include.leftIcon.setOnClickListener {
@@ -82,6 +93,17 @@ class HistoryFragment : Fragment() {
             positiveOption.setOnClickListener {
                 bottomSheet.dismiss()
                 Util.log("positive")
+                lifecycleScope.launch(Dispatchers.IO) {
+                    localUserHistoryViewModel.clearHistory()
+                    withContext(Dispatchers.Main) {
+                        historyAdapter.notifyDataSetChanged()
+                        Snackbar.make(
+                            binding.root,
+                            "Successfully cleared history",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                }
             }
             negativeOption.setOnClickListener {
                 bottomSheet.dismiss()
@@ -105,6 +127,12 @@ class HistoryFragment : Fragment() {
             recyclerView = historyRv
             historyAdapter = HistoryAdapter(requireContext()) { historyUser ->
                 //Handle on click
+                if (Util.checkForInternet(requireContext())) {
+                    val action = HistoryFragmentDirections.actionHistoryToResultFragment(historyUser.userID, true)
+                    findNavController().navigate(action)
+                } else {
+                    Snackbar.make(binding.root, "Data updated successfully", Snackbar.LENGTH_SHORT).show()
+                }
             }
 
             recyclerView = binding.historyRv
