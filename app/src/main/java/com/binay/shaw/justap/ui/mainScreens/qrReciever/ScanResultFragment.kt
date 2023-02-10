@@ -24,6 +24,7 @@ import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.binay.shaw.justap.helper.NotificationHelper
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.Accounts
+import com.binay.shaw.justap.viewModel.LocalHistoryViewModel
 import com.binay.shaw.justap.viewModel.ScanResultViewModel
 
 class ResultFragment : Fragment() {
@@ -92,7 +93,9 @@ class ResultFragment : Fragment() {
 
     private fun setUpResultView(resultString: String) {
 
-        viewModel.getDataFromUserID(resultString)
+        val localUserHistoryViewModel = ViewModelProvider(this@ResultFragment, ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application))[LocalHistoryViewModel::class.java]
+
+        viewModel.getDataFromUserID(resultString, localUserHistoryViewModel)
 
         viewModel.showCaseAccountsList.observe(viewLifecycleOwner) {
             recyclerViewAdapter

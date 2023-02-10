@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
@@ -17,12 +18,14 @@ import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
 import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
+import com.binay.shaw.justap.viewModel.LocalHistoryViewModel
 
 
 class HistoryFragment : Fragment() {
 
     private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
+    private lateinit var localUserHistoryViewModel: LocalHistoryViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,11 +49,22 @@ class HistoryFragment : Fragment() {
         dialog.apply {
 
             optionsHeading.text = requireContext().resources.getString(R.string.ClearHistory)
-            optionsContent.text = requireContext().resources.getString(R.string.ClearHistoryDescription)
+            optionsContent.text =
+                requireContext().resources.getString(R.string.ClearHistoryDescription)
             positiveOption.text = requireContext().resources.getString(R.string.ClearHistory)
-            positiveOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
+            positiveOption.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.negative_red
+                )
+            )
             negativeOption.text = requireContext().resources.getString(R.string.DontClearHistory)
-            negativeOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_color))
+            negativeOption.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.text_color
+                )
+            )
             positiveOption.setOnClickListener {
                 bottomSheet.dismiss()
                 Util.log("positive")
@@ -70,6 +84,14 @@ class HistoryFragment : Fragment() {
         binding.include.apply {
             toolbarTitle.text = requireContext().resources.getString(R.string.History)
             rightIcon.visibility = View.VISIBLE
+        }
+        localUserHistoryViewModel = ViewModelProvider(
+            this@HistoryFragment,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+        )[LocalHistoryViewModel::class.java]
+
+        localUserHistoryViewModel.getAllHistory.observe(viewLifecycleOwner) {
+            Util.log("Accounts Scanned: $it")
         }
     }
 
