@@ -381,31 +381,18 @@ class AddEditFragment : Fragment() {
 
     private fun chooseAccount(it: String) {
 
+        setImageOnAccountNameChange(Util.getImageDrawableFromAccountName(it))
+
         when (it) {
             "Phone" -> {
                 binding.accountData.inputType = InputType.TYPE_CLASS_PHONE
-                setImageOnAccountNameChange(R.drawable.phone)
             }
             "Email" -> {
                 binding.accountData.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
-                setImageOnAccountNameChange(R.drawable.email)
             }
-            "Instagram" -> setImageOnAccountNameChange(R.drawable.instagram)
-            "LinkedIn" -> setImageOnAccountNameChange(R.drawable.linkedin)
-            "Facebook" -> setImageOnAccountNameChange(R.drawable.facebook)
-            "Twitter" -> setImageOnAccountNameChange(R.drawable.twitter)
-            "YouTube" -> setImageOnAccountNameChange(R.drawable.youtube)
-            "Snapchat" -> setImageOnAccountNameChange(R.drawable.snapchat)
-            "Twitch" -> setImageOnAccountNameChange(R.drawable.twitch)
-            "Website" -> setImageOnAccountNameChange(R.drawable.website)
-            "Discord" -> setImageOnAccountNameChange(R.drawable.discord)
-            "LinkTree" -> setImageOnAccountNameChange(R.drawable.linktree)
-            "Custom Link" -> setImageOnAccountNameChange(R.drawable.custom_link)
-            "Telegram" -> setImageOnAccountNameChange(R.drawable.telegram)
-            "Spotify" -> setImageOnAccountNameChange(R.drawable.spotify)
+
             "WhatsApp" -> {
                 binding.accountData.inputType = InputType.TYPE_CLASS_PHONE
-                setImageOnAccountNameChange(R.drawable.whatsapp)
             }
         }
     }

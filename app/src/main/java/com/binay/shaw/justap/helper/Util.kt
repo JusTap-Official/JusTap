@@ -294,5 +294,30 @@ class Util {
             bottomSheet.show()
         }
 
+
+        fun getImageDrawableFromAccountName(accountName: String): Int {
+
+            val map = HashMap<String, Int>()
+            map["Phone"] = R.drawable.phone
+            map["Email"] = R.drawable.email
+            map["Instagram"] = R.drawable.instagram
+            map["LinkedIn"] = R.drawable.linkedin
+            map["Facebook"] = R.drawable.facebook
+            map["Twitter"] = R.drawable.twitter
+            map["YouTube"] = R.drawable.youtube
+            map["Snapchat"] = R.drawable.snapchat
+            map["Twitch"] = R.drawable.twitch
+            map["Website"] = R.drawable.website
+            map["Discord"] = R.drawable.discord
+            map["LinkTree"] = R.drawable.linktree
+            map["Custom Link"] = R.drawable.custom_link
+            map["Telegram"] = R.drawable.telegram
+            map["Spotify"] = R.drawable.spotify
+            map["WhatsApp"] = R.drawable.whatsapp
+
+            return map[accountName]!!
+
+        }
+
     }
 }

@@ -76,24 +76,7 @@ class AccountsItemAdapter(
             }
             listener(account)
         }
-        when (account.accountName) {
-            "Phone" -> holder.accountsIcon.setImageResource(R.drawable.phone)
-            "Email" -> holder.accountsIcon.setImageResource(R.drawable.email)
-            "Instagram" -> holder.accountsIcon.setImageResource(R.drawable.instagram)
-            "LinkedIn" -> holder.accountsIcon.setImageResource(R.drawable.linkedin)
-            "Facebook" -> holder.accountsIcon.setImageResource(R.drawable.facebook)
-            "Twitter" -> holder.accountsIcon.setImageResource(R.drawable.twitter)
-            "YouTube" -> holder.accountsIcon.setImageResource(R.drawable.youtube)
-            "Snapchat" -> holder.accountsIcon.setImageResource(R.drawable.snapchat)
-            "Twitch" -> holder.accountsIcon.setImageResource(R.drawable.twitch)
-            "Website" -> holder.accountsIcon.setImageResource(R.drawable.website)
-            "Discord" -> holder.accountsIcon.setImageResource(R.drawable.discord)
-            "LinkTree" -> holder.accountsIcon.setImageResource(R.drawable.linktree)
-            "Custom Link" -> holder.accountsIcon.setImageResource(R.drawable.custom_link)
-            "Telegram" -> holder.accountsIcon.setImageResource(R.drawable.telegram)
-            "Spotify" -> holder.accountsIcon.setImageResource(R.drawable.spotify)
-            "WhatsApp" -> holder.accountsIcon.setImageResource(R.drawable.whatsapp)
-        }
+        holder.accountsIcon.setImageResource(Util.getImageDrawableFromAccountName(account.accountName))
     }
 
     override fun getItemCount(): Int {

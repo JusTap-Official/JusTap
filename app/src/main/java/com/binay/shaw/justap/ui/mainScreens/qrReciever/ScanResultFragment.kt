@@ -43,6 +43,7 @@ class ResultFragment : Fragment() {
     private val channelName = "Notification Channel Name"
     private val notificationId = 1
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -91,6 +92,7 @@ class ResultFragment : Fragment() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun setUpResultView(resultString: String) {
 
         val localUserHistoryViewModel = ViewModelProvider(this@ResultFragment, ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application))[LocalHistoryViewModel::class.java]
