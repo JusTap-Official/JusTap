@@ -10,7 +10,7 @@
     <color name="medium_blue">#0094FF</color>
     <color name="et_box_color">#E5EDF4</color>
     <color name="et_text">#ffffff</color>
-    <color name="text_color">#272D33</color>
+    <color name="text_color">#1D272D</color>
     <color name="bg_color">#ffffff</color>
     <color name="card_color">#F9FCFF</color>
     <color name="card_borderStripe">#CBD2D8</color>
@@ -19,4 +19,5 @@
     <color name="positive_green">#1CBD2C</color>
     <color name="card_shadow_color">#6FB4FF</color>
     <color name="drag_handle_color">#707070</color>
+    <color name="secondary_color">#E5EEF7</color>
 </resources>

@@ -61,7 +61,7 @@ class EditProfileFragment : Fragment() {
         }
 
         binding.cancelChanges.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            handleBackButtonPress()
         }
 
         binding.confirmChanges.setOnClickListener {

@@ -49,7 +49,7 @@ class AddEditFragment : Fragment() {
         initialization()
 
         binding.cancelChanges.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            handleBackButtonPress()
         }
 
         binding.info.setOnClickListener {
@@ -97,13 +97,54 @@ class AddEditFragment : Fragment() {
         return binding.root
     }
 
+    private fun handleBackButtonPress() {
+        val inputName = binding.accountData.text.toString().trim()
+
+        if (inputName.isNotEmpty()) {
+
+            val dialog = OptionsModalBinding.inflate(layoutInflater)
+            val bottomSheet = requireContext().createBottomSheet()
+            dialog.apply {
+
+                optionsHeading.text = requireContext().resources.getString(R.string.DiscardChanged)
+                optionsContent.text = requireContext().resources.getString(R.string.DiscardChangedDescription)
+                positiveOption.text = requireContext().resources.getString(R.string.Discard)
+                positiveOption.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.negative_red
+                    )
+                )
+                negativeOption.text = requireContext().resources.getString(R.string.ContinueEditing)
+                negativeOption.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.text_color
+                    )
+                )
+                positiveOption.setOnClickListener {
+                    bottomSheet.dismiss()
+                    Util.log("Go back")
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                }
+                negativeOption.setOnClickListener {
+                    bottomSheet.dismiss()
+                    Util.log("Stay")
+                }
+            }
+            dialog.root.setBottomSheet(bottomSheet)
+        }
+        else
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+    }
+
     private fun updateData(newData: String) {
 
         val dialog = OptionsModalBinding.inflate(layoutInflater)
         val bottomSheet = requireContext().createBottomSheet()
         dialog.apply {
 
-            optionsHeading.text = requireContext().resources.getString(R.string.ConfirmChanges)
+            optionsHeading.text = ""
             optionsContent.text = resources.getString(R.string.AreYouSureYouWantToUpdateThisAccount)
             positiveOption.text = resources.getString(R.string.Update)
             positiveOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
@@ -112,35 +153,7 @@ class AddEditFragment : Fragment() {
 
             positiveOption.setOnClickListener {
                 bottomSheet.dismiss()
-                if (Util.checkForInternet(requireContext())) {
-                    binding.progressAnimation.progressParent.visibility = View.VISIBLE
 
-                    args.accounts?.let {
-                        val array = resources.getStringArray(R.array.account_names)
-                        val index = array.indexOf(it.accountName)
-                        it.accountID = index
-                        it.accountData = newData
-                        lifecycleScope.launch {
-
-                            viewModel.updateEntry(accountsViewModel, firebaseDatabase, it)
-
-                            viewModel.updateStatus.observe(viewLifecycleOwner) { status ->
-                                if (status == 3) {
-                                    Util.log("Status value = $status")
-                                    viewModel.updateStatus.postValue(0)
-                                    Snackbar.make(binding.root, "Data updated successfully", Snackbar.LENGTH_SHORT).show()
-                                    binding.progressAnimation.progressParent.visibility = View.GONE
-                                    findNavController().navigateUp()
-                                }
-                            }
-
-                        }
-
-                    }
-                } else {
-                    Snackbar.make(binding.root, "No Internet available", Snackbar.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
             }
             negativeOption.setOnClickListener {
                 bottomSheet.dismiss()
@@ -340,7 +353,7 @@ class AddEditFragment : Fragment() {
         toolBar.leftIcon.apply {
             visibility = View.VISIBLE
             setOnClickListener {
-                requireActivity().onBackPressedDispatcher.onBackPressed()
+                handleBackButtonPress()
             }
         }
 
