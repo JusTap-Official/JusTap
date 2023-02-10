@@ -12,5 +12,6 @@ import java.io.Serializable
 data class LocalHistory(
     @PrimaryKey(autoGenerate = false)
     var userID: String,
+    var username: String,
     val userPFPBase64: String?
 )

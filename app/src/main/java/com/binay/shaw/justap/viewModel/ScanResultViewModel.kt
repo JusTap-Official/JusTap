@@ -41,11 +41,6 @@ class ScanResultViewModel : ViewModel() {
                 val profileBanner = it.child("profileBannerURI").value.toString()
                 val bio = it.child("bio").value.toString()
 
-                viewModelScope.launch(Dispatchers.IO) {
-                    val localHistory = LocalHistory(userID, profileBase64)
-                    localUserHistoryViewModel.insertUserHistory(localHistory)
-                }
-
                 if (it.hasChild("accounts")) {
                     val accountList = mutableListOf<Accounts>()
 
@@ -65,6 +60,10 @@ class ScanResultViewModel : ViewModel() {
                     showCaseAccountsList.postValue(accountList)
                 }
 
+                viewModelScope.launch(Dispatchers.IO) {
+                    val localHistory = LocalHistory(userID, name, profileBase64)
+                    localUserHistoryViewModel.insertUserHistory(localHistory)
+                }
 
                  scanResultUser.postValue(User(
                     userID, name,

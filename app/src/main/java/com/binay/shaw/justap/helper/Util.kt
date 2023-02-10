@@ -66,6 +66,11 @@ class Util {
             return Base64.encodeToString(imageBytes, Base64.NO_WRAP)
         }
 
+        fun base64ToImage(base64String: String): Bitmap {
+            val imageBytes = Base64.decode(base64String, Base64.NO_WRAP)
+            return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+        }
+
         fun isDarkMode(context: Context): Boolean {
             return context.resources.configuration.uiMode and
                     Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES

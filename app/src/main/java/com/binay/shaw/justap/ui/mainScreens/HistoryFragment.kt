@@ -11,13 +11,18 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
+import com.binay.shaw.justap.adapter.HistoryAdapter
 import com.binay.shaw.justap.databinding.FragmentHistoryBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
 import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
+import com.binay.shaw.justap.model.Accounts
+import com.binay.shaw.justap.model.LocalHistory
 import com.binay.shaw.justap.viewModel.LocalHistoryViewModel
 
 
@@ -26,6 +31,9 @@ class HistoryFragment : Fragment() {
     private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
     private lateinit var localUserHistoryViewModel: LocalHistoryViewModel
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var historyAdapter: HistoryAdapter
+    private var accountsList = mutableListOf<LocalHistory>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,8 +43,14 @@ class HistoryFragment : Fragment() {
         _binding = FragmentHistoryBinding.inflate(layoutInflater, container, false)
         initialization()
 
+        historyAdapter.notifyDataSetChanged()
+
         binding.include.rightIcon.setOnClickListener {
             clearHistory()
+        }
+
+        binding.include.leftIcon.setOnClickListener {
+            //Show Info Bottom Sheet
         }
 
         return binding.root
@@ -81,10 +95,26 @@ class HistoryFragment : Fragment() {
     private fun initialization() {
 
         (activity as MainActivity).supportActionBar?.hide()
-        binding.include.apply {
-            toolbarTitle.text = requireContext().resources.getString(R.string.History)
-            rightIcon.visibility = View.VISIBLE
+        binding.apply {
+            include.apply {
+                toolbarTitle.text = requireContext().resources.getString(R.string.History)
+                rightIcon.visibility = View.VISIBLE
+                leftIcon.visibility = View.VISIBLE
+                leftIcon.setImageResource(R.drawable.info_icon)
+            }
+            recyclerView = historyRv
+            historyAdapter = HistoryAdapter(requireContext()) { historyUser ->
+                //Handle on click
+            }
+
+            recyclerView = binding.historyRv
+            recyclerView.apply {
+                adapter = historyAdapter
+                layoutManager = LinearLayoutManager(requireContext())
+            }
+
         }
+
         localUserHistoryViewModel = ViewModelProvider(
             this@HistoryFragment,
             ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
@@ -92,6 +122,10 @@ class HistoryFragment : Fragment() {
 
         localUserHistoryViewModel.getAllHistory.observe(viewLifecycleOwner) {
             Util.log("Accounts Scanned: $it")
+            accountsList.clear()
+            accountsList.addAll(it)
+            historyAdapter.setData(it)
+            historyAdapter.notifyDataSetChanged()
         }
     }
 
