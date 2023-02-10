@@ -120,7 +120,7 @@ class SettingsFragment : Fragment() {
                     it.userName,
                     it.userEmail,
                     it.userBio,
-                    it.userPhone,
+                    it.userPFPBase64,
                     it.userProfilePicture,
                     it.userBannerPicture
                 )

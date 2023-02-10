@@ -98,7 +98,7 @@ class EditProfile_ViewModel : ViewModel() {
                 userMap["name"].toString(),
                 userMap["email"].toString(),
                 userMap["bio"].toString(),
-                userMap["phone"].toString(),
+                userMap["userPFPBase64"].toString(),
                 userMap["profilePictureURI"].toString(),
                 userMap["profileBannerURI"].toString(),
             )

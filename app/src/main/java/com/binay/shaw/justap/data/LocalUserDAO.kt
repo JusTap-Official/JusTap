@@ -29,9 +29,6 @@ interface LocalUserDAO {
     @Query("SELECT userEmail FROM localDB")
     fun getEmail(): LiveData<String>
 
-    @Query("SELECT userPhone FROM localDB")
-    fun getPhone(): LiveData<String>
-
     @Query("SELECT userBio FROM localDB")
     fun getBio(): LiveData<String>
 

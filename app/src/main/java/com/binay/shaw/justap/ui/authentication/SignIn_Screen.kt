@@ -100,7 +100,8 @@ class SignIn_Screen : AppCompatActivity() {
                             )[LocalUserViewModel::class.java]
                         val lu = LocalUser(
                             user.userID, user.name,
-                            user.email, user.bio, user.phone, user.profilePictureURI, user.profileBannerURI
+                            user.email, user.bio,
+                            user.userPFPBase64, user.profilePictureURI, user.profileBannerURI
                         )
                         localUserViewModel.insertUser(lu)
 

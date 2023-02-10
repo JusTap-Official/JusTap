@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -68,13 +67,12 @@ class EditProfileFragment : Fragment() {
 
             val inputName = binding.newNameET.text.toString().trim()
             val inputBio = binding.newBioET.text.toString().trim()
-            val inputPhone = binding.newPhoneET.text.toString().trim()
 
             if (!Util.checkForInternet(requireContext())) {
                 Snackbar.make(binding.root, "No Internet available", Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            editChanges(inputName, inputBio, inputPhone, profilePictureURI, profileBannerURI)
+            editChanges(inputName, inputBio, profilePictureURI, profileBannerURI)
         }
 
         binding.editBanner.setOnClickListener {
@@ -108,10 +106,9 @@ class EditProfileFragment : Fragment() {
     private fun handleBackButtonPress() {
         val inputName = binding.newNameET.text.toString().trim()
         val inputBio = binding.newBioET.text.toString().trim()
-        val inputPhone = binding.newPhoneET.text.toString().trim()
 
         if (inputName.isNotEmpty() || inputBio.isNotEmpty()
-            || inputPhone.isNotEmpty() || profileBannerURI != null || profilePictureURI != null) {
+            || profileBannerURI != null || profilePictureURI != null) {
 
             val dialog = OptionsModalBinding.inflate(layoutInflater)
             val bottomSheet = requireContext().createBottomSheet()
@@ -152,20 +149,18 @@ class EditProfileFragment : Fragment() {
     private fun editChanges(
         inputName: String,
         inputBio: String,
-        inputPhone: String,
         profilePictureURI: Uri?,
         profileBannerURI: Uri?,
     ) {
 
         val originalID = localUser.userID
         val originalEmail = localUser.userEmail
-        val originalPhone = localUser.userPhone
         val originalName = localUser.userName
         val originalBio = localUser.userBio
         var originalPFP = localUser.userProfilePicture
         var originalBanner = localUser.userBannerPicture
 
-        if (isInvalidData(inputName, inputBio, inputPhone, profilePictureURI, profileBannerURI))
+        if (isInvalidData(inputName, inputBio, profilePictureURI, profileBannerURI))
             return
 
         val dialog = OptionsModalBinding.inflate(layoutInflater)
@@ -202,12 +197,11 @@ class EditProfileFragment : Fragment() {
                 else
                     hashMap["bio"] = ""
 
-                if (inputPhone.isNotEmpty())
-                    hashMap["phone"] = inputPhone
-                else if (originalPhone?.isNotEmpty() == true)
-                    hashMap["phone"] = originalPhone
-                else
-                    hashMap["phone"] = ""
+                if (profilePictureURI != null) {
+                    hashMap["userPFPBase64"] = Util.imageUriToBase64(requireActivity().contentResolver, profilePictureURI)
+                } else if (originalPFP.isNullOrEmpty())
+                    hashMap["userPFPBase64"] = ""
+
 
                 if (originalPFP.isNullOrEmpty())
                     originalPFP = ""
@@ -227,7 +221,7 @@ class EditProfileFragment : Fragment() {
                     if (it == 3) {
                         Glide.get(requireContext()).clearMemory()
                         binding.progressAnimation.progressParent.visibility = View.GONE
-                        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
                         Snackbar.make(binding.root, "Profile updated successfully", Snackbar.LENGTH_SHORT).show()
                         requireActivity().onBackPressedDispatcher.onBackPressed()
                     }
@@ -264,22 +258,17 @@ class EditProfileFragment : Fragment() {
     private fun isInvalidData(
         inputName: String,
         inputBio: String,
-        inputPhone: String,
         profilePictureURI: Uri?,
         profileBannerURI: Uri?
     ): Boolean {
-        if (inputName.isEmpty() && inputBio.isEmpty() && inputPhone.isEmpty() && (profilePictureURI == null ||
+        if (inputName.isEmpty() && inputBio.isEmpty() && (profilePictureURI == null ||
             profilePictureURI.toString()
                 .isEmpty()) && (profileBannerURI == null || profileBannerURI.toString().isEmpty())
         ) {
             Toast.makeText(requireContext(), "Make changes to update", Toast.LENGTH_SHORT).show()
             return true
         }
-        if (inputPhone.isNotEmpty() && inputPhone.length != 10) {
-            Toast.makeText(requireContext(), "Phone number must be 10 digits", Toast.LENGTH_SHORT)
-                .show()
-            return true
-        }
+
         return false
     }
 
@@ -300,13 +289,12 @@ class EditProfileFragment : Fragment() {
                 it.userName,
                 it.userEmail,
                 it.userBio,
-                it.userPhone,
+                it.userPFPBase64,
                 it.userProfilePicture,
                 it.userBannerPicture
             )
             binding.newNameET.hint = localUser.userName
             binding.newBioET.hint = localUser.userBio
-            binding.newPhoneET.hint = localUser.userPhone
             val profileURL = localUser.userProfilePicture.toString()
             val bannerURL = localUser.userBannerPicture.toString()
             if (profileURL.isNotEmpty())

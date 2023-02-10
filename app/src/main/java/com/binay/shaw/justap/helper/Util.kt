@@ -2,11 +2,13 @@ package com.binay.shaw.justap.helper
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.net.ConnectivityManager
@@ -15,6 +17,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
 import android.util.Patterns
 import android.view.View
@@ -31,9 +34,11 @@ import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
+import java.net.URL
 
 
 /**
@@ -50,6 +55,15 @@ class Util {
 
         fun log(message: String) {
             Log.d("", message)
+        }
+
+        fun imageUriToBase64(contentResolver: ContentResolver, imageUri: Uri): String {
+            val imageStream = contentResolver.openInputStream(imageUri)
+            val imageBitmap = BitmapFactory.decodeStream(imageStream)
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+            val imageBytes = byteArrayOutputStream.toByteArray()
+            return Base64.encodeToString(imageBytes, Base64.NO_WRAP)
         }
 
         fun isDarkMode(context: Context): Boolean {

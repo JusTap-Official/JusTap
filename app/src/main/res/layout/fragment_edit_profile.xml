@@ -122,31 +122,6 @@
             android:layout_marginStart="10dp"
             android:layout_marginBottom="5dp"
             android:fontFamily="@font/roboto"
-            android:text="Phone"
-            android:textColor="@color/text_color"
-            android:textSize="16sp" />
-
-        <EditText
-            android:id="@+id/newPhoneET"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="30dp"
-            android:background="@drawable/edittext_box"
-            android:fontFamily="@font/roboto"
-            android:gravity="start"
-            android:hint="Enter your Phone"
-            android:inputType="number"
-            android:paddingStart="16dp"
-            android:paddingTop="12dp"
-            android:textSize="16sp"
-            tools:ignore="RtlSymmetry" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="5dp"
-            android:fontFamily="@font/roboto"
             android:text="Bio"
             android:textColor="@color/text_color"
             android:textSize="16sp" />
