@@ -26,6 +26,7 @@ import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.viewModel.AccountsViewModel
 import com.binay.shaw.justap.viewModel.AddEditViewModel
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -143,7 +144,7 @@ class HomeFragment : Fragment() {
 
                     addEditViewModel.updateStatus.observe(viewLifecycleOwner) {
                         if (it == 3) {
-                            Toast.makeText(requireContext(), "Updated", Toast.LENGTH_SHORT).show()
+                            Snackbar.make(binding.root, "Data updated successfully", Snackbar.LENGTH_SHORT).show()
                             addEditViewModel.updateStatus.value = 0
                             recyclerViewAdapter.notifyDataSetChanged()
                         }
@@ -179,7 +180,7 @@ class HomeFragment : Fragment() {
                 it.userBannerPicture
             )
             Util.userID = it.userID
-            binding.profileNameTV.text  = "Hi ${Util.getFirstName(localUser.userName)},"
+            binding.profileNameTV.text = "Hi ${Util.getFirstName(localUser.userName)},"
             binding.profileBioTV.text = localUser.userBio
             val profileURL = localUser.userProfilePicture!!
             if (profileURL.isNotEmpty()) {

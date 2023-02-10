@@ -11,8 +11,10 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.binay.shaw.justap.R
+import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.ui.mainScreens.HomeFragmentDirections
+import com.google.android.material.snackbar.Snackbar
 
 /**
  * Created by binay on 30,January,2023
@@ -67,6 +69,11 @@ class AccountsItemAdapter(
         }
 
         holder.showAccount.setOnClickListener {
+            if (!Util.checkForInternet(context)) {
+                Snackbar.make(holder.itemView.rootView, "No Internet available", Snackbar.LENGTH_SHORT).show()
+                holder.showAccount.isChecked = account.showAccount
+                return@setOnClickListener
+            }
             listener(account)
         }
         when (account.accountName) {

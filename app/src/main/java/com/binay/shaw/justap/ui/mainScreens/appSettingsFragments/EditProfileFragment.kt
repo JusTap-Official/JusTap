@@ -25,6 +25,7 @@ import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.viewModel.EditProfile_ViewModel
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
@@ -70,7 +71,7 @@ class EditProfileFragment : Fragment() {
             val inputPhone = binding.newPhoneET.text.toString().trim()
 
             if (!Util.checkForInternet(requireContext())) {
-                Toast.makeText(requireContext(), "You're offline!", Toast.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, "No Internet available", Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             editChanges(inputName, inputBio, inputPhone, profilePictureURI, profileBannerURI)
@@ -227,7 +228,7 @@ class EditProfileFragment : Fragment() {
                         Glide.get(requireContext()).clearMemory()
                         binding.progressAnimation.progressParent.visibility = View.GONE
                         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                        Toast.makeText(requireContext(), "Updated Successfully", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root, "Profile updated successfully", Snackbar.LENGTH_SHORT).show()
                         requireActivity().onBackPressedDispatcher.onBackPressed()
                     }
                 }

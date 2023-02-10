@@ -25,6 +25,7 @@ import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
 import com.binay.shaw.justap.helper.Util.Companion.dpToPx
 import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
 import com.binay.shaw.justap.viewModel.QRGenerator_ViewModel
+import com.google.android.material.snackbar.Snackbar
 
 
 class QRGeneratorFragment : Fragment() {
@@ -69,7 +70,7 @@ class QRGeneratorFragment : Fragment() {
         binding.qrCodePreview.setOnLongClickListener {
             Util.saveMediaToStorage(viewModel.bitmap.value as Bitmap, requireContext()).also { status ->
                 if (status)
-                    Toast.makeText(requireContext(), "Saved to photos", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, "Successfully saved in Storage", Snackbar.LENGTH_SHORT).show()
             }
         }
 

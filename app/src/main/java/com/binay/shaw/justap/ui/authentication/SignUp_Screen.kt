@@ -17,6 +17,7 @@ import com.binay.shaw.justap.R
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.databinding.ActivitySignUpScreenBinding
 import com.binay.shaw.justap.viewModel.SignUp_ViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 
 @SuppressLint("SetTextI18n")
@@ -41,7 +42,7 @@ class SignUp_Screen : AppCompatActivity() {
 
         buttonLayout.setOnClickListener {
             if (!Util.checkForInternet(this)) {
-                Toast.makeText(this@SignUp_Screen, "You're offline!", Toast.LENGTH_SHORT).show()
+                Snackbar.make(binding.root, "No Internet available", Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             buttonText.visibility = View.GONE

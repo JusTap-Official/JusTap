@@ -82,17 +82,6 @@ class AddEditViewModel : ViewModel() {
 
     }
 
-    suspend fun updateData(
-        firebaseDatabase: FirebaseDatabase,
-        accountID1: String,
-        accountID: Int,
-        accountName: String,
-        accountData: String
-    ) {
-
-    }
-
-
     private suspend fun saveInRoomDB(
         accountsViewModel: AccountsViewModel,
         account: Accounts

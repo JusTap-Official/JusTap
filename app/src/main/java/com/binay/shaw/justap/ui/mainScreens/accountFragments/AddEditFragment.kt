@@ -25,6 +25,7 @@ import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
 import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
 import com.binay.shaw.justap.viewModel.AccountsViewModel
 import com.binay.shaw.justap.viewModel.AddEditViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.launch
 
@@ -56,7 +57,8 @@ class AddEditFragment : Fragment() {
             val bottomSheet = requireActivity().createBottomSheet()
             dialog.apply {
                 paragraphHeading.text = resources.getString(R.string.EnterURLorUsername)
-                paragraphContent.text = resources.getString(R.string.AddEditFragmentBottomModalDescription)
+                paragraphContent.text =
+                    resources.getString(R.string.AddEditFragmentBottomModalDescription)
             }
             dialog.root.setBottomSheet(bottomSheet)
         }
@@ -104,19 +106,10 @@ class AddEditFragment : Fragment() {
             optionsHeading.text = requireContext().resources.getString(R.string.ConfirmChanges)
             optionsContent.text = resources.getString(R.string.AreYouSureYouWantToUpdateThisAccount)
             positiveOption.text = resources.getString(R.string.Update)
-            positiveOption.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.negative_red
-                )
-            )
+            positiveOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
             negativeOption.text = resources.getString(R.string.DontUpdate)
-            negativeOption.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.text_color
-                )
-            )
+            negativeOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_color))
+
             positiveOption.setOnClickListener {
                 bottomSheet.dismiss()
                 if (Util.checkForInternet(requireContext())) {
@@ -129,18 +122,13 @@ class AddEditFragment : Fragment() {
                         it.accountData = newData
                         lifecycleScope.launch {
 
-                            viewModel.updateEntry(
-                                accountsViewModel,
-                                firebaseDatabase,
-                                it
-                            )
+                            viewModel.updateEntry(accountsViewModel, firebaseDatabase, it)
 
                             viewModel.updateStatus.observe(viewLifecycleOwner) { status ->
                                 if (status == 3) {
                                     Util.log("Status value = $status")
                                     viewModel.updateStatus.postValue(0)
-                                    Toast.makeText(requireContext(), "Updated", Toast.LENGTH_SHORT)
-                                        .show()
+                                    Snackbar.make(binding.root, "Data updated successfully", Snackbar.LENGTH_SHORT).show()
                                     binding.progressAnimation.progressParent.visibility = View.GONE
                                     findNavController().navigateUp()
                                 }
@@ -150,7 +138,7 @@ class AddEditFragment : Fragment() {
 
                     }
                 } else {
-                    Toast.makeText(requireContext(), "No Internet!", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, "No Internet available", Snackbar.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
             }
@@ -202,8 +190,7 @@ class AddEditFragment : Fragment() {
                                 if (status == 3) {
                                     Util.log("Status value = $status")
                                     viewModel.deleteStatus.postValue(0)
-                                    Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT)
-                                        .show()
+                                    Snackbar.make(binding.root, "Successfully Deleted", Snackbar.LENGTH_SHORT).show()
                                     binding.progressAnimation.progressParent.visibility = View.GONE
                                     findNavController().navigateUp()
                                 }
@@ -211,7 +198,7 @@ class AddEditFragment : Fragment() {
                         }
                     }
                 } else {
-                    Toast.makeText(requireContext(), "No Internet!", Toast.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, "No Internet available", Snackbar.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
             }
@@ -258,49 +245,31 @@ class AddEditFragment : Fragment() {
                         selectedAccount?.let { it1 ->
                             getStringIndex(it1)
                         }?.let { index ->
-                            if (args.mode == 0) {
-                                //Save new Data
-                                viewModel.saveData(
-                                    accountsViewModel,
-                                    firebaseDatabase,
-                                    Util.userID,
-                                    index,
-                                    selectedAccount!!,
-                                    accountData
-                                )
-                                viewModel.saveStatus.observe(viewLifecycleOwner) {
-                                    if (it == 3) {
-                                        viewModel.saveStatus.value = 0
-                                        //Success
-                                        Toast.makeText(
-                                            requireContext(),
-                                            "Saved Data",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                        binding.progressAnimation.progressParent.visibility =
-                                            View.GONE
-                                        requireActivity().onBackPressedDispatcher.onBackPressed()
-                                    }
-                                }
-                            } else {
-                                //Update current Data
-                                viewModel.updateData(
-                                    firebaseDatabase,
-                                    Util.userID,
-                                    index,
-                                    selectedAccount!!,
-                                    accountData
-                                )
-                            }
-                        }
 
+                            //Save new Data
+                            viewModel.saveData(
+                                accountsViewModel,
+                                firebaseDatabase,
+                                Util.userID,
+                                index,
+                                selectedAccount!!,
+                                accountData
+                            )
+                            viewModel.saveStatus.observe(viewLifecycleOwner) {
+                                if (it == 3) {
+                                    viewModel.saveStatus.value = 0
+                                    //Success
+                                    Snackbar.make(binding.root, "Data saved successfully", Snackbar.LENGTH_SHORT).show()
+                                    binding.progressAnimation.progressParent.visibility =
+                                        View.GONE
+                                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                                }
+                            }
+
+                        }
                     }
                 } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "No Internet!",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Snackbar.make(binding.root, "No Internet available", Snackbar.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
             }
@@ -318,9 +287,7 @@ class AddEditFragment : Fragment() {
     }
 
     private fun dataIsValid(selectedAccount: String?, accountData: String): Boolean {
-        if (selectedAccount.isNullOrEmpty() ||
-            accountData.isEmpty()
-        )
+        if (selectedAccount.isNullOrEmpty() || accountData.isEmpty())
             return false
         return true
     }
@@ -339,25 +306,24 @@ class AddEditFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity())[AddEditViewModel::class.java]
         accountsViewModel = ViewModelProvider(
             this,
-            ViewModelProvider.AndroidViewModelFactory
-                .getInstance(requireActivity().application)
+            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
         )[AccountsViewModel::class.java]
         firebaseDatabase = FirebaseDatabase.getInstance()
 
         //Top app bar
         (activity as MainActivity).supportActionBar?.hide()
         toolBar = binding.include
-        toolBar.toolbarTitle.text = resources.getString(R.string.Home)
-        toolBar.rightIcon.apply {
-            setImageResource(R.drawable.info_icon)
-            visibility = View.VISIBLE
-        }
+
         //Mode = 0 -> Add | Mode = 1 -> Edit
-        if (args.mode == 0)
+        if (args.mode == 0) {
             toolBar.toolbarTitle.text = resources.getString(R.string.AddAccount)
-        else if (args.mode == 1) {
+            toolBar.rightIcon.visibility = View.GONE
+        } else if (args.mode == 1) {
             toolBar.toolbarTitle.text = resources.getString(R.string.EditAccount)
-            toolBar.rightIcon.visibility = View.VISIBLE
+            toolBar.rightIcon.apply {
+                setImageResource(R.drawable.delete)
+                visibility = View.VISIBLE
+            }
             binding.confirmChanges.text = resources.getString(R.string.SaveChanges)
             args.accounts?.let {
                 chooseAccount(it.accountName)
@@ -378,7 +344,6 @@ class AddEditFragment : Fragment() {
             }
         }
 
-
         // Account List
         val accounts = Util.unusedAccounts
         val arrayAdapter = ArrayAdapter(
@@ -391,21 +356,9 @@ class AddEditFragment : Fragment() {
 
     private fun AutoCompleteTextView.afterTextChanged(afterTextChanged: (String) -> Unit) {
         this.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(
-                s: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int
-            ) {
-            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(editable: Editable?) {
                 afterTextChanged.invoke(editable.toString())

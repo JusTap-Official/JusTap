@@ -12,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.ActivityForgotPasswordScreenBinding
 import com.binay.shaw.justap.databinding.MyToolbarBinding
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -45,7 +46,7 @@ class ForgotPassword_Screen : AppCompatActivity() {
     private fun resetPassword() {
         val userEmail = binding.etEmail.text.toString().trim()
         if (userEmail.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
-            Toast.makeText(this@ForgotPassword_Screen, "Check your email", Toast.LENGTH_SHORT).show()
+            Snackbar.make(binding.root, "Please check your email, it's incorrect", Snackbar.LENGTH_SHORT).show()
             buttonText.visibility = View.VISIBLE
             buttonProgress.visibility = View.GONE
         } else {
@@ -55,11 +56,7 @@ class ForgotPassword_Screen : AppCompatActivity() {
                     withContext(Dispatchers.Main) {
                         buttonText.visibility = View.VISIBLE
                         buttonProgress.visibility = View.GONE
-                        Toast.makeText(
-                            this@ForgotPassword_Screen,
-                            "Email has been send",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Snackbar.make(binding.root, "We sent an email, please check it", Snackbar.LENGTH_SHORT).show()
                         startActivity(Intent(this@ForgotPassword_Screen, SignIn_Screen::class.java))
                     }
                 } catch (e: Exception) {
