@@ -61,7 +61,7 @@ class ScanResultViewModel : ViewModel() {
                 }
 
                 viewModelScope.launch(Dispatchers.IO) {
-                    val localHistory = LocalHistory(userID, name, profileBase64)
+                    val localHistory = LocalHistory(userID, name, bio, profileBase64)
                     localUserHistoryViewModel.insertUserHistory(localHistory)
                 }
 

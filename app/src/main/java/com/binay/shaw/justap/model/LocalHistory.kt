@@ -13,5 +13,6 @@ data class LocalHistory(
     @PrimaryKey(autoGenerate = false)
     var userID: String,
     var username: String,
+    var userBio: String?,
     val userPFPBase64: String?
 )

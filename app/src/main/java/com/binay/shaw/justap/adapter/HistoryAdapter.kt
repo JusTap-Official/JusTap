@@ -28,10 +28,12 @@ class HistoryAdapter(
     class HistoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val namePreview: TextView
         val pfpPreview: ImageView
+        val bioPreview: TextView
 
         init {
             namePreview = itemView.findViewById(R.id.history_username)
             pfpPreview = itemView.findViewById(R.id.history_userpfp)
+            bioPreview = itemView.findViewById(R.id.history_userBio)
         }
     }
 
@@ -48,6 +50,14 @@ class HistoryAdapter(
             if (it.isNotEmpty()) {
                 val bitmap = Util.base64ToImage(it)
                 holder.pfpPreview.setImageBitmap(bitmap)
+            }
+        }
+        currentAccount.userBio?.let {
+            if (it.isNotEmpty()) {
+                holder.bioPreview.apply {
+                    text = it.trim()
+                    visibility = View.VISIBLE
+                }
             }
         }
 

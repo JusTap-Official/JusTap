@@ -159,6 +159,7 @@ class EditProfileFragment : Fragment() {
         val originalBio = localUser.userBio
         var originalPFP = localUser.userProfilePicture
         var originalBanner = localUser.userBannerPicture
+        var originalBase64 = localUser.userPFPBase64
 
         if (isInvalidData(inputName, inputBio, profilePictureURI, profileBannerURI))
             return
@@ -197,9 +198,9 @@ class EditProfileFragment : Fragment() {
                 else
                     hashMap["bio"] = ""
 
-                if (profilePictureURI != null) {
+                if (profilePictureURI != null)
                     hashMap["userPFPBase64"] = Util.imageUriToBase64(requireActivity().contentResolver, profilePictureURI)
-                } else if (originalPFP.isNullOrEmpty())
+                else if (originalBase64.isNullOrEmpty())
                     hashMap["userPFPBase64"] = ""
 
 
