@@ -11,12 +11,11 @@ import android.os.Bundle
 import android.os.Vibrator
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
@@ -30,6 +29,7 @@ import com.binay.shaw.justap.helper.Encryption
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
 import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
+import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
@@ -83,8 +83,10 @@ class ScannerFragment : Fragment() {
             val dialog = ParagraphModalBinding.inflate(layoutInflater)
             val bottomSheet = requireActivity().createBottomSheet()
             dialog.apply {
-                paragraphHeading.text = requireContext().resources.getString(R.string.scanner_info_title)
-                paragraphContent.text = requireContext().resources.getString(R.string.scanner_info_content)
+                paragraphHeading.text =
+                    requireContext().resources.getString(R.string.scanner_info_title)
+                paragraphContent.text =
+                    requireContext().resources.getString(R.string.scanner_info_content)
             }
             dialog.root.setBottomSheet(bottomSheet)
         }
@@ -118,6 +120,18 @@ class ScannerFragment : Fragment() {
         super.onResume()
         if (dataFound)
             requireActivity().onBackPressedDispatcher.onBackPressed()
+        requireView().isFocusableInTouchMode = true
+        requireView().requestFocus()
+        requireView().setOnKeyListener { _, keyCode, event ->
+            if (event.action === KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                handleBackButtonPress()
+                true
+            } else false
+        }
+    }
+
+    private fun handleBackButtonPress() {
+        requireActivity().onBackPressedDispatcher.onBackPressed()
     }
 
     private fun setupCamera() {
@@ -213,12 +227,18 @@ class ScannerFragment : Fragment() {
             InputImage.fromMediaImage(imageProxy.image!!, imageProxy.imageInfo.rotationDegrees)
 
         barcodeScanner.process(inputImage).addOnSuccessListener { barcodes ->
-                val barcode = barcodes.getOrNull(0)
-                barcode?.rawValue?.let { data ->
-                    cameraProvider?.unbindAll()
-                    dataFound = true
+            val barcode = barcodes.getOrNull(0)
+            barcode?.rawValue?.let { data ->
+                cameraProvider?.unbindAll()
+                dataFound = true
+                if (!Util.checkForInternet(requireContext())) {
+                    Snackbar.make(binding.root, "No Internet available", Snackbar.LENGTH_SHORT)
+                        .show()
+                    handleBackButtonPress()
+                } else {
 
-                    val vibratorService = requireContext().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                    val vibratorService =
+                        requireContext().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
                     vibratorService.vibrate(500)
                     val encryption = Encryption.getDefault("Key", "Salt", ByteArray(16))
                     Util.log("Scanned Result: $data")
@@ -240,15 +260,18 @@ class ScannerFragment : Fragment() {
                             )
                         findNavController().navigate(action)
                     }
-                }
-            }.addOnFailureListener {
 
-            }.addOnCompleteListener {
-                imageProxy.close()
+                }
             }
+        }.addOnFailureListener {
+
+        }.addOnCompleteListener {
+            imageProxy.close()
+        }
     }
 
-    private fun isLink(data: String) : Boolean {
+
+    private fun isLink(data: String): Boolean {
         if (data.contains("https://") || data.contains("http://"))
             return true
         return false
