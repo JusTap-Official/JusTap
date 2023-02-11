@@ -19,6 +19,7 @@ import com.binay.shaw.justap.databinding.ActivitySignUpScreenBinding
 import com.binay.shaw.justap.viewModel.SignUp_ViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.tapadoo.alerter.Alerter
 
 @SuppressLint("SetTextI18n")
 class SignUp_Screen : AppCompatActivity() {
@@ -42,7 +43,13 @@ class SignUp_Screen : AppCompatActivity() {
 
         buttonLayout.setOnClickListener {
             if (!Util.checkForInternet(this)) {
-                Snackbar.make(binding.root, "No Internet available", Snackbar.LENGTH_SHORT).show()
+                Alerter.create(this@SignUp_Screen)
+                    .setTitle("No Internet available")
+                    .setText("Please make sure you're connected to the Internet")
+                    .setBackgroundColorInt(resources.getColor(R.color.negative_red))
+                    .setIcon(R.drawable.wifi_off)
+                    .setDuration(2000L)
+                    .show()
                 return@setOnClickListener
             }
             buttonText.visibility = View.GONE

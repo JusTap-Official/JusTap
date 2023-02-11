@@ -27,6 +27,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.tapadoo.alerter.Alerter
 
 @SuppressLint("SetTextI18n")
 class SignIn_Screen : AppCompatActivity() {
@@ -51,7 +52,13 @@ class SignIn_Screen : AppCompatActivity() {
 
         buttonLayout.setOnClickListener {
             if (!Util.checkForInternet(this)) {
-                Snackbar.make(binding.root, "No Internet available", Snackbar.LENGTH_SHORT).show()
+                Alerter.create(this@SignIn_Screen)
+                    .setTitle("No Internet available")
+                    .setText("Please make sure you're connected to the Internet")
+                    .setBackgroundColorInt(resources.getColor(R.color.negative_red))
+                    .setIcon(R.drawable.wifi_off)
+                    .setDuration(2000L)
+                    .show()
                 return@setOnClickListener
             }
             buttonText.visibility = View.GONE

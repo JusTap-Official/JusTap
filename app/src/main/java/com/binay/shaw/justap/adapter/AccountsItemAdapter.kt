@@ -1,5 +1,6 @@
 package com.binay.shaw.justap.adapter
 
+import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -15,6 +16,7 @@ import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.ui.mainScreens.HomeFragmentDirections
 import com.google.android.material.snackbar.Snackbar
+import com.tapadoo.alerter.Alerter
 
 /**
  * Created by binay on 30,January,2023
@@ -24,6 +26,7 @@ private lateinit var currentAccount: Accounts
 
 class AccountsItemAdapter(
     val context: Context,
+    val activity: Activity,
     private val listener: (Accounts) -> Unit
 ) : RecyclerView.Adapter<AccountsItemAdapter.AccountsViewHolder>() {
 
@@ -70,7 +73,13 @@ class AccountsItemAdapter(
 
         holder.showAccount.setOnClickListener {
             if (!Util.checkForInternet(context)) {
-                Snackbar.make(holder.itemView.rootView, "No Internet available", Snackbar.LENGTH_SHORT).show()
+                Alerter.create(activity)
+                    .setTitle("No Internet available")
+                    .setText("Please make sure you're connected to the Internet")
+                    .setBackgroundColorInt(activity.resources.getColor(R.color.negative_red))
+                    .setIcon(R.drawable.wifi_off)
+                    .setDuration(2000L)
+                    .show()
                 holder.showAccount.isChecked = account.showAccount
                 return@setOnClickListener
             }

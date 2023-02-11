@@ -125,7 +125,7 @@ class HomeFragment : Fragment() {
         fabTitle = binding.fabText
 
         val addEditViewModel = ViewModelProvider(requireActivity())[AddEditViewModel::class.java]
-        recyclerViewAdapter = AccountsItemAdapter(requireContext()) { newAccount ->
+        recyclerViewAdapter = AccountsItemAdapter(requireContext(), requireActivity()) { newAccount ->
             // handle item click
             for (account in accountsList) {
                 if (account.accountID == newAccount.accountID) {

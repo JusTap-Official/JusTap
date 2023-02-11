@@ -27,6 +27,7 @@ import com.binay.shaw.justap.viewModel.AccountsViewModel
 import com.binay.shaw.justap.viewModel.AddEditViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.FirebaseDatabase
+import com.tapadoo.alerter.Alerter
 import kotlinx.coroutines.launch
 
 class AddEditFragment : Fragment() {
@@ -187,7 +188,13 @@ class AddEditFragment : Fragment() {
                         }
                     }
                 } else {
-                    Snackbar.make(binding.root, "No Internet available", Snackbar.LENGTH_SHORT).show()
+                    Alerter.create(requireActivity())
+                        .setTitle("No Internet available")
+                        .setText("Please make sure you're connected to the Internet")
+                        .setBackgroundColorInt(resources.getColor(R.color.negative_red))
+                        .setIcon(R.drawable.wifi_off)
+                        .setDuration(2000L)
+                        .show()
                     return@setOnClickListener
                 }
             }
@@ -251,7 +258,12 @@ class AddEditFragment : Fragment() {
                         }
                     }
                 } else {
-                    Snackbar.make(binding.root, "No Internet available", Snackbar.LENGTH_SHORT)
+                    Alerter.create(requireActivity())
+                        .setTitle("No Internet available")
+                        .setText("Please make sure you're connected to the Internet")
+                        .setBackgroundColorInt(resources.getColor(R.color.negative_red))
+                        .setIcon(R.drawable.wifi_off)
+                        .setDuration(2000L)
                         .show()
                     return@setOnClickListener
                 }
@@ -327,7 +339,12 @@ class AddEditFragment : Fragment() {
                         }
                     }
                 } else {
-                    Snackbar.make(binding.root, "No Internet available", Snackbar.LENGTH_SHORT)
+                    Alerter.create(requireActivity())
+                        .setTitle("No Internet available")
+                        .setText("Please make sure you're connected to the Internet")
+                        .setBackgroundColorInt(resources.getColor(R.color.negative_red))
+                        .setIcon(R.drawable.wifi_off)
+                        .setDuration(2000L)
                         .show()
                     return@setOnClickListener
                 }

@@ -48,6 +48,7 @@ dependencies {
     def room_version = "2.5.0"
     def lottieVersion = "5.2.0"
 
+    //Default Pre-defined
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation 'com.google.android.material:material:1.7.0'
@@ -55,7 +56,6 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-
 
     //Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
@@ -76,6 +76,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database-ktx:20.1.0'
     implementation 'com.google.firebase:firebase-storage-ktx:20.1.0'
 
+    //Room Database
     implementation("androidx.room:room-runtime:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
     kapt("androidx.room:room-compiler:$room_version")
@@ -106,5 +107,8 @@ dependencies {
 
     //Circular ImageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    //Custom AlertBar (Top)
+    implementation "com.github.tapadoo:alerter:7.2.4"
 
 }

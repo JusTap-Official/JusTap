@@ -29,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import com.tapadoo.alerter.Alerter
 import kotlinx.coroutines.launch
 
 
@@ -69,7 +70,13 @@ class EditProfileFragment : Fragment() {
             val inputBio = binding.newBioET.text.toString().trim()
 
             if (!Util.checkForInternet(requireContext())) {
-                Snackbar.make(binding.root, "No Internet available", Snackbar.LENGTH_SHORT).show()
+                Alerter.create(requireActivity())
+                    .setTitle("No Internet available")
+                    .setText("Please make sure you're connected to the Internet")
+                    .setBackgroundColorInt(resources.getColor(R.color.negative_red))
+                    .setIcon(R.drawable.wifi_off)
+                    .setDuration(2000L)
+                    .show()
                 return@setOnClickListener
             }
             editChanges(inputName, inputBio, profilePictureURI, profileBannerURI)
