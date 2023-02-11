@@ -107,7 +107,8 @@ class AddEditFragment : Fragment() {
             dialog.apply {
 
                 optionsHeading.text = requireContext().resources.getString(R.string.DiscardChanged)
-                optionsContent.text = requireContext().resources.getString(R.string.DiscardChangedDescription)
+                optionsContent.text =
+                    requireContext().resources.getString(R.string.DiscardChangedDescription)
                 positiveOption.text = requireContext().resources.getString(R.string.Discard)
                 positiveOption.setTextColor(
                     ContextCompat.getColor(
@@ -133,8 +134,7 @@ class AddEditFragment : Fragment() {
                 }
             }
             dialog.root.setBottomSheet(bottomSheet)
-        }
-        else
+        } else
             requireActivity().onBackPressedDispatcher.onBackPressed()
     }
 
@@ -144,16 +144,52 @@ class AddEditFragment : Fragment() {
         val bottomSheet = requireContext().createBottomSheet()
         dialog.apply {
 
-            optionsHeading.text = ""
+            optionsHeading.text = resources.getString(R.string.UpdateChanges)
             optionsContent.text = resources.getString(R.string.AreYouSureYouWantToUpdateThisAccount)
             positiveOption.text = resources.getString(R.string.Update)
-            positiveOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
+            positiveOption.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.negative_red
+                )
+            )
             negativeOption.text = resources.getString(R.string.DontUpdate)
-            negativeOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_color))
+            negativeOption.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.text_color
+                )
+            )
 
             positiveOption.setOnClickListener {
                 bottomSheet.dismiss()
+                if (Util.checkForInternet(requireContext())) {
+                    binding.progressAnimation.progressParent.visibility = View.VISIBLE
 
+                    args.accounts?.let {
+                        val array = resources.getStringArray(R.array.account_names)
+                        val index = array.indexOf(it.accountName)
+                        it.accountID = index
+                        it.accountData = newData
+                        lifecycleScope.launch {
+
+                            viewModel.updateEntry(accountsViewModel, firebaseDatabase, it)
+
+                            viewModel.updateStatus.observe(viewLifecycleOwner) { status ->
+                                if (status == 3) {
+                                    Util.log("Status value = $status")
+                                    viewModel.updateStatus.postValue(0)
+                                    Snackbar.make(binding.root, "Data updated successfully", Snackbar.LENGTH_SHORT).show()
+                                    binding.progressAnimation.progressParent.visibility = View.GONE
+                                    findNavController().navigateUp()
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    Snackbar.make(binding.root, "No Internet available", Snackbar.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
             }
             negativeOption.setOnClickListener {
                 bottomSheet.dismiss()
@@ -203,7 +239,11 @@ class AddEditFragment : Fragment() {
                                 if (status == 3) {
                                     Util.log("Status value = $status")
                                     viewModel.deleteStatus.postValue(0)
-                                    Snackbar.make(binding.root, "Successfully Deleted", Snackbar.LENGTH_SHORT).show()
+                                    Snackbar.make(
+                                        binding.root,
+                                        "Successfully Deleted",
+                                        Snackbar.LENGTH_SHORT
+                                    ).show()
                                     binding.progressAnimation.progressParent.visibility = View.GONE
                                     findNavController().navigateUp()
                                 }
@@ -211,7 +251,8 @@ class AddEditFragment : Fragment() {
                         }
                     }
                 } else {
-                    Snackbar.make(binding.root, "No Internet available", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, "No Internet available", Snackbar.LENGTH_SHORT)
+                        .show()
                     return@setOnClickListener
                 }
             }
@@ -272,7 +313,11 @@ class AddEditFragment : Fragment() {
                                 if (it == 3) {
                                     viewModel.saveStatus.value = 0
                                     //Success
-                                    Snackbar.make(binding.root, "Data saved successfully", Snackbar.LENGTH_SHORT).show()
+                                    Snackbar.make(
+                                        binding.root,
+                                        "Data saved successfully",
+                                        Snackbar.LENGTH_SHORT
+                                    ).show()
                                     binding.progressAnimation.progressParent.visibility =
                                         View.GONE
                                     requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -282,7 +327,8 @@ class AddEditFragment : Fragment() {
                         }
                     }
                 } else {
-                    Snackbar.make(binding.root, "No Internet available", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, "No Internet available", Snackbar.LENGTH_SHORT)
+                        .show()
                     return@setOnClickListener
                 }
             }
@@ -337,7 +383,6 @@ class AddEditFragment : Fragment() {
                 setImageResource(R.drawable.delete)
                 visibility = View.VISIBLE
             }
-            binding.confirmChanges.text = resources.getString(R.string.SaveChanges)
             args.accounts?.let {
                 chooseAccount(it.accountName)
                 binding.apply {

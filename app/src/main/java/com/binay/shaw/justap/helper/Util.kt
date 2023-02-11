@@ -61,7 +61,7 @@ class Util {
             val imageStream = contentResolver.openInputStream(imageUri)
             val imageBitmap = BitmapFactory.decodeStream(imageStream)
             val byteArrayOutputStream = ByteArrayOutputStream()
-            imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+            imageBitmap.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream)
             val imageBytes = byteArrayOutputStream.toByteArray()
             return Base64.encodeToString(imageBytes, Base64.NO_WRAP)
         }
