@@ -32,7 +32,8 @@ class SettingsItemAdapter(
     class SettingsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var itemName: TextView
         var parentLayout: ConstraintLayout
-//        var switch: SwitchCompat
+
+        //        var switch: SwitchCompat
         lateinit var sharedPreferences: SharedPreferences
         var icon: ImageView
         var id: Int = 0
@@ -60,27 +61,27 @@ class SettingsItemAdapter(
              * 4 -> Need help?
              * */
 
-            itemView.rootView.setOnClickListener {
-                when (id) {
-                    0 -> {
-                        Navigation.findNavController(it)
-                            .navigate(R.id.action_settings_to_editProfileFragment)
-                    }
-                    2 -> {
-                        val action = SettingsFragmentDirections.actionSettingsToResultFragment(
-                            resultString = null,
-                            isResult = false
-                        )
-                        Navigation.findNavController(it).navigate(action)
-                    }
-                    3 -> {
-
-                    } 4 -> {
-
-                    }
-                }
-
-            }
+//            itemView.rootView.setOnClickListener {
+//                when (id) {
+//                    0 -> {
+//                        Navigation.findNavController(it)
+//                            .navigate(R.id.action_settings_to_editProfileFragment)
+//                    }
+//                    2 -> {
+//                        val action = SettingsFragmentDirections.actionSettingsToResultFragment(
+//                            resultString = null,
+//                            isResult = false
+//                        )
+//                        Navigation.findNavController(it).navigate(action)
+//                    }
+//                    3 -> {
+//
+//                    } 4 -> {
+//
+//                    }
+//                }
+//
+//            }
 
         }
 
@@ -113,9 +114,7 @@ class SettingsItemAdapter(
         val newList = settingsItemList[position]
         holder.itemName.text = newList.itemName
         holder.parentLayout.setOnClickListener {
-            if (holder.id == 1) {
-                listener(1)
-            }
+            listener(holder.id)
         }
 //        if (newList.isSwitchOn) {
 //            holder.switch.visibility = View.VISIBLE

@@ -90,8 +90,21 @@ class SettingsFragment : Fragment() {
         /**set Adapter*/
         settingsItemAdapter = SettingsItemAdapter(requireContext(), settingsItemList) {
             //Customize QR Listener
-            if (it == 1) {
-                customizeQR()
+            when (it) {
+                0 -> {
+                    Navigation.findNavController(binding.root)
+                        .navigate(R.id.action_settings_to_editProfileFragment)
+                }
+
+                1 -> customizeQR()
+
+                2 -> {
+                    val action = SettingsFragmentDirections.actionSettingsToResultFragment(
+                        resultString = null,
+                        isResult = false
+                    )
+                    Navigation.findNavController(binding.root).navigate(action)
+                }
             }
         }
 
