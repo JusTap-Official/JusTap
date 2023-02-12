@@ -10,10 +10,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.model.SettingsItem
 import com.binay.shaw.justap.ui.mainScreens.SettingsFragmentDirections
 
@@ -23,11 +25,13 @@ import com.binay.shaw.justap.ui.mainScreens.SettingsFragmentDirections
 class SettingsItemAdapter(
     val context: Context,
     private val settingsItemList: ArrayList<SettingsItem>,
+    private val listener: (Int) -> Unit
 ) :
     RecyclerView.Adapter<SettingsItemAdapter.SettingsViewHolder>() {
 
     class SettingsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var itemName: TextView
+        var parentLayout: ConstraintLayout
 //        var switch: SwitchCompat
         lateinit var sharedPreferences: SharedPreferences
         var icon: ImageView
@@ -38,6 +42,7 @@ class SettingsItemAdapter(
 //            switch = itemView.findViewById(R.id.settingsSwitch)
             icon = itemView.findViewById(R.id.settingsItemIcon)
             id = itemView.id
+            parentLayout = itemView.findViewById(R.id.settingsItemLayout)
 
 //            switch.setOnTouchListener { _, event ->
 //                event.actionMasked == MotionEvent.ACTION_MOVE
@@ -107,6 +112,11 @@ class SettingsItemAdapter(
     override fun onBindViewHolder(holder: SettingsViewHolder, position: Int) {
         val newList = settingsItemList[position]
         holder.itemName.text = newList.itemName
+        holder.parentLayout.setOnClickListener {
+            if (holder.id == 1) {
+                listener(1)
+            }
+        }
 //        if (newList.isSwitchOn) {
 //            holder.switch.visibility = View.VISIBLE
 //            if (Util.isDarkMode(holder.switch.context)) {

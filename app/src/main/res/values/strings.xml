@@ -49,6 +49,18 @@
     <string name="AboutMeDescription">Android Intern @HumaraNagar | Ex. @Edvora</string>
     <string name="createAccount">Create Account</string>
     <string name="createANewAccount">Create a new account</string>
+    <string name="customizeQR">Customize QR</string>
+    <string name="customizeQRDescription">You can customize your QR Code\nMake sure to use proper colors</string>
+    <string name="chooseColorForForeground">Choose color for foreground</string>
+    <string name="chooseColorForBackground">Choose color for background</string>
+    <string name="cancel">Cancel</string>
+    <string name="changesSaved">Changes Saved</string>
+    <string name="changesSavedDescription">Your new QR preferences was saved successfully</string>
+    <string name="badContrast">Contrast is bad, choose different color</string>
+    <string name="badContrastDescription">Please choose a different color</string>
+    <string name="anErrorOccurred">An error occurred</string>
+    <string name="choose_secondary_color">Choose secondary Color</string>
+    <string name="choose_primary_color">Choose primary Color</string>
 
     <string-array name="account_names">
         <item>Phone</item>

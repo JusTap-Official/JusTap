@@ -111,4 +111,7 @@ dependencies {
     //Custom AlertBar (Top)
     implementation "com.github.tapadoo:alerter:7.2.4"
 
+    //ColorPicker
+    implementation "com.github.skydoves:colorpickerpreference:2.0.6"
+
 }

@@ -1,6 +1,8 @@
 package com.binay.shaw.justap.ui.mainScreens
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -35,6 +37,8 @@ class QRGeneratorFragment : Fragment() {
     private lateinit var viewModel : QRGenerator_ViewModel
     private lateinit var displayMetrics: DisplayMetrics
     private var overlay: Bitmap? = null
+    private lateinit var sharedPreference: SharedPreferences
+
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -45,9 +49,18 @@ class QRGeneratorFragment : Fragment() {
         _binding = FragmentQRGeneratorBinding.inflate(layoutInflater, container, false)
         initialization()
 
+        val firstSelectedColor = sharedPreference.getInt(
+            "firstColor",
+            ResourcesCompat.getColor(resources, R.color.text_color, null)
+        )
+        val secondSelectedColor = sharedPreference.getInt(
+            "secondColor",
+            ResourcesCompat.getColor(resources, R.color.bg_color, null)
+        )
+
         viewModel.generateQR(displayMetrics, overlay,
-            ResourcesCompat.getColor(resources, R.color.text_color, null),
-            ResourcesCompat.getColor(resources, R.color.bg_color, null))
+            firstSelectedColor,
+            secondSelectedColor)
 
         viewModel.status.observe(viewLifecycleOwner) {
             binding.qrCodePreview.setImageBitmap(viewModel.bitmap.value)
@@ -98,6 +111,7 @@ class QRGeneratorFragment : Fragment() {
         activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
         overlay = ContextCompat.getDrawable(requireContext(), R.drawable.logo_black_stroke)
             ?.toBitmap(72.dpToPx(), 72.dpToPx())
+        sharedPreference = requireContext().getSharedPreferences("QRPref", Context.MODE_PRIVATE)
 
     }
 
