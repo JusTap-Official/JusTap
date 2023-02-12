@@ -1,5 +1,7 @@
 
-![Cover](https://user-images.githubusercontent.com/62587060/216439920-a319c685-58ed-4a06-9699-874594f9fbb2.png)
+<!--![Cover](https://user-images.githubusercontent.com/62587060/216439920-a319c685-58ed-4a06-9699-874594f9fbb2.png)-->
+
+![Cover](https://user-images.githubusercontent.com/62587060/218331213-20652a77-5ed1-4f81-ad43-bf425bb092e0.gif)
 
 # JusTap 📱
 JusTap is a mobile app for secure and easy exchange of contact information and social links using QR codes, replacing traditional business cards.<br>
