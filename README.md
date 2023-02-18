@@ -42,6 +42,10 @@ This app uses [MVVM(Model View View-Model)](https://developer.android.com/topic/
 
 ![Architecture Flow](https://user-images.githubusercontent.com/62587060/216827577-bca54a6a-80c0-4ece-ba06-ac885a1e7f55.png)
 
+## Flow of the app 🗺
+
+![JusTap-App-Flow](https://user-images.githubusercontent.com/62587060/219847606-3ccbd2b1-fa1c-46f3-8115-10e570324eac.png)
+
 
 ## Connect with me:
 - [LinkedIn](https://www.linkedin.com/in/binayshaw7777/) ![Linkedin](https://i.stack.imgur.com/gVE0j.png)
