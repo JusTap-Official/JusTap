@@ -11,6 +11,8 @@ import com.binay.shaw.justap.R
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.model.LocalHistory
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 /**
  * Created by binay on 10,February,2023
@@ -21,7 +23,7 @@ private var historyList: List<LocalHistory> = ArrayList()
 private lateinit var currentUser: LocalHistory
 
 class HistoryAdapter(
-    context: Context,
+    val context: Context,
     private val listener: (LocalHistory) -> Unit
 ) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
 
@@ -46,12 +48,6 @@ class HistoryAdapter(
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
         val currentAccount = historyList[position]
         holder.namePreview.text = currentAccount.username.trim()
-        currentAccount.userPFPBase64?.let {
-            if (it.isNotEmpty()) {
-                val bitmap = Util.base64ToImage(it)
-                holder.pfpPreview.setImageBitmap(bitmap)
-            }
-        }
         currentAccount.userBio?.let {
             if (it.isNotEmpty()) {
                 holder.bioPreview.apply {
@@ -59,6 +55,15 @@ class HistoryAdapter(
                     visibility = View.VISIBLE
                 }
             }
+        }
+        currentAccount.profileImage?.let {
+            Glide.with(context)
+                .load(it)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(holder.pfpPreview)
+            val sizeInBytes = it.byteCount
+            val sizeInMB = sizeInBytes.toDouble() / (1024 * 1024)
+            Util.log("Size of image: $sizeInMB")
         }
 
         holder.itemView.setOnClickListener {

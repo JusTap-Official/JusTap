@@ -2,22 +2,21 @@ package com.binay.shaw.justap.helper
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
-import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Matrix
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Base64
 import android.util.Log
 import android.util.Patterns
 import android.view.View
@@ -34,11 +33,12 @@ import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
-import java.net.URL
 
 
 /**
@@ -47,7 +47,8 @@ import java.net.URL
 class Util {
     companion object {
 
-        const val resumeURL: String = "https://binayshaw7777.github.io/BinayShaw.github.io/Binay%20Shaw%20CSE%2024.pdf"
+        const val resumeURL: String =
+            "https://binayshaw7777.github.io/BinayShaw.github.io/Binay%20Shaw%20CSE%2024.pdf"
 
         var userID: String = "0"
 
@@ -57,33 +58,39 @@ class Util {
             Log.d("", message)
         }
 
-        fun imageUriToBase64(contentResolver: ContentResolver, imageUri: Uri): String {
-            val imageStream = contentResolver.openInputStream(imageUri)
-            val imageBitmap = BitmapFactory.decodeStream(imageStream)
-            val byteArrayOutputStream = ByteArrayOutputStream()
-            imageBitmap.compress(Bitmap.CompressFormat.PNG, 50, byteArrayOutputStream)
-            val imageBytes = byteArrayOutputStream.toByteArray()
-            return Base64.encodeToString(imageBytes, Base64.NO_WRAP)
+        fun getByteFromUrl(context: Context, url: String): ByteArray? {
+            val drawable = getDrawableFromUrl(context, url)
+            log("Drawable is: $drawable")
+            if (drawable != null) {
+                val bitmap = (drawable as BitmapDrawable).bitmap
+                val outputStream = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+                return outputStream.toByteArray()
+            }
+            return null
         }
 
-        fun base64ToImage(base64String: String): Bitmap {
-            val imageBytes = Base64.decode(base64String, Base64.NO_WRAP)
-            return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+        private fun getDrawableFromUrl(context: Context, url: String): Drawable? {
+            return try {
+                val bitmap = Glide.with(context)
+                    .asBitmap()
+                    .load(url)
+                    .submit()
+                    .get()
+
+                BitmapDrawable(context.resources, bitmap)
+            } catch (e: Exception) {
+                null
+            }
         }
 
-        fun isDarkMode(context: Context): Boolean {
-            return context.resources.configuration.uiMode and
-                    Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-        }
-
-        fun getFirstName(fullName: String) : String {
+        fun getFirstName(fullName: String): String {
             if (fullName.isNotEmpty())
                 return fullName.split(" ")[0]
             return ""
         }
 
-        fun isUserLoggedIn(auth: FirebaseAuth) : Boolean {
-            // not logged in
+        fun isUserLoggedIn(auth: FirebaseAuth): Boolean {
             return if (auth.currentUser == null) {
                 log("You are not logged in")
                 false
@@ -96,38 +103,22 @@ class Util {
         @SuppressLint("ServiceCast")
         fun checkForInternet(context: Context): Boolean {
 
-            // register activity with the connectivity manager service
             val connectivityManager =
                 context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-            // if the android version is equal to M
-            // or greater we need to use the
-            // NetworkCapabilities to check what type of
-            // network has the internet connection
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-                // Returns a Network object corresponding to
-                // the currently active default data network.
                 val network = connectivityManager.activeNetwork ?: return false
 
-                // Representation of the capabilities of an active network.
                 val activeNetwork =
                     connectivityManager.getNetworkCapabilities(network) ?: return false
 
                 return when {
-                    // Indicates this network uses a Wi-Fi transport,
-                    // or WiFi has network connectivity
                     activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-
-                    // Indicates this network uses a Cellular transport. or
-                    // Cellular has network connectivity
                     activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-
-                    // else return false
                     else -> false
                 }
             } else {
-                // if the android version is below M
                 @Suppress("DEPRECATION") val networkInfo =
                     connectivityManager.activeNetworkInfo ?: return false
                 @Suppress("DEPRECATION")
@@ -251,7 +242,7 @@ class Util {
          * 6 - password must contains Uppercase, lowercase and symbols
          * 7 - success
          * */
-        fun validateUserAuthInput(name: String?, email: String, password: String) : Int {
+        fun validateUserAuthInput(name: String?, email: String, password: String): Int {
 
             if (name != null)
                 if (name.isEmpty())
@@ -273,8 +264,10 @@ class Util {
         private fun isValidPassword(password: String): Boolean {
             if (password.length < 8) return false
             if (password.firstOrNull { it.isDigit() } == null) return false
-            if (password.filter { it.isLetter() }.firstOrNull { it.isUpperCase() } == null) return false
-            if (password.filter { it.isLetter() }.firstOrNull { it.isLowerCase() } == null) return false
+            if (password.filter { it.isLetter() }
+                    .firstOrNull { it.isUpperCase() } == null) return false
+            if (password.filter { it.isLetter() }
+                    .firstOrNull { it.isLowerCase() } == null) return false
             if (password.firstOrNull { !it.isLetterOrDigit() } == null) return false
 
             return true
@@ -287,6 +280,7 @@ class Util {
         fun Activity.createBottomSheet(): BottomSheetDialog {
             return BottomSheetDialog(this, R.style.BottomSheetDialogTheme)
         }
+
         fun View.setBottomSheet(bottomSheet: BottomSheetDialog) {
             bottomSheet.behavior.state = BottomSheetBehavior.STATE_EXPANDED
             bottomSheet.setContentView(this)

@@ -2,16 +2,18 @@ package com.binay.shaw.justap.ui.mainScreens.qrReciever
 
 import android.app.PendingIntent
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,8 +26,14 @@ import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.binay.shaw.justap.helper.NotificationHelper
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.Accounts
+import com.binay.shaw.justap.model.User
 import com.binay.shaw.justap.viewModel.LocalHistoryViewModel
 import com.binay.shaw.justap.viewModel.ScanResultViewModel
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
+
 
 class ResultFragment : Fragment() {
 
@@ -95,9 +103,12 @@ class ResultFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.M)
     private fun setUpResultView(resultString: String) {
 
-        val localUserHistoryViewModel = ViewModelProvider(this@ResultFragment, ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application))[LocalHistoryViewModel::class.java]
+        val localUserHistoryViewModel = ViewModelProvider(
+            this@ResultFragment,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+        )[LocalHistoryViewModel::class.java]
 
-        viewModel.getDataFromUserID(resultString, localUserHistoryViewModel)
+        viewModel.getDataFromUserID(resultString)
 
         viewModel.showCaseAccountsList.observe(viewLifecycleOwner) {
             recyclerViewAdapter
@@ -112,7 +123,11 @@ class ResultFragment : Fragment() {
         }
 
         viewModel.scanResultUser.observe(viewLifecycleOwner) {
+
             binding.progressAnimation.progressParent.visibility = View.GONE
+
+            createLocalHistory(it, localUserHistoryViewModel)
+
             val tempUser = it
             recyclerViewAdapter.setUserData(it.name, it.email)
 
@@ -136,6 +151,39 @@ class ResultFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun createLocalHistory(user: User, localHistoryViewModel: LocalHistoryViewModel) {
+
+        if (user.profilePictureURI != null) {
+            if (user.profilePictureURI.isNotEmpty()) {
+                val myOptions = RequestOptions()
+                    .override(100, 100)
+                Glide.with(requireContext())
+                    .asBitmap()
+                    .apply(myOptions)
+                    .encodeFormat(Bitmap.CompressFormat.PNG) // Set the output format to PNG
+                    .encodeQuality(50)
+                    .load(user.profilePictureURI)
+                    .into(object : CustomTarget<Bitmap>() {
+                        override fun onResourceReady(
+                            resource: Bitmap,
+                            transition: Transition<in Bitmap>?
+                        ) {
+                            // Save the bitmap to your LocalHistory object
+                            viewModel.saveLocalHistory(user, resource, localHistoryViewModel)
+                        }
+
+                        override fun onLoadCleared(placeholder: Drawable?) {
+                            // Do nothing
+                        }
+                    })
+            }else {
+                viewModel.saveLocalHistory(user, null, localHistoryViewModel)
+            }
+        } else {
+            viewModel.saveLocalHistory(user, null, localHistoryViewModel)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)

@@ -1,6 +1,7 @@
 package com.binay.shaw.justap
 
 
+import android.database.CursorWindow
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -13,6 +14,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.binay.shaw.justap.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import java.lang.reflect.Field
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,6 +33,14 @@ class MainActivity : AppCompatActivity() {
 
         setUpNav()
 
+
+        try {
+            val field: Field = CursorWindow::class.java.getDeclaredField("sCursorWindowSize")
+            field.isAccessible = true
+            field.set(null, 100 * 1024 * 1024) //the 100MB is the new size
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun setUpNav() {

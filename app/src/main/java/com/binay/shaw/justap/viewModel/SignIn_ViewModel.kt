@@ -105,7 +105,7 @@ class SignIn_ViewModel : ViewModel() {
 
                                     firebaseUser.value = User(
                                         id, name,
-                                        email, bio, base64, profilePicture, profileBanner
+                                        email, bio, profilePicture, profileBanner
                                     )
 
                                     Util.log(it.value.toString())

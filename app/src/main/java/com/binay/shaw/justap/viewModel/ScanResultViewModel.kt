@@ -1,5 +1,6 @@
 package com.binay.shaw.justap.viewModel
 
+import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,17 +28,14 @@ class ScanResultViewModel : ViewModel() {
     }
 
 
-
-    fun getDataFromUserID(userID: String, localUserHistoryViewModel: LocalHistoryViewModel) {
+    fun getDataFromUserID(userID: String) {
 
         val database: DatabaseReference = FirebaseDatabase.getInstance().reference.child("Users")
         database.child(userID).get()
             .addOnSuccessListener {
                 val name = it.child("name").value.toString()
                 val email = it.child("email").value.toString()
-                val base64 = it.child("userPFPBase64").value.toString()
                 val profilePicture = it.child("profilePictureURI").value.toString()
-                val profileBase64 = it.child("userPFPBase64").value.toString()
                 val profileBanner = it.child("profileBannerURI").value.toString()
                 val bio = it.child("bio").value.toString()
 
@@ -60,15 +58,17 @@ class ScanResultViewModel : ViewModel() {
                     showCaseAccountsList.postValue(accountList)
                 }
 
-                viewModelScope.launch(Dispatchers.IO) {
-                    val localHistory = LocalHistory(userID, name, bio, profileBase64)
-                    localUserHistoryViewModel.insertUserHistory(localHistory)
-                }
+//                viewModelScope.launch(Dispatchers.IO) {
+//                    val localHistory = LocalHistory(userID, name, bio, null)
+//                    localUserHistoryViewModel.insertUserHistory(localHistory)
+//                }
 
-                 scanResultUser.postValue(User(
-                    userID, name,
-                    email, bio, base64, profilePicture, profileBanner
-                ))
+                scanResultUser.postValue(
+                    User(
+                        userID, name,
+                        email, bio, profilePicture, profileBanner
+                    )
+                )
 
                 Util.log(it.value.toString())
 
@@ -80,37 +80,49 @@ class ScanResultViewModel : ViewModel() {
 
     }
 
+    fun saveLocalHistory(user: User, profileByteArray: Bitmap?, localUserHistoryViewModel: LocalHistoryViewModel) =
+        viewModelScope.launch(Dispatchers.IO) {
+            val localHistory = LocalHistory(user.userID, user.name, user.bio, profileByteArray)
+            localUserHistoryViewModel.insertUserHistory(localHistory)
+        }
+
 
     fun getDevelopersAccount() {
 
         val accounts = mutableListOf<Accounts>()
 
-        accounts.add(Accounts(
-            1,
-            "Email",
-            "binayshaw7777@gmail.com",
-            true
-        ))
-        accounts.add(Accounts(
-            3,
-            "LinkedIn",
-            "https://www.linkedin.com/in/binayshaw7777/",
-            true
-        ))
+        accounts.add(
+            Accounts(
+                1,
+                "Email",
+                "binayshaw7777@gmail.com",
+                true
+            )
+        )
+        accounts.add(
+            Accounts(
+                3,
+                "LinkedIn",
+                "https://www.linkedin.com/in/binayshaw7777/",
+                true
+            )
+        )
         accounts.add(
             Accounts(
                 5,
                 "Twitter",
                 "https://twitter.com/binayplays7777",
                 true
-            ))
+            )
+        )
         accounts.add(
             Accounts(
                 9,
                 "Website",
                 "https://binayshaw7777.github.io/BinayShaw.github.io/",
                 true
-            ))
+            )
+        )
 
         showCaseAccountsList.postValue(accounts)
     }

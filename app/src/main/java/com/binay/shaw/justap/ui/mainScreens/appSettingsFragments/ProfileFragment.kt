@@ -65,7 +65,6 @@ class ProfileFragment : Fragment() {
                 it.userName,
                 it.userEmail,
                 it.userBio,
-                it.userPFPBase64,
                 it.userProfilePicture,
                 it.userBannerPicture
             )

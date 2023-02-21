@@ -1,9 +1,12 @@
 package com.binay.shaw.justap.data
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.model.LocalHistory
+import java.io.ByteArrayOutputStream
 
 /**
  * Created by binay on 10,February,2023

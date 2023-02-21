@@ -14,7 +14,6 @@ data class LocalUser(
     val userName: String,
     val userEmail: String,
     val userBio: String?,
-    val userPFPBase64: String?,
     val userProfilePicture: String?,
     val userBannerPicture: String?
 )

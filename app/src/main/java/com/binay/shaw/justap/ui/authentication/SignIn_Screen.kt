@@ -108,7 +108,7 @@ class SignIn_Screen : AppCompatActivity() {
                         val lu = LocalUser(
                             user.userID, user.name,
                             user.email, user.bio,
-                            user.userPFPBase64, user.profilePictureURI, user.profileBannerURI
+                            user.profilePictureURI, user.profileBannerURI
                         )
                         localUserViewModel.insertUser(lu)
 

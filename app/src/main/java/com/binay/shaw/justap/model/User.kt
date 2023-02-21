@@ -8,7 +8,6 @@ data class User(
     val name: String,
     val email: String,
     val bio: String? = "",
-    val userPFPBase64: String? = "",
     val profilePictureURI: String? = "",
     val profileBannerURI: String? = ""
 )
