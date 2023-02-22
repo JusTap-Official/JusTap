@@ -23,6 +23,7 @@ import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.ResultItemAdapter
 import com.binay.shaw.justap.databinding.FragmentScanResultBinding
 import com.binay.shaw.justap.databinding.MyToolbarBinding
+import com.binay.shaw.justap.helper.LinksUtils
 import com.binay.shaw.justap.helper.NotificationHelper
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.Accounts
@@ -91,11 +92,12 @@ class ResultFragment : Fragment() {
             }
         }
         viewModel.getDevelopersAccount()
-        viewModel.showCaseAccountsList.observe(viewLifecycleOwner) {
+        viewModel.showCaseAccountsListDevLiveData.observe(viewLifecycleOwner) {
             binding.progressAnimation.progressParent.visibility = View.GONE
+            showCaseAccountsList.clear()
+            recyclerViewAdapter.clearData()
             showCaseAccountsList.addAll(it)
             recyclerViewAdapter.setData(it)
-            recyclerViewAdapter.notifyDataSetChanged()
         }
     }
 
@@ -110,16 +112,15 @@ class ResultFragment : Fragment() {
 
         viewModel.getDataFromUserID(resultString)
 
-        viewModel.showCaseAccountsList.observe(viewLifecycleOwner) {
-            recyclerViewAdapter
+        viewModel.showCaseAccountsListLiveData.observe(viewLifecycleOwner) {
             showCaseAccountsList.clear()
+            recyclerViewAdapter.clearData()
             for (accounts in it) {
                 if (accounts.showAccount) {
                     showCaseAccountsList.add(accounts)
                 }
             }
             recyclerViewAdapter.setData(showCaseAccountsList)
-            recyclerViewAdapter.notifyDataSetChanged()
         }
 
         viewModel.scanResultUser.observe(viewLifecycleOwner) {
@@ -129,7 +130,6 @@ class ResultFragment : Fragment() {
             createLocalHistory(it, localUserHistoryViewModel)
 
             val tempUser = it
-            recyclerViewAdapter.setUserData(it.name, it.email)
 
             binding.apply {
                 profileNameTV.text = tempUser.name
@@ -203,7 +203,7 @@ class ResultFragment : Fragment() {
         // Create a NotificationCompat.Builder object
         return NotificationCompat.Builder(requireContext(), channelId)
             .setSmallIcon(R.drawable.notification_icon)
-            .setContentTitle("Successfully Scanned!")
+            .setContentTitle(resources.getString(R.string.successfullyScanned))
             .setContentText("${Util.getFirstName(name)} was added in history")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
@@ -215,11 +215,13 @@ class ResultFragment : Fragment() {
         toolBar = binding.include
         toolBar.leftIcon.visibility = View.VISIBLE
         viewModel = ViewModelProvider(this@ResultFragment)[ScanResultViewModel::class.java]
-        recyclerViewAdapter = ResultItemAdapter(requireContext())
+        recyclerViewAdapter = ResultItemAdapter {
+            LinksUtils.processData(it, requireContext())
+        }
         recyclerView = binding.accountsRv
         recyclerView.apply {
-            adapter = recyclerViewAdapter
             layoutManager = LinearLayoutManager(requireContext())
+            adapter = recyclerViewAdapter
         }
         binding.progressAnimation.apply {
             progressParent.visibility = View.VISIBLE
@@ -249,8 +251,11 @@ class ResultFragment : Fragment() {
         }
     }
 
-    private fun handleBackButtonPress() {
-        requireActivity().onBackPressedDispatcher.onBackPressed()
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
+    private fun handleBackButtonPress() =
+        requireActivity().onBackPressedDispatcher.onBackPressed()
 }

@@ -19,7 +19,8 @@ import kotlinx.coroutines.launch
 
 class ScanResultViewModel : ViewModel() {
 
-    var showCaseAccountsList = MutableLiveData<List<Accounts>>()
+    var showCaseAccountsListLiveData = MutableLiveData<List<Accounts>>()
+    var showCaseAccountsListDevLiveData = MutableLiveData<List<Accounts>>()
     var scanResultUser = MutableLiveData<User>()
     var status = MutableLiveData<Int>()
 
@@ -41,7 +42,7 @@ class ScanResultViewModel : ViewModel() {
 
                 if (it.hasChild("accounts")) {
                     val accountList = mutableListOf<Accounts>()
-
+                    Util.log("accountsList: $accountList")
                     it.child("accounts").children.forEach { iter ->
                         if (iter != null) {
                             val tempMap = iter.value as java.util.HashMap<*, *>
@@ -55,13 +56,8 @@ class ScanResultViewModel : ViewModel() {
                         }
                     }
 
-                    showCaseAccountsList.postValue(accountList)
+                    showCaseAccountsListLiveData.postValue(accountList)
                 }
-
-//                viewModelScope.launch(Dispatchers.IO) {
-//                    val localHistory = LocalHistory(userID, name, bio, null)
-//                    localUserHistoryViewModel.insertUserHistory(localHistory)
-//                }
 
                 scanResultUser.postValue(
                     User(
@@ -124,7 +120,7 @@ class ScanResultViewModel : ViewModel() {
             )
         )
 
-        showCaseAccountsList.postValue(accounts)
+        showCaseAccountsListDevLiveData.postValue(accounts)
     }
 
 }
