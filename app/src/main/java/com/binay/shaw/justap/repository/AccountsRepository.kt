@@ -4,9 +4,7 @@ import androidx.lifecycle.LiveData
 import com.binay.shaw.justap.data.AccountsDAO
 import com.binay.shaw.justap.model.Accounts
 
-/**
- * Created by binay on 30,January,2023
- */
+
 class AccountsRepository(
     private val accountsDAO: AccountsDAO
 ) {

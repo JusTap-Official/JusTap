@@ -12,30 +12,40 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.room.Room
+import com.binay.shaw.justap.MainActivity
 import com.binay.shaw.justap.R
+import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.helper.Util
-import com.binay.shaw.justap.databinding.ActivitySignUpScreenBinding
-import com.binay.shaw.justap.viewModel.SignUp_ViewModel
+import com.binay.shaw.justap.databinding.ActivitySignInScreenBinding
+import com.binay.shaw.justap.model.LocalUser
+import com.binay.shaw.justap.viewModel.AccountsViewModel
+import com.binay.shaw.justap.viewModel.LocalUserViewModel
+import com.binay.shaw.justap.viewModel.SignIn_ViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.tapadoo.alerter.Alerter
 
 @SuppressLint("SetTextI18n")
-class SignUp_Screen : AppCompatActivity() {
+class SignInScreen : AppCompatActivity() {
 
-    private lateinit var binding: ActivitySignUpScreenBinding
+    private lateinit var binding: ActivitySignInScreenBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var buttonLayout: ConstraintLayout
     private lateinit var buttonText: TextView
     private lateinit var buttonProgress: ProgressBar
-    private lateinit var viewModel: SignUp_ViewModel
+    private lateinit var viewModel: SignIn_ViewModel
+    private lateinit var firebaseDatabase: DatabaseReference
+    private lateinit var localDatabase: LocalUserDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySignUpScreenBinding.inflate(layoutInflater)
+        binding = ActivitySignInScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportActionBar?.hide()
 
         initialization()
 
@@ -43,10 +53,10 @@ class SignUp_Screen : AppCompatActivity() {
 
         buttonLayout.setOnClickListener {
             if (!Util.checkForInternet(this)) {
-                Alerter.create(this@SignUp_Screen)
-                    .setTitle("No Internet available")
-                    .setText("Please make sure you're connected to the Internet")
-                    .setBackgroundColorInt(resources.getColor(R.color.negative_red))
+                Alerter.create(this@SignInScreen)
+                    .setTitle(resources.getString(R.string.noInternet))
+                    .setText(resources.getString(R.string.noInternetDescription))
+                    .setBackgroundColorInt(ContextCompat.getColor(baseContext, R.color.negative_red))
                     .setIcon(R.drawable.wifi_off)
                     .setDuration(2000L)
                     .show()
@@ -54,33 +64,29 @@ class SignUp_Screen : AppCompatActivity() {
             }
             buttonText.visibility = View.GONE
             buttonProgress.visibility = View.VISIBLE
-            binding.passwordHelperTV.visibility = View.GONE
-            binding.nameHelperTV.visibility = View.GONE
             binding.emailHelperTV.visibility = View.GONE
-            viewModel.createNewAccount(
-                binding.etName.text.toString().trim(),
+            binding.passwordHelperTV.visibility = View.GONE
+            viewModel.loginUser(
                 binding.etEmail.text.toString().trim(),
-                binding.etPassword.text.toString().trim()
+                binding.etPassword.text.toString().trim(),
+                firebaseDatabase
             )
+
         }
 
-        viewModel.status.observe(this) {
+        viewModel.status.observe(this@SignInScreen) {
             stopProgress()
             when (it) {
-                1 -> {
-                    binding.nameHelperTV.text = "Enter your name"
-                    binding.nameHelperTV.visibility = View.VISIBLE
-                }
                 2 -> {
                     binding.emailHelperTV.text = "Enter your email"
                     binding.emailHelperTV.visibility = View.VISIBLE
                 }
                 3 -> {
-                    binding.emailHelperTV.text = "Your email is not valid"
+                    binding.emailHelperTV.text = "Email is not valid"
                     binding.emailHelperTV.visibility = View.VISIBLE
                 }
                 4 -> {
-                    binding.passwordHelperTV.text = "Enter your password"
+                    binding.passwordHelperTV.text = "Password is empty"
                     binding.passwordHelperTV.visibility = View.VISIBLE
                 }
                 5 -> {
@@ -92,11 +98,44 @@ class SignUp_Screen : AppCompatActivity() {
                     binding.passwordHelperTV.visibility = View.VISIBLE
                 }
                 7 -> {
-                    startActivity(Intent(this@SignUp_Screen, SignIn_Screen::class.java))
+                    val user = viewModel.firebaseUser.value
+                    val listAccounts = viewModel.firebaseAccounts.value
+                    if (user != null) {
+                        val localUserViewModel: LocalUserViewModel =
+                            ViewModelProvider(
+                                this@SignInScreen,
+                                ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+                            )[LocalUserViewModel::class.java]
+                        val lu = LocalUser(
+                            user.userID, user.name,
+                            user.email, user.bio,
+                            user.profilePictureURI, user.profileBannerURI
+                        )
+                        localUserViewModel.insertUser(lu)
+
+
+                        val accountsViewModel: AccountsViewModel =
+                            ViewModelProvider(
+                                this@SignInScreen,
+                                ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+                            )[AccountsViewModel::class.java]
+                        if (listAccounts != null) {
+                            for (singleAccount in listAccounts) {
+                                accountsViewModel.insertAccount(singleAccount)
+                            }
+                        }
+                    }
+                    Snackbar.make(binding.root, "Successfully Logged In", Snackbar.LENGTH_SHORT).show()
+                    startActivity(
+                        Intent(
+                            this@SignInScreen,
+                            MainActivity::class.java
+                        )
+                    ).also { finish() }
                 }
                 8 -> {
                     Toast.makeText(
-                        this@SignUp_Screen,
+                        this@SignInScreen,
                         viewModel.getErrorMessage(),
                         Toast.LENGTH_SHORT
                     ).show()
@@ -104,10 +143,13 @@ class SignUp_Screen : AppCompatActivity() {
             }
         }
 
-        binding.loginInstead.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
+        binding.createAccount.setOnClickListener {
+            startActivity(Intent(this@SignInScreen, SignUpScreen::class.java))
         }
 
+        binding.forgotPassword.setOnClickListener {
+            startActivity(Intent(this@SignInScreen, ForgotPasswordScreen::class.java))
+        }
     }
 
     private fun stopProgress() {
@@ -116,22 +158,29 @@ class SignUp_Screen : AppCompatActivity() {
     }
 
     private fun initialization() {
+        supportActionBar?.hide()
         auth = FirebaseAuth.getInstance()
         binding.apply {
-            include.toolbarTitle.text = resources.getString(R.string.createAccount)
-            btnCreateAccount.apply {
-                this@SignUp_Screen.buttonLayout = this.progressButtonBg
-                this@SignUp_Screen.buttonText = this.buttonText
-                this@SignUp_Screen.buttonText.text = resources.getString(R.string.createANewAccount)
-                this@SignUp_Screen.buttonProgress = this.buttonProgress
+            include.toolbarTitle.text = "Log In"
+            btnLogIn.apply {
+                this@SignInScreen.buttonLayout = this.progressButtonBg
+                this@SignInScreen.buttonText = this.buttonText
+                this@SignInScreen.buttonText.text = "Sign In"
+                this@SignInScreen.buttonProgress = this.buttonProgress
             }
         }
-        viewModel = ViewModelProvider(this)[SignUp_ViewModel::class.java]
-    }
+        viewModel = ViewModelProvider(this@SignInScreen)[SignIn_ViewModel::class.java]
+        firebaseDatabase = FirebaseDatabase.getInstance().reference
+        localDatabase = Room.databaseBuilder(
+            applicationContext, LocalUserDatabase::class.java,
+            "localDB"
+        ).build()
 
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun passwordVisibilityHandler() {
+
         // Hide and Show Password
         var passwordVisible = false
         binding.etPassword.setOnTouchListener { _, event ->

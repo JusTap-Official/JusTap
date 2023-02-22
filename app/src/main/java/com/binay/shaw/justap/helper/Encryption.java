@@ -122,18 +122,15 @@ public class Encryption {
      */
     public void encryptAsync(final String data, final Callback callback) {
         if (callback == null) return;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    String encrypt = encrypt(data);
-                    if (encrypt == null) {
-                        callback.onError(new Exception("Encrypt return null, it normally occurs when you send a null data"));
-                    }
-                    callback.onSuccess(encrypt);
-                } catch (Exception e) {
-                    callback.onError(e);
+        new Thread(() -> {
+            try {
+                String encrypt = encrypt(data);
+                if (encrypt == null) {
+                    callback.onError(new Exception("Encrypt return null, it normally occurs when you send a null data"));
                 }
+                callback.onSuccess(encrypt);
+            } catch (Exception e) {
+                callback.onError(e);
             }
         }).start();
     }
@@ -208,18 +205,15 @@ public class Encryption {
      */
     public void decryptAsync(final String data, final Callback callback) {
         if (callback == null) return;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    String decrypt = decrypt(data);
-                    if (decrypt == null) {
-                        callback.onError(new Exception("Decrypt return null, it normally occurs when you send a null data"));
-                    }
-                    callback.onSuccess(decrypt);
-                } catch (Exception e) {
-                    callback.onError(e);
+        new Thread(() -> {
+            try {
+                String decrypt = decrypt(data);
+                if (decrypt == null) {
+                    callback.onError(new Exception("Decrypt return null, it normally occurs when you send a null data"));
                 }
+                callback.onSuccess(decrypt);
+            } catch (Exception e) {
+                callback.onError(e);
             }
         }).start();
     }

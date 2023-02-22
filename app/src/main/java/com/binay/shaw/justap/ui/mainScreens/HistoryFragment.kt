@@ -1,11 +1,10 @@
 package com.binay.shaw.justap.ui.mainScreens
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
@@ -24,10 +23,9 @@ import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
 import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
-import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.model.LocalHistory
 import com.binay.shaw.justap.viewModel.LocalHistoryViewModel
-import com.google.android.material.snackbar.Snackbar
+import com.tapadoo.alerter.Alerter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -42,6 +40,7 @@ class HistoryFragment : Fragment() {
     private lateinit var historyAdapter: HistoryAdapter
     private var accountsList = mutableListOf<LocalHistory>()
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -67,6 +66,7 @@ class HistoryFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun clearHistory() {
 
         val dialog = OptionsModalBinding.inflate(layoutInflater)
@@ -97,11 +97,13 @@ class HistoryFragment : Fragment() {
                     localUserHistoryViewModel.clearHistory()
                     withContext(Dispatchers.Main) {
                         historyAdapter.notifyDataSetChanged()
-                        Snackbar.make(
-                            binding.root,
-                            "Successfully cleared history",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
+                        Alerter.create(requireActivity())
+                            .setTitle(resources.getString(R.string.clearHistory))
+                            .setText(resources.getString(R.string.clearHistoryDescription))
+                            .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.positive_green))
+                            .setIcon(R.drawable.delete)
+                            .setDuration(2000L)
+                            .show()
                     }
                 }
             }
@@ -131,7 +133,13 @@ class HistoryFragment : Fragment() {
                     val action = HistoryFragmentDirections.actionHistoryToResultFragment(historyUser.userID, true)
                     findNavController().navigate(action)
                 } else {
-                    Snackbar.make(binding.root, "Data updated successfully", Snackbar.LENGTH_SHORT).show()
+                    Alerter.create(requireActivity())
+                        .setTitle(resources.getString(R.string.noInternet))
+                        .setText(resources.getString(R.string.noInternetDescription))
+                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
+                        .setIcon(R.drawable.wifi_off)
+                        .setDuration(2000L)
+                        .show()
                 }
             }
 

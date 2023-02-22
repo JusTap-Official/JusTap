@@ -6,16 +6,15 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Matrix
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.os.Vibrator
+import android.os.VibratorManager
 import android.provider.MediaStore
 import android.util.Log
 import android.util.Patterns
@@ -33,17 +32,11 @@ import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 
 
-/**
- * Created by binay on 29,December,2022
- */
 class Util {
     companion object {
 
@@ -58,31 +51,6 @@ class Util {
             Log.d("", message)
         }
 
-        fun getByteFromUrl(context: Context, url: String): ByteArray? {
-            val drawable = getDrawableFromUrl(context, url)
-            log("Drawable is: $drawable")
-            if (drawable != null) {
-                val bitmap = (drawable as BitmapDrawable).bitmap
-                val outputStream = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-                return outputStream.toByteArray()
-            }
-            return null
-        }
-
-        private fun getDrawableFromUrl(context: Context, url: String): Drawable? {
-            return try {
-                val bitmap = Glide.with(context)
-                    .asBitmap()
-                    .load(url)
-                    .submit()
-                    .get()
-
-                BitmapDrawable(context.resources, bitmap)
-            } catch (e: Exception) {
-                null
-            }
-        }
 
         fun getFirstName(fullName: String): String {
             if (fullName.isNotEmpty())
@@ -315,6 +283,18 @@ class Util {
 
         fun colorIsNotTheSame(firstColor: Int, secondColor: Int): Boolean {
             return firstColor != secondColor
+        }
+
+        fun vibrateDevice(duration: Long, context: Context) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                val vibratorManager =
+                    context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+                vibratorManager.defaultVibrator.vibrate(duration)
+            } else {
+                @Suppress("DEPRECATION")
+                val vibratorManager = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+                vibratorManager.vibrate(500L)
+            }
         }
 
     }

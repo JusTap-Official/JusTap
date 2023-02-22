@@ -4,9 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.binay.shaw.justap.model.Accounts
 
-/**
- * Created by binay on 30,January,2023
- */
 
 @Dao
 interface AccountsDAO {

@@ -2,13 +2,11 @@ package com.binay.shaw.justap.ui.mainScreens.qrReciever
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Vibrator
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.KeyEvent
@@ -29,7 +27,6 @@ import com.binay.shaw.justap.helper.Encryption
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
 import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
-import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
@@ -234,20 +231,19 @@ class ScannerFragment : Fragment() {
                 dataFound = true
                 if (!Util.checkForInternet(requireContext())) {
                     Alerter.create(requireActivity())
-                        .setTitle("No Internet available")
-                        .setText("Please make sure you're connected to the Internet")
-                        .setBackgroundColorInt(resources.getColor(R.color.negative_red))
+                        .setTitle(resources.getString(R.string.noInternet))
+                        .setText(resources.getString(R.string.noInternetDescription))
+                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
                         .setIcon(R.drawable.wifi_off)
                         .setDuration(2000L)
                         .show()
                     handleBackButtonPress()
                 } else {
 
-                    val vibratorService =
-                        requireContext().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-                    vibratorService.vibrate(500)
+                    Util.vibrateDevice(500L, requireContext())
+
                     val encryption = Encryption.getDefault("Key", "Salt", ByteArray(16))
-                    Util.log("Scanned Result: $data")
+                    Util.log("Scanned encrypted Result: $data")
 
                     if (isLink(data)) {
                         Util.log("IS LINK")
@@ -304,8 +300,6 @@ class ScannerFragment : Fragment() {
         if (requestCode == PERMISSION_CAMERA_REQUEST) {
             if (isCameraPermissionGranted()) {
                 setupCamera()
-            } else {
-
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)

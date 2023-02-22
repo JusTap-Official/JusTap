@@ -9,7 +9,7 @@ import androidx.core.app.NotificationCompat
 /**
  * Created by binay on 06,February,2023
  */
-class NotificationHelper(private val context: Context) {
+class NotificationHelper(context: Context) {
 
     private val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 

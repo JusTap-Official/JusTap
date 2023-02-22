@@ -11,9 +11,7 @@ import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 
-/**
- * Created by binay on 04,January,2023
- */
+
 class EditProfile_ViewModel : ViewModel() {
 
     var status = MutableLiveData<Int>()

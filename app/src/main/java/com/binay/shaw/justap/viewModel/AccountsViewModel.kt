@@ -10,9 +10,7 @@ import com.binay.shaw.justap.repository.AccountsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-/**
- * Created by binay on 30,January,2023
- */
+
 class AccountsViewModel(
     application: Application
 ) : AndroidViewModel(application) {

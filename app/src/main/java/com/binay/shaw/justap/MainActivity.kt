@@ -1,7 +1,7 @@
 package com.binay.shaw.justap
 
 
-import android.database.CursorWindow
+
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -14,7 +14,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.binay.shaw.justap.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
-import java.lang.reflect.Field
 
 
 class MainActivity : AppCompatActivity() {

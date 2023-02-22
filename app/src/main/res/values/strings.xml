@@ -63,6 +63,10 @@
     <string name="choose_primary_color">Choose primary Color</string>
     <string name="successfullyScanned">Successfully Scanned!</string>
     <string name="reset_colors">Reset Colors</string>
+    <string name="noInternet">No Internet available</string>
+    <string name="noInternetDescription">Please make sure you\'re connected to the Internet</string>
+    <string name="clearHistory">History cleared</string>
+    <string name="clearHistoryDescription">Successfully cleared history</string>
 
     <string-array name="account_names">
         <item>Phone</item>

@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class ForgotPassword_Screen : AppCompatActivity() {
+class ForgotPasswordScreen : AppCompatActivity() {
 
     private lateinit var binding: ActivityForgotPasswordScreenBinding
     private lateinit var auth: FirebaseAuth
@@ -57,13 +57,13 @@ class ForgotPassword_Screen : AppCompatActivity() {
                         buttonText.visibility = View.VISIBLE
                         buttonProgress.visibility = View.GONE
                         Snackbar.make(binding.root, "We sent an email, please check it", Snackbar.LENGTH_SHORT).show()
-                        startActivity(Intent(this@ForgotPassword_Screen, SignIn_Screen::class.java))
+                        startActivity(Intent(this@ForgotPasswordScreen, SignInScreen::class.java))
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
                         buttonText.visibility = View.VISIBLE
                         buttonProgress.visibility = View.GONE
-                        Toast.makeText(this@ForgotPassword_Screen, e.message, Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@ForgotPasswordScreen, e.message, Toast.LENGTH_LONG).show()
                     }
                 }
             }
@@ -76,10 +76,10 @@ class ForgotPassword_Screen : AppCompatActivity() {
         toolbar = binding.include
         toolbar.toolbarTitle.text = resources.getString(R.string.LogIn)
         binding.btnResetPassword.apply {
-            this@ForgotPassword_Screen.buttonText = this.buttonText
-            this@ForgotPassword_Screen.buttonLayout = this.progressButtonBg
-            this@ForgotPassword_Screen.buttonProgress = this.buttonProgress
-            this@ForgotPassword_Screen.buttonText.text = resources.getString(R.string.SendResetLink)
+            this@ForgotPasswordScreen.buttonText = this.buttonText
+            this@ForgotPasswordScreen.buttonLayout = this.progressButtonBg
+            this@ForgotPasswordScreen.buttonProgress = this.buttonProgress
+            this@ForgotPasswordScreen.buttonText.text = resources.getString(R.string.SendResetLink)
         }
     }
 }

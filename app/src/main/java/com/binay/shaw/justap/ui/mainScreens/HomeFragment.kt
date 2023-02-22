@@ -52,8 +52,6 @@ class HomeFragment : Fragment() {
 
         initialization(container)
 
-        recyclerViewAdapter.notifyDataSetChanged()
-
         binding.fabLayout.setOnClickListener {
             gotoAddAccountFragment()
         }
@@ -112,7 +110,7 @@ class HomeFragment : Fragment() {
         Util.unusedAccounts = unusedAccounts
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     private fun initialization(container: ViewGroup?) {
 
         _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
@@ -125,7 +123,7 @@ class HomeFragment : Fragment() {
         fabTitle = binding.fabText
 
         val addEditViewModel = ViewModelProvider(requireActivity())[AddEditViewModel::class.java]
-        recyclerViewAdapter = AccountsItemAdapter(requireContext(), requireActivity()) { newAccount ->
+        recyclerViewAdapter = AccountsItemAdapter(requireActivity()) { newAccount ->
             // handle item click
             for (account in accountsList) {
                 if (account.accountID == newAccount.accountID) {

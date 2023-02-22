@@ -45,6 +45,7 @@ class SignUp_ViewModel : ViewModel() {
     fun createNewAccount(nameString: String, emailString: String, passwordString: String) {
 
         val isValid = Util.validateUserAuthInput(nameString, emailString, passwordString)
+
         when (isValid) {
 
             1 -> status.value = 1   //name is empty

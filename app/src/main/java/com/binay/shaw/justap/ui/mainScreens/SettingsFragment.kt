@@ -37,7 +37,7 @@ import com.binay.shaw.justap.helper.Util.Companion.dpToPx
 import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.model.SettingsItem
-import com.binay.shaw.justap.ui.authentication.SignIn_Screen
+import com.binay.shaw.justap.ui.authentication.SignInScreen
 import com.binay.shaw.justap.viewModel.AccountsViewModel
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
 import com.binay.shaw.justap.viewModel.QRGenerator_ViewModel
@@ -201,8 +201,10 @@ class SettingsFragment : Fragment() {
                     Util.log("Exception: $e")
                     Alerter.create(requireActivity())
                         .setTitle(resources.getString(R.string.anErrorOccurred))
-                        .setText(e.toString().capitalize(Locale.ROOT).substring(36))
-                        .setBackgroundColorInt(resources.getColor(R.color.negative_red))
+                        .setText(e.toString()
+                            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
+                            .substring(36))
+                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
                         .setIcon(R.drawable.warning)
                         .setDuration(2500L)
                         .show()
@@ -236,8 +238,10 @@ class SettingsFragment : Fragment() {
                     Util.log("Exception: $e")
                     Alerter.create(requireActivity())
                         .setTitle(resources.getString(R.string.anErrorOccurred))
-                        .setText(e.toString().capitalize(Locale.ROOT).substring(36))
-                        .setBackgroundColorInt(resources.getColor(R.color.negative_red))
+                        .setText(e.toString()
+                            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
+                            .substring(36))
+                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
                         .setIcon(R.drawable.warning)
                         .setDuration(2500L)
                         .show()
@@ -278,7 +282,7 @@ class SettingsFragment : Fragment() {
                             Alerter.create(requireActivity())
                                 .setTitle(resources.getString(R.string.changesSaved))
                                 .setText(resources.getString(R.string.changesSavedDescription))
-                                .setBackgroundColorInt(resources.getColor(R.color.positive_green))
+                                .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.positive_green))
                                 .setIcon(R.drawable.check)
                                 .setDuration(2500L)
                                 .show()
@@ -294,7 +298,7 @@ class SettingsFragment : Fragment() {
                         Alerter.create(requireActivity())
                             .setTitle(resources.getString(R.string.badContrast))
                             .setText(resources.getString(R.string.badContrastDescription))
-                            .setBackgroundColorInt(resources.getColor(R.color.negative_red))
+                            .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
                             .setIcon(R.drawable.warning)
                             .setDuration(2000L)
                             .show()
@@ -303,8 +307,10 @@ class SettingsFragment : Fragment() {
                     Util.log("Exception: $e")
                     Alerter.create(requireActivity())
                         .setTitle(resources.getString(R.string.anErrorOccurred))
-                        .setText(e.toString().capitalize(Locale.ROOT).substring(36))
-                        .setBackgroundColorInt(resources.getColor(R.color.negative_red))
+                        .setText(e.toString()
+                            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
+                            .substring(36))
+                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
                         .setIcon(R.drawable.warning)
                         .setDuration(2500L)
                         .show()
@@ -428,7 +434,7 @@ class SettingsFragment : Fragment() {
                     signOutFromFirebase.join()
                     LocalUserDatabase.getDatabase(requireContext()).clearTables()
                     withContext(Dispatchers.Main) {
-                        val intent = Intent(requireContext(), SignIn_Screen::class.java)
+                        val intent = Intent(requireContext(), SignInScreen::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                         startActivity(intent).also { requireActivity().finish() }
                         Util.log("Logged out")

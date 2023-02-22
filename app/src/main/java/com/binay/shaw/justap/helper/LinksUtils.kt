@@ -97,7 +97,7 @@ object LinksUtils {
             }
             "Telegram" -> {
 
-                val isPhoneNumber = data.matches("^[0-9]+\$".toRegex())
+                val isPhoneNumber = data.matches("^\\d+\$".toRegex())
                 if (isPhoneNumber) {
                     addTelegramAccountByPhone(data, context)
                 } else {
@@ -113,13 +113,13 @@ object LinksUtils {
         }
     }
 
-    fun isLink(data: String): Boolean {
+    private fun isLink(data: String): Boolean {
         if (data.contains("https://") || data.contains("http://"))
             return true
         return false
     }
 
-    fun addTelegramAccountByUsername(username: String, context: Context) {
+    private fun addTelegramAccountByUsername(username: String, context: Context) {
         val telegramPackageName = "org.telegram.messenger"
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse("tg://resolve?domain=$username")
@@ -133,7 +133,7 @@ object LinksUtils {
         }
     }
 
-    fun addTelegramAccountByPhone(phoneNumber: String, context: Context) {
+    private fun addTelegramAccountByPhone(phoneNumber: String, context: Context) {
         val telegramPackageName = "org.telegram.messenger"
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse("tg://add?phone=$phoneNumber")
@@ -147,20 +147,20 @@ object LinksUtils {
         }
     }
 
-    fun openLink(link: String, context: Context) {
+    private fun openLink(link: String, context: Context) {
         Util.log("Link Opened is: $link")
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
         context.startActivity(intent)
     }
 
-    fun addContactToWhatsApp(number: String, context: Context) {
+    private fun addContactToWhatsApp(number: String, context: Context) {
         val whatsAppURL =
             "https://api.whatsapp.com/send/?phone=$number&text=Hi%20there!&type=phone_number"
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(whatsAppURL))
         context.startActivity(intent)
     }
 
-    fun addToContacts(phone: String, username: String, context: Context) {
+    private fun addToContacts(phone: String, username: String, context: Context) {
         val intent = Intent(Intent.ACTION_INSERT)
         intent.type = ContactsContract.RawContacts.CONTENT_TYPE
         intent.putExtra(ContactsContract.Intents.Insert.NAME, username)
@@ -168,7 +168,7 @@ object LinksUtils {
         context.startActivity(intent)
     }
 
-    fun sendEmail(email: String, context: Context) {
+    private fun sendEmail(email: String, context: Context) {
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "message/rfc822"
         intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(email))

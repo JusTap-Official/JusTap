@@ -189,9 +189,9 @@ class AddEditFragment : Fragment() {
                     }
                 } else {
                     Alerter.create(requireActivity())
-                        .setTitle("No Internet available")
-                        .setText("Please make sure you're connected to the Internet")
-                        .setBackgroundColorInt(resources.getColor(R.color.negative_red))
+                        .setTitle(resources.getString(R.string.noInternet))
+                        .setText(resources.getString(R.string.noInternetDescription))
+                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
                         .setIcon(R.drawable.wifi_off)
                         .setDuration(2000L)
                         .show()
@@ -259,9 +259,9 @@ class AddEditFragment : Fragment() {
                     }
                 } else {
                     Alerter.create(requireActivity())
-                        .setTitle("No Internet available")
-                        .setText("Please make sure you're connected to the Internet")
-                        .setBackgroundColorInt(resources.getColor(R.color.negative_red))
+                        .setTitle(resources.getString(R.string.noInternet))
+                        .setText(resources.getString(R.string.noInternetDescription))
+                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
                         .setIcon(R.drawable.wifi_off)
                         .setDuration(2000L)
                         .show()
@@ -340,9 +340,9 @@ class AddEditFragment : Fragment() {
                     }
                 } else {
                     Alerter.create(requireActivity())
-                        .setTitle("No Internet available")
-                        .setText("Please make sure you're connected to the Internet")
-                        .setBackgroundColorInt(resources.getColor(R.color.negative_red))
+                        .setTitle(resources.getString(R.string.noInternet))
+                        .setText(resources.getString(R.string.noInternetDescription))
+                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
                         .setIcon(R.drawable.wifi_off)
                         .setDuration(2000L)
                         .show()
