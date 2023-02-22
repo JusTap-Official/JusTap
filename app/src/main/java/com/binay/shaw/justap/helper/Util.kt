@@ -313,5 +313,9 @@ class Util {
 
         }
 
+        fun colorIsNotTheSame(firstColor: Int, secondColor: Int): Boolean {
+            return firstColor != secondColor
+        }
+
     }
 }

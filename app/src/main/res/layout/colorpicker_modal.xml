@@ -79,6 +79,14 @@
                 android:textAllCaps="false"
                 android:textColor="@android:color/white" />
 
+            <TextView
+                android:id="@+id/resetColors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reset_colors"
+                android:textColor="@color/medium_blue"
+                android:layout_marginTop="20dp"/>
+
         </LinearLayout>
 
         <View

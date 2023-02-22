@@ -3,6 +3,7 @@ package com.binay.shaw.justap.ui.mainScreens
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.ColorUtils
@@ -139,6 +141,8 @@ class SettingsFragment : Fragment() {
         val bottomSheet = requireContext().createBottomSheet()
         dialog.apply {
 
+            var isColorReset = false
+
             var firstSelectedColor = sharedPreference.getInt(
                 "firstColor",
                 ResourcesCompat.getColor(resources, R.color.text_color, null)
@@ -146,6 +150,17 @@ class SettingsFragment : Fragment() {
             var secondSelectedColor = sharedPreference.getInt(
                 "secondColor",
                 ResourcesCompat.getColor(resources, R.color.bg_color, null)
+            )
+
+            val defaultPrimaryColor = ResourcesCompat.getColor(
+                resources,
+                R.color.text_color,
+                null
+            )
+            val defaultSecondaryColor = ResourcesCompat.getColor(
+                resources,
+                R.color.bg_color,
+                null
             )
 
             generateQR(
@@ -229,10 +244,20 @@ class SettingsFragment : Fragment() {
                 }
             }
 
+            resetColors.setOnClickListener {
+                generateQR(
+                    defaultPrimaryColor,
+                    defaultSecondaryColor
+                )
+                firstSelectedColor = defaultPrimaryColor
+                secondSelectedColor = defaultSecondaryColor
+                isColorReset = true
+            }
+
             positiveOption.setOnClickListener {
                 try {
 
-                    val contrastRatio = 3.5f
+                    val contrastRatio = 1.5f
                     val contrastVar1 =
                         ColorUtils.calculateContrast(firstSelectedColor, secondSelectedColor)
                     val contrastVar2 =
@@ -240,24 +265,15 @@ class SettingsFragment : Fragment() {
                     Util.log("Contrast is: $contrastVar1 and $contrastVar2")
 
                     if (contrastVar1 > contrastRatio || contrastVar2 > contrastRatio) {
+                        Util.log("Contrast Choice is Okay")
 
-                        if (firstSelectedColor != ResourcesCompat.getColor(
-                                resources,
-                                R.color.text_color,
-                                null
-                            ) &&
-                            secondSelectedColor != ResourcesCompat.getColor(
-                                resources,
-                                R.color.bg_color,
-                                null
-                            )
+
+                        if (Util.colorIsNotTheSame(firstSelectedColor, defaultPrimaryColor)
+                            || Util.colorIsNotTheSame(secondSelectedColor, defaultSecondaryColor)
+                            || isColorReset
                         ) {
 
-                            val editor = sharedPreference.edit()
-                            editor.putInt("firstColor", firstSelectedColor)
-                            editor.putInt("secondColor", secondSelectedColor)
-                            editor.apply()
-                            Util.log("Saved")
+                            saveColors(sharedPreference, firstSelectedColor, secondSelectedColor)
 
                             Alerter.create(requireActivity())
                                 .setTitle(resources.getString(R.string.changesSaved))
@@ -266,8 +282,12 @@ class SettingsFragment : Fragment() {
                                 .setIcon(R.drawable.check)
                                 .setDuration(2500L)
                                 .show()
+                            bottomSheet.dismiss()
+                        } else {
+                            Util.log("First Colors are : $firstSelectedColor and $defaultPrimaryColor")
+                            Util.log("Second Colors are : $secondSelectedColor and $defaultSecondaryColor")
+                            Toast.makeText(requireContext(), "No changes made", Toast.LENGTH_SHORT).show()
                         }
-                        bottomSheet.dismiss()
 
                     } else {
                         Util.log("Contrast choice is bad")
@@ -296,6 +316,14 @@ class SettingsFragment : Fragment() {
             }
         }
         dialog.root.setBottomSheet(bottomSheet)
+    }
+
+    private fun saveColors(sharedPreference: SharedPreferences, firstSelectedColor: Int, secondSelectedColor: Int) {
+        val editor = sharedPreference.edit()
+        editor.putInt("firstColor", firstSelectedColor)
+        editor.putInt("secondColor", secondSelectedColor)
+        editor.apply()
+        Util.log("Saved")
     }
 
     private fun generateQR(color1: Int, color2: Int) {

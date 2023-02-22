@@ -62,6 +62,7 @@
     <string name="choose_secondary_color">Choose secondary Color</string>
     <string name="choose_primary_color">Choose primary Color</string>
     <string name="successfullyScanned">Successfully Scanned!</string>
+    <string name="reset_colors">Reset Colors</string>
 
     <string-array name="account_names">
         <item>Phone</item>
