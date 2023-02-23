@@ -1,6 +1,7 @@
 package com.binay.shaw.justap.ui.authentication
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -132,36 +134,30 @@ class SignUpScreen : AppCompatActivity() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun passwordVisibilityHandler() {
+
         // Hide and Show Password
         var passwordVisible = false
+
+        binding.etPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.visibility_on, 0)
+        binding.etPassword.compoundDrawablePadding = 20 // add padding to increase touch area
+
         binding.etPassword.setOnTouchListener { _, event ->
-            val right = 2
-            if (event.action == MotionEvent.ACTION_UP) {
-                if (event.rawX >= binding.etPassword.right - binding.etPassword.compoundDrawables[right].bounds.width()
-                ) {
-                    val selection: Int = binding.etPassword.selectionEnd
-                    //Handles Multiple option popups
+            if (event.actionMasked == MotionEvent.ACTION_UP) {
+                val drawableEnd = binding.etPassword.compoundDrawablesRelative[2]
+                if (drawableEnd != null && event.x >= binding.etPassword.width - drawableEnd.bounds.width()) {
+                    val cursorPosition = binding.etPassword.selectionStart // save current cursor position
+                    passwordVisible = !passwordVisible
                     if (passwordVisible) {
-                        //set drawable image here
-                        binding.etPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                            0, 0, R.drawable.visibility_on, 0
-                        )
-                        //for hide password
-                        binding.etPassword.transformationMethod =
-                            PasswordTransformationMethod.getInstance()
-                        passwordVisible = false
+                        binding.etPassword.transformationMethod = null
+                        binding.etPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.visibility_off, 0)
                     } else {
-                        //set drawable image here
-                        binding.etPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                            0, 0, R.drawable.visibility_off, 0
-                        )
-                        //for show password
-                        binding.etPassword.transformationMethod =
-                            HideReturnsTransformationMethod.getInstance()
-                        passwordVisible = true
+                        binding.etPassword.transformationMethod = PasswordTransformationMethod()
+                        binding.etPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.visibility_on, 0)
                     }
-                    binding.etPassword.isLongClickable = false //Handles Multiple option popups
-                    binding.etPassword.setSelection(selection)
+                    // Hide the keyboard
+                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(binding.etPassword.windowToken, 0)
+                    binding.etPassword.setSelection(cursorPosition)
                     return@setOnTouchListener true
                 }
             }

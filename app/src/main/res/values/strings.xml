@@ -67,6 +67,13 @@
     <string name="noInternetDescription">Please make sure you\'re connected to the Internet</string>
     <string name="clearHistory">History cleared</string>
     <string name="clearHistoryDescription">Successfully cleared history</string>
+    <string name="scan_justap_qrs">Scan JusTap QRs</string>
+    <string name="download_resume">Download Resume</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="already_have_an_account">Already have an account?</string>
 
     <string-array name="account_names">
         <item>Phone</item>

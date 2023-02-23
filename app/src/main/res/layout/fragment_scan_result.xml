@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.mainScreens.qrReciever.ResultFragment">
+    tools:context=".ui.mainScreens.qrReceiverFragments.ResultFragment">
 
     <!--ToolBar-->
     <include
@@ -100,7 +100,7 @@
             android:background="@drawable/normal_button"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
-            android:text="Download Resume"
+            android:text="@string/download_resume"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:visibility="gone" />

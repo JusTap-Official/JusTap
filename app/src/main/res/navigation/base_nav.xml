@@ -50,7 +50,7 @@
     </fragment>
     <fragment
         android:id="@+id/scannerFragment"
-        android:name="com.binay.shaw.justap.ui.mainScreens.qrReciever.ScannerFragment"
+        android:name="com.binay.shaw.justap.ui.mainScreens.qrReceiverFragments.ScannerFragment"
         android:label="fragment_q_r_scanner"
         tools:layout="@layout/fragment_q_r_scanner" >
         <action
@@ -74,7 +74,7 @@
         tools:layout="@layout/fragment_edit_profile" />
     <fragment
         android:id="@+id/resultFragment"
-        android:name="com.binay.shaw.justap.ui.mainScreens.qrReciever.ResultFragment"
+        android:name="com.binay.shaw.justap.ui.mainScreens.qrReceiverFragments.ResultFragment"
         android:label="fragment_scan_result"
         tools:layout="@layout/fragment_scan_result" >
         <argument

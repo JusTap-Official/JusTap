@@ -45,9 +45,7 @@ class SignIn_ViewModel : ViewModel() {
 
     fun loginUser(userEmail: String, userPassword: String, firebaseDatabase: DatabaseReference) {
 
-        val checkValidity = Util.validateUserAuthInput(null, userEmail, userPassword)
-
-        when (checkValidity) {
+        when (Util.validateUserAuthInput(null, userEmail, userPassword)) {
             2 -> {
                 //email is empty
                 status.value = 2
@@ -81,7 +79,6 @@ class SignIn_ViewModel : ViewModel() {
                                     val id = it.child("userID").value.toString()
                                     val name = it.child("name").value.toString()
                                     val email = it.child("email").value.toString()
-                                    val base64 = it.child("userPFPBase64").value.toString()
                                     val profilePicture = it.child("profilePictureURI").value.toString()
                                     val profileBanner = it.child("profileBannerURI").value.toString()
                                     val bio = it.child("bio").value.toString()
@@ -89,8 +86,8 @@ class SignIn_ViewModel : ViewModel() {
                                     if (it.hasChild("accounts")) {
                                         val accountList = mutableListOf<Accounts>()
 
-                                        it.child("accounts").children.forEach { iter ->
-                                            val tempMap = iter.value as java.util.HashMap<*, *>
+                                        it.child("accounts").children.forEach { iterator ->
+                                            val tempMap = iterator.value as java.util.HashMap<*, *>
                                             val acc = Accounts(
                                                 (tempMap["accountID"] as Long).toInt(),
                                                 tempMap["accountName"] as String,

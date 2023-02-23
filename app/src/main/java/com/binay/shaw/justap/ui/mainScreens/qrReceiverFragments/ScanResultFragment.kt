@@ -1,4 +1,4 @@
-package com.binay.shaw.justap.ui.mainScreens.qrReciever
+package com.binay.shaw.justap.ui.mainScreens.qrReceiverFragments
 
 import android.app.PendingIntent
 import android.content.Intent

@@ -44,7 +44,7 @@ class EditProfileFragment : Fragment() {
     private lateinit var localUser: LocalUser
     private lateinit var storageRef: StorageReference
     private lateinit var firebaseDatabase: FirebaseDatabase
-    private lateinit var editprofileViewmodel: EditProfile_ViewModel
+    private lateinit var editProfileViewmodel: EditProfile_ViewModel
     private var editImageMode = 0   // 0 - Default, 1 - Profile picture, 2 - Banner picture
 
 
@@ -212,13 +212,13 @@ class EditProfileFragment : Fragment() {
                 }
 
                 lifecycleScope.launch {
-                    editprofileViewmodel.updateUser(
+                    editProfileViewmodel.updateUser(
                         firebaseDatabase, storageRef, originalID,
                         hashMap, originalPFP!!, originalBanner!!, profilePictureURI,
                         profileBannerURI, localUserViewModel)
                 }
 
-                editprofileViewmodel.status.observe(viewLifecycleOwner) {
+                editProfileViewmodel.status.observe(viewLifecycleOwner) {
                     if (it == 3) {
                         Glide.get(requireContext()).clearMemory()
                         binding.progressAnimation.progressParent.visibility = View.GONE
@@ -304,7 +304,7 @@ class EditProfileFragment : Fragment() {
         }
         storageRef = Firebase.storage.reference
         firebaseDatabase = FirebaseDatabase.getInstance()
-        editprofileViewmodel =
+        editProfileViewmodel =
             ViewModelProvider(this@EditProfileFragment)[EditProfile_ViewModel::class.java]
     }
 

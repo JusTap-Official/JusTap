@@ -43,9 +43,9 @@ class ScanResultViewModel : ViewModel() {
                 if (it.hasChild("accounts")) {
                     val accountList = mutableListOf<Accounts>()
                     Util.log("accountsList: $accountList")
-                    it.child("accounts").children.forEach { iter ->
-                        if (iter != null) {
-                            val tempMap = iter.value as java.util.HashMap<*, *>
+                    it.child("accounts").children.forEach { iterator ->
+                        if (iterator != null) {
+                            val tempMap = iterator.value as java.util.HashMap<*, *>
                             val acc = Accounts(
                                 (tempMap["accountID"] as Long).toInt(),
                                 tempMap["accountName"] as String,

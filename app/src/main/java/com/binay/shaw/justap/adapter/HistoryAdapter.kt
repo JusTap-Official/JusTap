@@ -45,7 +45,7 @@ class HistoryAdapter(
             Glide.with(context)
                 .load(it)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into(holder.binding.historyUserpfp)
+                .into(holder.binding.historyProfilePicture)
             val sizeInBytes = it.byteCount
             val sizeInMB = sizeInBytes.toDouble() / (1024 * 1024)
             Util.log("Size of image: $sizeInMB")
