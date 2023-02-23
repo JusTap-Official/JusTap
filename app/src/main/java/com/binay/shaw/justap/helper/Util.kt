@@ -16,9 +16,13 @@ import android.os.Environment
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.util.Patterns
+import android.view.MotionEvent
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import com.binay.shaw.justap.R
 import com.bumptech.glide.Glide
@@ -51,6 +55,16 @@ class Util {
             Log.d("", message)
         }
 
+        fun getBaseStringForFiltering(originalString: String) : String {
+            val stringBuilder = StringBuilder()
+
+            for (char in originalString.toCharArray()) {
+                if (char.isLetter())
+                    stringBuilder.append(char)
+            }
+
+            return stringBuilder.toString()
+        }
 
         fun getFirstName(fullName: String): String {
             if (fullName.isNotEmpty())

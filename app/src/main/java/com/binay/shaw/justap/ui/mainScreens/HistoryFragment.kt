@@ -2,7 +2,10 @@ package com.binay.shaw.justap.ui.mainScreens
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -22,6 +25,7 @@ import com.binay.shaw.justap.databinding.FragmentHistoryBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
+import com.binay.shaw.justap.helper.Util.Companion.getBaseStringForFiltering
 import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
 import com.binay.shaw.justap.model.LocalHistory
 import com.binay.shaw.justap.viewModel.LocalHistoryViewModel
@@ -51,6 +55,8 @@ class HistoryFragment : Fragment() {
 
         historyAdapter.notifyDataSetChanged()
 
+        setFilter()
+
         binding.include.rightIcon.setOnClickListener {
             if (historyAdapter.itemCount > 0) {
                 clearHistory()
@@ -64,6 +70,59 @@ class HistoryFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setFilter() {
+
+        binding.etFilter.apply {
+
+            addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                }
+
+                override fun afterTextChanged(p0: Editable?) {
+                    if (p0.toString().isNotEmpty()) {
+                        filter(getBaseStringForFiltering(p0.toString().lowercase()))
+                        setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.clear_text, 0)
+                    } else {
+                        setCompoundDrawablesWithIntrinsicBounds(R.drawable.search, 0, 0, 0)
+                        filter("")
+                    }
+                }
+
+            })
+
+            setOnTouchListener(View.OnTouchListener { _, event ->
+                if (event.action == MotionEvent.ACTION_UP) {
+                    if (event.rawX >= (this.right - this.compoundPaddingRight)) {
+                        this.setText("")
+                        return@OnTouchListener true
+                    }
+                }
+                return@OnTouchListener false
+            })
+
+        }
+
+
+
+    }
+
+    private fun filter(search: String) {
+        val filterList = mutableListOf<LocalHistory>()
+        if (search.isNotEmpty()) {
+            for (current in accountsList) {
+                if (getBaseStringForFiltering(current.username.lowercase()).contains(search)) {
+                    filterList.add(current)
+                }
+            }
+            historyAdapter.setData(filterList)
+        } else
+            historyAdapter.setData(accountsList)
     }
 
     @SuppressLint("NotifyDataSetChanged")

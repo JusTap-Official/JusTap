@@ -74,6 +74,7 @@
     <string name="enter_your_email">Enter your email</string>
     <string name="enter_your_password">Enter your password</string>
     <string name="already_have_an_account">Already have an account?</string>
+    <string name="search_by_name_binay">Search by name</string>
 
     <string-array name="account_names">
         <item>Phone</item>
