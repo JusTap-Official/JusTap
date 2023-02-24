@@ -83,6 +83,7 @@
     <string name="successfullLoggedIn">Successfully Logged In</string>
     <string name="signin">Sign In</string>
     <string name="enter_name">Enter your name</string>
+    <string name="press_once_again_to_exit">Press once again to exit!</string>
 
     <string-array name="account_names">
         <item>Phone</item>

@@ -13,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.ActivityForgotPasswordScreenBinding
 import com.binay.shaw.justap.databinding.MyToolbarBinding
+import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.ui.authentication.signInScreen.SignInScreen
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -40,9 +41,13 @@ class ForgotPasswordScreen : AppCompatActivity() {
         initialization()
 
         buttonLayout.setOnClickListener {
-            buttonText.visibility = View.GONE
-            buttonProgress.visibility = View.VISIBLE
-            resetPassword()
+            if (Util.checkForInternet(baseContext)) {
+                buttonText.visibility = View.GONE
+                buttonProgress.visibility = View.VISIBLE
+                resetPassword()
+            } else {
+                Util.showNoInternet(this)
+            }
         }
     }
 

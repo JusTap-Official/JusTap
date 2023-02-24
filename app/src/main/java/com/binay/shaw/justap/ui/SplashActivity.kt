@@ -9,7 +9,6 @@ import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.ui.authentication.signInScreen.SignInScreen
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.*
 
 @SuppressLint("CustomSplashScreen")
