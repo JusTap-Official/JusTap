@@ -75,6 +75,13 @@
     <string name="enter_your_password">Enter your password</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="search_by_name_binay">Search by name</string>
+    <string name="enter_email">Enter your email</string>
+    <string name="invalid_email">Email is not valid</string>
+    <string name="enter_password">Password is empty</string>
+    <string name="small_size_password">Password length less than 8 letters</string>
+    <string name="invalid_password">Password must contains uppercase, lowercase, digit and symbol</string>
+    <string name="successfullLoggedIn">Successfully Logged In</string>
+    <string name="signin">Sign In</string>
 
     <string-array name="account_names">
         <item>Phone</item>

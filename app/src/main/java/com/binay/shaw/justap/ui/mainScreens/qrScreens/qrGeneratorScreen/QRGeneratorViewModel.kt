@@ -6,11 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.binay.shaw.justap.helper.Encryption
 import com.binay.shaw.justap.helper.Util
-import com.binay.shaw.justap.helper.Util.Companion.encodeAsQrCodeBitmap
+import com.binay.shaw.justap.helper.Util.encodeAsQrCodeBitmap
 
-/**
- * Created by binay on 31,December,2022
- */
+
 class QRGeneratorViewModel : ViewModel() {
     var status = MutableLiveData<Int>()
     private val errorMessage = MutableLiveData<String>()

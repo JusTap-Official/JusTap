@@ -22,9 +22,9 @@ import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentQRGeneratorBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
 import com.binay.shaw.justap.helper.Util
-import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
-import com.binay.shaw.justap.helper.Util.Companion.dpToPx
-import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
+import com.binay.shaw.justap.helper.Util.createBottomSheet
+import com.binay.shaw.justap.helper.Util.dpToPx
+import com.binay.shaw.justap.helper.Util.setBottomSheet
 import com.google.android.material.snackbar.Snackbar
 
 

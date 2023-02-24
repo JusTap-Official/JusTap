@@ -24,9 +24,8 @@ import com.binay.shaw.justap.adapter.HistoryAdapter
 import com.binay.shaw.justap.databinding.FragmentHistoryBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.helper.Util
-import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
-import com.binay.shaw.justap.helper.Util.Companion.getBaseStringForFiltering
-import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
+import com.binay.shaw.justap.helper.Util.createBottomSheet
+import com.binay.shaw.justap.helper.Util.setBottomSheet
 import com.binay.shaw.justap.model.LocalHistory
 import com.tapadoo.alerter.Alerter
 import kotlinx.coroutines.Dispatchers
@@ -85,7 +84,7 @@ class HistoryFragment : Fragment() {
 
                 override fun afterTextChanged(p0: Editable?) {
                     if (p0.toString().isNotEmpty()) {
-                        filter(getBaseStringForFiltering(p0.toString().lowercase()))
+                        filter(Util.getBaseStringForFiltering(p0.toString().lowercase()))
                         setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.clear_text, 0)
                     } else {
                         setCompoundDrawablesWithIntrinsicBounds(R.drawable.search, 0, 0, 0)
@@ -115,7 +114,7 @@ class HistoryFragment : Fragment() {
         val filterList = mutableListOf<LocalHistory>()
         if (search.isNotEmpty()) {
             for (current in accountsList) {
-                if (getBaseStringForFiltering(current.username.lowercase()).contains(search)) {
+                if (Util.getBaseStringForFiltering(current.username.lowercase()).contains(search)) {
                     filterList.add(current)
                 }
             }
@@ -171,7 +170,6 @@ class HistoryFragment : Fragment() {
             }
         }
         dialog.root.setBottomSheet(bottomSheet)
-
     }
 
     private fun initialization() {
@@ -194,13 +192,7 @@ class HistoryFragment : Fragment() {
                     )
                     findNavController().navigate(action)
                 } else {
-                    Alerter.create(requireActivity())
-                        .setTitle(resources.getString(R.string.noInternet))
-                        .setText(resources.getString(R.string.noInternetDescription))
-                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
-                        .setIcon(R.drawable.wifi_off)
-                        .setDuration(2000L)
-                        .show()
+                    Util.showNoInternet(requireActivity())
                 }
             }
 

@@ -21,8 +21,8 @@ import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
 import com.binay.shaw.justap.helper.Util
-import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
-import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
+import com.binay.shaw.justap.helper.Util.createBottomSheet
+import com.binay.shaw.justap.helper.Util.setBottomSheet
 import com.binay.shaw.justap.mainViewModels.AccountsViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.FirebaseDatabase
@@ -187,13 +187,7 @@ class AddEditFragment : Fragment() {
                         }
                     }
                 } else {
-                    Alerter.create(requireActivity())
-                        .setTitle(resources.getString(R.string.noInternet))
-                        .setText(resources.getString(R.string.noInternetDescription))
-                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
-                        .setIcon(R.drawable.wifi_off)
-                        .setDuration(2000L)
-                        .show()
+                    Util.showNoInternet(requireActivity())
                     return@setOnClickListener
                 }
             }
@@ -257,13 +251,7 @@ class AddEditFragment : Fragment() {
                         }
                     }
                 } else {
-                    Alerter.create(requireActivity())
-                        .setTitle(resources.getString(R.string.noInternet))
-                        .setText(resources.getString(R.string.noInternetDescription))
-                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
-                        .setIcon(R.drawable.wifi_off)
-                        .setDuration(2000L)
-                        .show()
+                    Util.showNoInternet(requireActivity())
                     return@setOnClickListener
                 }
             }
@@ -338,13 +326,7 @@ class AddEditFragment : Fragment() {
                         }
                     }
                 } else {
-                    Alerter.create(requireActivity())
-                        .setTitle(resources.getString(R.string.noInternet))
-                        .setText(resources.getString(R.string.noInternetDescription))
-                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
-                        .setIcon(R.drawable.wifi_off)
-                        .setDuration(2000L)
-                        .show()
+                    Util.showNoInternet(requireActivity())
                     return@setOnClickListener
                 }
             }

@@ -25,8 +25,8 @@ import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
 import com.binay.shaw.justap.helper.Encryption
 import com.binay.shaw.justap.helper.Util
-import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
-import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
+import com.binay.shaw.justap.helper.Util.createBottomSheet
+import com.binay.shaw.justap.helper.Util.setBottomSheet
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
@@ -230,13 +230,7 @@ class ScannerFragment : Fragment() {
                 cameraProvider?.unbindAll()
                 dataFound = true
                 if (!Util.checkForInternet(requireContext())) {
-                    Alerter.create(requireActivity())
-                        .setTitle(resources.getString(R.string.noInternet))
-                        .setText(resources.getString(R.string.noInternetDescription))
-                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
-                        .setIcon(R.drawable.wifi_off)
-                        .setDuration(2000L)
-                        .show()
+                    Util.showNoInternet(requireActivity())
                     handleBackButtonPress()
                 } else {
 

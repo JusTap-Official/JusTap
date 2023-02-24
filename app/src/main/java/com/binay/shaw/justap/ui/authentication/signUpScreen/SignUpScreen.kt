@@ -46,13 +46,7 @@ class SignUpScreen : AppCompatActivity() {
 
         buttonLayout.setOnClickListener {
             if (!Util.checkForInternet(this)) {
-                Alerter.create(this@SignUpScreen)
-                    .setTitle(resources.getString(R.string.noInternet))
-                    .setText(resources.getString(R.string.noInternetDescription))
-                    .setBackgroundColorInt(ContextCompat.getColor(baseContext, R.color.negative_red))
-                    .setIcon(R.drawable.wifi_off)
-                    .setDuration(2000L)
-                    .show()
+                Util.showNoInternet(this)
                 return@setOnClickListener
             }
             buttonText.visibility = View.GONE

@@ -18,8 +18,8 @@ import com.binay.shaw.justap.databinding.FragmentEditProfileBinding
 import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.helper.Util
-import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
-import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
+import com.binay.shaw.justap.helper.Util.createBottomSheet
+import com.binay.shaw.justap.helper.Util.setBottomSheet
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.mainViewModels.LocalUserViewModel
 import com.bumptech.glide.Glide
@@ -43,7 +43,7 @@ class EditProfileFragment : Fragment() {
     private lateinit var localUser: LocalUser
     private lateinit var storageRef: StorageReference
     private lateinit var firebaseDatabase: FirebaseDatabase
-    private lateinit var editProfileViewmodel: EditProfileViewModel
+    private lateinit var editProfileViewModel: EditProfileViewModel
     private var editImageMode = 0   // 0 - Default, 1 - Profile picture, 2 - Banner picture
 
 
@@ -69,13 +69,7 @@ class EditProfileFragment : Fragment() {
             val inputBio = binding.newBioET.text.toString().trim()
 
             if (!Util.checkForInternet(requireContext())) {
-                Alerter.create(requireActivity())
-                    .setTitle(resources.getString(R.string.noInternet))
-                    .setText(resources.getString(R.string.noInternetDescription))
-                    .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
-                    .setIcon(R.drawable.wifi_off)
-                    .setDuration(2000L)
-                    .show()
+                Util.showNoInternet(requireActivity())
                 return@setOnClickListener
             }
             editChanges(inputName, inputBio, profilePictureURI, profileBannerURI)
@@ -211,13 +205,13 @@ class EditProfileFragment : Fragment() {
                 }
 
                 lifecycleScope.launch {
-                    editProfileViewmodel.updateUser(
+                    editProfileViewModel.updateUser(
                         firebaseDatabase, storageRef, originalID,
                         hashMap, originalPFP!!, originalBanner!!, profilePictureURI,
                         profileBannerURI, localUserViewModel)
                 }
 
-                editProfileViewmodel.status.observe(viewLifecycleOwner) {
+                editProfileViewModel.status.observe(viewLifecycleOwner) {
                     if (it == 3) {
                         Glide.get(requireContext()).clearMemory()
                         binding.progressAnimation.progressParent.visibility = View.GONE
@@ -303,7 +297,7 @@ class EditProfileFragment : Fragment() {
         }
         storageRef = Firebase.storage.reference
         firebaseDatabase = FirebaseDatabase.getInstance()
-        editProfileViewmodel =
+        editProfileViewModel =
             ViewModelProvider(this@EditProfileFragment)[EditProfileViewModel::class.java]
     }
 

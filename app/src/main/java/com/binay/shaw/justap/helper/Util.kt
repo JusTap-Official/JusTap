@@ -18,12 +18,16 @@ import android.os.VibratorManager
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.util.Patterns
 import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import com.binay.shaw.justap.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -36,280 +40,317 @@ import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
+import com.tapadoo.alerter.Alerter
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 
 
-class Util {
-    companion object {
+object Util {
 
-        const val resumeURL: String =
-            "https://binayshaw7777.github.io/BinayShaw.github.io/Binay%20Shaw%20CSE%2024.pdf"
+    const val resumeURL: String =
+        "https://binayshaw7777.github.io/BinayShaw.github.io/Binay%20Shaw%20CSE%2024.pdf"
 
-        var userID: String = "0"
+    var userID: String = "0"
 
-        var unusedAccounts = mutableListOf<String>()
+    var unusedAccounts = mutableListOf<String>()
 
-        fun log(message: String) {
-            Log.d("", message)
+    fun log(message: String) {
+        Log.d("", message)
+    }
+
+    fun getBaseStringForFiltering(originalString: String): String {
+        val stringBuilder = StringBuilder()
+
+        for (char in originalString.toCharArray()) {
+            if (char.isLetter())
+                stringBuilder.append(char)
         }
 
-        fun getBaseStringForFiltering(originalString: String) : String {
-            val stringBuilder = StringBuilder()
+        return stringBuilder.toString()
+    }
 
-            for (char in originalString.toCharArray()) {
-                if (char.isLetter())
-                    stringBuilder.append(char)
+    fun getFirstName(fullName: String): String {
+        if (fullName.isNotEmpty())
+            return fullName.split(" ")[0]
+        return ""
+    }
+
+    fun isUserLoggedIn(): Boolean {
+        return if (FirebaseAuth.getInstance().currentUser == null) {
+            log("You are not logged in")
+            false
+        } else {
+            log("You are logged in!")
+            true
+        }
+    }
+
+    @SuppressLint("ServiceCast")
+    fun checkForInternet(context: Context): Boolean {
+
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            val network = connectivityManager.activeNetwork ?: return false
+
+            val activeNetwork =
+                connectivityManager.getNetworkCapabilities(network) ?: return false
+
+            return when {
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                else -> false
             }
+        } else {
+            @Suppress("DEPRECATION") val networkInfo =
+                connectivityManager.activeNetworkInfo ?: return false
+            @Suppress("DEPRECATION")
+            return networkInfo.isConnected
+        }
+    }
 
-            return stringBuilder.toString()
+
+    @Throws(WriterException::class)
+    fun String.encodeAsQrCodeBitmap(
+        dimension: Int,
+        overlayBitmap: Bitmap? = null,
+        color1: Int,
+        color2: Int
+    ): Bitmap? {
+
+        val result: BitMatrix
+        try {
+            result = MultiFormatWriter().encode(
+                this,
+                BarcodeFormat.QR_CODE,
+                dimension,
+                dimension,
+                hashMapOf(EncodeHintType.ERROR_CORRECTION to ErrorCorrectionLevel.H)
+            )
+        } catch (e: IllegalArgumentException) {
+            // Unsupported format
+            return null
         }
 
-        fun getFirstName(fullName: String): String {
-            if (fullName.isNotEmpty())
-                return fullName.split(" ")[0]
-            return ""
-        }
-
-        fun isUserLoggedIn(): Boolean {
-            return if (FirebaseAuth.getInstance().currentUser == null) {
-                log("You are not logged in")
-                false
-            } else {
-                log("You are logged in!")
-                true
+        val w = result.width
+        val h = result.height
+        val pixels = IntArray(w * h)
+        for (y in 0 until h) {
+            val offset = y * w
+            for (x in 0 until w) {
+                pixels[offset + x] = if (result.get(x, y)) color1 else color2
             }
         }
+        val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        bitmap.setPixels(pixels, 0, dimension, 0, 0, w, h)
 
-        @SuppressLint("ServiceCast")
-        fun checkForInternet(context: Context): Boolean {
+        return if (overlayBitmap != null) {
+            bitmap.addOverlayToCenter(overlayBitmap)
+        } else {
+            bitmap
+        }
+    }
 
-            val connectivityManager =
-                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    private fun Bitmap.addOverlayToCenter(overlayBitmap: Bitmap): Bitmap {
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        val bitmap2Width = overlayBitmap.width
+        val bitmap2Height = overlayBitmap.height
+        val marginLeft = (this.width * 0.5 - bitmap2Width * 0.5).toFloat()
+        val marginTop = (this.height * 0.5 - bitmap2Height * 0.5).toFloat()
+        val canvas = Canvas(this)
+        canvas.drawBitmap(this, Matrix(), null)
+        canvas.drawBitmap(overlayBitmap, marginLeft, marginTop, null)
+        return this
+    }
 
-                val network = connectivityManager.activeNetwork ?: return false
+    fun Int.dpToPx(): Int {
+        return (this * Resources.getSystem().displayMetrics.density).toInt()
+    }
 
-                val activeNetwork =
-                    connectivityManager.getNetworkCapabilities(network) ?: return false
 
-                return when {
-                    activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-                    activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-                    else -> false
+    fun saveMediaToStorage(bitmap: Bitmap, context: Context): Boolean {
+        var success = false
+        val filename = "${System.currentTimeMillis()}.jpg"
+        var fos: OutputStream? = null
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            context.contentResolver?.also { resolver ->
+                val contentValues = ContentValues().apply {
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+                    put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
                 }
-            } else {
-                @Suppress("DEPRECATION") val networkInfo =
-                    connectivityManager.activeNetworkInfo ?: return false
-                @Suppress("DEPRECATION")
-                return networkInfo.isConnected
+                val imageUri: Uri? =
+                    resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+                fos = imageUri?.let { resolver.openOutputStream(it) }
             }
+        } else {
+            val imagesDir =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+            val image = File(imagesDir, filename)
+            fos = FileOutputStream(image)
         }
+        fos?.use {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+            log("Saved to Photos")
+            success = true
+        }
+        return success
+    }
+
+    fun loadImagesWithGlide(imageView: ImageView, url: String) {
+        Glide.with(imageView)
+            .load(url)
+            .centerCrop()
+            .error(R.drawable.default_user)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(imageView)
+    }
+
+    /** Status values
+     * 0 - Default
+     * 1 - name is empty
+     * 2 - email is empty
+     * 3 - email is not valid
+     * 4 - password is empty
+     * 5 - password is less than 8 characters
+     * 6 - password must contains Uppercase, lowercase and symbols
+     * 7 - success
+     * */
+    fun validateUserAuthInput(name: String?, email: String, password: String): Int {
+
+        if (name != null)
+            if (name.isEmpty())
+                return 1
+
+        if (email.isEmpty())
+            return 2
+        else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())
+            return 3
+        else if (password.isEmpty())
+            return 4
+        else if (password.length < 8)
+            return 5
+        else if (!isValidPassword(password))
+            return 6
+        return 7
+    }
+
+    private fun isValidPassword(password: String): Boolean {
+        if (password.length < 8) return false
+        if (password.firstOrNull { it.isDigit() } == null) return false
+        if (password.filter { it.isLetter() }
+                .firstOrNull { it.isUpperCase() } == null) return false
+        if (password.filter { it.isLetter() }
+                .firstOrNull { it.isLowerCase() } == null) return false
+        if (password.firstOrNull { !it.isLetterOrDigit() } == null) return false
+
+        return true
+    }
+
+    fun Context.createBottomSheet(): BottomSheetDialog {
+        return BottomSheetDialog(this, R.style.BottomSheetDialogTheme)
+    }
+
+    fun Activity.createBottomSheet(): BottomSheetDialog {
+        return BottomSheetDialog(this, R.style.BottomSheetDialogTheme)
+    }
+
+    fun View.setBottomSheet(bottomSheet: BottomSheetDialog) {
+        bottomSheet.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        bottomSheet.setContentView(this)
+        bottomSheet.create()
+        bottomSheet.show()
+    }
 
 
-        @Throws(WriterException::class)
-        fun String.encodeAsQrCodeBitmap(
-            dimension: Int,
-            overlayBitmap: Bitmap? = null,
-            color1: Int,
-            color2: Int
-        ): Bitmap? {
+    fun getImageDrawableFromAccountName(accountName: String): Int {
 
-            val result: BitMatrix
-            try {
-                result = MultiFormatWriter().encode(
-                    this,
-                    BarcodeFormat.QR_CODE,
-                    dimension,
-                    dimension,
-                    hashMapOf(EncodeHintType.ERROR_CORRECTION to ErrorCorrectionLevel.H)
+        val map = HashMap<String, Int>()
+        map["Phone"] = R.drawable.phone
+        map["Email"] = R.drawable.email
+        map["Instagram"] = R.drawable.instagram
+        map["LinkedIn"] = R.drawable.linkedin
+        map["Facebook"] = R.drawable.facebook
+        map["Twitter"] = R.drawable.twitter
+        map["YouTube"] = R.drawable.youtube
+        map["Snapchat"] = R.drawable.snapchat
+        map["Twitch"] = R.drawable.twitch
+        map["Website"] = R.drawable.website
+        map["Discord"] = R.drawable.discord
+        map["LinkTree"] = R.drawable.linktree
+        map["Custom Link"] = R.drawable.custom_link
+        map["Telegram"] = R.drawable.telegram
+        map["Spotify"] = R.drawable.spotify
+        map["WhatsApp"] = R.drawable.whatsapp
+
+        return map[accountName]!!
+
+    }
+
+    fun colorIsNotTheSame(firstColor: Int, secondColor: Int): Boolean {
+        return firstColor != secondColor
+    }
+
+    fun vibrateDevice(duration: Long, context: Context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val vibratorManager =
+                context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+            vibratorManager.defaultVibrator.vibrate(duration)
+        } else {
+            @Suppress("DEPRECATION")
+            val vibratorManager = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            vibratorManager.vibrate(500L)
+        }
+    }
+
+    fun showNoInternet(activity: Activity) {
+        Alerter.create(activity)
+            .setTitle(activity.resources.getString(R.string.noInternet))
+            .setText(activity.resources.getString(R.string.noInternetDescription))
+            .setBackgroundColorInt(
+                ContextCompat.getColor(
+                    activity.baseContext,
+                    R.color.negative_red
                 )
-            } catch (e: IllegalArgumentException) {
-                // Unsupported format
-                return null
-            }
+            )
+            .setIcon(R.drawable.wifi_off)
+            .setDuration(2000L)
+            .show()
+    }
 
-            val w = result.width
-            val h = result.height
-            val pixels = IntArray(w * h)
-            for (y in 0 until h) {
-                val offset = y * w
-                for (x in 0 until w) {
-                    pixels[offset + x] = if (result.get(x, y)) color1 else color2
-                }
-            }
-            val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-            bitmap.setPixels(pixels, 0, dimension, 0, 0, w, h)
+    @SuppressLint("ClickableViewAccessibility")
+    fun EditText.handlePasswordVisibility(context: Context) {
+        // Hide and Show Password
+        var passwordVisible = false
 
-            return if (overlayBitmap != null) {
-                bitmap.addOverlayToCenter(overlayBitmap)
-            } else {
-                bitmap
-            }
-        }
+        setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.visibility_on, 0)
+        compoundDrawablePadding = 16 // add padding to increase touch area
 
-        private fun Bitmap.addOverlayToCenter(overlayBitmap: Bitmap): Bitmap {
-
-            val bitmap2Width = overlayBitmap.width
-            val bitmap2Height = overlayBitmap.height
-            val marginLeft = (this.width * 0.5 - bitmap2Width * 0.5).toFloat()
-            val marginTop = (this.height * 0.5 - bitmap2Height * 0.5).toFloat()
-            val canvas = Canvas(this)
-            canvas.drawBitmap(this, Matrix(), null)
-            canvas.drawBitmap(overlayBitmap, marginLeft, marginTop, null)
-            return this
-        }
-
-        fun Int.dpToPx(): Int {
-            return (this * Resources.getSystem().displayMetrics.density).toInt()
-        }
-
-
-        fun saveMediaToStorage(bitmap: Bitmap, context: Context): Boolean {
-            var success = false
-            val filename = "${System.currentTimeMillis()}.jpg"
-            var fos: OutputStream? = null
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                context.contentResolver?.also { resolver ->
-                    val contentValues = ContentValues().apply {
-                        put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
-                        put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
-                        put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+        setOnTouchListener { _, event ->
+            if (event.actionMasked == MotionEvent.ACTION_UP) {
+                val drawableEnd = compoundDrawablesRelative[2]
+                if (drawableEnd != null && event.x >= width - drawableEnd.bounds.width()) {
+                    val cursorPosition = selectionStart // save current cursor position
+                    passwordVisible = !passwordVisible
+                    if (passwordVisible) {
+                        transformationMethod = null
+                        setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.visibility_off, 0)
+                    } else {
+                        transformationMethod = PasswordTransformationMethod()
+                        setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.visibility_on, 0)
                     }
-                    val imageUri: Uri? =
-                        resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-                    fos = imageUri?.let { resolver.openOutputStream(it) }
+                    // Hide the keyboard
+                    setSelection(cursorPosition)
+
+                    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(windowToken, 0)
+                    return@setOnTouchListener true
                 }
-            } else {
-                val imagesDir =
-                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                val image = File(imagesDir, filename)
-                fos = FileOutputStream(image)
             }
-            fos?.use {
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
-                log("Saved to Photos")
-                success = true
-            }
-            return success
+            false
         }
-
-        fun loadImagesWithGlide(imageView: ImageView, url: String) {
-            Glide.with(imageView)
-                .load(url)
-                .centerCrop()
-                .error(R.drawable.default_user)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(imageView)
-        }
-
-        fun ImageView.loadImagesWithGlideExt(url: String) {
-            Glide.with(this)
-                .load(url)
-                .centerCrop()
-                .error(R.drawable.default_user)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(this)
-        }
-
-        /** Status values
-         * 0 - Default
-         * 1 - name is empty
-         * 2 - email is empty
-         * 3 - email is not valid
-         * 4 - password is empty
-         * 5 - password is less than 8 characters
-         * 6 - password must contains Uppercase, lowercase and symbols
-         * 7 - success
-         * */
-        fun validateUserAuthInput(name: String?, email: String, password: String): Int {
-
-            if (name != null)
-                if (name.isEmpty())
-                    return 1
-
-            if (email.isEmpty())
-                return 2
-            else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())
-                return 3
-            else if (password.isEmpty())
-                return 4
-            else if (password.length < 8)
-                return 5
-            else if (!isValidPassword(password))
-                return 6
-            return 7
-        }
-
-        private fun isValidPassword(password: String): Boolean {
-            if (password.length < 8) return false
-            if (password.firstOrNull { it.isDigit() } == null) return false
-            if (password.filter { it.isLetter() }
-                    .firstOrNull { it.isUpperCase() } == null) return false
-            if (password.filter { it.isLetter() }
-                    .firstOrNull { it.isLowerCase() } == null) return false
-            if (password.firstOrNull { !it.isLetterOrDigit() } == null) return false
-
-            return true
-        }
-
-        fun Context.createBottomSheet(): BottomSheetDialog {
-            return BottomSheetDialog(this, R.style.BottomSheetDialogTheme)
-        }
-
-        fun Activity.createBottomSheet(): BottomSheetDialog {
-            return BottomSheetDialog(this, R.style.BottomSheetDialogTheme)
-        }
-
-        fun View.setBottomSheet(bottomSheet: BottomSheetDialog) {
-            bottomSheet.behavior.state = BottomSheetBehavior.STATE_EXPANDED
-            bottomSheet.setContentView(this)
-            bottomSheet.create()
-            bottomSheet.show()
-        }
-
-
-        fun getImageDrawableFromAccountName(accountName: String): Int {
-
-            val map = HashMap<String, Int>()
-            map["Phone"] = R.drawable.phone
-            map["Email"] = R.drawable.email
-            map["Instagram"] = R.drawable.instagram
-            map["LinkedIn"] = R.drawable.linkedin
-            map["Facebook"] = R.drawable.facebook
-            map["Twitter"] = R.drawable.twitter
-            map["YouTube"] = R.drawable.youtube
-            map["Snapchat"] = R.drawable.snapchat
-            map["Twitch"] = R.drawable.twitch
-            map["Website"] = R.drawable.website
-            map["Discord"] = R.drawable.discord
-            map["LinkTree"] = R.drawable.linktree
-            map["Custom Link"] = R.drawable.custom_link
-            map["Telegram"] = R.drawable.telegram
-            map["Spotify"] = R.drawable.spotify
-            map["WhatsApp"] = R.drawable.whatsapp
-
-            return map[accountName]!!
-
-        }
-
-        fun colorIsNotTheSame(firstColor: Int, secondColor: Int): Boolean {
-            return firstColor != secondColor
-        }
-
-        fun vibrateDevice(duration: Long, context: Context) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                val vibratorManager =
-                    context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
-                vibratorManager.defaultVibrator.vibrate(duration)
-            } else {
-                @Suppress("DEPRECATION")
-                val vibratorManager = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-                vibratorManager.vibrate(500L)
-            }
-        }
-
     }
 }

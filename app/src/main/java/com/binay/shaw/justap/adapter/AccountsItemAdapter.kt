@@ -47,13 +47,7 @@ class AccountsItemAdapter(
                 }
                 setOnClickListener {
                     if (!Util.checkForInternet(context)) {
-                        Alerter.create(activity)
-                            .setTitle(resources.getString(R.string.noInternet))
-                            .setText(resources.getString(R.string.noInternetDescription))
-                            .setBackgroundColorInt(ContextCompat.getColor(context, R.color.negative_red))
-                            .setIcon(R.drawable.wifi_off)
-                            .setDuration(2000L)
-                            .show()
+                        Util.showNoInternet(activity)
                         holder.binding.accountSwitch.isChecked = account.showAccount
                         return@setOnClickListener
                     }
