@@ -90,7 +90,7 @@ class HistoryFragment : Fragment() {
                         setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.clear_text, 0)
                     } else {
                         setCompoundDrawablesWithIntrinsicBounds(R.drawable.search, 0, 0, 0)
-                        filter("")
+                        historyAdapter.setData(accountsList)
                     }
                 }
 

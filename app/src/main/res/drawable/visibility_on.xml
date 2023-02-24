@@ -11,14 +11,14 @@
         android:strokeLineJoin="round"
         android:strokeWidth="2"
         android:fillColor="#00000000"
-        android:strokeColor="#778DA4"
+        android:strokeColor="#8C9399"
         android:strokeLineCap="round"/>
     <path
         android:pathData="M12.5,16.406C14.657,16.406 16.406,14.657 16.406,12.5C16.406,10.343 14.657,8.594 12.5,8.594C10.343,8.594 8.594,10.343 8.594,12.5C8.594,14.657 10.343,16.406 12.5,16.406Z"
         android:strokeLineJoin="round"
         android:strokeWidth="2"
         android:fillColor="#00000000"
-        android:strokeColor="#778DA4"
+        android:strokeColor="#8C9399"
         android:strokeLineCap="round"/>
   </group>
 </vector>
