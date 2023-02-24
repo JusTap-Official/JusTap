@@ -1,4 +1,4 @@
-package com.binay.shaw.justap
+package com.binay.shaw.justap.helper
 
 
 object Constants {

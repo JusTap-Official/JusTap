@@ -3,7 +3,7 @@ package com.binay.shaw.justap.ui.authentication.signInScreen
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.binay.shaw.justap.Constants
+import com.binay.shaw.justap.helper.Constants
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.model.User
@@ -47,7 +47,8 @@ class SignInViewModel : ViewModel() {
                                     firebaseUser.value = createUserObject(it)
 
                                     if (it.hasChild(Constants.accounts)) {
-                                        firebaseAccounts.value = createAccountsList(it.child(Constants.accounts))
+                                        firebaseAccounts.value = createAccountsList(it.child(
+                                            Constants.accounts))
                                     }
 
                                     Util.log(it.value.toString())

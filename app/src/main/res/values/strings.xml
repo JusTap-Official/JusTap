@@ -82,6 +82,7 @@
     <string name="invalid_password">Password must contains uppercase, lowercase, digit and symbol</string>
     <string name="successfullLoggedIn">Successfully Logged In</string>
     <string name="signin">Sign In</string>
+    <string name="enter_name">Enter your name</string>
 
     <string-array name="account_names">
         <item>Phone</item>
