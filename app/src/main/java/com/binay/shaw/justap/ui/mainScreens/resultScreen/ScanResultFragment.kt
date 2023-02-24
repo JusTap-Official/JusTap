@@ -1,4 +1,4 @@
-package com.binay.shaw.justap.ui.mainScreens.qrReceiverFragments
+package com.binay.shaw.justap.ui.mainScreens.resultScreen
 
 import android.app.PendingIntent
 import android.content.Intent
@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.binay.shaw.justap.MainActivity
+import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.ResultItemAdapter
 import com.binay.shaw.justap.databinding.FragmentScanResultBinding
@@ -28,8 +28,7 @@ import com.binay.shaw.justap.helper.NotificationHelper
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.model.User
-import com.binay.shaw.justap.viewModel.LocalHistoryViewModel
-import com.binay.shaw.justap.viewModel.ScanResultViewModel
+import com.binay.shaw.justap.ui.mainScreens.historyScreen.LocalHistoryViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget

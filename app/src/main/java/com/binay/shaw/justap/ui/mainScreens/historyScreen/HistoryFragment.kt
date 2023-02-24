@@ -1,4 +1,4 @@
-package com.binay.shaw.justap.ui.mainScreens
+package com.binay.shaw.justap.ui.mainScreens.historyScreen
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -18,7 +18,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.binay.shaw.justap.MainActivity
+import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.HistoryAdapter
 import com.binay.shaw.justap.databinding.FragmentHistoryBinding
@@ -28,7 +28,6 @@ import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
 import com.binay.shaw.justap.helper.Util.Companion.getBaseStringForFiltering
 import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
 import com.binay.shaw.justap.model.LocalHistory
-import com.binay.shaw.justap.viewModel.LocalHistoryViewModel
 import com.tapadoo.alerter.Alerter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -189,7 +188,10 @@ class HistoryFragment : Fragment() {
             historyAdapter = HistoryAdapter(requireContext()) { historyUser ->
                 //Handle on click
                 if (Util.checkForInternet(requireContext())) {
-                    val action = HistoryFragmentDirections.actionHistoryToResultFragment(historyUser.userID, true)
+                    val action = HistoryFragmentDirections.actionHistoryToResultFragment(
+                        historyUser.userID,
+                        true
+                    )
                     findNavController().navigate(action)
                 } else {
                     Alerter.create(requireActivity())

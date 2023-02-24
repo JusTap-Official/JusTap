@@ -1,4 +1,4 @@
-package com.binay.shaw.justap.ui.mainScreens
+package com.binay.shaw.justap.ui.mainScreens.qrScreens.qrGeneratorScreen
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -17,7 +17,7 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import com.binay.shaw.justap.MainActivity
+import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentQRGeneratorBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
@@ -25,7 +25,6 @@ import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
 import com.binay.shaw.justap.helper.Util.Companion.dpToPx
 import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
-import com.binay.shaw.justap.viewModel.QRGenerator_ViewModel
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -33,7 +32,7 @@ class QRGeneratorFragment : Fragment() {
 
     private var _binding: FragmentQRGeneratorBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel : QRGenerator_ViewModel
+    private lateinit var viewModel : QRGeneratorViewModel
     private lateinit var displayMetrics: DisplayMetrics
     private var overlay: Bitmap? = null
     private lateinit var sharedPreference: SharedPreferences
@@ -105,7 +104,7 @@ class QRGeneratorFragment : Fragment() {
 
         (activity as MainActivity).supportActionBar?.hide()
         binding.include.toolbarTitle.text = requireContext().resources.getString(R.string.MyQRCode)
-        viewModel = ViewModelProvider(this@QRGeneratorFragment)[QRGenerator_ViewModel::class.java]
+        viewModel = ViewModelProvider(this@QRGeneratorFragment)[QRGeneratorViewModel::class.java]
         displayMetrics = DisplayMetrics()
         activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
         overlay = ContextCompat.getDrawable(requireContext(), R.drawable.logo_black_stroke)

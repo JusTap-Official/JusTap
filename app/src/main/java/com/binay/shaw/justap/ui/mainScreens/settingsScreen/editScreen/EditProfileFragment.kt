@@ -1,4 +1,4 @@
-package com.binay.shaw.justap.ui.mainScreens.appSettingsFragments
+package com.binay.shaw.justap.ui.mainScreens.settingsScreen.editScreen
 
 import android.content.Intent
 import android.net.Uri
@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.binay.shaw.justap.MainActivity
+import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentEditProfileBinding
 import com.binay.shaw.justap.databinding.MyToolbarBinding
@@ -21,8 +21,7 @@ import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
 import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
 import com.binay.shaw.justap.model.LocalUser
-import com.binay.shaw.justap.viewModel.EditProfile_ViewModel
-import com.binay.shaw.justap.viewModel.LocalUserViewModel
+import com.binay.shaw.justap.mainViewModels.LocalUserViewModel
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.FirebaseDatabase
@@ -44,7 +43,7 @@ class EditProfileFragment : Fragment() {
     private lateinit var localUser: LocalUser
     private lateinit var storageRef: StorageReference
     private lateinit var firebaseDatabase: FirebaseDatabase
-    private lateinit var editProfileViewmodel: EditProfile_ViewModel
+    private lateinit var editProfileViewmodel: EditProfileViewModel
     private var editImageMode = 0   // 0 - Default, 1 - Profile picture, 2 - Banner picture
 
 
@@ -305,7 +304,7 @@ class EditProfileFragment : Fragment() {
         storageRef = Firebase.storage.reference
         firebaseDatabase = FirebaseDatabase.getInstance()
         editProfileViewmodel =
-            ViewModelProvider(this@EditProfileFragment)[EditProfile_ViewModel::class.java]
+            ViewModelProvider(this@EditProfileFragment)[EditProfileViewModel::class.java]
     }
 
     override fun onDestroy() {

@@ -1,4 +1,4 @@
-package com.binay.shaw.justap.viewModel
+package com.binay.shaw.justap.ui.mainScreens.resultScreen
 
 import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
@@ -8,6 +8,7 @@ import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.model.LocalHistory
 import com.binay.shaw.justap.model.User
+import com.binay.shaw.justap.ui.mainScreens.historyScreen.LocalHistoryViewModel
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers

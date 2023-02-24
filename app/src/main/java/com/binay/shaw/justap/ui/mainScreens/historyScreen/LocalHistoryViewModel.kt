@@ -1,4 +1,4 @@
-package com.binay.shaw.justap.viewModel
+package com.binay.shaw.justap.ui.mainScreens.historyScreen
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

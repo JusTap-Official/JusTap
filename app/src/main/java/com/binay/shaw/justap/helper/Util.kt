@@ -72,8 +72,8 @@ class Util {
             return ""
         }
 
-        fun isUserLoggedIn(auth: FirebaseAuth): Boolean {
-            return if (auth.currentUser == null) {
+        fun isUserLoggedIn(): Boolean {
+            return if (FirebaseAuth.getInstance().currentUser == null) {
                 log("You are not logged in")
                 false
             } else {

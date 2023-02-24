@@ -12,7 +12,7 @@ import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.SocialAccountLayoutBinding
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.Accounts
-import com.binay.shaw.justap.ui.mainScreens.HomeFragmentDirections
+import com.binay.shaw.justap.ui.mainScreens.homeScreen.HomeFragmentDirections
 import com.tapadoo.alerter.Alerter
 
 

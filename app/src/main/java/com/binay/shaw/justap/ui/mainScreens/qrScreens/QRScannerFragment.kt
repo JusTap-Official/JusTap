@@ -1,4 +1,4 @@
-package com.binay.shaw.justap.ui.mainScreens.qrReceiverFragments
+package com.binay.shaw.justap.ui.mainScreens.resultScreen
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -18,7 +18,7 @@ import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
-import com.binay.shaw.justap.MainActivity
+import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentQRScannerBinding
 import com.binay.shaw.justap.databinding.MyToolbarBinding

@@ -1,4 +1,4 @@
-package com.binay.shaw.justap.ui.mainScreens.appSettingsFragments
+package com.binay.shaw.justap.ui.mainScreens.settingsScreen.profileScreen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import com.binay.shaw.justap.MainActivity
+import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentProfileBinding
 import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.LocalUser
-import com.binay.shaw.justap.viewModel.LocalUserViewModel
+import com.binay.shaw.justap.mainViewModels.LocalUserViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 

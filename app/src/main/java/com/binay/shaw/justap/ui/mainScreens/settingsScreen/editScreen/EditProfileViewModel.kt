@@ -1,4 +1,4 @@
-package com.binay.shaw.justap.viewModel
+package com.binay.shaw.justap.ui.mainScreens.settingsScreen.editScreen
 
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
@@ -6,13 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.LocalUser
+import com.binay.shaw.justap.mainViewModels.LocalUserViewModel
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 
 
-class EditProfile_ViewModel : ViewModel() {
+class EditProfileViewModel : ViewModel() {
 
     var status = MutableLiveData<Int>()
 

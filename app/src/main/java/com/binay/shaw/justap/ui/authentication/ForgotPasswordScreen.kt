@@ -8,10 +8,12 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.ActivityForgotPasswordScreenBinding
 import com.binay.shaw.justap.databinding.MyToolbarBinding
+import com.binay.shaw.justap.ui.authentication.signInScreen.SignInScreen
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
@@ -32,6 +34,7 @@ class ForgotPasswordScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityForgotPasswordScreenBinding.inflate(layoutInflater)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setContentView(binding.root)
 
         initialization()

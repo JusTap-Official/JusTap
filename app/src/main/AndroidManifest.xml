@@ -11,9 +11,9 @@
 
 
     <application
-        android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
         android:icon="@drawable/logo_black_square"
         android:label="@string/app_name"
         android:roundIcon="@drawable/logo_black_square"
@@ -45,7 +45,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.authentication.SignInScreen"
+            android:name=".ui.authentication.signInScreen.SignInScreen"
             android:exported="true"
             android:screenOrientation="portrait">
 
@@ -54,7 +54,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.authentication.SignUpScreen"
+            android:name=".ui.authentication.signUpScreen.SignUpScreen"
             android:exported="true"
             android:screenOrientation="portrait">
             <meta-data
@@ -62,7 +62,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.mainScreens.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <meta-data

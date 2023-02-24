@@ -1,4 +1,4 @@
-package com.binay.shaw.justap.ui.mainScreens
+package com.binay.shaw.justap.ui.mainScreens.settingsScreen
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -24,7 +24,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
-import com.binay.shaw.justap.MainActivity
+import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.SettingsItemAdapter
 import com.binay.shaw.justap.data.LocalUserDatabase
@@ -37,10 +37,10 @@ import com.binay.shaw.justap.helper.Util.Companion.dpToPx
 import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.model.SettingsItem
-import com.binay.shaw.justap.ui.authentication.SignInScreen
-import com.binay.shaw.justap.viewModel.AccountsViewModel
-import com.binay.shaw.justap.viewModel.LocalUserViewModel
-import com.binay.shaw.justap.viewModel.QRGenerator_ViewModel
+import com.binay.shaw.justap.ui.authentication.signInScreen.SignInScreen
+import com.binay.shaw.justap.mainViewModels.AccountsViewModel
+import com.binay.shaw.justap.mainViewModels.LocalUserViewModel
+import com.binay.shaw.justap.ui.mainScreens.qrScreens.qrGeneratorScreen.QRGeneratorViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.skydoves.colorpickerview.ColorPickerDialog
 import com.skydoves.colorpickerview.flag.BubbleFlag
@@ -67,7 +67,7 @@ class SettingsFragment : Fragment() {
     private lateinit var logoutIV: ImageView
     private lateinit var feedback: ImageView
     private lateinit var localUser: LocalUser
-    private lateinit var qrGeneratorViewModel: QRGenerator_ViewModel
+    private lateinit var qrGeneratorViewModel: QRGeneratorViewModel
     private lateinit var displayMetrics: DisplayMetrics
     private var overlay: Bitmap? = null
 
@@ -361,7 +361,7 @@ class SettingsFragment : Fragment() {
         )[AccountsViewModel::class.java]
 
         qrGeneratorViewModel =
-            ViewModelProvider(this@SettingsFragment)[QRGenerator_ViewModel::class.java]
+            ViewModelProvider(this@SettingsFragment)[QRGeneratorViewModel::class.java]
 
         displayMetrics = DisplayMetrics()
         activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)

@@ -1,4 +1,4 @@
-package com.binay.shaw.justap.ui.mainScreens
+package com.binay.shaw.justap.ui.mainScreens.homeScreen
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -23,9 +23,9 @@ import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
 import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
 import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.model.LocalUser
-import com.binay.shaw.justap.viewModel.AccountsViewModel
-import com.binay.shaw.justap.viewModel.AddEditViewModel
-import com.binay.shaw.justap.viewModel.LocalUserViewModel
+import com.binay.shaw.justap.mainViewModels.AccountsViewModel
+import com.binay.shaw.justap.ui.mainScreens.homeScreen.accountFragments.AddEditViewModel
+import com.binay.shaw.justap.mainViewModels.LocalUserViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers

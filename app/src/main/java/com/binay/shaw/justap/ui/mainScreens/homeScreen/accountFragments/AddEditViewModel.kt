@@ -1,10 +1,11 @@
-package com.binay.shaw.justap.viewModel
+package com.binay.shaw.justap.ui.mainScreens.homeScreen.accountFragments
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.Accounts
+import com.binay.shaw.justap.mainViewModels.AccountsViewModel
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await

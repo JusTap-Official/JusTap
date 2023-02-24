@@ -1,4 +1,4 @@
-package com.binay.shaw.justap.ui.mainScreens.accountFragments
+package com.binay.shaw.justap.ui.mainScreens.homeScreen.accountFragments
 
 import android.os.Bundle
 import android.text.Editable
@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.binay.shaw.justap.MainActivity
+import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentAddEditBinding
 import com.binay.shaw.justap.databinding.MyToolbarBinding
@@ -23,8 +23,7 @@ import com.binay.shaw.justap.databinding.ParagraphModalBinding
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.Companion.createBottomSheet
 import com.binay.shaw.justap.helper.Util.Companion.setBottomSheet
-import com.binay.shaw.justap.viewModel.AccountsViewModel
-import com.binay.shaw.justap.viewModel.AddEditViewModel
+import com.binay.shaw.justap.mainViewModels.AccountsViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.FirebaseDatabase
 import com.tapadoo.alerter.Alerter

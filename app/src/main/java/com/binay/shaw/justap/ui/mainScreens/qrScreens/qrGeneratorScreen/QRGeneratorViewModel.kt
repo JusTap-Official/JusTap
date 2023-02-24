@@ -1,4 +1,4 @@
-package com.binay.shaw.justap.viewModel
+package com.binay.shaw.justap.ui.mainScreens.qrScreens.qrGeneratorScreen
 
 import android.graphics.Bitmap
 import android.util.DisplayMetrics
@@ -11,7 +11,7 @@ import com.binay.shaw.justap.helper.Util.Companion.encodeAsQrCodeBitmap
 /**
  * Created by binay on 31,December,2022
  */
-class QRGenerator_ViewModel : ViewModel() {
+class QRGeneratorViewModel : ViewModel() {
     var status = MutableLiveData<Int>()
     private val errorMessage = MutableLiveData<String>()
     var bitmap = MutableLiveData<Bitmap?>()
