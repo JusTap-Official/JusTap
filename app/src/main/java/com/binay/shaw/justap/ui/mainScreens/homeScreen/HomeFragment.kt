@@ -9,7 +9,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,9 +27,9 @@ import com.binay.shaw.justap.ui.mainScreens.homeScreen.accountFragments.AddEditV
 import com.binay.shaw.justap.mainViewModels.LocalUserViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
+
+@SuppressLint("SetTextI18n", "NotifyDataSetChanged")
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
@@ -43,8 +42,8 @@ class HomeFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdapter: AccountsItemAdapter
     private lateinit var toolBar: MyToolbarBinding
+    private lateinit var addEditViewModel: AddEditViewModel
 
-    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,6 +51,23 @@ class HomeFragment : Fragment() {
 
         initialization(container)
 
+        initObservers()
+        initView()
+
+        return binding.root
+    }
+
+    private fun initObservers() {
+        addEditViewModel.updateStatus.observe(viewLifecycleOwner) {
+            if (it == 3) {
+                Toast.makeText(requireContext(), resources.getString(R.string.data_added_successfully), Toast.LENGTH_SHORT).show()
+                addEditViewModel.updateStatus.value = 0
+                recyclerViewAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    private fun initView() {
         binding.fabLayout.setOnClickListener {
             gotoAddAccountFragment()
         }
@@ -63,8 +79,6 @@ class HomeFragment : Fragment() {
         toolBar.rightIcon.setOnClickListener {
             showAccountInfoDialog()
         }
-
-        return binding.root
     }
 
     private fun showAccountInfoDialog() {
@@ -84,7 +98,11 @@ class HomeFragment : Fragment() {
     private fun gotoAddAccountFragment() {
         getUnusedAccountsList()
         if (Util.unusedAccounts.size == 0) {
-            Toast.makeText(requireContext(), "You've used all accounts", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                resources.getString(R.string.youve_used_all_accounts),
+                Toast.LENGTH_SHORT
+            ).show()
             return
         }
         val action = HomeFragmentDirections.actionHomeToAddEditFragment(0)
@@ -110,7 +128,6 @@ class HomeFragment : Fragment() {
         Util.unusedAccounts = unusedAccounts
     }
 
-    @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     private fun initialization(container: ViewGroup?) {
 
         _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
@@ -122,40 +139,30 @@ class HomeFragment : Fragment() {
         }
         fabTitle = binding.fabText
 
-        val addEditViewModel = ViewModelProvider(requireActivity())[AddEditViewModel::class.java]
         recyclerViewAdapter = AccountsItemAdapter(requireActivity()) { newAccount ->
-            // handle item click
             for (account in accountsList) {
                 if (account.accountID == newAccount.accountID) {
                     val currentState = account.showAccount
-                    account.showAccount = !currentState
+                    account.showAccount = currentState.not()
 
-                    Util.log("Current account to be updated = $account\n with a old value of $currentState")
-
-                    lifecycleScope.launch(Dispatchers.Main) {
-                        addEditViewModel.updateEntry(
-                            accountsViewModel,
-                            FirebaseDatabase.getInstance(),
-                            account
-                        )
-                    }
-
-                    addEditViewModel.updateStatus.observe(viewLifecycleOwner) {
-                        if (it == 3) {
-                            Snackbar.make(binding.root, "Data updated successfully", Snackbar.LENGTH_SHORT).show()
-                            addEditViewModel.updateStatus.value = 0
-                            recyclerViewAdapter.notifyDataSetChanged()
-                        }
-                    }
+                    addEditViewModel.updateEntry(
+                        accountsViewModel,
+                        FirebaseDatabase.getInstance(),
+                        account
+                    )
                 }
             }
-
         }
+
         recyclerView = binding.accountsRv
         recyclerView.apply {
             adapter = recyclerViewAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
+
+        addEditViewModel = ViewModelProvider(
+            this
+        )[AddEditViewModel::class.java]
 
         localUserViewModel = ViewModelProvider(
             this,
@@ -213,6 +220,7 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
         recyclerViewAdapter.notifyDataSetChanged()

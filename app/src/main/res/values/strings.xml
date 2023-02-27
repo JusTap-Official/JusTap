@@ -89,6 +89,8 @@
     <string name="select">Select</string>
     <string name="account_url_username">Account Url / Username</string>
     <string name="add_account">Add account</string>
+    <string name="youve_used_all_accounts">You\'ve used all accounts</string>
+    <string name="data_added_successfully">Data updated successfully</string>
 
     <string-array name="account_names">
         <item>Phone</item>

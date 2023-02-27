@@ -3,6 +3,7 @@ package com.binay.shaw.justap.ui.mainScreens.homeScreen.accountFragments
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.binay.shaw.justap.helper.Constants
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.mainViewModels.AccountsViewModel
@@ -66,7 +67,8 @@ class AddEditViewModel : ViewModel() {
     ): Int {
 
         return withContext(Dispatchers.IO) {
-            val ref = firebaseDatabase.getReference("/Users/$userID/accounts/${account.accountID}")
+            val ref =
+                firebaseDatabase.getReference("/${Constants.users}/$userID/${Constants.accounts}/${account.accountID}")
             ref.setValue(account).addOnSuccessListener {
                 Util.log("Successfully updated data in firebase")
             }.addOnFailureListener {
@@ -135,13 +137,14 @@ class AddEditViewModel : ViewModel() {
         account: Accounts
     ): Int {
         return withContext(Dispatchers.IO) {
-            val ref = firebaseDatabase.getReference("/Users/$userID/accounts/${account.accountID}")
+            val ref =
+                firebaseDatabase.getReference("/${Constants.users}/$userID/${Constants.accounts}/${account.accountID}")
             try {
                 val updates: MutableMap<String, Any> = HashMap()
-                updates["accountID"] = account.accountID
-                updates["accountName"] = account.accountName
-                updates["accountData"] = account.accountData
-                updates["showAccount"] = account.showAccount
+                updates[Constants.accountId] = account.accountID
+                updates[Constants.accountName] = account.accountName
+                updates[Constants.accountData] = account.accountData
+                updates[Constants.showAccount] = account.showAccount
 
                 ref.updateChildren(updates)
                 Util.log("Updated from Firebase")
@@ -203,7 +206,7 @@ class AddEditViewModel : ViewModel() {
         account: Accounts
     ): Int {
         return withContext(Dispatchers.IO) {
-            val ref = firebaseDatabase.getReference("/Users/$userID/accounts/")
+            val ref = firebaseDatabase.getReference("/${Constants.users}/$userID/${Constants.accounts}/")
             try {
                 ref.child("${account.accountID}").removeValue()
                 Util.log("Deleted from Firebase")

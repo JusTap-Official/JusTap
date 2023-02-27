@@ -19,25 +19,17 @@ class SplashActivity : Activity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setContentView(R.layout.activity_splash)
 
-        if (Util.isUserLoggedIn())
-            splashToBase()
-        else
-            splashToLogIn()
+        makeIntent(Util.isUserLoggedIn())
     }
 
-    private fun splashToLogIn() {
-        CoroutineScope(Dispatchers.Main).launch {
-        delay(2000)
-            val intent = Intent(this@SplashActivity, SignInScreen::class.java)
-            startActivity(intent)
-            finish()
+    private fun makeIntent(userLoggedIn: Boolean) {
+        val intent = if (userLoggedIn) {
+            Intent(this@SplashActivity, MainActivity::class.java)
+        } else {
+            Intent(this@SplashActivity, SignInScreen::class.java)
         }
-    }
-
-    private fun splashToBase() {
         CoroutineScope(Dispatchers.Main).launch {
             delay(2000)
-            val intent = Intent(this@SplashActivity, MainActivity::class.java)
             startActivity(intent)
             finish()
         }
