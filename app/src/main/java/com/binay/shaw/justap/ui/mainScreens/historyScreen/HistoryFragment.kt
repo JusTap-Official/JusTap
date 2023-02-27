@@ -42,7 +42,7 @@ class HistoryFragment : Fragment() {
     private lateinit var historyAdapter: HistoryAdapter
     private var accountsList = mutableListOf<LocalHistory>()
 
-    @SuppressLint("NotifyDataSetChanged")
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,23 +51,34 @@ class HistoryFragment : Fragment() {
         _binding = FragmentHistoryBinding.inflate(layoutInflater, container, false)
         initialization()
 
-        historyAdapter.notifyDataSetChanged()
+        clickHandlers()
 
+        return binding.root
+    }
+
+    private fun clickHandlers() {
         setFilter()
+        historyIconHandler()
+        infoHandler()
+    }
 
-        binding.include.rightIcon.setOnClickListener {
-            if (historyAdapter.itemCount > 0) {
-                clearHistory()
-            } else {
-                Toast.makeText(requireContext(), "No data to clear", Toast.LENGTH_SHORT).show()
-            }
-        }
-
+    private fun infoHandler() {
         binding.include.leftIcon.setOnClickListener {
             //Show Info Bottom Sheet
         }
+    }
 
-        return binding.root
+    private fun historyIconHandler() {
+        binding.include.rightIcon.setOnClickListener {
+            if (historyAdapter.itemCount > 0)
+                clearHistory()
+            else
+                Toast.makeText(
+                    requireContext(),
+                    resources.getString(R.string.no_data_to_clear),
+                    Toast.LENGTH_SHORT
+                ).show()
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -103,11 +114,7 @@ class HistoryFragment : Fragment() {
                 }
                 return@OnTouchListener false
             })
-
         }
-
-
-
     }
 
     private fun filter(search: String) {
@@ -149,7 +156,6 @@ class HistoryFragment : Fragment() {
             )
             positiveOption.setOnClickListener {
                 bottomSheet.dismiss()
-                Util.log("positive")
                 lifecycleScope.launch(Dispatchers.IO) {
                     localUserHistoryViewModel.clearHistory()
                     withContext(Dispatchers.Main) {
@@ -157,7 +163,12 @@ class HistoryFragment : Fragment() {
                         Alerter.create(requireActivity())
                             .setTitle(resources.getString(R.string.clearHistory))
                             .setText(resources.getString(R.string.clearHistoryDescription))
-                            .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.positive_green))
+                            .setBackgroundColorInt(
+                                ContextCompat.getColor(
+                                    requireContext(),
+                                    R.color.positive_green
+                                )
+                            )
                             .setIcon(R.drawable.delete)
                             .setDuration(2000L)
                             .show()
@@ -166,7 +177,6 @@ class HistoryFragment : Fragment() {
             }
             negativeOption.setOnClickListener {
                 bottomSheet.dismiss()
-                Util.log("negative")
             }
         }
         dialog.root.setBottomSheet(bottomSheet)
@@ -214,7 +224,6 @@ class HistoryFragment : Fragment() {
             accountsList.clear()
             accountsList.addAll(it)
             historyAdapter.setData(it)
-            historyAdapter.notifyDataSetChanged()
         }
     }
 

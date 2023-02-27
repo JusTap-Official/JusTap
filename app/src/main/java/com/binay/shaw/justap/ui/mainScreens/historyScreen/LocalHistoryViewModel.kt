@@ -10,9 +10,7 @@ import com.binay.shaw.justap.repository.LocalHistoryRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-/**
- * Created by binay on 10,February,2023
- */
+
 class LocalHistoryViewModel(
     application: Application
 ) : AndroidViewModel(application) {

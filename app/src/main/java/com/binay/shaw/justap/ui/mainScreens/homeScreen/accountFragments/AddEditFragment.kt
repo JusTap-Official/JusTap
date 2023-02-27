@@ -24,10 +24,10 @@ import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.createBottomSheet
 import com.binay.shaw.justap.helper.Util.setBottomSheet
 import com.binay.shaw.justap.mainViewModels.AccountsViewModel
+import com.binay.shaw.justap.model.Accounts
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.FirebaseDatabase
-import com.tapadoo.alerter.Alerter
-import kotlinx.coroutines.launch
+
 
 class AddEditFragment : Fragment() {
 
@@ -46,32 +46,74 @@ class AddEditFragment : Fragment() {
     ): View {
 
         _binding = FragmentAddEditBinding.inflate(layoutInflater, container, false)
+
         initialization()
+        initObservers()
 
-        binding.cancelChanges.setOnClickListener {
-            handleBackButtonPress()
-        }
+        clickHandlers()
 
-        binding.info.setOnClickListener {
-            val dialog = ParagraphModalBinding.inflate(layoutInflater)
-            val bottomSheet = requireActivity().createBottomSheet()
-            dialog.apply {
-                paragraphHeading.text = resources.getString(R.string.EnterURLorUsername)
-                paragraphContent.text =
-                    resources.getString(R.string.AddEditFragmentBottomModalDescription)
+        return binding.root
+    }
+
+    private fun initObservers() {
+        viewModel.run {
+
+            updateStatus.observe(viewLifecycleOwner) { status ->
+                if (status == 3) {
+                    Util.log("Status value = $status")
+                    updateStatus.postValue(0)
+                    Snackbar.make(
+                        binding.root,
+                        "Data updated successfully",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                    binding.progressAnimation.progressParent.visibility = View.GONE
+                    findNavController().navigateUp()
+                }
             }
-            dialog.root.setBottomSheet(bottomSheet)
+
+            deleteStatus.observe(viewLifecycleOwner) { status ->
+                if (status == 3) {
+                    Util.log("Status value = $status")
+                    deleteStatus.postValue(0)
+                    Snackbar.make(
+                        binding.root,
+                        "Successfully Deleted",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                    binding.progressAnimation.progressParent.visibility = View.GONE
+                    findNavController().navigateUp()
+                }
+            }
+
+            saveStatus.observe(viewLifecycleOwner) {
+                if (it == 3) {
+                    saveStatus.value = 0
+                    //Success
+                    Snackbar.make(
+                        binding.root,
+                        "Data saved successfully",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                    binding.progressAnimation.progressParent.visibility =
+                        View.GONE
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                }
+            }
         }
 
-        toolBar.rightIcon.setOnClickListener {
-            deleteAccount()
-        }
+    }
 
-        binding.accountName.afterTextChanged {
-            selectedAccount = it
-            chooseAccount(it)
-        }
+    private fun clickHandlers() {
 
+        onCancelChangesHandler()
+        onInfoHandler()
+        onDeleteAccountHandler()
+        onAccountNameEntered()
+        onConfirmHandler()
+    }
+
+    private fun onConfirmHandler() {
         binding.confirmChanges.setOnClickListener {
             if (binding.confirmChanges.text.equals("Add account")) {
                 val accountData = binding.accountData.text.toString()
@@ -93,8 +135,41 @@ class AddEditFragment : Fragment() {
                 }
             }
         }
+    }
 
-        return binding.root
+    private fun onAccountNameEntered() {
+        binding.apply {
+            accountName.afterTextChanged {
+                accountData.setText("")
+                selectedAccount = it
+                chooseAccount(it)
+            }
+        }
+    }
+
+    private fun onDeleteAccountHandler() {
+        toolBar.rightIcon.setOnClickListener {
+            deleteAccount()
+        }
+    }
+
+    private fun onInfoHandler() {
+        binding.info.setOnClickListener {
+            val dialog = ParagraphModalBinding.inflate(layoutInflater)
+            val bottomSheet = requireActivity().createBottomSheet()
+            dialog.apply {
+                paragraphHeading.text = resources.getString(R.string.EnterURLorUsername)
+                paragraphContent.text =
+                    resources.getString(R.string.AddEditFragmentBottomModalDescription)
+            }
+            dialog.root.setBottomSheet(bottomSheet)
+        }
+    }
+
+    private fun onCancelChangesHandler() {
+        binding.cancelChanges.setOnClickListener {
+            handleBackButtonPress()
+        }
     }
 
     private fun handleBackButtonPress() {
@@ -125,12 +200,10 @@ class AddEditFragment : Fragment() {
                 )
                 positiveOption.setOnClickListener {
                     bottomSheet.dismiss()
-                    Util.log("Go back")
                     requireActivity().onBackPressedDispatcher.onBackPressed()
                 }
                 negativeOption.setOnClickListener {
                     bottomSheet.dismiss()
-                    Util.log("Stay")
                 }
             }
             dialog.root.setBottomSheet(bottomSheet)
@@ -165,27 +238,7 @@ class AddEditFragment : Fragment() {
                 bottomSheet.dismiss()
                 if (Util.checkForInternet(requireContext())) {
                     binding.progressAnimation.progressParent.visibility = View.VISIBLE
-
-                    args.accounts?.let {
-                        val array = resources.getStringArray(R.array.account_names)
-                        val index = array.indexOf(it.accountName)
-                        it.accountID = index
-                        it.accountData = newData
-                        lifecycleScope.launch {
-
-                            viewModel.updateEntry(accountsViewModel, firebaseDatabase, it)
-
-                            viewModel.updateStatus.observe(viewLifecycleOwner) { status ->
-                                if (status == 3) {
-                                    Util.log("Status value = $status")
-                                    viewModel.updateStatus.postValue(0)
-                                    Snackbar.make(binding.root, "Data updated successfully", Snackbar.LENGTH_SHORT).show()
-                                    binding.progressAnimation.progressParent.visibility = View.GONE
-                                    findNavController().navigateUp()
-                                }
-                            }
-                        }
-                    }
+                    makeUpdateAccountRequest(newData)
                 } else {
                     Util.showNoInternet(requireActivity())
                     return@setOnClickListener
@@ -193,11 +246,21 @@ class AddEditFragment : Fragment() {
             }
             negativeOption.setOnClickListener {
                 bottomSheet.dismiss()
-                Util.log("Don't Delete")
             }
             dialog.root.setBottomSheet(bottomSheet)
         }
 
+    }
+
+    private fun makeUpdateAccountRequest(newData: String) {
+        args.accounts?.let {
+            val array = resources.getStringArray(R.array.account_names)
+            val index = array.indexOf(it.accountName)
+            it.accountID = index
+            it.accountData = newData
+
+            viewModel.updateEntry(accountsViewModel, firebaseDatabase, it)
+        }
     }
 
     private fun deleteAccount() {
@@ -226,30 +289,7 @@ class AddEditFragment : Fragment() {
                 bottomSheet.dismiss()
                 if (Util.checkForInternet(requireContext())) {
                     binding.progressAnimation.progressParent.visibility = View.VISIBLE
-
-                    args.accounts?.let {
-                        val array = resources.getStringArray(R.array.account_names)
-                        val index = array.indexOf(it.accountName)
-                        it.accountID = index
-
-                        lifecycleScope.launch {
-                            viewModel.deleteEntry(accountsViewModel, firebaseDatabase, it)
-
-                            viewModel.deleteStatus.observe(viewLifecycleOwner) { status ->
-                                if (status == 3) {
-                                    Util.log("Status value = $status")
-                                    viewModel.deleteStatus.postValue(0)
-                                    Snackbar.make(
-                                        binding.root,
-                                        "Successfully Deleted",
-                                        Snackbar.LENGTH_SHORT
-                                    ).show()
-                                    binding.progressAnimation.progressParent.visibility = View.GONE
-                                    findNavController().navigateUp()
-                                }
-                            }
-                        }
-                    }
+                    makeDeleteAccountRequest()
                 } else {
                     Util.showNoInternet(requireActivity())
                     return@setOnClickListener
@@ -257,9 +297,18 @@ class AddEditFragment : Fragment() {
             }
             negativeOption.setOnClickListener {
                 bottomSheet.dismiss()
-                Util.log("Don't Delete")
             }
             dialog.root.setBottomSheet(bottomSheet)
+        }
+    }
+
+    private fun makeDeleteAccountRequest() {
+        args.accounts?.let {
+            val array = resources.getStringArray(R.array.account_names)
+            val index = array.indexOf(it.accountName)
+            it.accountID = index
+
+            viewModel.deleteEntry(accountsViewModel, firebaseDatabase, it)
         }
     }
 
@@ -292,39 +341,7 @@ class AddEditFragment : Fragment() {
                 bottomSheet.dismiss()
                 if (Util.checkForInternet(requireContext())) {
                     binding.progressAnimation.progressParent.visibility = View.VISIBLE
-
-                    //Saving Data
-                    lifecycleScope.launch {
-                        selectedAccount?.let { it1 ->
-                            getStringIndex(it1)
-                        }?.let { index ->
-
-                            //Save new Data
-                            viewModel.saveData(
-                                accountsViewModel,
-                                firebaseDatabase,
-                                Util.userID,
-                                index,
-                                selectedAccount!!,
-                                accountData
-                            )
-                            viewModel.saveStatus.observe(viewLifecycleOwner) {
-                                if (it == 3) {
-                                    viewModel.saveStatus.value = 0
-                                    //Success
-                                    Snackbar.make(
-                                        binding.root,
-                                        "Data saved successfully",
-                                        Snackbar.LENGTH_SHORT
-                                    ).show()
-                                    binding.progressAnimation.progressParent.visibility =
-                                        View.GONE
-                                    requireActivity().onBackPressedDispatcher.onBackPressed()
-                                }
-                            }
-
-                        }
-                    }
+                    makeSaveRequest(accountData)
                 } else {
                     Util.showNoInternet(requireActivity())
                     return@setOnClickListener
@@ -336,6 +353,25 @@ class AddEditFragment : Fragment() {
             }
             dialog.root.setBottomSheet(bottomSheet)
         }
+    }
+
+    private fun makeSaveRequest(accountData: String) {
+
+        selectedAccount?.let { it1 ->
+            getStringIndex(it1)
+        }?.let { index ->
+
+            val account = Accounts(index, selectedAccount!!, accountData, true)
+
+            //Save new Data
+            viewModel.saveData(
+                accountsViewModel,
+                firebaseDatabase,
+                Util.userID,
+                account
+            )
+        }
+
     }
 
     private fun getStringIndex(string: String): Int {
@@ -433,7 +469,6 @@ class AddEditFragment : Fragment() {
             "Email" -> {
                 binding.accountData.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
             }
-
             "WhatsApp" -> {
                 binding.accountData.inputType = InputType.TYPE_CLASS_PHONE
             }

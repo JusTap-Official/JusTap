@@ -84,6 +84,11 @@
     <string name="signin">Sign In</string>
     <string name="enter_name">Enter your name</string>
     <string name="press_once_again_to_exit">Press once again to exit!</string>
+    <string name="no_data_to_clear">No data to clear</string>
+    <string name="username123">\@username123</string>
+    <string name="select">Select</string>
+    <string name="account_url_username">Account Url / Username</string>
+    <string name="add_account">Add account</string>
 
     <string-array name="account_names">
         <item>Phone</item>

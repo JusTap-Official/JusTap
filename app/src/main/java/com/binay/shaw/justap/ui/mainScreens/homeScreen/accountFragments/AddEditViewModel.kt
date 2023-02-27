@@ -30,16 +30,12 @@ class AddEditViewModel : ViewModel() {
      * 3 - Success in both
      * */
 
-    suspend fun saveData(
+    fun saveData(
         accountsViewModel: AccountsViewModel,
         firebaseDatabase: FirebaseDatabase,
         userID: String,
-        accountID: Int,
-        accountName: String,
-        accountData: String
+        account: Accounts
     ) = viewModelScope.launch {
-
-        val account = Accounts(accountID, accountName, accountData, true)
 
         val createNewDataInFirebaseAndRoomDB = launch {
 
@@ -91,7 +87,7 @@ class AddEditViewModel : ViewModel() {
         }
     }
 
-    suspend fun updateEntry(
+    fun updateEntry(
         accountsViewModel: AccountsViewModel,
         firebaseDatabase: FirebaseDatabase,
         account: Accounts
@@ -157,7 +153,7 @@ class AddEditViewModel : ViewModel() {
     }
 
 
-    suspend fun deleteEntry(
+    fun deleteEntry(
         accountsViewModel: AccountsViewModel,
         firebaseDatabase: FirebaseDatabase,
         account: Accounts

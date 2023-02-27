@@ -33,7 +33,8 @@
             android:layout_height="120dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/logo_black_square"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
         <TextView
             android:id="@+id/accountNameHeader"
@@ -59,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/roboto"
-                android:hint="Select"
+                android:hint="@string/select"
                 android:inputType="none"
                 android:paddingStart="16dp"
                 android:textColor="@color/black"
@@ -72,6 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            tools:visibility="visible"
             android:orientation="vertical">
 
             <LinearLayout
@@ -85,7 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto"
-                    android:text="Account Url / Username"
+                    android:text="@string/account_url_username"
                     android:textColor="@color/text_color"
                     android:textSize="16sp" />
 
@@ -104,7 +106,7 @@
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/edittext_box"
-                android:hint="\@username123"
+                android:hint="@string/username123"
                 android:paddingStart="16dp"
                 tools:ignore="RtlSymmetry" />
 
@@ -129,7 +131,7 @@
                     android:fontFamily="@font/roboto"
                     android:paddingStart="20dp"
                     android:paddingEnd="20dp"
-                    android:text="Cancel"
+                    android:text="@string/cancel"
                     android:textAllCaps="false"
                     android:textColor="@color/text_color" />
 
@@ -142,7 +144,7 @@
                     android:fontFamily="@font/roboto"
                     android:paddingStart="20dp"
                     android:paddingEnd="20dp"
-                    android:text="Add account"
+                    android:text="@string/add_account"
                     android:textAllCaps="false"
                     android:textColor="@color/bg_color" />
 

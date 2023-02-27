@@ -1,5 +1,6 @@
 package com.binay.shaw.justap.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -59,6 +60,7 @@ class HistoryAdapter(
 
     override fun getItemCount() = historyList.size
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setData(history: List<LocalHistory>) {
         historyList = history
         notifyDataSetChanged()
