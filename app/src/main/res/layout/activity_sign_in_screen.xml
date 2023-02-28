@@ -150,6 +150,7 @@
             android:background="@drawable/divider_or" />
 
         <ImageView
+            android:id="@+id/signInWithGoogle"
             android:layout_width="wrap_content"
             android:layout_height="55dp"
             android:layout_marginStart="10dp"

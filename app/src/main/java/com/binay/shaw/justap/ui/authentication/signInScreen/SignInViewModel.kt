@@ -8,8 +8,13 @@ import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.model.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -22,6 +27,7 @@ class SignInViewModel : ViewModel() {
     private val errorMessage = MutableLiveData<String>()
     var firebaseUser = MutableLiveData<User>()
     var firebaseAccounts = MutableLiveData<List<Accounts>>()
+    var googleSignInStatus = MutableLiveData<Boolean>()
 
     init {
         status.value = 0
@@ -47,8 +53,11 @@ class SignInViewModel : ViewModel() {
                                     firebaseUser.value = createUserObject(it)
 
                                     if (it.hasChild(Constants.accounts)) {
-                                        firebaseAccounts.value = createAccountsList(it.child(
-                                            Constants.accounts))
+                                        firebaseAccounts.value = createAccountsList(
+                                            it.child(
+                                                Constants.accounts
+                                            )
+                                        )
                                     }
 
                                     Util.log(it.value.toString())
@@ -99,6 +108,51 @@ class SignInViewModel : ViewModel() {
             val bio = child(Constants.bio).value.toString()
 
             return User(id, name, email, bio, profilePicture, profileBanner)
+        }
+    }
+
+    fun signInWithGoogle(currentUser: FirebaseUser?) = viewModelScope.launch(Dispatchers.IO) {
+        currentUser?.let {
+            val userRef = Firebase.database.reference.child("Users").child(it.uid)
+            userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        // User exists in the database
+                        Util.log("User exists")
+                        //Get the user
+                        val getUser = createUserObject(dataSnapshot)
+                        Util.log("get user: $getUser")
+                        firebaseUser.postValue(getUser)
+                        if (dataSnapshot.hasChild(Constants.accounts)) {
+                            firebaseAccounts.value = createAccountsList(
+                                dataSnapshot.child(
+                                    Constants.accounts
+                                )
+                            )
+                        }
+                    } else {
+                        // User does not exist in the database
+                        Util.log("User does not exist")
+                        val saveUser = User(
+                            it.uid,
+                            it.displayName.toString(),
+                            it.email.toString(),
+                            "",
+                            "",
+                            ""
+                        )
+                        userRef.setValue(saveUser)
+                        firebaseUser.postValue(saveUser)
+                    }
+                    googleSignInStatus.postValue(true)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Util.log("getUser:onCancelled ${error.toException()}")
+                    googleSignInStatus.postValue(false)
+                    errorMessage.postValue(error.message)
+                }
+            })
         }
     }
 }
