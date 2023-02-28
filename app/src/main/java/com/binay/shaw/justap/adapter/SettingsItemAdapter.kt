@@ -1,9 +1,12 @@
 package com.binay.shaw.justap.adapter
 
 import android.content.Context
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.SettingsItemBinding
 import com.binay.shaw.justap.model.SettingsItem
 
@@ -27,7 +30,14 @@ class SettingsItemAdapter(
 
     override fun onBindViewHolder(holder: SettingsViewHolder, position: Int) {
         val newList = settingsItemList[position]
-        holder.binding.settingsItemName.text = newList.itemName
+        holder.binding.settingsItemName.apply {
+            text = newList.itemName
+            if (newList.itemID == 6) {
+                setTextColor(ResourcesCompat.getColor(resources, R.color.negative_red, null))
+                setTypeface(null, Typeface.BOLD)
+            }
+        }
+
         holder.binding.root.setOnClickListener {
             listener(position)
         }

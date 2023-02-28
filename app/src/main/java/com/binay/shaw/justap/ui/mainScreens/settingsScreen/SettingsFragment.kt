@@ -87,6 +87,7 @@ class SettingsFragment : Fragment() {
         settingsItemList.add(SettingsItem(3, R.drawable.scanner_icon, "Customize QR", false))
         settingsItemList.add(SettingsItem(4, R.drawable.info_icon, "About us", false))
         settingsItemList.add(SettingsItem(5, R.drawable.help_icon, "Need help?", false))
+        settingsItemList.add(SettingsItem(6, R.drawable.logout_icon, "Log out", false))
         /**set find Id*/
         recyclerView = binding.settingsRV
         /**set Adapter*/
@@ -107,6 +108,9 @@ class SettingsFragment : Fragment() {
                     )
                     Navigation.findNavController(binding.root).navigate(action)
                 }
+                4 -> {
+                    logout()
+                }
             }
         }
 
@@ -120,9 +124,9 @@ class SettingsFragment : Fragment() {
                 .navigate(R.id.action_settings_to_profileFragment)
         }
 
-        binding.include.rightIcon.setOnClickListener {
-            logout()
-        }
+//        binding.include.rightIcon.setOnClickListener {
+//            logout()
+//        }
 
         feedback.setOnClickListener {
             val openURL = Intent(Intent.ACTION_VIEW)
@@ -387,11 +391,11 @@ class SettingsFragment : Fragment() {
         }
 
         binding.include.apply {
-            rightIcon.apply {
-                logoutIV = this
-                setImageResource(R.drawable.logout_icon)
-                visibility = View.VISIBLE
-            }
+//            rightIcon.apply {
+//                logoutIV = this
+//                setImageResource(R.drawable.logout_icon)
+//                visibility = View.VISIBLE
+//            }
             leftIcon.apply {
                 feedback = this
                 setImageResource(R.drawable.feedback_icon)
