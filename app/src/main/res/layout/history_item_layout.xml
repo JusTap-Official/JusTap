@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="100dp"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginTop="5dp"
-    android:background="@android:color/transparent"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp">
+    android:layout_width="match_parent"
+    android:layout_height="105dp"
+    android:background="@android:color/transparent">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="5dp"
         android:outlineAmbientShadowColor="@color/card_shadow_color"
         android:outlineSpotShadowColor="@color/card_shadow_color"
-        app:cardBackgroundColor="@color/card_color"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="10dp"
+        app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="10dp"
-        app:cardElevation="10dp"
+        app:cardElevation="4dp"
+        app:cardPreventCornerOverlap="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,9 +62,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_bold"
-                        tools:text="Account name"
                         android:textColor="@color/text_color"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        tools:text="Account name" />
 
                     <TextView
                         android:id="@+id/history_userBio"
@@ -70,10 +72,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/roboto"
-                        tools:text="Account Description"
-                        android:visibility="gone"
                         android:textColor="@color/text_color"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        android:visibility="gone"
+                        tools:text="Account Description" />
 
                 </LinearLayout>
 

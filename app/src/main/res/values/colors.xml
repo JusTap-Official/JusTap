@@ -17,7 +17,7 @@
     <color name="bnw">#000000</color>
     <color name="negative_red">#FF3636</color>
     <color name="positive_green">#1CBD2C</color>
-    <color name="card_shadow_color">#6FB4FF</color>
+    <color name="card_shadow_color">#B0D6FF</color>
     <color name="drag_handle_color">#707070</color>
     <color name="secondary_color">#E5EEF7</color>
 </resources>
