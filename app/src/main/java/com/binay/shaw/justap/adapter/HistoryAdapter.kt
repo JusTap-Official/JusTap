@@ -43,6 +43,10 @@ class HistoryAdapter(
                 }
             }
         }
+        holder.binding.verifiedBadge.visibility = View.GONE
+        if (currentAccount.isVerified) {
+            holder.binding.verifiedBadge.visibility = View.VISIBLE
+        }
         holder.binding.moreMenu.setOnClickListener {
             onMenuClick(currentAccount)
         }

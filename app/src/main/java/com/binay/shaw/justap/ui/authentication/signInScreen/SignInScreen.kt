@@ -1,6 +1,7 @@
 package com.binay.shaw.justap.ui.authentication.signInScreen
 
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -31,6 +32,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -196,20 +198,27 @@ class SignInScreen : AppCompatActivity() {
         val user = viewModel.firebaseUser.value
         val listAccounts = viewModel.firebaseAccounts.value
         if (user != null) {
+            if (Firebase.auth.currentUser?.isEmailVerified == true) {
+                saveInPrefs()
+            }
             saveUserLocally(user)
             saveAccountsList(listAccounts)
         }
-//        Toast.makeText(
-//            this@SignInScreen,
-//            getString(R.string.successfullLoggedIn),
-//            Toast.LENGTH_SHORT
-//        ).show()
+
         startActivity(
             Intent(
                 this@SignInScreen,
                 MainActivity::class.java
             )
         ).also { finish() }
+    }
+
+    private fun saveInPrefs() {
+        val sharedPref = getSharedPreferences("QRPref", Context.MODE_PRIVATE)
+        sharedPref.edit().apply {
+            putBoolean("isVerified", true)
+            apply()
+        }
     }
 
     private fun saveAccountsList(listAccounts: List<Accounts>?) {

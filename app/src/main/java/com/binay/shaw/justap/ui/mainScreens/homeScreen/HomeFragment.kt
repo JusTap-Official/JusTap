@@ -1,6 +1,8 @@
 package com.binay.shaw.justap.ui.mainScreens.homeScreen
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -43,6 +45,7 @@ class HomeFragment : Fragment() {
     private lateinit var recyclerViewAdapter: AccountsItemAdapter
     private lateinit var toolBar: MyToolbarBinding
     private lateinit var addEditViewModel: AddEditViewModel
+    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -152,6 +155,13 @@ class HomeFragment : Fragment() {
                     )
                 }
             }
+        }
+
+        sharedPref = requireContext().getSharedPreferences("QRPref", Context.MODE_PRIVATE)
+        val isVerified = sharedPref.getBoolean("isVerified", false)
+        Util.log("isVerified $isVerified")
+        if (isVerified) {
+            binding.verifiedBadge.visibility = View.VISIBLE
         }
 
         recyclerView = binding.accountsRv

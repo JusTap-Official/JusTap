@@ -39,6 +39,17 @@
                 app:layout_constraintTop_toTopOf="@+id/linearLayout7"
                 app:srcCompat="@drawable/menu_dots" />
 
+            <ImageView
+                android:id="@+id/verifiedBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:layout_marginStart="5dp"
+                app:layout_constraintBottom_toBottomOf="@+id/linearLayout7"
+                app:layout_constraintStart_toEndOf="@+id/linearLayout7"
+                app:layout_constraintTop_toTopOf="@+id/linearLayout7"
+                app:srcCompat="@drawable/verification_badge" />
+
             <LinearLayout
                 android:id="@+id/linearLayout7"
                 android:layout_width="wrap_content"
@@ -65,7 +76,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="5dp"
                     android:gravity="center_vertical"
                     android:orientation="vertical">
 

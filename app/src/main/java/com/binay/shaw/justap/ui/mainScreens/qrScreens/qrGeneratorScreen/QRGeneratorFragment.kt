@@ -26,6 +26,8 @@ import com.binay.shaw.justap.helper.Util.createBottomSheet
 import com.binay.shaw.justap.helper.Util.dpToPx
 import com.binay.shaw.justap.helper.Util.setBottomSheet
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 class QRGeneratorFragment : Fragment() {
@@ -56,9 +58,12 @@ class QRGeneratorFragment : Fragment() {
             ResourcesCompat.getColor(resources, R.color.bg_color, null)
         )
 
+        val sharedPref = requireContext().getSharedPreferences("QRPref", Context.MODE_PRIVATE)
+
         viewModel.generateQR(displayMetrics, overlay,
             firstSelectedColor,
-            secondSelectedColor)
+            secondSelectedColor,
+        sharedPref.getBoolean("isVerified", false))
 
         viewModel.status.observe(viewLifecycleOwner) {
             binding.qrCodePreview.setImageBitmap(viewModel.bitmap.value)

@@ -18,6 +18,7 @@ data class LocalHistory(
     var userID: String,
     var username: String,
     var userBio: String?,
+    var isVerified: Boolean,
     @TypeConverters(Converters::class)
     var profileImage: Bitmap?
 )

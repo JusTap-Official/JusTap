@@ -1,5 +1,7 @@
 package com.binay.shaw.justap.ui.mainScreens.settingsScreen.profileScreen
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +27,7 @@ class ProfileFragment : Fragment() {
     private lateinit var toolBar: MyToolbarBinding
     private lateinit var localUserViewModel: LocalUserViewModel
     private lateinit var localUser: LocalUser
+    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,6 +77,13 @@ class ProfileFragment : Fragment() {
                 Util.loadImagesWithGlide(binding.profileImage, profileURL)
             if (bannerURL.isNotEmpty())
                 Util.loadImagesWithGlide(binding.profileBannerIV, bannerURL)
+        }
+
+        sharedPref = requireContext().getSharedPreferences("QRPref", Context.MODE_PRIVATE)
+        val isVerified = sharedPref.getBoolean("isVerified", false)
+        Util.log("isVerified $isVerified")
+        if (isVerified) {
+            binding.verifiedBadge.visibility = View.VISIBLE
         }
     }
 

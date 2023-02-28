@@ -5,8 +5,6 @@ package com.binay.shaw.justap.model
  */
 
 data class SettingsItem(
-    val itemID: Int,
     val drawableInt: Int,
     val itemName: String,
-    val isSwitchOn: Boolean,
 )

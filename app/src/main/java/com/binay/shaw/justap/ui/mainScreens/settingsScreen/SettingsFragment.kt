@@ -70,6 +70,8 @@ class SettingsFragment : Fragment() {
     private lateinit var qrGeneratorViewModel: QRGeneratorViewModel
     private lateinit var displayMetrics: DisplayMetrics
     private var overlay: Bitmap? = null
+    private lateinit var sharedPref: SharedPreferences
+    private var isUserVerified: Boolean = false
 
     @SuppressLint("SetTextI18n", "ClickableViewAccessibility")
     override fun onCreateView(
@@ -83,11 +85,16 @@ class SettingsFragment : Fragment() {
         /**set List*/
         settingsItemList = ArrayList()
 
-        settingsItemList.add(SettingsItem(1, R.drawable.edit_icon, "Edit profile", false))
-        settingsItemList.add(SettingsItem(3, R.drawable.scanner_icon, "Customize QR", false))
-        settingsItemList.add(SettingsItem(4, R.drawable.info_icon, "About us", false))
-        settingsItemList.add(SettingsItem(5, R.drawable.help_icon, "Need help?", false))
-        settingsItemList.add(SettingsItem(6, R.drawable.logout_icon, "Log out", false))
+        settingsItemList.apply {
+            add(SettingsItem(R.drawable.edit_icon, "Edit profile"))
+            add(SettingsItem(R.drawable.scanner_icon, "Customize QR"))
+            add(SettingsItem(R.drawable.info_icon, "About us"))
+            add(SettingsItem(R.drawable.help_icon, "Need help?"))
+            if (isUserVerified.not()) {
+                add(SettingsItem(R.drawable.verify_icon, "Get verified"))
+            }
+            add(SettingsItem(R.drawable.logout_icon, "Log out"))
+        }
         /**set find Id*/
         recyclerView = binding.settingsRV
         /**set Adapter*/
@@ -109,6 +116,13 @@ class SettingsFragment : Fragment() {
                     Navigation.findNavController(binding.root).navigate(action)
                 }
                 4 -> {
+                    if (isUserVerified) {
+                        logout()
+                    } else {
+                        offerVerification()
+                    }
+                }
+                5 -> {
                     logout()
                 }
             }
@@ -124,10 +138,6 @@ class SettingsFragment : Fragment() {
                 .navigate(R.id.action_settings_to_profileFragment)
         }
 
-//        binding.include.rightIcon.setOnClickListener {
-//            logout()
-//        }
-
         feedback.setOnClickListener {
             val openURL = Intent(Intent.ACTION_VIEW)
             openURL.data = Uri.parse(requireContext().resources.getString(R.string.mailTo))
@@ -139,19 +149,17 @@ class SettingsFragment : Fragment() {
 
     private fun customizeQR() {
 
-        val sharedPreference = requireContext().getSharedPreferences("QRPref", Context.MODE_PRIVATE)
-
         val dialog = ColorpickerModalBinding.inflate(layoutInflater)
         val bottomSheet = requireContext().createBottomSheet()
         dialog.apply {
 
             var isColorReset = false
 
-            var firstSelectedColor = sharedPreference.getInt(
+            var firstSelectedColor = sharedPref.getInt(
                 "firstColor",
                 ResourcesCompat.getColor(resources, R.color.text_color, null)
             )
-            var secondSelectedColor = sharedPreference.getInt(
+            var secondSelectedColor = sharedPref.getInt(
                 "secondColor",
                 ResourcesCompat.getColor(resources, R.color.bg_color, null)
             )
@@ -208,7 +216,12 @@ class SettingsFragment : Fragment() {
                         .setText(e.toString()
                             .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
                             .substring(36))
-                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
+                        .setBackgroundColorInt(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.negative_red
+                            )
+                        )
                         .setIcon(R.drawable.warning)
                         .setDuration(2500L)
                         .show()
@@ -245,7 +258,12 @@ class SettingsFragment : Fragment() {
                         .setText(e.toString()
                             .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
                             .substring(36))
-                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
+                        .setBackgroundColorInt(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.negative_red
+                            )
+                        )
                         .setIcon(R.drawable.warning)
                         .setDuration(2500L)
                         .show()
@@ -281,12 +299,17 @@ class SettingsFragment : Fragment() {
                             || isColorReset
                         ) {
 
-                            saveColors(sharedPreference, firstSelectedColor, secondSelectedColor)
+                            saveColors(sharedPref, firstSelectedColor, secondSelectedColor)
 
                             Alerter.create(requireActivity())
                                 .setTitle(resources.getString(R.string.changesSaved))
                                 .setText(resources.getString(R.string.changesSavedDescription))
-                                .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.positive_green))
+                                .setBackgroundColorInt(
+                                    ContextCompat.getColor(
+                                        requireContext(),
+                                        R.color.positive_green
+                                    )
+                                )
                                 .setIcon(R.drawable.check)
                                 .setDuration(2500L)
                                 .show()
@@ -294,7 +317,8 @@ class SettingsFragment : Fragment() {
                         } else {
                             Util.log("First Colors are : $firstSelectedColor and $defaultPrimaryColor")
                             Util.log("Second Colors are : $secondSelectedColor and $defaultSecondaryColor")
-                            Toast.makeText(requireContext(), "No changes made", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), "No changes made", Toast.LENGTH_SHORT)
+                                .show()
                         }
 
                     } else {
@@ -302,7 +326,12 @@ class SettingsFragment : Fragment() {
                         Alerter.create(requireActivity())
                             .setTitle(resources.getString(R.string.badContrast))
                             .setText(resources.getString(R.string.badContrastDescription))
-                            .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
+                            .setBackgroundColorInt(
+                                ContextCompat.getColor(
+                                    requireContext(),
+                                    R.color.negative_red
+                                )
+                            )
                             .setIcon(R.drawable.warning)
                             .setDuration(2000L)
                             .show()
@@ -314,7 +343,12 @@ class SettingsFragment : Fragment() {
                         .setText(e.toString()
                             .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
                             .substring(36))
-                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
+                        .setBackgroundColorInt(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.negative_red
+                            )
+                        )
                         .setIcon(R.drawable.warning)
                         .setDuration(2500L)
                         .show()
@@ -328,7 +362,11 @@ class SettingsFragment : Fragment() {
         dialog.root.setBottomSheet(bottomSheet)
     }
 
-    private fun saveColors(sharedPreference: SharedPreferences, firstSelectedColor: Int, secondSelectedColor: Int) {
+    private fun saveColors(
+        sharedPreference: SharedPreferences,
+        firstSelectedColor: Int,
+        secondSelectedColor: Int
+    ) {
         val editor = sharedPreference.edit()
         editor.putInt("firstColor", firstSelectedColor)
         editor.putInt("secondColor", secondSelectedColor)
@@ -340,7 +378,8 @@ class SettingsFragment : Fragment() {
         qrGeneratorViewModel.generateQR(
             displayMetrics, overlay,
             color1,
-            color2
+            color2,
+            isUserVerified
         )
     }
 
@@ -390,18 +429,80 @@ class SettingsFragment : Fragment() {
                 Util.loadImagesWithGlide(binding.profileImage, profileURL)
         }
 
-        binding.include.apply {
-//            rightIcon.apply {
-//                logoutIV = this
-//                setImageResource(R.drawable.logout_icon)
-//                visibility = View.VISIBLE
-//            }
-            leftIcon.apply {
-                feedback = this
-                setImageResource(R.drawable.feedback_icon)
+        sharedPref = requireContext().getSharedPreferences("QRPref", Context.MODE_PRIVATE)
+        isUserVerified = sharedPref.getBoolean("isVerified", false)
+        binding.include.leftIcon.apply {
+            feedback = this
+            setImageResource(R.drawable.feedback_icon)
+            visibility = View.VISIBLE
+        }
+    }
+
+    private fun offerVerification() {
+
+        val dialog = OptionsModalBinding.inflate(layoutInflater)
+        val bottomSheet = requireContext().createBottomSheet()
+        dialog.apply {
+
+            optionsHeading.text = "Verify your account"
+            optionsContent.text =
+                "You'll earn a verified badge from us ♥"
+            positiveOption.text = "Request Verification"
+            positiveOption.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.medium_blue
+                )
+            )
+
+            negativeOption.text = "Cancel"
+            negativeOption.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.text_color
+                )
+            )
+
+            lottieAnimationLayout.apply {
                 visibility = View.VISIBLE
+                setAnimation(R.raw.verification_lottie)
+            }
+
+            positiveOption.setOnClickListener {
+                bottomSheet.dismiss()
+                //Send verification mail
+                requestMailVerification()
+            }
+            negativeOption.setOnClickListener {
+                bottomSheet.dismiss()
+                Util.log("Verification cancelled")
             }
         }
+        dialog.root.setBottomSheet(bottomSheet)
+    }
+
+    private fun requestMailVerification() {
+        val user = FirebaseAuth.getInstance().currentUser
+
+        user?.sendEmailVerification()
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Email sent successfully, show a message to the user
+                    Toast.makeText(requireContext(), "Verification email sent", Toast.LENGTH_SHORT)
+                        .show()
+                    val editor = sharedPref.edit()
+                    editor.putBoolean("isVerified", true)
+                    editor.apply()
+                } else {
+                    // Failed to send email verification, show an error message to the user
+                    Toast.makeText(
+                        requireContext(),
+                        "Failed to send verification email",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
     }
 
     private fun logout() {
@@ -433,6 +534,10 @@ class SettingsFragment : Fragment() {
                 bottomSheet.dismiss()
 
                 lifecycleScope.launch(Dispatchers.Main) {
+                    sharedPref.edit().apply {
+                        clear()
+                        apply()
+                    }
                     val signOutFromFirebase =
                         launch(Dispatchers.IO) { FirebaseAuth.getInstance().signOut() }
                     signOutFromFirebase.join()
