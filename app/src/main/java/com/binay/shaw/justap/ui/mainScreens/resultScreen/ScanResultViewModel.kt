@@ -116,7 +116,7 @@ class ScanResultViewModel : ViewModel() {
             Accounts(
                 9,
                 "Website",
-                "https://binayshaw7777.github.io/BinayShaw.github.io/",
+                "https://bit.ly/binayshaw7777",
                 true
             )
         )
