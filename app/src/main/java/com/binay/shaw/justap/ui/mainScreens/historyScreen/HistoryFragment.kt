@@ -193,18 +193,68 @@ class HistoryFragment : Fragment() {
                 leftIcon.setImageResource(R.drawable.info_icon)
             }
             recyclerView = historyRv
-            historyAdapter = HistoryAdapter(requireContext()) { historyUser ->
-                //Handle on click
-                if (Util.checkForInternet(requireContext())) {
-                    val action = HistoryFragmentDirections.actionHistoryToResultFragment(
-                        historyUser.userID,
-                        true
-                    )
-                    findNavController().navigate(action)
-                } else {
-                    Util.showNoInternet(requireActivity())
-                }
-            }
+            historyAdapter = HistoryAdapter(
+                requireContext(), { historyUser ->
+                    //Handle on click
+                    if (Util.checkForInternet(requireContext())) {
+                        val action = HistoryFragmentDirections.actionHistoryToResultFragment(
+                            historyUser.userID,
+                            true
+                        )
+                        findNavController().navigate(action)
+                    } else {
+                        Util.showNoInternet(requireActivity())
+                    }
+                }, { userToDelete ->
+                    //showDialog
+                    val dialog = OptionsModalBinding.inflate(layoutInflater)
+                    val bottomSheet = requireContext().createBottomSheet()
+                    dialog.apply {
+
+                        optionsHeading.text = "Delete ${userToDelete.username} from History"
+                        optionsContent.text =
+                            "${userToDelete.username}'s data will be removed from History"
+                        positiveOption.text = resources.getString(R.string.Delete)
+                        positiveOption.setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.negative_red
+                            )
+                        )
+                        negativeOption.text = requireContext().resources.getString(R.string.DontDelete)
+                        negativeOption.setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.text_color
+                            )
+                        )
+                        positiveOption.setOnClickListener {
+                            bottomSheet.dismiss()
+                            lifecycleScope.launch(Dispatchers.IO) {
+                                localUserHistoryViewModel.deleteUserHistory(userToDelete)
+                                withContext(Dispatchers.Main) {
+                                    historyAdapter.notifyDataSetChanged()
+                                    Alerter.create(requireActivity())
+                                        .setTitle("Deleted")
+                                        .setText("${userToDelete.username} was remove from History!")
+                                        .setBackgroundColorInt(
+                                            ContextCompat.getColor(
+                                                requireContext(),
+                                                R.color.positive_green
+                                            )
+                                        )
+                                        .setIcon(R.drawable.delete)
+                                        .setDuration(2000L)
+                                        .show()
+                                }
+                            }
+                        }
+                        negativeOption.setOnClickListener {
+                            bottomSheet.dismiss()
+                        }
+                    }
+                    dialog.root.setBottomSheet(bottomSheet)
+                })
 
             recyclerView = binding.historyRv
             recyclerView.apply {
@@ -217,9 +267,11 @@ class HistoryFragment : Fragment() {
         localUserHistoryViewModel = ViewModelProvider(
             this@HistoryFragment,
             ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-        )[LocalHistoryViewModel::class.java]
+        )[LocalHistoryViewModel::
+        class.java]
 
-        localUserHistoryViewModel.getAllHistory.observe(viewLifecycleOwner) {
+        localUserHistoryViewModel.getAllHistory.observe(viewLifecycleOwner)
+        {
             Util.log("Accounts Scanned: $it")
             accountsList.clear()
             accountsList.addAll(it)

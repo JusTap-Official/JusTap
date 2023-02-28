@@ -28,7 +28,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <ImageView
+                android:id="@+id/moreMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/linearLayout7"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:padding="10dp"
+                android:backgroundTint="@color/text_color"
+                app:layout_constraintTop_toTopOf="@+id/linearLayout7"
+                app:srcCompat="@drawable/menu_dots" />
+
             <LinearLayout
+                android:id="@+id/linearLayout7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"

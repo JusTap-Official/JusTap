@@ -17,7 +17,8 @@ private var historyList: List<LocalHistory> = ArrayList()
 
 class HistoryAdapter(
     val context: Context,
-    private val listener: (LocalHistory) -> Unit
+    private val listener: (LocalHistory) -> Unit,
+    private val onMenuClick: (LocalHistory) -> Unit
 ) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
 
     class HistoryViewHolder(val binding: HistoryItemLayoutBinding) :
@@ -41,6 +42,9 @@ class HistoryAdapter(
                     visibility = View.VISIBLE
                 }
             }
+        }
+        holder.binding.moreMenu.setOnClickListener {
+            onMenuClick(currentAccount)
         }
         currentAccount.profileImage?.let {
             Glide.with(context)
