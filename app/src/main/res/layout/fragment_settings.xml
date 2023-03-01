@@ -74,6 +74,13 @@
             android:layout_height="300dp"
             tools:listitem="@layout/settings_item" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Made with ♥ v1.0"
+            android:textColor="@color/text_color" />
+
     </LinearLayout>
 
 

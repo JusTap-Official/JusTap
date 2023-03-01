@@ -93,6 +93,10 @@
     <string name="data_added_successfully">Data updated successfully</string>
     <string name="off">Off</string>
     <string name="on">On</string>
+    <string name="how_history_saving_works">How History saving works?</string>
+    <string name="welcome_to_justap">Welcome to JusTap</string>
+    <string name="needHelpSettingsDescription">JusTap makes exchanging contact information and social links a breeze!\n\nAdd your social accounts, scan their or share yours QR codes to connect with them, edit your profile, customize your QR code, and turn off the visibility of a specific social account or contact.\nYou can also delete locally saved scanned history anytime.\n\nClick on the top left icon to mail us directly.\nHappy networking!</string>
+    <string name="historyScreenHelpDescription">JusTap automatically saves a history of all the QR codes you\'ve scanned. You can see a list of all your past scans.\n\nKeep track of the QR codes you\'ve scanned, and access the relevant information quickly.\nDelete an individual item or clear the entire history in a single tap.\n\nSo next time you scan a QR code, remember that it\'s automatically saved in your scan history.</string>
 
     <string-array name="account_names">
         <item>Phone</item>

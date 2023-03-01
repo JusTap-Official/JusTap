@@ -31,6 +31,7 @@ import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.databinding.ColorpickerModalBinding
 import com.binay.shaw.justap.databinding.FragmentSettingsBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
+import com.binay.shaw.justap.databinding.ParagraphModalBinding
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.createBottomSheet
 import com.binay.shaw.justap.helper.Util.dpToPx
@@ -64,7 +65,6 @@ class SettingsFragment : Fragment() {
     private lateinit var localUserDatabase: LocalUserDatabase
     private lateinit var localUserViewModel: LocalUserViewModel
     private lateinit var accountsViewModel: AccountsViewModel
-    private lateinit var logoutIV: ImageView
     private lateinit var feedback: ImageView
     private lateinit var localUser: LocalUser
     private lateinit var qrGeneratorViewModel: QRGeneratorViewModel
@@ -108,6 +108,9 @@ class SettingsFragment : Fragment() {
                     )
                     Navigation.findNavController(binding.root).navigate(action)
                 }
+                3 -> {
+                    needHelp()
+                }
                 4 -> {
                     logout()
                 }
@@ -135,6 +138,20 @@ class SettingsFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun needHelp() {
+        val dialog = ParagraphModalBinding.inflate(layoutInflater)
+        val bottomSheet = requireActivity().createBottomSheet()
+        dialog.apply {
+            paragraphHeading.text = resources.getString(R.string.welcome_to_justap)
+            paragraphContent.text = resources.getString(R.string.needHelpSettingsDescription)
+            lottieAnimationLayout.apply {
+                setAnimation(R.raw.help_lottie)
+                visibility = View.VISIBLE
+            }
+        }
+        dialog.root.setBottomSheet(bottomSheet)
     }
 
     private fun customizeQR() {

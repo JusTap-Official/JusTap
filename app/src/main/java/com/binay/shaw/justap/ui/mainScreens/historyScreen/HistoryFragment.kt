@@ -23,6 +23,7 @@ import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.HistoryAdapter
 import com.binay.shaw.justap.databinding.FragmentHistoryBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
+import com.binay.shaw.justap.databinding.ParagraphModalBinding
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.createBottomSheet
 import com.binay.shaw.justap.helper.Util.setBottomSheet
@@ -64,7 +65,17 @@ class HistoryFragment : Fragment() {
 
     private fun infoHandler() {
         binding.include.leftIcon.setOnClickListener {
-            //Show Info Bottom Sheet
+            val dialog = ParagraphModalBinding.inflate(layoutInflater)
+            val bottomSheet = requireActivity().createBottomSheet()
+            dialog.apply {
+                paragraphHeading.text = resources.getString(R.string.how_history_saving_works)
+                paragraphContent.text = resources.getString(R.string.historyScreenHelpDescription)
+                lottieAnimationLayout.apply {
+                    setAnimation(R.raw.delete_lottie)
+                    visibility = View.VISIBLE
+                }
+            }
+            dialog.root.setBottomSheet(bottomSheet)
         }
     }
 
