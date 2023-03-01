@@ -29,17 +29,13 @@ class QRGeneratorViewModel : ViewModel() {
         displayMetrics: DisplayMetrics,
         overlay: Bitmap?,
         color1: Int,
-        color2: Int,
-        isEmailVerified: Boolean
+        color2: Int
     ) {
-        val message = StringBuilder()
-        message.append(Util.userID)
-            .append("(||)")
-            .append(isEmailVerified.toString())
+        val message = Util.userID
 
         val encryption = Encryption.getDefault("Key", "Salt", ByteArray(16))
 
-        val encrypted = encryption.encryptOrNull(message.toString())
+        val encrypted = encryption.encryptOrNull(message)
         Util.log("Encrypted Key $encrypted")
         try {
 

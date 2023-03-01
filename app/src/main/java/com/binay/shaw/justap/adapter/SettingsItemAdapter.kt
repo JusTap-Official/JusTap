@@ -32,7 +32,7 @@ class SettingsItemAdapter(
         val newList = settingsItemList[position]
         holder.binding.settingsItemName.apply {
             text = newList.itemName
-            if (newList.itemName == "Log out") {
+            if (newList.itemID == 6) {
                 setTextColor(ResourcesCompat.getColor(resources, R.color.negative_red, null))
                 setTypeface(null, Typeface.BOLD)
             }

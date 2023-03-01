@@ -89,7 +89,6 @@ class ResultFragment : Fragment() {
                     startActivity(download)
                 }
             }
-            verifiedBadge.visibility = View.VISIBLE
         }
         viewModel.getDevelopersAccount()
         viewModel.showCaseAccountsListDevLiveData.observe(viewLifecycleOwner) {
@@ -105,21 +104,12 @@ class ResultFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.M)
     private fun setUpResultView(resultString: String) {
 
-        Util.log("result is : ")
-
-        val userID = resultString.split("(||)")[0]
-        val isVerified = resultString.split("(||)")[1]
-
-        if (isVerified == "true") {
-            binding.verifiedBadge.visibility = View.VISIBLE
-        }
-
         val localUserHistoryViewModel = ViewModelProvider(
             this@ResultFragment,
             ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
         )[LocalHistoryViewModel::class.java]
 
-        viewModel.getDataFromUserID(userID)
+        viewModel.getDataFromUserID(resultString)
 
         viewModel.showCaseAccountsListLiveData.observe(viewLifecycleOwner) {
             showCaseAccountsList.clear()
@@ -136,7 +126,7 @@ class ResultFragment : Fragment() {
 
             binding.progressAnimation.progressParent.visibility = View.GONE
 
-            createLocalHistory(it, isVerified.toBoolean(), localUserHistoryViewModel)
+            createLocalHistory(it, localUserHistoryViewModel)
 
             val tempUser = it
 
@@ -162,11 +152,7 @@ class ResultFragment : Fragment() {
 
     }
 
-    private fun createLocalHistory(
-        user: User,
-        isVerified: Boolean,
-        localHistoryViewModel: LocalHistoryViewModel
-    ) {
+    private fun createLocalHistory(user: User, localHistoryViewModel: LocalHistoryViewModel) {
 
         if (user.profilePictureURI != null) {
             if (user.profilePictureURI.isNotEmpty()) {
@@ -184,7 +170,7 @@ class ResultFragment : Fragment() {
                             transition: Transition<in Bitmap>?
                         ) {
                             // Save the bitmap to your LocalHistory object
-                            viewModel.saveLocalHistory(user, isVerified, resource, localHistoryViewModel)
+                            viewModel.saveLocalHistory(user, resource, localHistoryViewModel)
                         }
 
                         override fun onLoadCleared(placeholder: Drawable?) {
@@ -192,10 +178,10 @@ class ResultFragment : Fragment() {
                         }
                     })
             }else {
-                viewModel.saveLocalHistory(user, isVerified, null, localHistoryViewModel)
+                viewModel.saveLocalHistory(user, null, localHistoryViewModel)
             }
         } else {
-            viewModel.saveLocalHistory(user, isVerified,null, localHistoryViewModel)
+            viewModel.saveLocalHistory(user, null, localHistoryViewModel)
         }
     }
 

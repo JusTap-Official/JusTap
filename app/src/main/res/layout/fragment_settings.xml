@@ -71,8 +71,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/settingsRV"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:itemCount="6"
+            android:layout_height="300dp"
             tools:listitem="@layout/settings_item" />
 
     </LinearLayout>

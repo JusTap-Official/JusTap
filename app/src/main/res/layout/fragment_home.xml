@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -43,28 +43,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:id="@+id/verifiedBadge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    app:layout_constraintVertical_bias="0"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="@+id/profileNameTV"
-                    app:layout_constraintStart_toEndOf="@+id/profileNameTV"
-                    app:layout_constraintTop_toTopOf="@+id/profileNameTV"
-                    app:srcCompat="@drawable/verification_badge" />
-
                 <TextView
                     android:id="@+id/profileNameTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_bold"
+                    tools:text="Hi, User Name"
                     android:textColor="@color/text_color"
-                    android:textSize="24sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Hi, User Name" />
+                    android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/profileBioTV"
@@ -73,12 +59,9 @@
                     android:fontFamily="@font/roboto"
                     android:textColor="@color/text_color"
                     android:textSize="16sp"
-                    android:layout_marginTop="2dp"
-                    app:layout_constraintStart_toStartOf="@+id/profileNameTV"
-                    app:layout_constraintTop_toBottomOf="@+id/profileNameTV"
                     tools:text="User bio goes here..." />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"

@@ -77,9 +77,9 @@ class ScanResultViewModel : ViewModel() {
 
     }
 
-    fun saveLocalHistory(user: User, isVerified: Boolean, profileByteArray: Bitmap?, localUserHistoryViewModel: LocalHistoryViewModel) =
+    fun saveLocalHistory(user: User, profileByteArray: Bitmap?, localUserHistoryViewModel: LocalHistoryViewModel) =
         viewModelScope.launch(Dispatchers.IO) {
-            val localHistory = LocalHistory(user.userID, user.name, user.bio, isVerified, profileByteArray)
+            val localHistory = LocalHistory(user.userID, user.name, user.bio, profileByteArray)
             localUserHistoryViewModel.insertUserHistory(localHistory)
         }
 
