@@ -4,15 +4,19 @@ import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.binay.shaw.justap.helper.Constants
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.model.LocalHistory
 import com.binay.shaw.justap.model.User
 import com.binay.shaw.justap.ui.mainScreens.historyScreen.LocalHistoryViewModel
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.util.Objects
 
 /**
  * Created by binay on 04,February,2023
@@ -77,7 +81,11 @@ class ScanResultViewModel : ViewModel() {
 
     }
 
-    fun saveLocalHistory(user: User, profileByteArray: Bitmap?, localUserHistoryViewModel: LocalHistoryViewModel) =
+    fun saveLocalHistory(
+        user: User,
+        profileByteArray: Bitmap?,
+        localUserHistoryViewModel: LocalHistoryViewModel
+    ) =
         viewModelScope.launch(Dispatchers.IO) {
             val localHistory = LocalHistory(user.userID, user.name, user.bio, profileByteArray)
             localUserHistoryViewModel.insertUserHistory(localHistory)
@@ -122,6 +130,53 @@ class ScanResultViewModel : ViewModel() {
         )
 
         showCaseAccountsListDevLiveData.postValue(accounts)
+    }
+
+    fun updateAnalytics(scannedUserId: String) = viewModelScope.launch(Dispatchers.IO) {
+
+        //First get the current count of current User and increment
+        //Then get the current count of the scanned User and increment
+
+        val postScanCount = async {
+            updateAnalyticsCountInFirebase(Util.userID, Constants.scanCount)
+        }
+
+        val postImpressionCount = async {
+            updateAnalyticsCountInFirebase(scannedUserId, Constants.impressionCount)
+        }
+
+        Util.log("ScanCount status: ${postScanCount.await()}\nImpressionCount status: ${postImpressionCount.await()}")
+    }
+
+    private fun updateAnalyticsCountInFirebase(userID: String, dataToUpdate: String): Boolean {
+        val userRef =
+            Firebase.database.reference.child(Constants.users).child(userID).child(Constants.analytics)
+        userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+
+                    var toIncrement = 0
+
+                    if (dataSnapshot.child(dataToUpdate).exists()) {
+                        val scanCount = dataSnapshot.child(dataToUpdate).value.toString()
+                        toIncrement = scanCount.toInt().plus(1)
+                    }
+                    userRef.child(dataToUpdate).setValue(toIncrement.toString())
+
+                } else {
+                    // User does not exist in the database
+                    val mapOfAnalytics = mutableMapOf<String, String>()
+                    mapOfAnalytics[Constants.scanCount] = "0"
+                    mapOfAnalytics[Constants.impressionCount] = "0"
+                    userRef.setValue(mapOfAnalytics)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Util.log("getUser:onCancelled ${error.toException()}")
+            }
+        })
+        return true
     }
 
 }

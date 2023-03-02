@@ -101,6 +101,9 @@
     <string name="bio">Bio</string>
     <string name="current_name_of_user">Current name of user</string>
     <string name="name">Name</string>
+    <string name="impressions">Impressions</string>
+    <string name="you_scanned">You scanned</string>
+    <string name="empty_value">-</string>
 
     <string-array name="account_names">
         <item>Phone</item>

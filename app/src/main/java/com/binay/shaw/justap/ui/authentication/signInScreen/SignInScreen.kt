@@ -199,11 +199,7 @@ class SignInScreen : AppCompatActivity() {
             saveUserLocally(user)
             saveAccountsList(listAccounts)
         }
-//        Toast.makeText(
-//            this@SignInScreen,
-//            getString(R.string.successfullLoggedIn),
-//            Toast.LENGTH_SHORT
-//        ).show()
+
         startActivity(
             Intent(
                 this@SignInScreen,

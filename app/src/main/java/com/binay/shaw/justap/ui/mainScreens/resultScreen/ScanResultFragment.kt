@@ -110,6 +110,7 @@ class ResultFragment : Fragment() {
         )[LocalHistoryViewModel::class.java]
 
         viewModel.getDataFromUserID(resultString)
+        viewModel.updateAnalytics(resultString)
 
         viewModel.showCaseAccountsListLiveData.observe(viewLifecycleOwner) {
             showCaseAccountsList.clear()

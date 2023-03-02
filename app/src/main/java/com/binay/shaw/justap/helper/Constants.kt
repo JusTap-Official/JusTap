@@ -15,4 +15,7 @@ object Constants {
     const val accountName = "accountName"
     const val accountData = "accountData"
     const val showAccount = "showAccount"
+    const val scanCount = "scanCount"
+    const val impressionCount = "impressionCount"
+    const val analytics = "analytics"
 }

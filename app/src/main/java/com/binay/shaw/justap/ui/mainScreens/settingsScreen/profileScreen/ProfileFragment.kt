@@ -11,10 +11,17 @@ import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentProfileBinding
 import com.binay.shaw.justap.databinding.MyToolbarBinding
+import com.binay.shaw.justap.helper.Constants
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.mainViewModels.LocalUserViewModel
+import com.binay.shaw.justap.model.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 
 class ProfileFragment : Fragment() {
@@ -33,6 +40,7 @@ class ProfileFragment : Fragment() {
 
         _binding = FragmentProfileBinding.inflate(layoutInflater, container, false)
         initialization()
+        updateAnalytics()
 
         toolBar.leftIcon.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
@@ -44,6 +52,47 @@ class ProfileFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun updateAnalytics() {
+        val userRef = Firebase.database.reference.child(Constants.users).child(Util.userID).child(Constants.analytics)
+        userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // User exists in the database
+                    Util.log("Analytics exists")
+                    //Get the user
+                    if (dataSnapshot.child(Constants.scanCount).exists()) {
+                        val scanCount = dataSnapshot.child(Constants.scanCount).value.toString()
+                        if (scanCount.isNotEmpty()) {
+                            Util.log("Count scan: $scanCount")
+                            binding.scanCountTV.text = scanCount
+                        }
+                    } else {
+                        binding.scanCountTV.text = "0"
+                    }
+
+                    if (dataSnapshot.child(Constants.impressionCount).exists()) {
+                        val impressionCount = dataSnapshot.child(Constants.impressionCount).value.toString()
+                        if (impressionCount.isNotEmpty()) {
+                            Util.log("Count imp: $impressionCount")
+                            binding.impressionCountTV.text = impressionCount
+                        }
+                    } else {
+                        binding.impressionCountTV.text = "0"
+                    }
+
+                } else {
+                    // User does not exist in the database
+                    binding.scanCountTV.text = "0"
+                    binding.impressionCountTV.text = "0"
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Util.log("getUser:onCancelled ${error.toException()}")
+            }
+        })
     }
 
     private fun initialization() {
