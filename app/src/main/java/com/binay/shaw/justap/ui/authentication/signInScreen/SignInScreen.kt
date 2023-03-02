@@ -15,6 +15,7 @@ import androidx.room.Room
 import com.binay.shaw.justap.helper.Constants
 import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
+import com.binay.shaw.justap.base.BaseActivity
 import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.databinding.ActivitySignInScreenBinding
@@ -36,7 +37,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 
-class SignInScreen : AppCompatActivity() {
+class SignInScreen : BaseActivity() {
 
     private lateinit var binding: ActivitySignInScreenBinding
     private lateinit var auth: FirebaseAuth
@@ -51,7 +52,6 @@ class SignInScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignInScreenBinding.inflate(layoutInflater)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setContentView(binding.root)
 
         initialization()
@@ -241,7 +241,6 @@ class SignInScreen : AppCompatActivity() {
     }
 
     private fun initialization() {
-        supportActionBar?.hide()
         auth = FirebaseAuth.getInstance()
         binding.apply {
             include.toolbarTitle.text = getString(R.string.LogIn)

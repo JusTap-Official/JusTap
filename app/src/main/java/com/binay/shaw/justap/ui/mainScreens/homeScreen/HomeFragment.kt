@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.AccountsItemAdapter
+import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.databinding.FragmentHomeBinding
 import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
@@ -30,7 +31,7 @@ import com.google.firebase.database.FirebaseDatabase
 
 
 @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
