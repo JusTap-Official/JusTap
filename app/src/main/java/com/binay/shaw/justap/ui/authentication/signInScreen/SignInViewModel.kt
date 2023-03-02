@@ -1,5 +1,7 @@
 package com.binay.shaw.justap.ui.authentication.signInScreen
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,7 +23,7 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 
-class SignInViewModel : ViewModel() {
+class SignInViewModel(application: Application) : AndroidViewModel(application) {
     var status = MutableLiveData<Int>()
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val errorMessage = MutableLiveData<String>()

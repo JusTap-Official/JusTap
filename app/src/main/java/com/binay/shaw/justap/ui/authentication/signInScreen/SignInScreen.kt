@@ -2,21 +2,17 @@ package com.binay.shaw.justap.ui.authentication.signInScreen
 
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
+import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.lifecycle.ViewModelProvider
-import androidx.room.Room
-import com.binay.shaw.justap.helper.Constants
 import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.base.BaseActivity
-import com.binay.shaw.justap.data.LocalUserDatabase
+import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.databinding.ActivitySignInScreenBinding
 import com.binay.shaw.justap.helper.Util.handlePasswordVisibility
@@ -33,8 +29,6 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.*
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 
 
 class SignInScreen : BaseActivity() {
@@ -44,10 +38,11 @@ class SignInScreen : BaseActivity() {
     private lateinit var buttonLayout: ConstraintLayout
     private lateinit var buttonText: TextView
     private lateinit var buttonProgress: ProgressBar
-    private lateinit var viewModel: SignInViewModel
+    private val viewModel by viewModels<SignInViewModel> { ViewModelFactory() }
     private lateinit var firebaseDatabase: DatabaseReference
-    private lateinit var localDatabase: LocalUserDatabase
     private val RC_SIGN_IN = 100
+    private val accountsViewModel by viewModels<AccountsViewModel> { ViewModelFactory() }
+    private val localUserViewModel by viewModels<LocalUserViewModel> { ViewModelFactory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,13 +50,11 @@ class SignInScreen : BaseActivity() {
         setContentView(binding.root)
 
         initialization()
-
         observeViewModelResult()
-        initViews()
-
+        handleOperations()
     }
 
-    private fun initViews() {
+    private fun handleOperations() {
         buttonLayout.setOnClickListener {
             if (!Util.checkForInternet(this)) {
                 Util.showNoInternet(this)
@@ -209,11 +202,6 @@ class SignInScreen : BaseActivity() {
     }
 
     private fun saveAccountsList(listAccounts: List<Accounts>?) {
-        val accountsViewModel: AccountsViewModel =
-            ViewModelProvider(
-                this@SignInScreen,
-                ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-            )[AccountsViewModel::class.java]
         if (listAccounts != null) {
             for (singleAccount in listAccounts) {
                 accountsViewModel.insertAccount(singleAccount)
@@ -222,11 +210,6 @@ class SignInScreen : BaseActivity() {
     }
 
     private fun saveUserLocally(user: User) {
-        val localUserViewModel: LocalUserViewModel =
-            ViewModelProvider(
-                this@SignInScreen,
-                ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-            )[LocalUserViewModel::class.java]
         val lu = LocalUser(
             user.userID, user.name,
             user.email, user.bio,
@@ -252,11 +235,6 @@ class SignInScreen : BaseActivity() {
             }
             etPassword.handlePasswordVisibility(baseContext)
         }
-        viewModel = ViewModelProvider(this@SignInScreen)[SignInViewModel::class.java]
         firebaseDatabase = FirebaseDatabase.getInstance().reference
-        localDatabase = Room.databaseBuilder(
-            applicationContext, LocalUserDatabase::class.java,
-            Constants.localDB
-        ).build()
     }
 }

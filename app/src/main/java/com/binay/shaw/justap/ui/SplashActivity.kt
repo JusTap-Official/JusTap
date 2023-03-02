@@ -7,16 +7,16 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
 import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
+import com.binay.shaw.justap.base.BaseActivity
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.ui.authentication.signInScreen.SignInScreen
 import kotlinx.coroutines.*
 
 @SuppressLint("CustomSplashScreen")
-class SplashActivity : Activity() {
+class SplashActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setContentView(R.layout.activity_splash)
 
         makeIntent(Util.isUserLoggedIn())

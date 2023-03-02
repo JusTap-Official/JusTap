@@ -7,10 +7,12 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
+import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
 import com.binay.shaw.justap.R
+import com.binay.shaw.justap.base.BaseActivity
+import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.databinding.ActivitySignUpScreenBinding
 import com.binay.shaw.justap.helper.Util.handlePasswordVisibility
@@ -29,28 +31,30 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 
 
-class SignUpScreen : AppCompatActivity() {
+class SignUpScreen : BaseActivity() {
 
     private lateinit var binding: ActivitySignUpScreenBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var buttonLayout: ConstraintLayout
     private lateinit var buttonText: TextView
     private lateinit var buttonProgress: ProgressBar
-    private lateinit var viewModel: SignUpViewModel
-    private val signInViewModel: SignInViewModel by lazy {
-        ViewModelProvider(this@SignUpScreen)[SignInViewModel::class.java]
-    }
+    private val signUpViewModel by viewModels<SignUpViewModel> { ViewModelFactory() }
+    private val signInViewModel by viewModels<SignInViewModel> { ViewModelFactory() }
+    private val localUserViewModel by viewModels<LocalUserViewModel> { ViewModelFactory() }
+    private val accountsViewModel by viewModels<AccountsViewModel> { ViewModelFactory() }
     private val RC_SIGN_IN = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpScreenBinding.inflate(layoutInflater)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setContentView(binding.root)
-        supportActionBar?.hide()
 
         initialization()
+        initObservers()
+        handleOperations()
+    }
 
+    private fun handleOperations() {
         buttonLayout.setOnClickListener {
             if (!Util.checkForInternet(this)) {
                 Util.showNoInternet(this)
@@ -61,7 +65,7 @@ class SignUpScreen : AppCompatActivity() {
             binding.passwordHelperTV.visibility = View.GONE
             binding.nameHelperTV.visibility = View.GONE
             binding.emailHelperTV.visibility = View.GONE
-            viewModel.createNewAccount(
+            signUpViewModel.createNewAccount(
                 binding.etName.text.toString().trim(),
                 binding.etEmail.text.toString().trim(),
                 binding.etPassword.text.toString().trim()
@@ -72,17 +76,14 @@ class SignUpScreen : AppCompatActivity() {
             signInWithGoogle()
         }
 
-        initObservers()
-
         binding.loginInstead.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
-
     }
 
     private fun initObservers() {
-        viewModel.run {
-            viewModel.status.observe(this@SignUpScreen) {
+        signUpViewModel.run {
+            status.observe(this@SignUpScreen) {
                 stopProgress()
                 binding.apply {
                     when (it) {
@@ -116,7 +117,7 @@ class SignUpScreen : AppCompatActivity() {
                         8 -> {
                             Toast.makeText(
                                 this@SignUpScreen,
-                                viewModel.getErrorMessage(),
+                                getErrorMessage(),
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
@@ -166,11 +167,6 @@ class SignUpScreen : AppCompatActivity() {
     }
 
     private fun saveAccountsList(listAccounts: List<Accounts>?) {
-        val accountsViewModel: AccountsViewModel =
-            ViewModelProvider(
-                this@SignUpScreen,
-                ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-            )[AccountsViewModel::class.java]
         if (listAccounts != null) {
             for (singleAccount in listAccounts) {
                 accountsViewModel.insertAccount(singleAccount)
@@ -179,11 +175,6 @@ class SignUpScreen : AppCompatActivity() {
     }
 
     private fun saveUserLocally(user: User) {
-        val localUserViewModel: LocalUserViewModel =
-            ViewModelProvider(
-                this@SignUpScreen,
-                ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-            )[LocalUserViewModel::class.java]
         val lu = LocalUser(
             user.userID, user.name,
             user.email, user.bio,
@@ -250,6 +241,5 @@ class SignUpScreen : AppCompatActivity() {
             }
             etPassword.handlePasswordVisibility(baseContext)
         }
-        viewModel = ViewModelProvider(this)[SignUpViewModel::class.java]
     }
 }

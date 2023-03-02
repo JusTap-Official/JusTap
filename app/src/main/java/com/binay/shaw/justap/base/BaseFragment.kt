@@ -6,14 +6,10 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import java.io.IOException
 
-/**
- * Created by binay on 02,March,2023
- */
+
 abstract class BaseFragment : Fragment() {
     private lateinit var progressDialogue: Dialog
 

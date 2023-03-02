@@ -1,64 +1,46 @@
 package com.binay.shaw.justap.base
 
-import android.app.Dialog
-import android.app.LocaleManager
+
 import android.content.Context
-import android.graphics.Color
-import android.os.Build
-import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.ContextCompat
-import androidx.core.view.WindowCompat
-import java.io.IOException
 
-/**
- * Created by binay on 02,March,2023
- */
+
+
 abstract class BaseActivity : AppCompatActivity() {
-    private lateinit var progressDialogue: Dialog
+//    private lateinit var progressDialogue: Dialog
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
-        changeStatusBarColor(Color.TRANSPARENT)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-
-//        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left)
-    }
+//    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+//        super.onCreate(savedInstanceState, persistentState)
+//    }
 
     override fun onStart() {
         super.onStart()
+
         supportActionBar?.hide()
     }
 
-//    override fun attachBaseContext(newBase: Context) {
-//        super.attachBaseContext(LocaleManager.getWrapper(newBase))
-//    }
 
     override fun onBackPressed() {
         onBackPressedDispatcher.onBackPressed()
-//        overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         hideKeyboard()
-        hideProgress()
+//        hideProgress()
     }
 
-    protected open fun observeProgress(viewModel: BaseViewModel, isDismissible: Boolean = true) {
-        viewModel.progressLiveData.observe(this) { progress ->
-            if (progress) {
+//    protected open fun observeProgress(viewModel: BaseViewModel, isDismissible: Boolean = true) {
+//        viewModel.progressLiveData.observe(this) { progress ->
+//            if (progress) {
 //                showProgress(isDismissible)
-            } else {
-                hideProgress()
-            }
-        }
-    }
+//            } else {
+//                hideProgress()
+//            }
+//        }
+//    }
 
 //    protected open fun obServeErrorAndException(apiError: ApiError, viewModel: BaseViewModel) {
 //        showErrorDialog(null, apiError.message)
@@ -115,11 +97,11 @@ abstract class BaseActivity : AppCompatActivity() {
 //        }
 //    }
 
-    protected fun hideProgress() {
-        if (this::progressDialogue.isInitialized && progressDialogue.isShowing) {
-            progressDialogue.hide()
-        }
-    }
+//    protected fun hideProgress() {
+//        if (this::progressDialogue.isInitialized && progressDialogue.isShowing) {
+//            progressDialogue.hide()
+//        }
+//    }
 
     fun hideKeyboard() {
         val view: View? = this.currentFocus
@@ -133,14 +115,14 @@ abstract class BaseActivity : AppCompatActivity() {
      * Sets the Status Bar Color
      * @param color, is the id value of the color resource
      */
-    protected fun changeStatusBarColor(color: Int) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            WindowCompat.getInsetsController(window, window.decorView).apply {
-                isAppearanceLightStatusBars = true
-            }
-            window.statusBarColor = ContextCompat.getColor(this, color)
-        }
-    }
+//    protected fun changeStatusBarColor(color: Int) {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            WindowCompat.getInsetsController(window, window.decorView).apply {
+//                isAppearanceLightStatusBars = true
+//            }
+//            window.statusBarColor = ContextCompat.getColor(this, color)
+//        }
+//    }
 
 //    abstract fun getScreenName(): String
 

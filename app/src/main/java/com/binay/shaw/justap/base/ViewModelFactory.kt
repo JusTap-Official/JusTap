@@ -3,8 +3,11 @@ package com.binay.shaw.justap.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
+import com.binay.shaw.justap.mainViewModels.AccountsViewModel
+import com.binay.shaw.justap.mainViewModels.LocalUserViewModel
 import com.binay.shaw.justap.ui.authentication.signInScreen.SignInViewModel
 import com.binay.shaw.justap.ui.authentication.signUpScreen.SignUpScreen
+import com.binay.shaw.justap.ui.authentication.signUpScreen.SignUpViewModel
 import com.binay.shaw.justap.ui.mainScreens.historyScreen.LocalHistoryViewModel
 import com.binay.shaw.justap.ui.mainScreens.homeScreen.accountFragments.AddEditViewModel
 import com.binay.shaw.justap.ui.mainScreens.qrScreens.qrGeneratorScreen.QRGeneratorViewModel
@@ -22,10 +25,10 @@ class ViewModelFactory : ViewModelProvider.Factory {
             val application = checkNotNull(extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY])
             when {
                 isAssignableFrom(SignInViewModel::class.java) -> {
-                    SignInViewModel()
+                    SignInViewModel(application)
                 }
-                isAssignableFrom(SignUpScreen::class.java) -> {
-                    SignUpScreen()
+                isAssignableFrom(SignUpViewModel::class.java) -> {
+                    SignUpViewModel(application)
                 }
                 isAssignableFrom(LocalHistoryViewModel::class.java) -> {
                     LocalHistoryViewModel(application)
@@ -41,6 +44,12 @@ class ViewModelFactory : ViewModelProvider.Factory {
                 }
                 isAssignableFrom(EditProfileViewModel::class.java) -> {
                     EditProfileViewModel()
+                }
+                isAssignableFrom(AccountsViewModel::class.java) -> {
+                    AccountsViewModel(application)
+                }
+                isAssignableFrom(LocalUserViewModel::class.java) -> {
+                    LocalUserViewModel(application)
                 }
                 else -> throw IllegalArgumentException("Unknown ViewModel class")
             }
