@@ -11,7 +11,6 @@ import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.binay.shaw.justap.ui.mainScreens.MainActivity
@@ -23,7 +22,7 @@ import com.binay.shaw.justap.databinding.ParagraphModalBinding
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.createBottomSheet
 import com.binay.shaw.justap.helper.Util.setBottomSheet
-import com.binay.shaw.justap.mainViewModels.AccountsViewModel
+import com.binay.shaw.justap.viewModel.AccountsViewModel
 import com.binay.shaw.justap.model.Accounts
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.FirebaseDatabase

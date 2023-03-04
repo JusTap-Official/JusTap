@@ -16,13 +16,12 @@ import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.databinding.ActivitySignInScreenBinding
 import com.binay.shaw.justap.helper.Util.handlePasswordVisibility
-import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.ui.authentication.ForgotPasswordScreen
 import com.binay.shaw.justap.ui.authentication.signUpScreen.SignUpScreen
-import com.binay.shaw.justap.mainViewModels.AccountsViewModel
-import com.binay.shaw.justap.mainViewModels.LocalUserViewModel
+import com.binay.shaw.justap.viewModel.AccountsViewModel
+import com.binay.shaw.justap.viewModel.LocalUserViewModel
 import com.binay.shaw.justap.model.Accounts
-import com.binay.shaw.justap.model.User
+import com.binay.shaw.justap.viewModel.FirebaseViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
@@ -38,19 +37,18 @@ class SignInScreen : BaseActivity() {
     private lateinit var buttonLayout: ConstraintLayout
     private lateinit var buttonText: TextView
     private lateinit var buttonProgress: ProgressBar
-    private val viewModel by viewModels<SignInViewModel> { ViewModelFactory() }
-    private lateinit var firebaseDatabase: DatabaseReference
     private val RC_SIGN_IN = 100
     private val accountsViewModel by viewModels<AccountsViewModel> { ViewModelFactory() }
     private val localUserViewModel by viewModels<LocalUserViewModel> { ViewModelFactory() }
+    private val firebaseViewModel by viewModels<FirebaseViewModel> { ViewModelFactory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignInScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initialization()
-        observeViewModelResult()
+        initObservers()
+        initViews()
         handleOperations()
     }
 
@@ -60,15 +58,20 @@ class SignInScreen : BaseActivity() {
                 Util.showNoInternet(this)
                 return@setOnClickListener
             }
-            buttonText.visibility = View.GONE
-            buttonProgress.visibility = View.VISIBLE
-            binding.emailHelperTV.visibility = View.GONE
-            binding.passwordHelperTV.visibility = View.GONE
+            showProgress()
 
-            viewModel.loginUser(
-                binding.etEmail.text.toString().trim(),
-                binding.etPassword.text.toString().trim(),
-                firebaseDatabase
+            val email = binding.etEmail.text.toString().trim()
+            val password = binding.etPassword.text.toString().trim()
+
+            val validation = Util.validateUserAuthInput(null, email, password)
+            if (validation < 7) {
+                stopProgress()
+                handleErrorInput(validation)
+                return@setOnClickListener
+            }
+
+            firebaseViewModel.logInUser(
+                email, password
             )
 
         }
@@ -83,6 +86,33 @@ class SignInScreen : BaseActivity() {
 
         binding.signInWithGoogle.setOnClickListener {
             signInWithGoogle()
+        }
+    }
+
+    private fun handleErrorInput(validationCode: Int) {
+        binding.apply {
+            when (validationCode) {
+                2 -> {
+                    emailHelperTV.text = getString(R.string.enter_email)
+                    emailHelperTV.visibility = View.VISIBLE
+                }
+                3 -> {
+                    emailHelperTV.text = getString(R.string.invalid_email)
+                    emailHelperTV.visibility = View.VISIBLE
+                }
+                4 -> {
+                    passwordHelperTV.text = getString(R.string.enter_password)
+                    passwordHelperTV.visibility = View.VISIBLE
+                }
+                5 -> {
+                    passwordHelperTV.text = getString(R.string.small_size_password)
+                    passwordHelperTV.visibility = View.VISIBLE
+                }
+                6 -> {
+                    passwordHelperTV.text = getString(R.string.invalid_password)
+                    passwordHelperTV.visibility = View.VISIBLE
+                }
+            }
         }
     }
 
@@ -116,7 +146,7 @@ class SignInScreen : BaseActivity() {
         FirebaseAuth.getInstance().signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    viewModel.signInWithGoogle(FirebaseAuth.getInstance().currentUser)
+                    firebaseViewModel.signInWithGoogle(FirebaseAuth.getInstance().currentUser)
                 } else {
                     Util.log("signInWithCredential:failure ${task.exception}")
                     Toast.makeText(
@@ -128,68 +158,27 @@ class SignInScreen : BaseActivity() {
     }
 
 
-    private fun observeViewModelResult() {
-        viewModel.run {
-            status.observe(this@SignInScreen) {
-                stopProgress()
-                when (it) {
-                    2 -> {
-                        binding.emailHelperTV.text = getString(R.string.enter_email)
-                        binding.emailHelperTV.visibility = View.VISIBLE
-                    }
-                    3 -> {
-                        binding.emailHelperTV.text = getString(R.string.invalid_email)
-                        binding.emailHelperTV.visibility = View.VISIBLE
-                    }
-                    4 -> {
-                        binding.passwordHelperTV.text = getString(R.string.enter_password)
-                        binding.passwordHelperTV.visibility = View.VISIBLE
-                    }
-                    5 -> {
-                        binding.passwordHelperTV.text = getString(R.string.small_size_password)
-                        binding.passwordHelperTV.visibility = View.VISIBLE
-                    }
-                    6 -> {
-                        binding.passwordHelperTV.text = getString(R.string.invalid_password)
-                        binding.passwordHelperTV.visibility = View.VISIBLE
-                    }
-                    7 -> {
-                        fetchUserForLogIn()
-                    }
-                    8 -> {
-                        Toast.makeText(
-                            this@SignInScreen,
-                            viewModel.getErrorMessage(),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
+    private fun initObservers() {
+        firebaseViewModel.run {
+            userLiveData.observe(this@SignInScreen) {
+                fetchUserForLogIn()
             }
-
-            googleSignInStatus.observe(this@SignInScreen) {
-                when (it) {
-                    true -> {
-                        Toast.makeText(this@SignInScreen, "Sign Success", Toast.LENGTH_SHORT).show()
-                        Util.log("User: ${viewModel.firebaseUser.value}\nAccounts: ${viewModel.firebaseAccounts.value}")
-                        fetchUserForLogIn()
-                    }
-                    false -> {
-                        Toast.makeText(
-                            this@SignInScreen,
-                            "Sign Failed: ${getErrorMessage()}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
+            errorLiveData.observe(this@SignInScreen) {
+                Toast.makeText(
+                    this@SignInScreen,
+                    "Sign Failed: $it",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
 
     private fun fetchUserForLogIn() {
-        val user = viewModel.firebaseUser.value
-        val listAccounts = viewModel.firebaseAccounts.value
+        val user = firebaseViewModel.userLiveData.value
+        val listAccounts = firebaseViewModel.accountsLiveData.value
+
         if (user != null) {
-            saveUserLocally(user)
+            localUserViewModel.insertUser(user)
             saveAccountsList(listAccounts)
         }
 
@@ -209,13 +198,11 @@ class SignInScreen : BaseActivity() {
         }
     }
 
-    private fun saveUserLocally(user: User) {
-        val lu = LocalUser(
-            user.userID, user.name,
-            user.email, user.bio,
-            user.profilePictureURI, user.profileBannerURI
-        )
-        localUserViewModel.insertUser(lu)
+    private fun showProgress() {
+        buttonText.visibility = View.GONE
+        buttonProgress.visibility = View.VISIBLE
+        binding.emailHelperTV.visibility = View.GONE
+        binding.passwordHelperTV.visibility = View.GONE
     }
 
     private fun stopProgress() {
@@ -223,7 +210,7 @@ class SignInScreen : BaseActivity() {
         buttonProgress.visibility = View.GONE
     }
 
-    private fun initialization() {
+    private fun initViews() {
         auth = FirebaseAuth.getInstance()
         binding.apply {
             include.toolbarTitle.text = getString(R.string.LogIn)
@@ -235,6 +222,5 @@ class SignInScreen : BaseActivity() {
             }
             etPassword.handlePasswordVisibility(baseContext)
         }
-        firebaseDatabase = FirebaseDatabase.getInstance().reference
     }
 }

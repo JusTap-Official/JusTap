@@ -147,22 +147,6 @@
 
         </LinearLayout>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:background="@drawable/divider_or" />
-
-        <ImageView
-            android:id="@+id/signUpWithGoogle"
-            android:layout_width="wrap_content"
-            android:layout_height="55dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="20dp"
-            android:src="@drawable/signupbtngoogle"
-            tools:ignore="" />
-
     </LinearLayout>
 
 

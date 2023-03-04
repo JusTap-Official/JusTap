@@ -39,8 +39,8 @@ import com.binay.shaw.justap.helper.Util.setBottomSheet
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.model.SettingsItem
 import com.binay.shaw.justap.ui.authentication.signInScreen.SignInScreen
-import com.binay.shaw.justap.mainViewModels.AccountsViewModel
-import com.binay.shaw.justap.mainViewModels.LocalUserViewModel
+import com.binay.shaw.justap.viewModel.AccountsViewModel
+import com.binay.shaw.justap.viewModel.LocalUserViewModel
 import com.binay.shaw.justap.ui.mainScreens.qrScreens.qrGeneratorScreen.QRGeneratorViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.skydoves.colorpickerview.ColorPickerDialog

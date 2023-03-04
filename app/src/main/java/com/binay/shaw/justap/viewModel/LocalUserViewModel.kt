@@ -1,4 +1,4 @@
-package com.binay.shaw.justap.mainViewModels
+package com.binay.shaw.justap.viewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.binay.shaw.justap.helper.Constants
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.Accounts
-import com.binay.shaw.justap.mainViewModels.AccountsViewModel
+import com.binay.shaw.justap.viewModel.AccountsViewModel
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.LocalUser
-import com.binay.shaw.justap.mainViewModels.LocalUserViewModel
+import com.binay.shaw.justap.viewModel.LocalUserViewModel
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.*
