@@ -17,7 +17,7 @@ data class LocalHistory(
     @PrimaryKey(autoGenerate = false)
     var userID: String,
     var username: String,
-    var userBio: String?,
+    var addedOn: String?,
     @TypeConverters(Converters::class)
     var profileImage: Bitmap?
 )

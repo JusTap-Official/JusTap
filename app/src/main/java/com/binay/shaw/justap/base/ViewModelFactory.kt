@@ -32,7 +32,7 @@ class ViewModelFactory : ViewModelProvider.Factory {
                     QRGeneratorViewModel()
                 }
                 isAssignableFrom(ScanResultViewModel::class.java) -> {
-                    ScanResultViewModel()
+                    ScanResultViewModel(application)
                 }
                 isAssignableFrom(EditProfileViewModel::class.java) -> {
                     EditProfileViewModel()

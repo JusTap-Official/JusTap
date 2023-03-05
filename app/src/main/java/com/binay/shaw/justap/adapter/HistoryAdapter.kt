@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.binay.shaw.justap.databinding.HistoryItemLayoutBinding
+import com.binay.shaw.justap.helper.Constants
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.LocalHistory
 import com.bumptech.glide.Glide
@@ -34,10 +35,15 @@ class HistoryAdapter(
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
         val currentAccount = historyList[position]
-        holder.binding.historyUsername.text = currentAccount.username.trim()
-        currentAccount.userBio?.let {
+
+        var name = currentAccount.username.trim()
+        if (name.length > Constants.name_display_length_limit)
+        name = Util.shrinkText(name, Constants.name_display_length_limit)
+        holder.binding.historyUsername.text = name
+
+        currentAccount.addedOn?.let {
             if (it.isNotEmpty()) {
-                holder.binding.historyUserBio.apply {
+                holder.binding.historyAddedDate.apply {
                     text = it.trim()
                     visibility = View.VISIBLE
                 }

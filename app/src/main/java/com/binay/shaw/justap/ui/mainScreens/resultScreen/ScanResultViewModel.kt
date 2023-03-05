@@ -1,9 +1,12 @@
 package com.binay.shaw.justap.ui.mainScreens.resultScreen
 
+import android.app.Application
 import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.binay.shaw.justap.R
+import com.binay.shaw.justap.base.BaseViewModel
 import com.binay.shaw.justap.helper.Constants
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.Accounts
@@ -22,7 +25,7 @@ import java.util.Objects
  * Created by binay on 04,February,2023
  * */
 
-class ScanResultViewModel : ViewModel() {
+class ScanResultViewModel(application: Application) : BaseViewModel(application) {
 
     var showCaseAccountsListLiveData = MutableLiveData<List<Accounts>>()
     var showCaseAccountsListDevLiveData = MutableLiveData<List<Accounts>>()
@@ -87,7 +90,9 @@ class ScanResultViewModel : ViewModel() {
         localUserHistoryViewModel: LocalHistoryViewModel
     ) =
         viewModelScope.launch(Dispatchers.IO) {
-            val localHistory = LocalHistory(user.userID, user.name, user.bio, profileByteArray)
+            val dateString = StringBuilder()
+            dateString.append(Constants.added_on).append(" ").append(Util.getCurrentDate())
+            val localHistory = LocalHistory(user.userID, user.name, dateString.toString(), profileByteArray)
             localUserHistoryViewModel.insertUserHistory(localHistory)
         }
 

@@ -79,15 +79,14 @@
                         tools:text="Account name" />
 
                     <TextView
-                        android:id="@+id/history_userBio"
+                        android:id="@+id/history_added_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/roboto"
                         android:textColor="@color/text_color"
                         android:textSize="12sp"
-                        android:visibility="gone"
-                        tools:text="Account Description" />
+                        tools:text="Added on 03/2023" />
 
                 </LinearLayout>
 

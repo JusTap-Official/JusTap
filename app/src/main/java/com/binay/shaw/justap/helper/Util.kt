@@ -16,8 +16,6 @@ import android.os.Environment
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.provider.MediaStore
-import android.text.Editable
-import android.text.TextWatcher
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.util.Patterns
@@ -27,7 +25,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import com.binay.shaw.justap.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -44,6 +41,9 @@ import com.tapadoo.alerter.Alerter
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.HashMap
 
 
 object Util {
@@ -337,20 +337,46 @@ object Util {
                     passwordVisible = !passwordVisible
                     if (passwordVisible) {
                         transformationMethod = null
-                        setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.visibility_off, 0)
+                        setCompoundDrawablesRelativeWithIntrinsicBounds(
+                            0,
+                            0,
+                            R.drawable.visibility_off,
+                            0
+                        )
                     } else {
                         transformationMethod = PasswordTransformationMethod()
-                        setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.visibility_on, 0)
+                        setCompoundDrawablesRelativeWithIntrinsicBounds(
+                            0,
+                            0,
+                            R.drawable.visibility_on,
+                            0
+                        )
                     }
                     // Hide the keyboard
                     setSelection(cursorPosition)
 
-                    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    val imm =
+                        context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(windowToken, 0)
                     return@setOnTouchListener true
                 }
             }
             false
         }
+    }
+
+    fun getCurrentDate(): String {
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val date = Date()
+        return dateFormat.format(date)
+    }
+
+    fun shrinkText(inputString: String, limit: Int): String {
+        val outputString = StringBuilder()
+
+        outputString.append(inputString.substring(0, limit + 1))
+            .append("...")
+
+        return outputString.toString()
     }
 }
