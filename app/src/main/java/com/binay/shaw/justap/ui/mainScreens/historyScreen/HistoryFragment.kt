@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.HistoryAdapter
+import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.databinding.FragmentHistoryBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
@@ -34,7 +35,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class HistoryFragment : Fragment() {
+class HistoryFragment : BaseFragment() {
 
     private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
@@ -61,6 +62,21 @@ class HistoryFragment : Fragment() {
         setFilter()
         historyIconHandler()
         infoHandler()
+        clearFilter()
+    }
+
+    private fun clearFilter() {
+        binding.apply {
+            clearText.setOnClickListener {
+                hideKeyboard()
+                it.visibility = View.GONE
+                etFilter.apply {
+                    setText("")
+                    setCompoundDrawablesWithIntrinsicBounds(R.drawable.search, 0, 0, 0)
+                    clearFocus()
+                }
+            }
+        }
     }
 
     private fun infoHandler() {
@@ -98,32 +114,21 @@ class HistoryFragment : Fragment() {
         binding.etFilter.apply {
 
             addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                }
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                }
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
                 override fun afterTextChanged(p0: Editable?) {
                     if (p0.toString().isNotEmpty()) {
                         filter(Util.getBaseStringForFiltering(p0.toString().lowercase()))
-                        setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.clear_text, 0)
+                        setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+                        binding.clearText.visibility = View.VISIBLE
                     } else {
+                        binding.clearText.visibility = View.GONE
                         setCompoundDrawablesWithIntrinsicBounds(R.drawable.search, 0, 0, 0)
                         historyAdapter.setData(accountsList)
                     }
                 }
-
-            })
-
-            setOnTouchListener(View.OnTouchListener { _, event ->
-                if (event.action == MotionEvent.ACTION_UP) {
-                    if (event.rawX >= (this.right - this.compoundPaddingRight)) {
-                        this.setText("")
-                        return@OnTouchListener true
-                    }
-                }
-                return@OnTouchListener false
             })
         }
     }
@@ -232,7 +237,8 @@ class HistoryFragment : Fragment() {
                                 R.color.negative_red
                             )
                         )
-                        negativeOption.text = requireContext().resources.getString(R.string.DontDelete)
+                        negativeOption.text =
+                            requireContext().resources.getString(R.string.DontDelete)
                         negativeOption.setTextColor(
                             ContextCompat.getColor(
                                 requireContext(),

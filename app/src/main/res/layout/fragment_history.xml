@@ -32,6 +32,17 @@
         tools:ignore="RtlSymmetry"
         tools:layout_editor_absoluteX="0dp" />
 
+    <ImageView
+        android:id="@+id/clear_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/etFilter"
+        app:layout_constraintEnd_toEndOf="@+id/etFilter"
+        app:layout_constraintTop_toTopOf="@+id/etFilter"
+        app:srcCompat="@drawable/clear_text" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/history_rv"
         android:layout_width="match_parent"
