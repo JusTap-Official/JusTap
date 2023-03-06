@@ -32,6 +32,7 @@ import com.binay.shaw.justap.databinding.ColorpickerModalBinding
 import com.binay.shaw.justap.databinding.FragmentSettingsBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
+import com.binay.shaw.justap.helper.Constants
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.createBottomSheet
 import com.binay.shaw.justap.helper.Util.dpToPx
@@ -71,7 +72,6 @@ class SettingsFragment : Fragment() {
     private lateinit var displayMetrics: DisplayMetrics
     private var overlay: Bitmap? = null
 
-    @SuppressLint("SetTextI18n", "ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -362,6 +362,7 @@ class SettingsFragment : Fragment() {
     }
 
 
+    @SuppressLint("SetTextI18n")
     private fun initialization() {
 
         (activity as MainActivity).supportActionBar?.hide()
@@ -401,18 +402,16 @@ class SettingsFragment : Fragment() {
                     it.userBannerPicture
                 )
             }
-            binding.settingsUserName.text = localUser.userName
+            var name = Util.getFirstName(localUser.userName)
+            if (name.length > 10)
+                name = Util.shrinkText(name, Constants.name_display_length_limit - 6)
+            binding.settingsUserName.text = name
             val profileURL = localUser.userProfilePicture.toString()
             if (profileURL.isNotEmpty())
                 Util.loadImagesWithGlide(binding.profileImage, profileURL)
         }
 
         binding.include.apply {
-//            rightIcon.apply {
-//                logoutIV = this
-//                setImageResource(R.drawable.logout_icon)
-//                visibility = View.VISIBLE
-//            }
             leftIcon.apply {
                 feedback = this
                 setImageResource(R.drawable.feedback_icon)

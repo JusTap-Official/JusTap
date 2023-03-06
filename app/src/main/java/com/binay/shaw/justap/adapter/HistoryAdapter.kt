@@ -38,7 +38,7 @@ class HistoryAdapter(
 
         var name = currentAccount.username.trim()
         if (name.length > Constants.name_display_length_limit)
-        name = Util.shrinkText(name, Constants.name_display_length_limit)
+            name = Util.shrinkText(name, Constants.name_display_length_limit)
         holder.binding.historyUsername.text = name
 
         currentAccount.addedOn?.let {
