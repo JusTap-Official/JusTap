@@ -104,6 +104,11 @@
     <string name="impressions">Impressions</string>
     <string name="you_scanned">You scanned</string>
     <string name="empty_value">-</string>
+    <string name="profile_updated_description">You can check the changes as well :D</string>
+    <string name="profile_updated">Profile updated successfully</string>
+    <string name="data_updated_successfully">Data updated successfully</string>
+    <string name="data_saved_successfully">Data saved successfully</string>
+    <string name="data_deleted_successfully">Data deleted successfully</string>
 
     <string-array name="account_names">
         <item>Phone</item>

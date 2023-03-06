@@ -28,7 +28,10 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import com.tapadoo.alerter.Alerter
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.HashMap
 
 
 class EditProfileFragment : Fragment() {
@@ -215,7 +218,13 @@ class EditProfileFragment : Fragment() {
                         Glide.get(requireContext()).clearMemory()
                         binding.progressAnimation.progressParent.visibility = View.GONE
                         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-                        Snackbar.make(binding.root, "Profile updated successfully", Snackbar.LENGTH_SHORT).show()
+                        Alerter.create(requireActivity())
+                            .setTitle(resources.getString(R.string.profile_updated))
+                            .setText(resources.getString(R.string.profile_updated_description))
+                            .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.positive_green))
+                            .setIcon(R.drawable.check)
+                            .setDuration(2500L)
+                            .show()
                         requireActivity().onBackPressedDispatcher.onBackPressed()
                     }
                 }

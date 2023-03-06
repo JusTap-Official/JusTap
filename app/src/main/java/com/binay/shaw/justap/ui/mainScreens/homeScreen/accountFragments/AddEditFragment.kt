@@ -26,6 +26,7 @@ import com.binay.shaw.justap.viewModel.AccountsViewModel
 import com.binay.shaw.justap.model.Accounts
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.FirebaseDatabase
+import com.tapadoo.alerter.Alerter
 
 
 class AddEditFragment : Fragment() {
@@ -61,11 +62,12 @@ class AddEditFragment : Fragment() {
                 if (status == 3) {
                     Util.log("Status value = $status")
                     updateStatus.postValue(0)
-                    Snackbar.make(
-                        binding.root,
-                        "Data updated successfully",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                    Alerter.create(requireActivity())
+                        .setTitle(resources.getString(R.string.data_updated_successfully))
+                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.positive_green))
+                        .setIcon(R.drawable.check)
+                        .setDuration(800L)
+                        .show()
                     binding.progressAnimation.progressParent.visibility = View.GONE
                     findNavController().navigateUp()
                 }
@@ -75,11 +77,12 @@ class AddEditFragment : Fragment() {
                 if (status == 3) {
                     Util.log("Status value = $status")
                     deleteStatus.postValue(0)
-                    Snackbar.make(
-                        binding.root,
-                        "Successfully Deleted",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                    Alerter.create(requireActivity())
+                        .setTitle(resources.getString(R.string.data_deleted_successfully))
+                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
+                        .setIcon(R.drawable.delete)
+                        .setDuration(800L)
+                        .show()
                     binding.progressAnimation.progressParent.visibility = View.GONE
                     findNavController().navigateUp()
                 }
@@ -89,11 +92,12 @@ class AddEditFragment : Fragment() {
                 if (it == 3) {
                     saveStatus.value = 0
                     //Success
-                    Snackbar.make(
-                        binding.root,
-                        "Data saved successfully",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                    Alerter.create(requireActivity())
+                        .setTitle(resources.getString(R.string.data_saved_successfully))
+                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.positive_green))
+                        .setIcon(R.drawable.check)
+                        .setDuration(800L)
+                        .show()
                     binding.progressAnimation.progressParent.visibility =
                         View.GONE
                     requireActivity().onBackPressedDispatcher.onBackPressed()
