@@ -134,6 +134,7 @@ class SignInScreen : BaseActivity() {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = task.getResult(ApiException::class.java)!!
+                binding.progressAnimation.progressParent.visibility = View.VISIBLE
                 firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
                 Util.log("Google sign in failed $e")
@@ -153,6 +154,7 @@ class SignInScreen : BaseActivity() {
                         this, "Authentication failed.",
                         Toast.LENGTH_SHORT
                     ).show()
+                    binding.progressAnimation.progressParent.visibility = View.GONE
                 }
             }
     }
@@ -176,6 +178,8 @@ class SignInScreen : BaseActivity() {
     private fun fetchUserForLogIn() {
         val user = firebaseViewModel.userLiveData.value
         val listAccounts = firebaseViewModel.accountsLiveData.value
+
+        binding.progressAnimation.progressParent.visibility = View.GONE
 
         if (user != null) {
             localUserViewModel.insertUser(user)
