@@ -18,6 +18,7 @@ import com.binay.shaw.justap.databinding.FragmentHomeBinding
 import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
 import com.binay.shaw.justap.helper.Constants
+import com.binay.shaw.justap.helper.ImageUtils
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.createBottomSheet
 import com.binay.shaw.justap.helper.Util.setBottomSheet
@@ -78,6 +79,10 @@ class HomeFragment : BaseFragment() {
 
         toolBar.rightIcon.setOnClickListener {
             showAccountInfoDialog()
+        }
+        binding.profileImage.setOnClickListener {
+            val imageUrl = localUser.userProfilePicture.toString()
+            ImageUtils.showImagePreviewDialog(requireContext(), true, imageUrl, false).show()
         }
     }
 

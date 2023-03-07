@@ -23,6 +23,7 @@ import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.ResultItemAdapter
 import com.binay.shaw.justap.databinding.FragmentScanResultBinding
 import com.binay.shaw.justap.databinding.MyToolbarBinding
+import com.binay.shaw.justap.helper.ImageUtils
 import com.binay.shaw.justap.helper.LinksUtils
 import com.binay.shaw.justap.helper.NotificationHelper
 import com.binay.shaw.justap.helper.Util
@@ -79,7 +80,13 @@ class ResultFragment : Fragment() {
     private fun setUpAboutMe() {
         binding.apply {
             profileImage.setImageResource(R.drawable.aboutme_pfp)
+            profileImage.setOnClickListener {
+                ImageUtils.showImagePreviewDialog(requireContext(), true, null, true).show()
+            }
             profileBannerIV.setImageResource(R.drawable.aboutme_banner)
+            profileBannerIV.setOnClickListener {
+                ImageUtils.showImagePreviewDialog(requireContext(), false, null, true).show()
+            }
             profileNameTV.text = getString(R.string.BinayShaw)
             profileBioTV.text = getString(R.string.AboutMeDescription)
             downloadResume.apply {
@@ -103,6 +110,9 @@ class ResultFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun setUpResultView(resultString: String) {
+
+        var profileImage: String? = null
+        var bannerImage: String? = null
 
         val localUserHistoryViewModel = ViewModelProvider(
             this@ResultFragment,
@@ -130,6 +140,9 @@ class ResultFragment : Fragment() {
             createLocalHistory(it, localUserHistoryViewModel)
 
             val tempUser = it
+            profileImage = tempUser.profilePictureURI.toString()
+            bannerImage = tempUser.profileBannerURI.toString()
+
 
             binding.apply {
                 profileNameTV.text = tempUser.name
@@ -138,17 +151,24 @@ class ResultFragment : Fragment() {
                 else
                     profileBioTV.visibility = View.GONE
 
-                if (!tempUser.profilePictureURI.isNullOrEmpty()) {
-                    Util.loadImagesWithGlide(binding.profileImage, tempUser.profilePictureURI)
+                if (profileImage.isNullOrEmpty().not()) {
+                    Util.loadImagesWithGlide(binding.profileImage, profileImage!!)
                 }
-                if (!tempUser.profileBannerURI.isNullOrEmpty()) {
-                    Util.loadImagesWithGlide(binding.profileBannerIV, tempUser.profileBannerURI)
+
+                if (bannerImage.isNullOrEmpty().not()) {
+                    Util.loadImagesWithGlide(binding.profileBannerIV, bannerImage!!)
                 }
 
                 val builder = createNotificationBuilder(it.name)
                 notificationHelper.showNotification(notificationId, builder)
-
             }
+        }
+
+        binding.profileImage.setOnClickListener {
+            ImageUtils.showImagePreviewDialog(requireContext(), true, profileImage, false).show()
+        }
+        binding.profileBannerIV.setOnClickListener {
+            ImageUtils.showImagePreviewDialog(requireContext(), false, bannerImage, false).show()
         }
 
     }
