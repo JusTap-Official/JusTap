@@ -24,7 +24,6 @@ import com.binay.shaw.justap.helper.Util.createBottomSheet
 import com.binay.shaw.justap.helper.Util.setBottomSheet
 import com.binay.shaw.justap.viewModel.AccountsViewModel
 import com.binay.shaw.justap.model.Accounts
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.FirebaseDatabase
 import com.tapadoo.alerter.Alerter
 
@@ -64,7 +63,12 @@ class AddEditFragment : Fragment() {
                     updateStatus.postValue(0)
                     Alerter.create(requireActivity())
                         .setTitle(resources.getString(R.string.data_updated_successfully))
-                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.positive_green))
+                        .setBackgroundColorInt(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.positive_green
+                            )
+                        )
                         .setIcon(R.drawable.check)
                         .setDuration(800L)
                         .show()
@@ -79,7 +83,12 @@ class AddEditFragment : Fragment() {
                     deleteStatus.postValue(0)
                     Alerter.create(requireActivity())
                         .setTitle(resources.getString(R.string.data_deleted_successfully))
-                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
+                        .setBackgroundColorInt(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.negative_red
+                            )
+                        )
                         .setIcon(R.drawable.delete)
                         .setDuration(800L)
                         .show()
@@ -94,7 +103,12 @@ class AddEditFragment : Fragment() {
                     //Success
                     Alerter.create(requireActivity())
                         .setTitle(resources.getString(R.string.data_saved_successfully))
-                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.positive_green))
+                        .setBackgroundColorInt(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.positive_green
+                            )
+                        )
                         .setIcon(R.drawable.check)
                         .setDuration(800L)
                         .show()
@@ -464,17 +478,27 @@ class AddEditFragment : Fragment() {
     private fun chooseAccount(it: String) {
 
         setImageOnAccountNameChange(Util.getImageDrawableFromAccountName(it))
+        binding.accountData.apply {
 
-        when (it) {
-            "Phone" -> {
-                binding.accountData.inputType = InputType.TYPE_CLASS_PHONE
+            when (it) {
+                "Phone" -> {
+                    inputType = InputType.TYPE_CLASS_PHONE
+                    hint = resources.getString(R.string.dummy_phone_number)
+                }
+                "Email" -> {
+                    inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+                    hint = resources.getString(R.string.dummy_email)
+                }
+                "WhatsApp" -> {
+                    inputType = InputType.TYPE_CLASS_PHONE
+                    hint = resources.getString(R.string.dummy_phone_number)
+                }
+                else -> {
+                    inputType = InputType.TYPE_CLASS_TEXT
+                    hint = resources.getString(R.string.username123)
+                }
             }
-            "Email" -> {
-                binding.accountData.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
-            }
-            "WhatsApp" -> {
-                binding.accountData.inputType = InputType.TYPE_CLASS_PHONE
-            }
+
         }
     }
 }

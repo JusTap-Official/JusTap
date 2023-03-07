@@ -1,19 +1,14 @@
 package com.binay.shaw.justap.ui.mainScreens.settingsScreen.profileScreen
 
-import android.app.AlertDialog
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
-import com.binay.shaw.justap.databinding.FragmentImagePreviewBinding
 import com.binay.shaw.justap.databinding.FragmentProfileBinding
 import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.binay.shaw.justap.helper.Constants
@@ -21,7 +16,6 @@ import com.binay.shaw.justap.helper.ImageUtils
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
-import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -59,12 +53,12 @@ class ProfileFragment : Fragment() {
 
         binding.profileImage.setOnClickListener {
             val imageUrl = localUser.userProfilePicture.toString()
-                ImageUtils.showImagePreviewDialog(requireContext(), true, imageUrl, false).show()
+            ImageUtils.showImagePreviewDialog(requireContext(), true, imageUrl, false).show()
         }
 
         binding.profileBannerIV.setOnClickListener {
             val imageUrl = localUser.userBannerPicture.toString()
-                ImageUtils.showImagePreviewDialog(requireContext(), false, imageUrl, false).show()
+            ImageUtils.showImagePreviewDialog(requireContext(), false, imageUrl, false).show()
         }
 
         return binding.root

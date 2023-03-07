@@ -109,6 +109,8 @@
     <string name="data_updated_successfully">Data updated successfully</string>
     <string name="data_saved_successfully">Data saved successfully</string>
     <string name="data_deleted_successfully">Data deleted successfully</string>
+    <string name="dummy_phone_number">+91-XXX-XXX-XXXX</string>
+    <string name="dummy_email">xyz1234@gmail.com</string>
 
     <string-array name="account_names">
         <item>Phone</item>

@@ -1,4 +1,4 @@
-package com.binay.shaw.justap.ui.mainScreens.resultScreen
+package com.binay.shaw.justap.ui.mainScreens.qrScreens
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -30,13 +30,13 @@ import com.binay.shaw.justap.helper.Util.setBottomSheet
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
-import com.tapadoo.alerter.Alerter
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.Executors
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
+@Suppress("DEPRECATION")
 class ScannerFragment : Fragment() {
 
     companion object {
@@ -56,7 +56,16 @@ class ScannerFragment : Fragment() {
     private val screenAspectRatio: Int
         get() {
             // Get screen metrics used to setup camera for full screen resolution
-            val metrics = DisplayMetrics().also { pvScan.display?.getRealMetrics(it) }
+            val metrics = DisplayMetrics()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                val display = requireActivity().display
+                display?.getRealMetrics(metrics)
+            } else {
+                @Suppress("DEPRECATION")
+                val display = requireActivity().windowManager.defaultDisplay
+                @Suppress("DEPRECATION")
+                display.getMetrics(metrics)
+            }
             return aspectRatio(metrics.widthPixels, metrics.heightPixels)
         }
 
@@ -121,7 +130,7 @@ class ScannerFragment : Fragment() {
         requireView().isFocusableInTouchMode = true
         requireView().requestFocus()
         requireView().setOnKeyListener { _, keyCode, event ->
-            if (event.action === KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+            if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
                 handleBackButtonPress()
                 true
             } else false

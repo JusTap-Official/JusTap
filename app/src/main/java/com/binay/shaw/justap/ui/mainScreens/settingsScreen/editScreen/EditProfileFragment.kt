@@ -23,14 +23,12 @@ import com.binay.shaw.justap.helper.Util.setBottomSheet
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
 import com.bumptech.glide.Glide
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import com.tapadoo.alerter.Alerter
 import kotlinx.coroutines.launch
-import java.util.*
 import kotlin.collections.HashMap
 
 
@@ -98,7 +96,7 @@ class EditProfileFragment : Fragment() {
         requireView().isFocusableInTouchMode = true
         requireView().requestFocus()
         requireView().setOnKeyListener { _, keyCode, event ->
-            if (event.action === KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+            if (event.action == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
                 handleBackButtonPress()
                 true
             } else false
@@ -264,8 +262,8 @@ class EditProfileFragment : Fragment() {
         profileBannerURI: Uri?
     ): Boolean {
         if (inputName.isEmpty() && inputBio.isEmpty() && (profilePictureURI == null ||
-            profilePictureURI.toString()
-                .isEmpty()) && (profileBannerURI == null || profileBannerURI.toString().isEmpty())
+                    profilePictureURI.toString()
+                        .isEmpty()) && (profileBannerURI == null || profileBannerURI.toString().isEmpty())
         ) {
             Toast.makeText(requireContext(), "Make changes to update", Toast.LENGTH_SHORT).show()
             return true
