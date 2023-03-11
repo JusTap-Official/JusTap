@@ -188,51 +188,6 @@ class SignInScreen : BaseActivity() {
         binding.apply {
             include.toolbarTitle.text = getString(R.string.LogIn)
             btnLogIn.buttonText.text = getString(R.string.signin)
-//            etPassword.handlePasswordVisibility(baseContext)
         }
     }
-
-
-//    private fun signInWithGoogle() {
-//        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//            .requestIdToken(getString(R.string.default_web_client_id))
-//            .requestEmail()
-//            .build()
-//
-//        val googleSignInClient = GoogleSignIn.getClient(this, gso)
-//        val signInIntent = googleSignInClient.signInIntent
-//        startActivityForResult(signInIntent, RC_SIGN_IN)
-//    }
-
-//    @Deprecated("Deprecated in Java")
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == RC_SIGN_IN) {
-//            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-//            try {
-//                val account = task.getResult(ApiException::class.java)!!
-//                binding.progressAnimation.progressParent.visibility = View.VISIBLE
-//                firebaseAuthWithGoogle(account.idToken!!)
-//            } catch (e: ApiException) {
-//                Util.log("Google sign in failed $e")
-//            }
-//        }
-//    }
-
-//    private fun firebaseAuthWithGoogle(idToken: String) {
-//        val credential = GoogleAuthProvider.getCredential(idToken, null)
-//        FirebaseAuth.getInstance().signInWithCredential(credential)
-//            .addOnCompleteListener(this) { task ->
-//                if (task.isSuccessful) {
-//                    firebaseViewModel.signInWithGoogle(FirebaseAuth.getInstance().currentUser)
-//                } else {
-//                    Util.log("signInWithCredential:failure ${task.exception}")
-//                    Toast.makeText(
-//                        this, "Authentication failed.",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                    binding.progressAnimation.progressParent.visibility = View.GONE
-//                }
-//            }
-//    }
 }

@@ -12,30 +12,38 @@
         android:id="@+id/include"
         layout="@layout/my_toolbar" />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:orientation="vertical"
         android:paddingLeft="16dp"
         android:paddingTop="40dp"
         android:paddingRight="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include">
+        app:layout_constraintTop_toBottomOf="@+id/include"
+        app:layout_constraintVertical_bias="1.0">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/textView6"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
             android:fontFamily="@font/roboto_bold"
             android:text="@string/sign_up"
             android:textColor="@color/text_color"
-            android:textSize="40sp" />
+            android:textSize="40sp"
+            android:gravity="start"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/etName"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/edittext_box"
             android:fontFamily="@font/roboto"
             android:hint="@string/enter_your_name"
@@ -43,6 +51,8 @@
             android:paddingStart="16dp"
             android:textColor="@color/text_color"
             android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/textView6"
+            app:layout_constraintTop_toBottomOf="@+id/textView6"
             tools:ignore="RtlSymmetry" />
 
         <TextView
@@ -55,6 +65,8 @@
             android:textColor="@color/negative_red"
             android:textSize="13sp"
             android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/etName"
+            app:layout_constraintTop_toBottomOf="@+id/etName"
             tools:text="Enter your name" />
 
         <EditText
@@ -68,6 +80,10 @@
             android:inputType="textEmailAddress"
             android:paddingStart="16dp"
             android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/etName"
+            app:layout_constraintStart_toStartOf="@+id/etName"
+            app:layout_constraintTop_toBottomOf="@+id/nameHelperTV"
+            app:layout_goneMarginTop="20dp"
             tools:ignore="RtlSymmetry" />
 
         <TextView
@@ -80,6 +96,8 @@
             android:textColor="@color/negative_red"
             android:textSize="13sp"
             android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/etEmail"
+            app:layout_constraintTop_toBottomOf="@+id/etEmail"
             tools:text="Enter your email" />
 
         <EditText
@@ -88,14 +106,26 @@
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/edittext_box"
-            android:drawableEnd="@drawable/visibility_on"
             android:fontFamily="@font/roboto"
             android:hint="@string/enter_your_password"
             android:inputType="textPassword"
             android:longClickable="false"
-            android:paddingStart="16dp"
-            android:paddingEnd="15dp"
-            android:textSize="16sp" />
+            android:paddingHorizontal="15dp"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/emailHelperTV"
+            app:layout_constraintStart_toStartOf="@+id/emailHelperTV"
+            app:layout_constraintTop_toBottomOf="@+id/emailHelperTV"
+            app:layout_goneMarginTop="20dp" />
+
+        <ImageView
+            android:id="@+id/passwordToggle"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:paddingHorizontal="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/etPassword"
+            app:layout_constraintEnd_toEndOf="@+id/etPassword"
+            app:layout_constraintTop_toTopOf="@+id/etPassword"
+            app:srcCompat="@drawable/visibility_on" />
 
         <TextView
             android:id="@+id/passwordHelperTV"
@@ -107,6 +137,8 @@
             android:textColor="@color/negative_red"
             android:textSize="13sp"
             android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/etPassword"
+            app:layout_constraintTop_toBottomOf="@+id/etPassword"
             tools:text="Password must contains uppercase, lowercase, digit and symbol" />
 
         <include
@@ -114,15 +146,21 @@
             layout="@layout/primary_progress_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="20dp" />
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toBottomOf="@+id/passwordHelperTV"
+            app:layout_goneMarginTop="20dp" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/linearLayout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="25dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toBottomOf="@+id/btnCreateAccount">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -137,17 +175,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_bold"
-                android:paddingStart="15dp"
-                android:paddingTop="5dp"
-                android:paddingEnd="15dp"
-                android:paddingBottom="5dp"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="5dp"
                 android:text="@string/LogIn"
                 android:textColor="@color/medium_blue"
                 android:textSize="16sp" />
 
         </LinearLayout>
 
-    </LinearLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

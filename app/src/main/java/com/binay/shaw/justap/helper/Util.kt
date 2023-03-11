@@ -16,13 +16,9 @@ import android.os.Environment
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.provider.MediaStore
-import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.util.Patterns
-import android.view.MotionEvent
 import android.view.View
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.binay.shaw.justap.R
@@ -319,50 +315,6 @@ object Util {
             .setIcon(R.drawable.wifi_off)
             .setDuration(2000L)
             .show()
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    fun EditText.handlePasswordVisibility(context: Context) {
-        // Hide and Show Password
-        var passwordVisible = false
-
-        setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.visibility_on, 0)
-        compoundDrawablePadding = 16 // add padding to increase touch area
-
-        setOnTouchListener { _, event ->
-            if (event.actionMasked == MotionEvent.ACTION_UP) {
-                val drawableEnd = compoundDrawablesRelative[2]
-                if (drawableEnd != null && event.x >= width - drawableEnd.bounds.width()) {
-                    val cursorPosition = selectionStart // save current cursor position
-                    passwordVisible = !passwordVisible
-                    if (passwordVisible) {
-                        transformationMethod = null
-                        setCompoundDrawablesRelativeWithIntrinsicBounds(
-                            0,
-                            0,
-                            R.drawable.visibility_off,
-                            0
-                        )
-                    } else {
-                        transformationMethod = PasswordTransformationMethod()
-                        setCompoundDrawablesRelativeWithIntrinsicBounds(
-                            0,
-                            0,
-                            R.drawable.visibility_on,
-                            0
-                        )
-                    }
-                    // Hide the keyboard
-                    setSelection(cursorPosition)
-
-                    val imm =
-                        context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(windowToken, 0)
-                    return@setOnTouchListener true
-                }
-            }
-            false
-        }
     }
 
     fun getCurrentDate(): String {
