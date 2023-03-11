@@ -27,27 +27,33 @@ class FirebaseViewModel : ViewModel() {
     private val firebaseRepository: FirebaseRepository = FirebaseRepository()
     val googleSignInStatus = MutableLiveData<Boolean>()
     val registerStatus = MutableLiveData<Boolean>()
+    val resetPasswordRequest = MutableLiveData<Boolean>()
 
 
-    fun deleteUser() {
-        viewModelScope.launch {
-            firebaseRepository.deleteUser()
-            FirebaseAuth.getInstance().signOut()
-        }
+    fun deleteUser() = viewModelScope.launch {
+        firebaseRepository.deleteUser()
+        FirebaseAuth.getInstance().signOut()
     }
 
-    fun logInUser(email: String, password: String) {
-        viewModelScope.launch {
-            val user = firebaseRepository.loginUser(email, password)
-            if (user != null) {
-                Util.log("User ID: $user \n ${user.uid}")
-                databaseReference.child(Constants.users).child(user.uid).get()
-                    .addOnSuccessListener {
-                        firebaseUserToLocalUser(it)
-                    }.addOnFailureListener {
-                        errorLiveData.postValue(it.message.toString())
-                    }
+    fun resetPassword(email: String) = viewModelScope.launch(Dispatchers.IO) {
+        val progress = FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+            .addOnSuccessListener {
+                resetPasswordRequest.postValue(true)
+            }.addOnFailureListener {
+                errorLiveData.postValue(it.message.toString())
             }
+    }
+
+    fun logInUser(email: String, password: String) = viewModelScope.launch {
+        val user = firebaseRepository.loginUser(email, password)
+        if (user != null) {
+            Util.log("User ID: $user \n ${user.uid}")
+            databaseReference.child(Constants.users).child(user.uid).get()
+                .addOnSuccessListener {
+                    firebaseUserToLocalUser(it)
+                }.addOnFailureListener {
+                    errorLiveData.postValue(it.message.toString())
+                }
         }
     }
 
@@ -125,21 +131,18 @@ class FirebaseViewModel : ViewModel() {
         }
     }
 
-    fun createNewAccount(name: String, email: String, password: String) {
+    fun createNewAccount(name: String, email: String, password: String) = viewModelScope.launch {
+        val userId = firebaseRepository.registerUser(email, password)?.uid
+        if (userId != null) {
+            val user = User(userId, name, email)
 
-        viewModelScope.launch {
-            val userId = firebaseRepository.registerUser(email, password)?.uid
-            if (userId != null) {
-                val user = User(userId, name, email)
-
-                FirebaseDatabase.getInstance().reference.child(Constants.users)
-                    .child(userId).setValue(user).addOnSuccessListener {
-                        FirebaseAuth.getInstance().signOut()
-                        registerStatus.postValue(true)
-                    }.addOnFailureListener {
-                        errorLiveData.postValue(it.message.toString())
-                    }
-            }
+            FirebaseDatabase.getInstance().reference.child(Constants.users)
+                .child(userId).setValue(user).addOnSuccessListener {
+                    FirebaseAuth.getInstance().signOut()
+                    registerStatus.postValue(true)
+                }.addOnFailureListener {
+                    errorLiveData.postValue(it.message.toString())
+                }
         }
     }
 }

@@ -215,22 +215,28 @@ object Util {
      * 6 - password must contains Uppercase, lowercase and symbols
      * 7 - success
      * */
-    fun validateUserAuthInput(name: String?, email: String, password: String): Int {
+    fun validateUserAuthInput(name: String?, email: String?, password: String?): Int {
 
-        if (name != null)
+        name?.let {
             if (name.isEmpty())
                 return 1
+        }
+        email?.let {
+            if (email.isEmpty())
+                return 2
+            else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())
+                return 3
+        }
 
-        if (email.isEmpty())
-            return 2
-        else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())
-            return 3
-        else if (password.isEmpty())
-            return 4
-        else if (password.length < 8)
-            return 5
-        else if (!isValidPassword(password))
-            return 6
+        password?.let {
+            if (password.isEmpty())
+                return 4
+            else if (password.length < 8)
+                return 5
+            else if (!isValidPassword(password))
+                return 6
+        }
+
         return 7
     }
 

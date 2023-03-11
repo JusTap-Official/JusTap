@@ -114,6 +114,7 @@
     <string name="forgot_password">Forgot password?</string>
     <string name="create">Create</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="email_sent">Email Sent</string>
 
     <string-array name="account_names">
         <item>Phone</item>

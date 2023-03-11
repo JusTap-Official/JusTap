@@ -29,11 +29,11 @@ class SignUpScreen : BaseActivity() {
 
         initViews()
         initObservers()
-        handleOperations()
+        handleClicks()
 
     }
 
-    private fun handleOperations() {
+    private fun handleClicks() {
         binding.run {
 
             //Sign Up Button
