@@ -111,6 +111,9 @@
     <string name="data_deleted_successfully">Data deleted successfully</string>
     <string name="dummy_phone_number">+91-XXX-XXX-XXXX</string>
     <string name="dummy_email">xyz1234@gmail.com</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="create">Create</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
 
     <string-array name="account_names">
         <item>Phone</item>
