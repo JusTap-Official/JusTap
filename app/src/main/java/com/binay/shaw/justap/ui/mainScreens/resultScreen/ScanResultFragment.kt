@@ -48,8 +48,8 @@ class ResultFragment : Fragment() {
     private lateinit var recyclerViewAdapter: ResultItemAdapter
 
     private lateinit var notificationHelper: NotificationHelper
-    private val channelId = "NotificationChannelId"
-    private val channelName = "Notification Channel Name"
+    private val channelId = resources.getString(R.string.channel_id)
+    private val channelName = resources.getString(R.string.channel_name)
     private val notificationId = 1
 
     @RequiresApi(Build.VERSION_CODES.M)

@@ -115,6 +115,8 @@
     <string name="create">Create</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="email_sent">Email Sent</string>
+    <string name="channel_id">NotificationChannelId</string>
+    <string name="channel_name">Notification Channel Name</string>
 
     <string-array name="account_names">
         <item>Phone</item>

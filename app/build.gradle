@@ -79,6 +79,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-messaging:23.1.2'
+
 
     //Room Database
     implementation("androidx.room:room-runtime:$room_version")
