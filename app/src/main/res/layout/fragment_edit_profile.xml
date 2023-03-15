@@ -47,6 +47,17 @@
 
     </androidx.cardview.widget.CardView>
 
+    <ProgressBar
+        android:id="@+id/banner_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/imageCard"
+        app:layout_constraintEnd_toEndOf="@+id/imageCard"
+        app:layout_constraintStart_toStartOf="@+id/imageCard"
+        app:layout_constraintTop_toTopOf="@+id/imageCard" />
+
+
     <ImageView
         android:id="@+id/editBanner"
         android:layout_width="wrap_content"
@@ -71,6 +82,16 @@
         app:layout_constraintStart_toStartOf="@+id/imageCard"
         app:layout_constraintTop_toBottomOf="@+id/imageCard"
         app:layout_constraintVertical_bias="0.5" />
+
+    <ProgressBar
+        android:id="@+id/avatar_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+        app:layout_constraintEnd_toEndOf="@+id/profile_image"
+        app:layout_constraintStart_toStartOf="@+id/profile_image"
+        app:layout_constraintTop_toTopOf="@+id/profile_image" />
 
     <ImageView
         android:id="@+id/editPFP"

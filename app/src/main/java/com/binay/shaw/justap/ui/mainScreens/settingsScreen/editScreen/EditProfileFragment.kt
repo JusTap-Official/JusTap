@@ -1,8 +1,10 @@
 package com.binay.shaw.justap.ui.mainScreens.settingsScreen.editScreen
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.*
 import android.widget.ImageView
 import android.widget.Toast
@@ -23,6 +25,7 @@ import com.binay.shaw.justap.helper.Util.setBottomSheet
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
 import com.bumptech.glide.Glide
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
@@ -76,21 +79,30 @@ class EditProfileFragment : Fragment() {
         }
 
         binding.editBanner.setOnClickListener {
-            val galleryIntent = Intent(Intent.ACTION_PICK)
-            galleryIntent.type = "image/*"
             editImageMode = 2
-            imagePickerActivityResult.launch(galleryIntent)
+            ImagePicker.with(this)
+                .compress(1024)
+                .crop(5f, 2f)
+                .createIntent {
+                    binding.bannerProgressBar.visibility = View.VISIBLE
+                    imagePickerActivityResult.launch(it)
+                }
         }
 
         binding.editPFP.setOnClickListener {
-            val galleryIntent = Intent(Intent.ACTION_PICK)
-            galleryIntent.type = "image/*"
             editImageMode = 1
-            imagePickerActivityResult.launch(galleryIntent)
+            ImagePicker.with(this)
+                .compress(1024)
+                .cropSquare()
+                .createIntent {
+                    binding.avatarProgressBar.visibility = View.VISIBLE
+                    imagePickerActivityResult.launch(it)
+                }
         }
 
         return binding.root
     }
+
     override fun onResume() {
         super.onResume()
         requireView().isFocusableInTouchMode = true
@@ -108,14 +120,16 @@ class EditProfileFragment : Fragment() {
         val inputBio = binding.newBioET.text.toString().trim()
 
         if (inputName.isNotEmpty() || inputBio.isNotEmpty()
-            || profileBannerURI != null || profilePictureURI != null) {
+            || profileBannerURI != null || profilePictureURI != null
+        ) {
 
             val dialog = OptionsModalBinding.inflate(layoutInflater)
             val bottomSheet = requireContext().createBottomSheet()
             dialog.apply {
 
                 optionsHeading.text = requireContext().resources.getString(R.string.DiscardChanged)
-                optionsContent.text = requireContext().resources.getString(R.string.DiscardChangedDescription)
+                optionsContent.text =
+                    requireContext().resources.getString(R.string.DiscardChangedDescription)
                 positiveOption.text = requireContext().resources.getString(R.string.Discard)
                 positiveOption.setTextColor(
                     ContextCompat.getColor(
@@ -141,8 +155,7 @@ class EditProfileFragment : Fragment() {
                 }
             }
             dialog.root.setBottomSheet(bottomSheet)
-        }
-        else
+        } else
             requireActivity().onBackPressedDispatcher.onBackPressed()
     }
 
@@ -168,17 +181,30 @@ class EditProfileFragment : Fragment() {
         dialog.apply {
 
             optionsHeading.text = requireContext().resources.getString(R.string.ConfirmChanges)
-            optionsContent.text = requireContext().resources.getString(R.string.ConfirmChangesDescription)
+            optionsContent.text =
+                requireContext().resources.getString(R.string.ConfirmChangesDescription)
             positiveOption.text = requireContext().resources.getString(R.string.SaveChanges)
-            positiveOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.negative_red))
+            positiveOption.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.negative_red
+                )
+            )
             negativeOption.text = requireContext().resources.getString(R.string.DontSave)
-            negativeOption.setTextColor(ContextCompat.getColor(requireContext(), R.color.text_color))
+            negativeOption.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.text_color
+                )
+            )
             positiveOption.setOnClickListener {
                 bottomSheet.dismiss()
                 binding.progressAnimation.progressParent.visibility = View.VISIBLE
 
-                requireActivity().window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+                requireActivity().window.setFlags(
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                )
 
                 Util.log("Save")
 
@@ -208,7 +234,8 @@ class EditProfileFragment : Fragment() {
                     editProfileViewModel.updateUser(
                         firebaseDatabase, storageRef, originalID,
                         hashMap, originalPFP!!, originalBanner!!, profilePictureURI,
-                        profileBannerURI, localUserViewModel)
+                        profileBannerURI, localUserViewModel
+                    )
                 }
 
                 editProfileViewModel.status.observe(viewLifecycleOwner) {
@@ -219,7 +246,12 @@ class EditProfileFragment : Fragment() {
                         Alerter.create(requireActivity())
                             .setTitle(resources.getString(R.string.profile_updated))
                             .setText(resources.getString(R.string.profile_updated_description))
-                            .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.positive_green))
+                            .setBackgroundColorInt(
+                                ContextCompat.getColor(
+                                    requireContext(),
+                                    R.color.positive_green
+                                )
+                            )
                             .setIcon(R.drawable.check)
                             .setDuration(2500L)
                             .show()
@@ -238,21 +270,48 @@ class EditProfileFragment : Fragment() {
 
     private var imagePickerActivityResult: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result != null) {
-                val imageUri: Uri? = result.data?.data
-                if (imageUri != null) {
+            val resultCode = result.resultCode
+            val data = result.data
+
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    //Image Uri will not be null for RESULT_OK
+                    val fileUri = data?.data!!
+
+                    val bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, fileUri)
+                    Util.log("Image Uri is: $fileUri && Bitmap is: $bitmap")
                     if (editImageMode == 1) {
-                        profilePictureURI = imageUri
-                        binding.profileImage.setImageURI(imageUri)
-                    } else {
-                        profileBannerURI = imageUri
-                        binding.profileBannerIV.setImageURI(imageUri)
+                        profilePictureURI = fileUri
+                        binding.profileImage.setImageBitmap(bitmap)
+
+                    } else if (editImageMode == 2) {
+                        profileBannerURI = fileUri
+                        binding.bannerProgressBar.visibility = View.GONE
+                        binding.profileBannerIV.setImageBitmap(bitmap)
                         binding.profileBannerIV.scaleType = ImageView.ScaleType.CENTER_CROP
                     }
-                    editImageMode = 0
+                    clearImageRequestOperations()
+                }
+                ImagePicker.RESULT_ERROR -> {
+                    Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT)
+                        .show()
+                    clearImageRequestOperations()
+
+                }
+                else -> {
+                    Toast.makeText(requireContext(), "Task Cancelled", Toast.LENGTH_SHORT).show()
+                    clearImageRequestOperations()
                 }
             }
         }
+
+    private fun clearImageRequestOperations() {
+        if (editImageMode == 1)
+            binding.avatarProgressBar.visibility = View.GONE
+        else if (editImageMode == 2)
+        binding.bannerProgressBar.visibility = View.GONE
+        editImageMode = 0
+    }
 
 
     private fun isInvalidData(
@@ -263,7 +322,8 @@ class EditProfileFragment : Fragment() {
     ): Boolean {
         if (inputName.isEmpty() && inputBio.isEmpty() && (profilePictureURI == null ||
                     profilePictureURI.toString()
-                        .isEmpty()) && (profileBannerURI == null || profileBannerURI.toString().isEmpty())
+                        .isEmpty()) && (profileBannerURI == null || profileBannerURI.toString()
+                .isEmpty())
         ) {
             Toast.makeText(requireContext(), "Make changes to update", Toast.LENGTH_SHORT).show()
             return true
