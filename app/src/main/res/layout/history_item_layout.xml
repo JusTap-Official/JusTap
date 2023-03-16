@@ -76,6 +76,8 @@
                         android:fontFamily="@font/roboto_bold"
                         android:textColor="@color/text_color"
                         android:textSize="18sp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         tools:text="Account name" />
 
                     <TextView

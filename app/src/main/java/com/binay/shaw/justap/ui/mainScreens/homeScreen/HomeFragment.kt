@@ -17,7 +17,6 @@ import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.databinding.FragmentHomeBinding
 import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
-import com.binay.shaw.justap.helper.Constants
 import com.binay.shaw.justap.helper.ImageUtils
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.createBottomSheet
@@ -190,9 +189,7 @@ class HomeFragment : BaseFragment() {
             )
             Util.userID = it.userID
 
-            var name = Util.getFirstName(localUser.userName)
-            if (name.length > 10)
-                name = Util.shrinkText(name, Constants.name_display_length_limit - 6)
+            val name = Util.getFirstName(localUser.userName)
             binding.profileNameTV.text = "Hi $name,"
 
             binding.profileBioTV.text = localUser.userBio

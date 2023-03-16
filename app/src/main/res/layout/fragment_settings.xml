@@ -54,7 +54,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="@font/roboto_medium"
-                android:text="Binay Shaw"
+                tools:text="Binay Shaw"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textColor="@color/text_color"
                 android:textSize="25sp" />
 
@@ -62,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_bold"
-                android:text="View full profile"
+                android:text="@string/view_full_profile"
                 android:textColor="@color/medium_blue"
                 android:textSize="16sp" />
 
@@ -78,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Made with ♥ v1.0"
+            android:text="@string/made_with_version"
             android:textColor="@color/text_color" />
 
     </LinearLayout>

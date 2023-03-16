@@ -117,6 +117,8 @@
     <string name="email_sent">Email Sent</string>
     <string name="channel_id">NotificationChannelId</string>
     <string name="channel_name">Notification Channel Name</string>
+    <string name="made_with_version">Made with ♥ v1.0</string>
+    <string name="view_full_profile">View full profile</string>
 
     <string-array name="account_names">
         <item>Phone</item>

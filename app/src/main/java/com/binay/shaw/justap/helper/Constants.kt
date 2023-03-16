@@ -19,5 +19,4 @@ object Constants {
     const val impressionCount = "impressionCount"
     const val analytics = "analytics"
     const val added_on = "Added on"
-    const val name_display_length_limit = 16
 }

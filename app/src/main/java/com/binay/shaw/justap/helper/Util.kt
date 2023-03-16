@@ -329,12 +329,4 @@ object Util {
         return dateFormat.format(date)
     }
 
-    fun shrinkText(inputString: String, limit: Int): String {
-        val outputString = StringBuilder()
-
-        outputString.append(inputString.substring(0, limit + 1))
-            .append("...")
-
-        return outputString.toString()
-    }
 }

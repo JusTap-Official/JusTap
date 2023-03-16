@@ -32,7 +32,6 @@ import com.binay.shaw.justap.databinding.ColorpickerModalBinding
 import com.binay.shaw.justap.databinding.FragmentSettingsBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
-import com.binay.shaw.justap.helper.Constants
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.createBottomSheet
 import com.binay.shaw.justap.helper.Util.dpToPx
@@ -402,10 +401,9 @@ class SettingsFragment : Fragment() {
                     it.userBannerPicture
                 )
             }
-            var name = Util.getFirstName(localUser.userName)
-            if (name.length > 10)
-                name = Util.shrinkText(name, Constants.name_display_length_limit - 6)
+            val name = Util.getFirstName(localUser.userName)
             binding.settingsUserName.text = name
+
             val profileURL = localUser.userProfilePicture.toString()
             if (profileURL.isNotEmpty())
                 Util.loadImagesWithGlide(binding.profileImage, profileURL)
