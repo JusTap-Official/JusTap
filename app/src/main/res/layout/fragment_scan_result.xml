@@ -79,6 +79,7 @@
             android:fontFamily="@font/roboto_bold"
             android:textColor="@color/text_color"
             android:textSize="24sp"
+            android:gravity="center"
             tools:text="User full name" />
 
         <TextView

@@ -485,7 +485,7 @@ class AddEditFragment : Fragment() {
             accountDataTvString.append(resources.getString(R.string.enter))
 
             when (it) {
-                "Phone" -> {
+                resources.getStringArray(R.array.account_names)[0] -> {
                     accountData.apply {
                         inputType = InputType.TYPE_CLASS_PHONE
                         hint = resources.getString(R.string.dummy_phone_number)
@@ -493,7 +493,7 @@ class AddEditFragment : Fragment() {
                     accountDataTvString.append(it).append(resources.getString(R.string.number))
                     accountInputTV.text = accountDataTvString.toString()
                 }
-                "Email" -> {
+                resources.getStringArray(R.array.account_names)[1] -> {
                     accountData.apply {
                         inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
                         hint = resources.getString(R.string.dummy_email)
@@ -501,7 +501,7 @@ class AddEditFragment : Fragment() {
                     accountDataTvString.append(it)
                     binding.accountInputTV.text = accountDataTvString.toString()
                 }
-                "WhatsApp" -> {
+                resources.getStringArray(R.array.account_names)[16] -> {
                     accountData.apply {
                         inputType = InputType.TYPE_CLASS_PHONE
                         hint = resources.getString(R.string.dummy_phone_number)
@@ -514,7 +514,7 @@ class AddEditFragment : Fragment() {
                         inputType = InputType.TYPE_CLASS_TEXT
                         hint = resources.getString(R.string.username123)
                     }
-                    accountDataTvString.append(it).append(" URL/Username")
+                    accountDataTvString.append(it).append(resources.getString(R.string.url_username))
                     accountInputTV.text = accountDataTvString.toString()
                 }
             }

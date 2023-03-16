@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.ContactsContract
+import com.binay.shaw.justap.R
 import com.binay.shaw.justap.model.Accounts
 
 
@@ -12,15 +13,16 @@ object LinksUtils {
     fun processData(accounts: Accounts, context: Context) {
         val accountName = accounts.accountName
         val data = accounts.accountData
+        val accountNameArray = context.resources.getStringArray(R.array.account_names)
         when (accountName) {
-            "Phone" -> {
-                addToContacts(data, accountName, context)
 
+            accountNameArray[0] -> {
+                addToContacts(data, accountName, context)
             }
-            "Email" -> {
+            accountNameArray[1] -> {
                 sendEmail(data, context)
             }
-            "Instagram" -> {
+            accountNameArray[2] -> {
                 val regex = "instagram.com/"
                 if (data.contains(regex) || isLink(data)) {
                     openLink(data, context)
@@ -29,7 +31,7 @@ object LinksUtils {
                     openLink(instagramLink, context)
                 }
             }
-            "LinkedIn" -> {
+            accountNameArray[3] -> {
                 val regex = "linkedin.com/"
                 if (isLink(data) || data.contains(regex)) {
                     openLink(data, context)
@@ -38,7 +40,16 @@ object LinksUtils {
                     openLink(linkedInLink, context)
                 }
             }
-            "Facebook" -> {
+            accountNameArray[4] -> {
+                val regex = "github.com"
+                if (isLink(data) or data.contains(regex)) {
+                    openLink(data, context)
+                } else {
+                    val githubLink = "https://github.com/$data"
+                    openLink(githubLink, context)
+                }
+            }
+            accountNameArray[5] -> {
                 val regex = "facebook.com"
                 if (isLink(data) || data.contains(regex)) {
                     openLink(data, context)
@@ -47,7 +58,7 @@ object LinksUtils {
                     openLink(faceBookLink, context)
                 }
             }
-            "Twitter" -> {
+            accountNameArray[6] -> {
                 val regex = "twitter.com/"
                 if (isLink(data) || data.contains(regex)) {
                     openLink(data, context)
@@ -56,7 +67,7 @@ object LinksUtils {
                     openLink(twitterLink, context)
                 }
             }
-            "YouTube" -> {
+            accountNameArray[7] -> {
                 val regex = "youtube.com/"
                 if (isLink(data) || data.contains(regex)) {
                     openLink(data, context)
@@ -65,7 +76,7 @@ object LinksUtils {
                     openLink(youtubeLink, context)
                 }
             }
-            "Snapchat" -> {
+            accountNameArray[8] -> {
                 val regex = "snapchat.com/add/"
                 if (isLink(data) || data.contains(regex)) {
                     openLink(data, context)
@@ -74,7 +85,7 @@ object LinksUtils {
                     openLink(twitterLink, context)
                 }
             }
-            "Twitch" -> {
+            accountNameArray[9] -> {
                 val regex = "https://www.twitch.tv/"
                 if (isLink(data) || data.contains(regex)) {
                     openLink(data, context)
@@ -83,19 +94,19 @@ object LinksUtils {
                     openLink(twitchLink, context)
                 }
             }
-            "Website" -> {
+            accountNameArray[10] -> {
                 openLink(data, context)
             }
-            "Discord" -> {
+            accountNameArray[11] -> {
                 openLink(data, context)
             }
-            "LinkTree" -> {
+            accountNameArray[12] -> {
                 openLink(data, context)
             }
-            "Custom Link" -> {
+            accountNameArray[13] -> {
                 openLink(data, context)
             }
-            "Telegram" -> {
+            accountNameArray[14] -> {
 
                 val isPhoneNumber = data.matches("^\\d+\$".toRegex())
                 if (isPhoneNumber) {
@@ -104,10 +115,10 @@ object LinksUtils {
                     addTelegramAccountByUsername(data, context)
                 }
             }
-            "Spotify" -> {
+            accountNameArray[15] -> {
                 openLink(data, context)
             }
-            "WhatsApp" -> {
+            accountNameArray[16] -> {
                 addContactToWhatsApp(data, context)
             }
         }

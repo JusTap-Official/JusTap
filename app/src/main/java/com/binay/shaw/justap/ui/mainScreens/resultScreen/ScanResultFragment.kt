@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.ResultItemAdapter
+import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.databinding.FragmentScanResultBinding
 import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.binay.shaw.justap.helper.ImageUtils
@@ -36,7 +37,7 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 
 
-class ResultFragment : Fragment() {
+class ResultFragment : BaseFragment() {
 
     private val args: ResultFragmentArgs by navArgs()
     private var _binding: FragmentScanResultBinding? = null
@@ -47,10 +48,6 @@ class ResultFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdapter: ResultItemAdapter
 
-    private lateinit var notificationHelper: NotificationHelper
-    private val channelId = resources.getString(R.string.channel_id)
-    private val channelName = resources.getString(R.string.channel_name)
-    private val notificationId = 1
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
@@ -159,8 +156,8 @@ class ResultFragment : Fragment() {
                     Util.loadImagesWithGlide(binding.profileBannerIV, bannerImage!!)
                 }
 
-                val builder = createNotificationBuilder(it.name)
-                notificationHelper.showNotification(notificationId, builder)
+//                val builder = createNotificationBuilder(it.name)
+//                notificationHelper.showNotification(notificationId, builder)
             }
         }
 
@@ -206,28 +203,28 @@ class ResultFragment : Fragment() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun createNotificationBuilder(name: String): NotificationCompat.Builder {
-
-        // Create an Intent for the notification action
-        val intent = Intent(requireContext(), MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
-        val pendingIntent = PendingIntent.getActivity(
-            requireContext(),
-            0,
-            intent,
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        )
-
-        // Create a NotificationCompat.Builder object
-        return NotificationCompat.Builder(requireContext(), channelId)
-            .setSmallIcon(R.drawable.notification_icon)
-            .setContentTitle(resources.getString(R.string.successfullyScanned))
-            .setContentText("${Util.getFirstName(name)} was added in history")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setContentIntent(pendingIntent)
-    }
+//    @RequiresApi(Build.VERSION_CODES.M)
+//    private fun createNotificationBuilder(name: String): NotificationCompat.Builder {
+//
+//        // Create an Intent for the notification action
+//        val intent = Intent(requireContext(), MainActivity::class.java).apply {
+//            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//        }
+//        val pendingIntent = PendingIntent.getActivity(
+//            requireContext(),
+//            0,
+//            intent,
+//            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+//        )
+//
+//        // Create a NotificationCompat.Builder object
+//        return NotificationCompat.Builder(requireContext(), channelId)
+//            .setSmallIcon(R.drawable.notification_icon)
+//            .setContentTitle(resources.getString(R.string.successfullyScanned))
+//            .setContentText("${Util.getFirstName(name)} was added in history")
+//            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+//            .setContentIntent(pendingIntent)
+//    }
 
     private fun initialization() {
         (activity as MainActivity).supportActionBar?.hide()
@@ -249,8 +246,8 @@ class ResultFragment : Fragment() {
         }
 
         // Create the Notification Channel
-        notificationHelper = NotificationHelper(requireContext())
-        notificationHelper.createNotificationChannel(channelId, channelName)
+//        notificationHelper = NotificationHelper(requireContext())
+//        notificationHelper.createNotificationChannel(channelId, channelName)
 
         if (args.isResult) {
             toolBar.toolbarTitle.text = resources.getString(R.string.ScanCompleted)

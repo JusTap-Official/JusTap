@@ -275,6 +275,7 @@ object Util {
         map["Email"] = R.drawable.email
         map["Instagram"] = R.drawable.instagram
         map["LinkedIn"] = R.drawable.linkedin
+        map["GitHub"] = R.drawable.github
         map["Facebook"] = R.drawable.facebook
         map["Twitter"] = R.drawable.twitter
         map["YouTube"] = R.drawable.youtube
