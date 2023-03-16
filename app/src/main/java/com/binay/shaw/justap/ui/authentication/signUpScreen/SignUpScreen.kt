@@ -30,7 +30,6 @@ class SignUpScreen : BaseActivity() {
         initViews()
         initObservers()
         handleClicks()
-
     }
 
     private fun handleClicks() {

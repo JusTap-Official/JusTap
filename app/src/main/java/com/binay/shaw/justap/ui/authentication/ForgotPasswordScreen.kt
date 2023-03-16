@@ -31,7 +31,6 @@ class ForgotPasswordScreen : AppCompatActivity() {
         initObservers()
         initialization()
         handleClicks()
-
     }
 
     private fun initObservers() {

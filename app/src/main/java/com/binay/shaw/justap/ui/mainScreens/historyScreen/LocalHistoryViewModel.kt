@@ -3,8 +3,10 @@ package com.binay.shaw.justap.ui.mainScreens.historyScreen
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.binay.shaw.justap.data.LocalUserDatabase
+import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.model.LocalHistory
 import com.binay.shaw.justap.repository.LocalHistoryRepository
 import kotlinx.coroutines.Dispatchers
@@ -14,6 +16,8 @@ import kotlinx.coroutines.launch
 class LocalHistoryViewModel(
     application: Application
 ) : AndroidViewModel(application) {
+
+    val accountListLiveData = MutableLiveData<List<LocalHistory>>()
 
     val getAllHistory : LiveData<List<LocalHistory>>
     private val repository: LocalHistoryRepository

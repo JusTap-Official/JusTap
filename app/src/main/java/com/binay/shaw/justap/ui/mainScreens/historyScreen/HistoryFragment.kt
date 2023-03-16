@@ -5,19 +5,16 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.HistoryAdapter
@@ -40,9 +37,7 @@ class HistoryFragment : BaseFragment() {
     private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
     private lateinit var localUserHistoryViewModel: LocalHistoryViewModel
-    private lateinit var recyclerView: RecyclerView
     private lateinit var historyAdapter: HistoryAdapter
-    private var accountsList = mutableListOf<LocalHistory>()
 
 
     override fun onCreateView(
@@ -51,11 +46,22 @@ class HistoryFragment : BaseFragment() {
     ): View {
 
         _binding = FragmentHistoryBinding.inflate(layoutInflater, container, false)
+        initObservers()
         initialization()
-
         clickHandlers()
 
         return binding.root
+    }
+
+    private fun initObservers() {
+        localUserHistoryViewModel.run {
+            getAllHistory.observe(viewLifecycleOwner) {
+                Util.log("Accounts Scanned: $it")
+                accountListLiveData.value = emptyList()
+                accountListLiveData.postValue(it)
+                historyAdapter.setData(it)
+            }
+        }
     }
 
     private fun clickHandlers() {
@@ -126,7 +132,7 @@ class HistoryFragment : BaseFragment() {
                     } else {
                         binding.clearText.visibility = View.GONE
                         setCompoundDrawablesWithIntrinsicBounds(R.drawable.search, 0, 0, 0)
-                        historyAdapter.setData(accountsList)
+                        historyAdapter.setData(localUserHistoryViewModel.accountListLiveData.value!!)
                     }
                 }
             })
@@ -136,14 +142,14 @@ class HistoryFragment : BaseFragment() {
     private fun filter(search: String) {
         val filterList = mutableListOf<LocalHistory>()
         if (search.isNotEmpty()) {
-            for (current in accountsList) {
+            for (current in localUserHistoryViewModel.accountListLiveData.value!!) {
                 if (Util.getBaseStringForFiltering(current.username.lowercase()).contains(search)) {
                     filterList.add(current)
                 }
             }
             historyAdapter.setData(filterList)
         } else
-            historyAdapter.setData(accountsList)
+            historyAdapter.setData(localUserHistoryViewModel.accountListLiveData.value!!)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -208,7 +214,6 @@ class HistoryFragment : BaseFragment() {
                 leftIcon.visibility = View.VISIBLE
                 leftIcon.setImageResource(R.drawable.info_icon)
             }
-            recyclerView = historyRv
             historyAdapter = HistoryAdapter(
                 requireContext(), { historyUser ->
                     //Handle on click
@@ -222,7 +227,7 @@ class HistoryFragment : BaseFragment() {
                         Util.showNoInternet(requireActivity())
                     }
                 }, { userToDelete ->
-                    //showDialog
+
                     val dialog = OptionsModalBinding.inflate(layoutInflater)
                     val bottomSheet = requireContext().createBottomSheet()
                     dialog.apply {
@@ -273,8 +278,7 @@ class HistoryFragment : BaseFragment() {
                     dialog.root.setBottomSheet(bottomSheet)
                 })
 
-            recyclerView = binding.historyRv
-            recyclerView.apply {
+            binding.historyRv.apply {
                 adapter = historyAdapter
                 layoutManager = LinearLayoutManager(requireContext())
             }
@@ -286,14 +290,6 @@ class HistoryFragment : BaseFragment() {
             ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
         )[LocalHistoryViewModel::
         class.java]
-
-        localUserHistoryViewModel.getAllHistory.observe(viewLifecycleOwner)
-        {
-            Util.log("Accounts Scanned: $it")
-            accountsList.clear()
-            accountsList.addAll(it)
-            historyAdapter.setData(it)
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
