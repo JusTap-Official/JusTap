@@ -22,4 +22,11 @@ object Constants {
     const val firstColor = "firstColor"
     const val secondColor = "secondColor"
     const val qrPref = "QRPref"
+
+    //Personal data:
+    const val myEmail = "binayshaw7777@gmail.com"
+    const val myLinkedIn = "https://www.linkedin.com/in/binayshaw7777/"
+    const val myGitHub = "https://github.com/binayshaw7777"
+    const val myTwitter = "https://twitter.com/binayplays7777"
+    const val myWebsite = "https://bit.ly/binayshaw7777"
 }

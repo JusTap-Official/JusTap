@@ -3,9 +3,7 @@ package com.binay.shaw.justap.ui.mainScreens.resultScreen
 import android.app.Application
 import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.binay.shaw.justap.R
 import com.binay.shaw.justap.base.BaseViewModel
 import com.binay.shaw.justap.helper.Constants
 import com.binay.shaw.justap.helper.Util
@@ -19,11 +17,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import java.util.Objects
 
-/**
- * Created by binay on 04,February,2023
- * */
 
 class ScanResultViewModel(application: Application) : BaseViewModel(application) {
 
@@ -42,23 +36,23 @@ class ScanResultViewModel(application: Application) : BaseViewModel(application)
         val database: DatabaseReference = FirebaseDatabase.getInstance().reference.child("Users")
         database.child(userID).get()
             .addOnSuccessListener {
-                val name = it.child("name").value.toString()
-                val email = it.child("email").value.toString()
-                val profilePicture = it.child("profilePictureURI").value.toString()
-                val profileBanner = it.child("profileBannerURI").value.toString()
+                val name = it.child(Constants.name).value.toString()
+                val email = it.child(Constants.email).value.toString()
+                val profilePicture = it.child(Constants.profilePictureUri).value.toString()
+                val profileBanner = it.child(Constants.profileBannerUri).value.toString()
                 val bio = it.child("bio").value.toString()
 
-                if (it.hasChild("accounts")) {
+                if (it.hasChild(Constants.accounts)) {
                     val accountList = mutableListOf<Accounts>()
                     Util.log("accountsList: $accountList")
-                    it.child("accounts").children.forEach { iterator ->
+                    it.child(Constants.accounts).children.forEach { iterator ->
                         if (iterator != null) {
                             val tempMap = iterator.value as java.util.HashMap<*, *>
                             val acc = Accounts(
-                                (tempMap["accountID"] as Long).toInt(),
-                                tempMap["accountName"] as String,
-                                tempMap["accountData"] as String,
-                                tempMap["showAccount"] as Boolean
+                                (tempMap[Constants.accountId] as Long).toInt(),
+                                tempMap[Constants.accountName] as String,
+                                tempMap[Constants.accountData] as String,
+                                tempMap[Constants.showAccount] as Boolean
                             )
                             accountList.add(acc)
                         }
@@ -97,42 +91,51 @@ class ScanResultViewModel(application: Application) : BaseViewModel(application)
         }
 
 
-    fun getDevelopersAccount() {
+    fun getDevelopersAccount(accountsNameArray: Array<String>) {
 
         val accounts = mutableListOf<Accounts>()
 
-        accounts.add(
-            Accounts(
-                1,
-                "Email",
-                "binayshaw7777@gmail.com",
-                true
+
+        accounts.apply {
+            add(
+                Accounts(
+                    1,
+                    accountsNameArray[1],
+                    Constants.myEmail,
+                    true
+                )
             )
-        )
-        accounts.add(
-            Accounts(
-                3,
-                "LinkedIn",
-                "https://www.linkedin.com/in/binayshaw7777/",
-                true
+            add(
+                Accounts(
+                    3,
+                    accountsNameArray[3],
+                    Constants.myLinkedIn,
+                    true
+                )
             )
-        )
-        accounts.add(
-            Accounts(
-                5,
-                "Twitter",
-                "https://twitter.com/binayplays7777",
-                true
+            add(
+                Accounts(4,
+                    accountsNameArray[4],
+                    Constants.myGitHub,
+                    true)
             )
-        )
-        accounts.add(
-            Accounts(
-                9,
-                "Website",
-                "https://bit.ly/binayshaw7777",
-                true
+            add(
+                Accounts(
+                    5,
+                    accountsNameArray[5],
+                    Constants.myTwitter,
+                    true
+                )
             )
-        )
+            add(
+                Accounts(
+                    9,
+                    accountsNameArray[9],
+                    Constants.myWebsite,
+                    true
+                )
+            )
+        }
 
         showCaseAccountsListDevLiveData.postValue(accounts)
     }

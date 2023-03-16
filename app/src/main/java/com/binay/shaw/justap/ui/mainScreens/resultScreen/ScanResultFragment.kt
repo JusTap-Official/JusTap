@@ -87,7 +87,7 @@ class ResultFragment : BaseFragment() {
                 }
             }
         }
-        viewModel.getDevelopersAccount()
+        viewModel.getDevelopersAccount(resources.getStringArray(R.array.account_names))
         viewModel.showCaseAccountsListDevLiveData.observe(viewLifecycleOwner) {
             binding.progressAnimation.progressParent.visibility = View.GONE
             recyclerViewAdapter.clearData()
