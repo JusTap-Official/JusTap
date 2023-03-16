@@ -17,6 +17,8 @@ class AddEditViewModel : ViewModel() {
     val saveStatus = MutableLiveData<Int>()
     val deleteStatus = MutableLiveData<Int>()
     val updateStatus = MutableLiveData<Int>()
+    private val firebaseDatabase = FirebaseDatabase.getInstance()
+    val selectedAccount = MutableLiveData<String>()
 
     init {
         saveStatus.value = 0
@@ -33,7 +35,6 @@ class AddEditViewModel : ViewModel() {
 
     fun saveData(
         accountsViewModel: AccountsViewModel,
-        firebaseDatabase: FirebaseDatabase,
         userID: String,
         account: Accounts
     ) = viewModelScope.launch {
@@ -41,7 +42,7 @@ class AddEditViewModel : ViewModel() {
         val createNewDataInFirebaseAndRoomDB = launch {
 
             val createAccountObjectInFirebase = viewModelScope.async(Dispatchers.IO) {
-                saveInFirebase(firebaseDatabase, userID, account)
+                saveInFirebase(userID, account)
             }
 
             val createAccountObjectInRoomDB = viewModelScope.async(Dispatchers.IO) {
@@ -61,7 +62,6 @@ class AddEditViewModel : ViewModel() {
 
 
     private suspend fun saveInFirebase(
-        firebaseDatabase: FirebaseDatabase,
         userID: String,
         account: Accounts
     ): Int {
@@ -91,14 +91,13 @@ class AddEditViewModel : ViewModel() {
 
     fun updateEntry(
         accountsViewModel: AccountsViewModel,
-        firebaseDatabase: FirebaseDatabase,
         account: Accounts
     ) = viewModelScope.launch {
 
         val updateFirebaseAndRoomDB = launch {
 
             val updateAccountObjectInFirebase = viewModelScope.async(Dispatchers.IO) {
-                updateInFirebase(firebaseDatabase, Util.userID, account)
+                updateInFirebase(Util.userID, account)
             }
 
             val updateAccountObjectInRoomDB = viewModelScope.async(Dispatchers.IO) {
@@ -132,7 +131,6 @@ class AddEditViewModel : ViewModel() {
     }
 
     private suspend fun updateInFirebase(
-        firebaseDatabase: FirebaseDatabase,
         userID: String,
         account: Accounts
     ): Int {
@@ -158,14 +156,13 @@ class AddEditViewModel : ViewModel() {
 
     fun deleteEntry(
         accountsViewModel: AccountsViewModel,
-        firebaseDatabase: FirebaseDatabase,
         account: Accounts
     ) = viewModelScope.launch {
 
         val deleteDataInFirebaseAndRoomDB = launch {
 
             val deleteAccountObjectInFirebase = viewModelScope.async(Dispatchers.IO) {
-                deleteInFirebase(firebaseDatabase, Util.userID, account)
+                deleteInFirebase(Util.userID, account)
             }
 
             val deleteAccountObjectInRoomDB = viewModelScope.async(Dispatchers.IO) {
@@ -201,12 +198,12 @@ class AddEditViewModel : ViewModel() {
     }
 
     private suspend fun deleteInFirebase(
-        firebaseDatabase: FirebaseDatabase,
         userID: String,
         account: Accounts
     ): Int {
         return withContext(Dispatchers.IO) {
-            val ref = firebaseDatabase.getReference("/${Constants.users}/$userID/${Constants.accounts}/")
+            val ref =
+                firebaseDatabase.getReference("/${Constants.users}/$userID/${Constants.accounts}/")
             try {
                 ref.child("${account.accountID}").removeValue()
                 Util.log("Deleted from Firebase")

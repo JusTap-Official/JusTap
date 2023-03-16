@@ -11,13 +11,13 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
+import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.databinding.FragmentAddEditBinding
-import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
 import com.binay.shaw.justap.helper.Util
@@ -25,7 +25,6 @@ import com.binay.shaw.justap.helper.Util.createBottomSheet
 import com.binay.shaw.justap.helper.Util.setBottomSheet
 import com.binay.shaw.justap.viewModel.AccountsViewModel
 import com.binay.shaw.justap.model.Accounts
-import com.google.firebase.database.FirebaseDatabase
 import com.tapadoo.alerter.Alerter
 
 
@@ -34,11 +33,8 @@ class AddEditFragment : Fragment() {
     private var _binding: FragmentAddEditBinding? = null
     private val binding get() = _binding!!
     private val args: AddEditFragmentArgs by navArgs()
-    private var selectedAccount: String? = null
-    private lateinit var viewModel: AddEditViewModel
-    private lateinit var firebaseDatabase: FirebaseDatabase
-    private lateinit var accountsViewModel: AccountsViewModel
-    private lateinit var toolBar: MyToolbarBinding
+    private val viewModel by viewModels<AddEditViewModel> { ViewModelFactory() }
+    private val accountsViewModel by viewModels<AccountsViewModel> { ViewModelFactory() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -135,7 +131,7 @@ class AddEditFragment : Fragment() {
         binding.confirmChanges.setOnClickListener {
             if (binding.confirmChanges.text.equals("Add account")) {
                 val accountData = binding.accountData.text.toString()
-                if (dataIsValid(selectedAccount, accountData)) {
+                if (dataIsValid(viewModel.selectedAccount.value.toString(), accountData)) {
                     saveData(accountData)
                 } else {
                     Toast.makeText(requireContext(), "Fill all input fields", Toast.LENGTH_SHORT)
@@ -159,14 +155,14 @@ class AddEditFragment : Fragment() {
         binding.apply {
             accountName.afterTextChanged {
                 accountData.setText("")
-                selectedAccount = it
+                viewModel.selectedAccount.postValue(it)
                 chooseAccount(it)
             }
         }
     }
 
     private fun onDeleteAccountHandler() {
-        toolBar.rightIcon.setOnClickListener {
+        binding.include.rightIcon.setOnClickListener {
             deleteAccount()
         }
     }
@@ -278,7 +274,7 @@ class AddEditFragment : Fragment() {
             it.accountID = index
             it.accountData = newData
 
-            viewModel.updateEntry(accountsViewModel, firebaseDatabase, it)
+            viewModel.updateEntry(accountsViewModel, it)
         }
     }
 
@@ -327,7 +323,7 @@ class AddEditFragment : Fragment() {
             val index = array.indexOf(it.accountName)
             it.accountID = index
 
-            viewModel.deleteEntry(accountsViewModel, firebaseDatabase, it)
+            viewModel.deleteEntry(accountsViewModel, it)
         }
     }
 
@@ -376,16 +372,15 @@ class AddEditFragment : Fragment() {
 
     private fun makeSaveRequest(accountData: String) {
 
-        selectedAccount?.let { it1 ->
+        viewModel.selectedAccount.value?.let { it1 ->
             getStringIndex(it1)
         }?.let { index ->
 
-            val account = Accounts(index, selectedAccount!!, accountData, true)
+            val account = Accounts(index, viewModel.selectedAccount.value!!, accountData, true)
 
             //Save new Data
             viewModel.saveData(
                 accountsViewModel,
-                firebaseDatabase,
                 Util.userID,
                 account
             )
@@ -415,45 +410,41 @@ class AddEditFragment : Fragment() {
     }
 
     private fun initialization() {
-        viewModel = ViewModelProvider(requireActivity())[AddEditViewModel::class.java]
-        accountsViewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-        )[AccountsViewModel::class.java]
-        firebaseDatabase = FirebaseDatabase.getInstance()
 
         //Top app bar
         (activity as MainActivity).supportActionBar?.hide()
-        toolBar = binding.include
+        binding.include.apply {
 
-        //Mode = 0 -> Add | Mode = 1 -> Edit
-        if (args.mode == 0) {
-            toolBar.toolbarTitle.text = resources.getString(R.string.AddAccount)
-            toolBar.rightIcon.visibility = View.GONE
-        } else if (args.mode == 1) {
-            toolBar.toolbarTitle.text = resources.getString(R.string.EditAccount)
-            toolBar.rightIcon.apply {
-                setImageResource(R.drawable.delete)
-                visibility = View.VISIBLE
+            //Mode = 0 -> Add | Mode = 1 -> Edit
+            if (args.mode == 0) {
+                toolbarTitle.text = resources.getString(R.string.AddAccount)
+                rightIcon.visibility = View.GONE
+            } else if (args.mode == 1) {
+                toolbarTitle.text = resources.getString(R.string.EditAccount)
+                rightIcon.apply {
+                    setImageResource(R.drawable.delete)
+                    visibility = View.VISIBLE
+                }
+                args.accounts?.let {
+                    chooseAccount(it.accountName)
+                    binding.apply {
+                        remainingLayout.visibility = View.VISIBLE
+                        menuAccount.visibility = View.GONE
+                        accountNameHeader.visibility = View.GONE
+                        accountData.hint = it.accountData
+                        confirmChanges.text = resources.getString(R.string.UpdateChanges)
+                    }
+                }
             }
-            args.accounts?.let {
-                chooseAccount(it.accountName)
-                binding.apply {
-                    remainingLayout.visibility = View.VISIBLE
-                    menuAccount.visibility = View.GONE
-                    accountNameHeader.visibility = View.GONE
-                    accountData.hint = it.accountData
-                    confirmChanges.text = resources.getString(R.string.UpdateChanges)
+
+            leftIcon.apply {
+                visibility = View.VISIBLE
+                setOnClickListener {
+                    handleBackButtonPress()
                 }
             }
         }
 
-        toolBar.leftIcon.apply {
-            visibility = View.VISIBLE
-            setOnClickListener {
-                handleBackButtonPress()
-            }
-        }
 
         // Account List
         val accounts = Util.unusedAccounts
