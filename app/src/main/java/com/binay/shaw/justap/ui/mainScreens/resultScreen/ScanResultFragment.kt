@@ -108,7 +108,7 @@ class ResultFragment : BaseFragment() {
         )[LocalHistoryViewModel::class.java]
 
         viewModel.getDataFromUserID(resultString)
-        viewModel.updateAnalytics(resultString)
+//        viewModel.updateAnalytics(resultString)
 
         viewModel.showCaseAccountsListLiveData.observe(viewLifecycleOwner) {
             recyclerViewAdapter.clearData()

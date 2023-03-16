@@ -39,7 +39,7 @@ class ProfileFragment : BaseFragment() {
         initObservers()
         initialization()
         handleOperations()
-        updateAnalytics()
+//        updateAnalytics()
 
         return binding.root
     }
@@ -88,48 +88,48 @@ class ProfileFragment : BaseFragment() {
         }
     }
 
-    private fun updateAnalytics() {
-        val userRef = Firebase.database.reference.child(Constants.users).child(Util.userID)
-            .child(Constants.analytics)
-        userRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    // User exists in the database
-                    Util.log("Analytics exists")
-                    //Get the user
-                    if (dataSnapshot.child(Constants.scanCount).exists()) {
-                        val scanCount = dataSnapshot.child(Constants.scanCount).value.toString()
-                        if (scanCount.isNotEmpty()) {
-                            Util.log("Count scan: $scanCount")
-                            binding.scanCountTV.text = scanCount
-                        }
-                    } else {
-                        binding.scanCountTV.text = "0"
-                    }
-
-                    if (dataSnapshot.child(Constants.impressionCount).exists()) {
-                        val impressionCount =
-                            dataSnapshot.child(Constants.impressionCount).value.toString()
-                        if (impressionCount.isNotEmpty()) {
-                            Util.log("Count imp: $impressionCount")
-                            binding.impressionCountTV.text = impressionCount
-                        }
-                    } else {
-                        binding.impressionCountTV.text = "0"
-                    }
-
-                } else {
-                    // User does not exist in the database
-                    binding.scanCountTV.text = "0"
-                    binding.impressionCountTV.text = "0"
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Util.log("getUser:onCancelled ${error.toException()}")
-            }
-        })
-    }
+//    private fun updateAnalytics() {
+//        val userRef = Firebase.database.reference.child(Constants.users).child(Util.userID)
+//            .child(Constants.analytics)
+//        userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                if (dataSnapshot.exists()) {
+//                    // User exists in the database
+//                    Util.log("Analytics exists")
+//                    //Get the user
+//                    if (dataSnapshot.child(Constants.scanCount).exists()) {
+//                        val scanCount = dataSnapshot.child(Constants.scanCount).value.toString()
+//                        if (scanCount.isNotEmpty()) {
+//                            Util.log("Count scan: $scanCount")
+//                            binding.scanCountTV.text = scanCount
+//                        }
+//                    } else {
+//                        binding.scanCountTV.text = "0"
+//                    }
+//
+//                    if (dataSnapshot.child(Constants.impressionCount).exists()) {
+//                        val impressionCount =
+//                            dataSnapshot.child(Constants.impressionCount).value.toString()
+//                        if (impressionCount.isNotEmpty()) {
+//                            Util.log("Count imp: $impressionCount")
+//                            binding.impressionCountTV.text = impressionCount
+//                        }
+//                    } else {
+//                        binding.impressionCountTV.text = "0"
+//                    }
+//
+//                } else {
+//                    // User does not exist in the database
+//                    binding.scanCountTV.text = "0"
+//                    binding.impressionCountTV.text = "0"
+//                }
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                Util.log("getUser:onCancelled ${error.toException()}")
+//            }
+//        })
+//    }
 
     private fun initialization() {
         (activity as MainActivity).supportActionBar?.hide()

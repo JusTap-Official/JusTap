@@ -140,21 +140,21 @@ class ScanResultViewModel(application: Application) : BaseViewModel(application)
         showCaseAccountsListDevLiveData.postValue(accounts)
     }
 
-    fun updateAnalytics(scannedUserId: String) = viewModelScope.launch(Dispatchers.IO) {
-
-        //First get the current count of current User and increment
-        //Then get the current count of the scanned User and increment
-
-        val postScanCount = async {
-            updateAnalyticsCountInFirebase(Util.userID, Constants.scanCount)
-        }
-
-        val postImpressionCount = async {
-            updateAnalyticsCountInFirebase(scannedUserId, Constants.impressionCount)
-        }
-
-        Util.log("ScanCount status: ${postScanCount.await()}\nImpressionCount status: ${postImpressionCount.await()}")
-    }
+//    fun updateAnalytics(scannedUserId: String) = viewModelScope.launch(Dispatchers.IO) {
+//
+//        //First get the current count of current User and increment
+//        //Then get the current count of the scanned User and increment
+//
+//        val postScanCount = async {
+//            updateAnalyticsCountInFirebase(Util.userID, Constants.scanCount)
+//        }
+//
+//        val postImpressionCount = async {
+//            updateAnalyticsCountInFirebase(scannedUserId, Constants.impressionCount)
+//        }
+//
+//        Util.log("ScanCount status: ${postScanCount.await()}\nImpressionCount status: ${postImpressionCount.await()}")
+//    }
 
     private fun updateAnalyticsCountInFirebase(userID: String, dataToUpdate: String): Boolean {
         val userRef =
