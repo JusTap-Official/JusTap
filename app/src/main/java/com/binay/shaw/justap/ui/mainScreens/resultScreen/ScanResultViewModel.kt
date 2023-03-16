@@ -121,16 +121,16 @@ class ScanResultViewModel(application: Application) : BaseViewModel(application)
             )
             add(
                 Accounts(
-                    5,
-                    accountsNameArray[5],
+                    6,
+                    accountsNameArray[6],
                     Constants.myTwitter,
                     true
                 )
             )
             add(
                 Accounts(
-                    9,
-                    accountsNameArray[9],
+                    10,
+                    accountsNameArray[10],
                     Constants.myWebsite,
                     true
                 )
