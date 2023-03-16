@@ -14,11 +14,11 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
+import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.databinding.FragmentQRGeneratorBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
@@ -27,10 +27,10 @@ import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.createBottomSheet
 import com.binay.shaw.justap.helper.Util.dpToPx
 import com.binay.shaw.justap.helper.Util.setBottomSheet
-import com.tapadoo.alerter.Alerter
+import java.util.*
 
 @SuppressLint("ClickableViewAccessibility")
-class QRGeneratorFragment : Fragment() {
+class QRGeneratorFragment : BaseFragment() {
 
     private var _binding: FragmentQRGeneratorBinding? = null
     private val binding get() = _binding!!
@@ -49,12 +49,12 @@ class QRGeneratorFragment : Fragment() {
 
         initialization()
         initObservers()
-        handleOperations()
+        clickHandlers()
 
         return binding.root
     }
 
-    private fun handleOperations() {
+    private fun clickHandlers() {
         binding.apply {
             qrCodePreview.setOnClickListener {
                 Toast.makeText(requireContext(), "Long press to save in Gallery", Toast.LENGTH_SHORT).show()
@@ -73,18 +73,16 @@ class QRGeneratorFragment : Fragment() {
             qrCodePreview.setOnLongClickListener {
                 Util.saveMediaToStorage(viewModel.bitmap.value as Bitmap, requireContext()).also { status ->
                     if (status) {
-                        Alerter.create(requireActivity())
-                            .setTitle(resources.getString(R.string.saved_successfully))
-                            .setText(resources.getString(R.string.your_qr_code_is_saved_in_gallery))
-                            .setBackgroundColorInt(
-                                ContextCompat.getColor(
-                                    requireContext(),
-                                    R.color.positive_green
-                                )
-                            )
-                            .setIcon(R.drawable.check)
-                            .setDuration(800L)
-                            .show()
+                        showAlerter(
+                            resources.getString(R.string.saved_successfully),
+                            resources.getString(R.string.your_qr_code_is_saved_in_gallery),
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.positive_green
+                            ),
+                            R.drawable.check,
+                            800L
+                        )
                     }
                 }
             }
@@ -114,12 +112,24 @@ class QRGeneratorFragment : Fragment() {
             ResourcesCompat.getColor(resources, R.color.bg_color, null)
         )
 
-        viewModel.generateQR(displayMetrics, overlay,
-            firstSelectedColor,
-            secondSelectedColor)
+        viewModel.run {
+            generateQR(displayMetrics, overlay,
+                firstSelectedColor,
+                secondSelectedColor)
 
-        viewModel.status.observe(viewLifecycleOwner) {
-            binding.qrCodePreview.setImageBitmap(viewModel.bitmap.value)
+            bitmap.observe(viewLifecycleOwner) {
+                binding.qrCodePreview.setImageBitmap(it)
+            }
+
+            errorMessage.observe(viewLifecycleOwner) { it ->
+                showAlerter(
+                    resources.getString(R.string.anErrorOccurred),
+                    "",
+                    ContextCompat.getColor(requireContext(), R.color.negative_red),
+                    R.drawable.warning,
+                    2000L
+                )
+            }
         }
     }
 

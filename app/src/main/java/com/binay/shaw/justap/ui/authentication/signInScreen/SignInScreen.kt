@@ -37,10 +37,10 @@ class SignInScreen : BaseActivity() {
 
         initObservers()
         initViews()
-        handleClicks()
+        clickHandlers()
     }
 
-    private fun handleClicks() {
+    private fun clickHandlers() {
         binding.run {
 
             //Login Button onClick

@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.KeyEvent
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,8 +19,8 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
+import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.databinding.FragmentQRScannerBinding
-import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
 import com.binay.shaw.justap.helper.Encryption
 import com.binay.shaw.justap.helper.Util
@@ -37,7 +36,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 @Suppress("DEPRECATION")
-class ScannerFragment : Fragment() {
+class ScannerFragment : BaseFragment() {
 
     companion object {
         private const val PERMISSION_CAMERA_REQUEST = 1

@@ -8,6 +8,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.tapadoo.alerter.Alerter
+import java.util.*
 
 
 abstract class BaseFragment : Fragment() {
@@ -95,6 +97,16 @@ abstract class BaseFragment : Fragment() {
 //        }
 //        progressDialogue.show()
 //    }
+
+    fun showAlerter(title: String, message: String, color: Int, drawable: Int, timing: Long) {
+        Alerter.create(requireActivity())
+            .setTitle(title)
+            .setText(message)
+            .setBackgroundColorInt(color)
+            .setIcon(drawable)
+            .setDuration(timing)
+            .show()
+    }
 
     protected fun hideProgress() {
         if (this::progressDialogue.isInitialized && progressDialogue.isShowing) {

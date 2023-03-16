@@ -5,7 +5,7 @@ import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-
+import com.tapadoo.alerter.Alerter
 
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -102,6 +102,16 @@ abstract class BaseActivity : AppCompatActivity() {
 //            progressDialogue.hide()
 //        }
 //    }
+
+    fun showAlerter(title: String, message: String, color: Int, drawable: Int, timing: Long) {
+        Alerter.create(this)
+            .setTitle(title)
+            .setText(message)
+            .setBackgroundColorInt(color)
+            .setIcon(drawable)
+            .setDuration(timing)
+            .show()
+    }
 
     fun hideKeyboard() {
         val view: View? = this.currentFocus

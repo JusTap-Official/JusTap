@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
+import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.databinding.FragmentProfileBinding
 import com.binay.shaw.justap.helper.Constants
@@ -23,7 +23,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : BaseFragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!

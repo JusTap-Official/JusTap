@@ -10,12 +10,10 @@ import com.binay.shaw.justap.helper.Util.encodeAsQrCodeBitmap
 
 
 class QRGeneratorViewModel : ViewModel() {
-    var status = MutableLiveData<Int>()
-    private val errorMessage = MutableLiveData<String>()
-    var bitmap = MutableLiveData<Bitmap?>()
+    val errorMessage = MutableLiveData<String>()
+    val bitmap = MutableLiveData<Bitmap?>()
 
     init {
-        status.value = 0
         bitmap.value = null
     }
 
@@ -43,10 +41,8 @@ class QRGeneratorViewModel : ViewModel() {
 
             bitmap.value = encrypted.encodeAsQrCodeBitmap(size, overlay, color1, color2)
 
-            status.value = 1
         } catch (e: Exception) {
             errorMessage.value = e.message.toString()
-            status.value = 2
         }
     }
 

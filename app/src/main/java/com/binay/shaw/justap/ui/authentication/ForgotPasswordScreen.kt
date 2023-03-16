@@ -1,25 +1,23 @@
 package com.binay.shaw.justap.ui.authentication
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import com.binay.shaw.justap.R
+import com.binay.shaw.justap.base.BaseActivity
 import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.databinding.ActivityForgotPasswordScreenBinding
-import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.ui.authentication.signInScreen.SignInScreen
 import com.binay.shaw.justap.viewModel.FirebaseViewModel
 
 
-class ForgotPasswordScreen : AppCompatActivity() {
+class ForgotPasswordScreen : BaseActivity() {
 
     private lateinit var binding: ActivityForgotPasswordScreenBinding
-    private lateinit var toolbar: MyToolbarBinding
     private val firebaseViewModel by viewModels<FirebaseViewModel> { ViewModelFactory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -113,8 +111,7 @@ class ForgotPasswordScreen : AppCompatActivity() {
 
     private fun initialization() {
         supportActionBar?.hide()
-        toolbar = binding.include
-        toolbar.toolbarTitle.text = resources.getString(R.string.LogIn)
+        binding.include.toolbarTitle.text = resources.getString(R.string.LogIn)
         binding.btnResetPassword.buttonText.text = resources.getString(R.string.SendResetLink)
     }
 }

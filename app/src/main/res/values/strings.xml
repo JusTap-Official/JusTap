@@ -127,6 +127,7 @@
     <string name="tapped">Tapped</string>
     <string name="saved_successfully">Saved Successfulyy</string>
     <string name="your_qr_code_is_saved_in_gallery">Your QR Code is successfylly saved in gallery</string>
+    <string name="deleted">Deleted</string>
 
     <string-array name="account_names">
         <item>Phone</item>

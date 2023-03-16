@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -28,7 +27,6 @@ import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.createBottomSheet
 import com.binay.shaw.justap.helper.Util.setBottomSheet
 import com.binay.shaw.justap.model.LocalHistory
-import com.tapadoo.alerter.Alerter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -184,18 +182,16 @@ class HistoryFragment : BaseFragment() {
                     localUserHistoryViewModel.clearHistory()
                     withContext(Dispatchers.Main) {
                         historyAdapter.notifyDataSetChanged()
-                        Alerter.create(requireActivity())
-                            .setTitle(resources.getString(R.string.clearHistory))
-                            .setText(resources.getString(R.string.clearHistoryDescription))
-                            .setBackgroundColorInt(
-                                ContextCompat.getColor(
-                                    requireContext(),
-                                    R.color.positive_green
-                                )
-                            )
-                            .setIcon(R.drawable.delete)
-                            .setDuration(2000L)
-                            .show()
+                        showAlerter(
+                            resources.getString(R.string.clearHistory),
+                            resources.getString(R.string.clearHistoryDescription),
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.positive_green
+                            ),
+                            R.drawable.delete,
+                            2000L
+                        )
                     }
                 }
             }
@@ -258,18 +254,16 @@ class HistoryFragment : BaseFragment() {
                                 localUserHistoryViewModel.deleteUserHistory(userToDelete)
                                 withContext(Dispatchers.Main) {
                                     historyAdapter.notifyDataSetChanged()
-                                    Alerter.create(requireActivity())
-                                        .setTitle("Deleted")
-                                        .setText("${userToDelete.username} was remove from History!")
-                                        .setBackgroundColorInt(
-                                            ContextCompat.getColor(
-                                                requireContext(),
-                                                R.color.positive_green
-                                            )
-                                        )
-                                        .setIcon(R.drawable.delete)
-                                        .setDuration(2000L)
-                                        .show()
+                                    showAlerter(
+                                        resources.getString(R.string.deleted),
+                                        "${userToDelete.username} was remove from History!",
+                                        ContextCompat.getColor(
+                                            requireContext(),
+                                            R.color.positive_green
+                                        ),
+                                        R.drawable.delete,
+                                        2000L
+                                    )
                                 }
                             }
                         }

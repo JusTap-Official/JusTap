@@ -26,6 +26,7 @@ import androidx.room.Room
 import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.SettingsItemAdapter
+import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.databinding.ColorpickerModalBinding
@@ -46,7 +47,6 @@ import com.skydoves.colorpickerview.ColorPickerDialog
 import com.skydoves.colorpickerview.flag.BubbleFlag
 import com.skydoves.colorpickerview.flag.FlagMode
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
-import com.tapadoo.alerter.Alerter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -54,7 +54,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class SettingsFragment : Fragment() {
+class SettingsFragment : BaseFragment() {
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
@@ -212,8 +212,8 @@ class SettingsFragment : Fragment() {
                 secondSelectedColor
             )
 
-            qrGeneratorViewModel.status.observe(viewLifecycleOwner) {
-                qrCodePreview.setImageBitmap(qrGeneratorViewModel.bitmap.value)
+            qrGeneratorViewModel.bitmap.observe(viewLifecycleOwner) {
+                qrCodePreview.setImageBitmap(it)
             }
 
             optionsHeading.text = resources.getString(R.string.customizeQR)
@@ -243,15 +243,15 @@ class SettingsFragment : Fragment() {
                     builder.show()
                 } catch (e: java.lang.IllegalArgumentException) {
                     Util.log("Exception: $e")
-                    Alerter.create(requireActivity())
-                        .setTitle(resources.getString(R.string.anErrorOccurred))
-                        .setText(e.toString()
-                            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
-                            .substring(36))
-                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
-                        .setIcon(R.drawable.warning)
-                        .setDuration(2500L)
-                        .show()
+                    showAlerter(
+                        resources.getString(R.string.anErrorOccurred),
+                        e.toString()
+                        .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
+                        .substring(36),
+                        ContextCompat.getColor(requireContext(), R.color.negative_red),
+                        R.drawable.warning,
+                        2000L
+                    )
                 }
             }
 
@@ -280,15 +280,15 @@ class SettingsFragment : Fragment() {
                     builder.show()
                 } catch (e: java.lang.IllegalArgumentException) {
                     Util.log("Exception: $e")
-                    Alerter.create(requireActivity())
-                        .setTitle(resources.getString(R.string.anErrorOccurred))
-                        .setText(e.toString()
+                    showAlerter(
+                        resources.getString(R.string.anErrorOccurred),
+                        e.toString()
                             .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
-                            .substring(36))
-                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
-                        .setIcon(R.drawable.warning)
-                        .setDuration(2500L)
-                        .show()
+                            .substring(36),
+                        ContextCompat.getColor(requireContext(), R.color.negative_red),
+                        R.drawable.warning,
+                        2000L
+                    )
                 }
             }
 
@@ -322,14 +322,13 @@ class SettingsFragment : Fragment() {
                         ) {
 
                             saveColors(sharedPreference, firstSelectedColor, secondSelectedColor)
-
-                            Alerter.create(requireActivity())
-                                .setTitle(resources.getString(R.string.changesSaved))
-                                .setText(resources.getString(R.string.changesSavedDescription))
-                                .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.positive_green))
-                                .setIcon(R.drawable.check)
-                                .setDuration(2500L)
-                                .show()
+                            showAlerter(
+                                resources.getString(R.string.changesSaved),
+                                resources.getString(R.string.changesSavedDescription),
+                                ContextCompat.getColor(requireContext(), R.color.positive_green),
+                                R.drawable.check,
+                                2500L
+                            )
                             bottomSheet.dismiss()
                         } else {
                             Util.log("First Colors are : $firstSelectedColor and $defaultPrimaryColor")
@@ -338,26 +337,26 @@ class SettingsFragment : Fragment() {
                         }
 
                     } else {
+                        showAlerter(
+                            resources.getString(R.string.badContrast),
+                            resources.getString(R.string.badContrastDescription),
+                            ContextCompat.getColor(requireContext(), R.color.negative_red),
+                            R.drawable.warning,
+                            2000L
+                        )
                         Util.log("Contrast choice is bad")
-                        Alerter.create(requireActivity())
-                            .setTitle(resources.getString(R.string.badContrast))
-                            .setText(resources.getString(R.string.badContrastDescription))
-                            .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
-                            .setIcon(R.drawable.warning)
-                            .setDuration(2000L)
-                            .show()
                     }
                 } catch (e: java.lang.IllegalArgumentException) {
                     Util.log("Exception: $e")
-                    Alerter.create(requireActivity())
-                        .setTitle(resources.getString(R.string.anErrorOccurred))
-                        .setText(e.toString()
+                    showAlerter(
+                        resources.getString(R.string.anErrorOccurred),
+                        e.toString()
                             .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
-                            .substring(36))
-                        .setBackgroundColorInt(ContextCompat.getColor(requireContext(), R.color.negative_red))
-                        .setIcon(R.drawable.warning)
-                        .setDuration(2500L)
-                        .show()
+                            .substring(36),
+                        ContextCompat.getColor(requireContext(), R.color.negative_red),
+                        R.drawable.warning,
+                        2500L
+                    )
                 }
             }
             negativeOption.setOnClickListener {

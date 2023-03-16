@@ -47,7 +47,7 @@ class HomeFragment : BaseFragment() {
 
         initObservers()
         initialization()
-        initView()
+        clickHandlers()
 
         return binding.root
     }
@@ -90,7 +90,7 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun initView() {
+    private fun clickHandlers() {
         binding.apply {
             fabLayout.setOnClickListener {
                 gotoAddAccountFragment()

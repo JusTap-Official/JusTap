@@ -10,12 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
+import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.databinding.FragmentAddEditBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
@@ -25,10 +25,9 @@ import com.binay.shaw.justap.helper.Util.createBottomSheet
 import com.binay.shaw.justap.helper.Util.setBottomSheet
 import com.binay.shaw.justap.viewModel.AccountsViewModel
 import com.binay.shaw.justap.model.Accounts
-import com.tapadoo.alerter.Alerter
 
 
-class AddEditFragment : Fragment() {
+class AddEditFragment : BaseFragment() {
 
     private var _binding: FragmentAddEditBinding? = null
     private val binding get() = _binding!!
@@ -45,7 +44,6 @@ class AddEditFragment : Fragment() {
 
         initialization()
         initObservers()
-
         clickHandlers()
 
         return binding.root
@@ -58,17 +56,18 @@ class AddEditFragment : Fragment() {
                 if (status == 3) {
                     Util.log("Status value = $status")
                     updateStatus.postValue(0)
-                    Alerter.create(requireActivity())
-                        .setTitle(resources.getString(R.string.data_updated_successfully))
-                        .setBackgroundColorInt(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.positive_green
-                            )
-                        )
-                        .setIcon(R.drawable.check)
-                        .setDuration(800L)
-                        .show()
+
+                    showAlerter(
+                        resources.getString(R.string.data_updated_successfully),
+                        "",
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.positive_green
+                        ),
+                        R.drawable.check,
+                        800L
+                    )
+
                     binding.progressAnimation.progressParent.visibility = View.GONE
                     findNavController().navigateUp()
                 }
@@ -78,17 +77,18 @@ class AddEditFragment : Fragment() {
                 if (status == 3) {
                     Util.log("Status value = $status")
                     deleteStatus.postValue(0)
-                    Alerter.create(requireActivity())
-                        .setTitle(resources.getString(R.string.data_deleted_successfully))
-                        .setBackgroundColorInt(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.negative_red
-                            )
-                        )
-                        .setIcon(R.drawable.delete)
-                        .setDuration(800L)
-                        .show()
+
+                    showAlerter(
+                        resources.getString(R.string.data_deleted_successfully),
+                        "",
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.negative_red
+                        ),
+                        R.drawable.delete,
+                        800L
+                    )
+
                     binding.progressAnimation.progressParent.visibility = View.GONE
                     findNavController().navigateUp()
                 }
@@ -98,17 +98,17 @@ class AddEditFragment : Fragment() {
                 if (it == 3) {
                     saveStatus.value = 0
                     //Success
-                    Alerter.create(requireActivity())
-                        .setTitle(resources.getString(R.string.data_saved_successfully))
-                        .setBackgroundColorInt(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.positive_green
-                            )
-                        )
-                        .setIcon(R.drawable.check)
-                        .setDuration(800L)
-                        .show()
+                    showAlerter(
+                        resources.getString(R.string.data_saved_successfully),
+                        "",
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.positive_green
+                        ),
+                        R.drawable.check,
+                        8000L
+                    )
+
                     binding.progressAnimation.progressParent.visibility =
                         View.GONE
                     requireActivity().onBackPressedDispatcher.onBackPressed()

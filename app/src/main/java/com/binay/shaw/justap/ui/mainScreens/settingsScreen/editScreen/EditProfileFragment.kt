@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
+import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.databinding.FragmentEditProfileBinding
 import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
@@ -30,12 +31,11 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
-import com.tapadoo.alerter.Alerter
 import kotlinx.coroutines.launch
 import kotlin.collections.HashMap
 
 
-class EditProfileFragment : Fragment() {
+class EditProfileFragment : BaseFragment() {
 
     private var _binding: FragmentEditProfileBinding? = null
     private val binding get() = _binding!!
@@ -243,18 +243,18 @@ class EditProfileFragment : Fragment() {
                         Glide.get(requireContext()).clearMemory()
                         binding.progressAnimation.progressParent.visibility = View.GONE
                         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-                        Alerter.create(requireActivity())
-                            .setTitle(resources.getString(R.string.profile_updated))
-                            .setText(resources.getString(R.string.profile_updated_description))
-                            .setBackgroundColorInt(
-                                ContextCompat.getColor(
-                                    requireContext(),
-                                    R.color.positive_green
-                                )
-                            )
-                            .setIcon(R.drawable.check)
-                            .setDuration(2500L)
-                            .show()
+
+                        showAlerter(
+                            resources.getString(R.string.profile_updated),
+                            resources.getString(R.string.profile_updated_description),
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.positive_green
+                            ),
+                            R.drawable.check,
+                            2500L
+                        )
+
                         requireActivity().onBackPressedDispatcher.onBackPressed()
                     }
                 }
