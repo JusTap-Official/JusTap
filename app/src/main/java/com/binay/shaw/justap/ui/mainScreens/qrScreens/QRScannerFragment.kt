@@ -71,7 +71,6 @@ class ScannerFragment : Fragment() {
 
     private var _binding: FragmentQRScannerBinding? = null
     private val binding get() = _binding!!
-    private lateinit var toolBar: MyToolbarBinding
 
 
     override fun onCreateView(
@@ -81,7 +80,7 @@ class ScannerFragment : Fragment() {
         _binding = FragmentQRScannerBinding.inflate(layoutInflater, container, false)
         initialization()
 
-        toolBar.leftIcon.setOnClickListener {
+        binding.include.leftIcon.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
@@ -105,10 +104,10 @@ class ScannerFragment : Fragment() {
 
     private fun initialization() {
         (activity as MainActivity).supportActionBar?.hide()
-
-        toolBar = binding.include
-        toolBar.toolbarTitle.text = requireContext().resources.getString(R.string.Scanner)
-        toolBar.leftIcon.visibility = View.VISIBLE
+        binding.include.apply {
+            toolbarTitle.text = requireContext().resources.getString(R.string.Scanner)
+            leftIcon.visibility = View.VISIBLE
+        }
         pvScan = binding.scanPreview
 
         preDefinedListOfSocialQRData.apply {

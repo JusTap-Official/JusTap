@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,8 +19,8 @@ import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.ResultItemAdapter
 import com.binay.shaw.justap.base.BaseFragment
+import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.databinding.FragmentScanResultBinding
-import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.binay.shaw.justap.helper.ImageUtils
 import com.binay.shaw.justap.helper.LinksUtils
 import com.binay.shaw.justap.helper.Util
@@ -37,8 +38,7 @@ class ResultFragment : BaseFragment() {
     private val args: ResultFragmentArgs by navArgs()
     private var _binding: FragmentScanResultBinding? = null
     private val binding get() = _binding!!
-    private lateinit var toolBar: MyToolbarBinding
-    private lateinit var viewModel: ScanResultViewModel
+    private val viewModel by viewModels<ScanResultViewModel> { ViewModelFactory() }
     private lateinit var recyclerViewAdapter: ResultItemAdapter
 
 
@@ -51,7 +51,7 @@ class ResultFragment : BaseFragment() {
         _binding = FragmentScanResultBinding.inflate(layoutInflater, container, false)
         initialization()
 
-        toolBar.leftIcon.setOnClickListener {
+        binding.include.leftIcon.setOnClickListener {
             handleBackButtonPress()
         }
 
@@ -193,10 +193,8 @@ class ResultFragment : BaseFragment() {
 
     private fun initialization() {
         (activity as MainActivity).supportActionBar?.hide()
+        binding.include.leftIcon.visibility = View.VISIBLE
 
-        toolBar = binding.include
-        toolBar.leftIcon.visibility = View.VISIBLE
-        viewModel = ViewModelProvider(this@ResultFragment)[ScanResultViewModel::class.java]
         recyclerViewAdapter = ResultItemAdapter {
             LinksUtils.processData(it, requireContext())
         }
@@ -210,9 +208,9 @@ class ResultFragment : BaseFragment() {
         }
 
         if (args.isResult) {
-            toolBar.toolbarTitle.text = resources.getString(R.string.ScanCompleted)
+            binding.include.toolbarTitle.text = resources.getString(R.string.ScanCompleted)
         } else {
-            toolBar.toolbarTitle.text = resources.getString(R.string.AboutMe)
+            binding.include.toolbarTitle.text = resources.getString(R.string.AboutMe)
         }
     }
 
