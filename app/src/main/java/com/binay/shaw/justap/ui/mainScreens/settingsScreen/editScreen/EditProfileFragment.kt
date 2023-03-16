@@ -82,7 +82,7 @@ class EditProfileFragment : Fragment() {
             editImageMode = 2
             ImagePicker.with(this)
                 .compress(1024)
-                .crop(5f, 2f)
+                .crop()
                 .createIntent {
                     binding.bannerProgressBar.visibility = View.VISIBLE
                     imagePickerActivityResult.launch(it)

@@ -5,17 +5,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.AccountsItemAdapter
 import com.binay.shaw.justap.base.BaseFragment
+import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.databinding.FragmentHomeBinding
-import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
 import com.binay.shaw.justap.helper.ImageUtils
 import com.binay.shaw.justap.helper.Util
@@ -33,24 +32,21 @@ class HomeFragment : BaseFragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private lateinit var localUserViewModel: LocalUserViewModel
-    private lateinit var accountsViewModel: AccountsViewModel
+    private val localUserViewModel by viewModels<LocalUserViewModel> { ViewModelFactory() }
+    private val accountsViewModel by viewModels<AccountsViewModel> { ViewModelFactory() }
     private lateinit var localUser: LocalUser
-    private var fabTitle: TextView? = null
     private var accountsList = mutableListOf<Accounts>()
-    private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdapter: AccountsItemAdapter
-    private lateinit var toolBar: MyToolbarBinding
-    private lateinit var addEditViewModel: AddEditViewModel
+    private val addEditViewModel by viewModels<AddEditViewModel> { ViewModelFactory() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        initialization(container)
+        _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
 
         initObservers()
+        initialization()
         initView()
 
         return binding.root
@@ -64,23 +60,53 @@ class HomeFragment : BaseFragment() {
                 recyclerViewAdapter.notifyDataSetChanged()
             }
         }
+        localUserViewModel.fetchUser.observe(viewLifecycleOwner) {
+            localUser = LocalUser(
+                it.userID,
+                it.userName,
+                it.userEmail,
+                it.userBio,
+                it.userProfilePicture,
+                it.userBannerPicture
+            )
+            Util.userID = it.userID
+
+            val name = Util.getFirstName(localUser.userName)
+            binding.profileNameTV.text = "Hi $name,"
+
+            binding.profileBioTV.text = localUser.userBio
+            val profileURL = localUser.userProfilePicture!!
+            if (profileURL.isNotEmpty()) {
+                Util.loadImagesWithGlide(binding.profileImage, profileURL)
+            }
+        }
+
+        accountsViewModel.getAllUser.observe(viewLifecycleOwner) {
+            Util.log(it.toString())
+            accountsList.clear()
+            accountsList.addAll(it)
+            recyclerViewAdapter.setData(it)
+            recyclerViewAdapter.notifyDataSetChanged()
+        }
     }
 
     private fun initView() {
-        binding.fabLayout.setOnClickListener {
-            gotoAddAccountFragment()
-        }
+        binding.apply {
+            fabLayout.setOnClickListener {
+                gotoAddAccountFragment()
+            }
 
-        binding.fabCircle.setOnClickListener {
-            gotoAddAccountFragment()
-        }
+            fabCircle.setOnClickListener {
+                gotoAddAccountFragment()
+            }
 
-        toolBar.rightIcon.setOnClickListener {
-            showAccountInfoDialog()
-        }
-        binding.profileImage.setOnClickListener {
-            val imageUrl = localUser.userProfilePicture.toString()
-            ImageUtils.showImagePreviewDialog(requireContext(), true, imageUrl, false).show()
+            include.rightIcon.setOnClickListener {
+                showAccountInfoDialog()
+            }
+            profileImage.setOnClickListener {
+                val imageUrl = localUser.userProfilePicture.toString()
+                ImageUtils.showImagePreviewDialog(requireContext(), true, imageUrl, false).show()
+            }
         }
     }
 
@@ -131,16 +157,14 @@ class HomeFragment : BaseFragment() {
         Util.unusedAccounts = unusedAccounts
     }
 
-    private fun initialization(container: ViewGroup?) {
-
-        _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
-        toolBar = binding.include
-        toolBar.toolbarTitle.text = resources.getString(R.string.Home)
-        toolBar.rightIcon.apply {
-            setImageResource(R.drawable.info_icon)
-            visibility = View.VISIBLE
+    private fun initialization() {
+        binding.include.apply {
+            toolbarTitle.text = resources.getString(R.string.Home)
+            rightIcon.apply {
+                setImageResource(R.drawable.info_icon)
+                visibility = View.VISIBLE
+            }
         }
-        fabTitle = binding.fabText
 
         recyclerViewAdapter = AccountsItemAdapter(requireActivity()) { newAccount ->
             for (account in accountsList) {
@@ -156,54 +180,11 @@ class HomeFragment : BaseFragment() {
             }
         }
 
-        recyclerView = binding.accountsRv
-        recyclerView.apply {
+        binding.accountsRv.apply {
             adapter = recyclerViewAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
 
-        addEditViewModel = ViewModelProvider(
-            this
-        )[AddEditViewModel::class.java]
-
-        localUserViewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-        )[LocalUserViewModel::class.java]
-
-        accountsViewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-        )[AccountsViewModel::class.java]
-
-        localUserViewModel.fetchUser.observe(viewLifecycleOwner) {
-            localUser = LocalUser(
-                it.userID,
-                it.userName,
-                it.userEmail,
-                it.userBio,
-                it.userProfilePicture,
-                it.userBannerPicture
-            )
-            Util.userID = it.userID
-
-            val name = Util.getFirstName(localUser.userName)
-            binding.profileNameTV.text = "Hi $name,"
-
-            binding.profileBioTV.text = localUser.userBio
-            val profileURL = localUser.userProfilePicture!!
-            if (profileURL.isNotEmpty()) {
-                Util.loadImagesWithGlide(binding.profileImage, profileURL)
-            }
-        }
-
-        accountsViewModel.getAllUser.observe(viewLifecycleOwner) {
-            Util.log(it.toString())
-            accountsList.clear()
-            accountsList.addAll(it)
-            recyclerViewAdapter.setData(it)
-            recyclerViewAdapter.notifyDataSetChanged()
-        }
         handleOnScrollFAB()
     }
 

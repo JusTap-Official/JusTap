@@ -19,4 +19,7 @@ object Constants {
     const val impressionCount = "impressionCount"
     const val analytics = "analytics"
     const val added_on = "Added on"
+    const val firstColor = "firstColor"
+    const val secondColor = "secondColor"
+    const val qrPref = "QRPref"
 }
