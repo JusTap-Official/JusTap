@@ -32,8 +32,8 @@
     <string name="SendResetLink">Send reset link</string>
     <string name="HowToUse">How to use?</string>
     <string name="HowToUseDescription">Once you add the accounts from the floating button at the bottom right corner, you can see all your accounts in the list as shown.\n\nThe list displays:\n1.Name\n2.Logo\n3.Your account data\n4.Switch\n\nTurning on/off the switch will allow/restrict the account to show in the result when your QR is scanned.\nIn other words, turning off the switch will not show it in the scanner\'s result screen, and turning it on will show and will be clickable as well.</string>
-    <string name="EnterURLorUsername">Enter URL or Username</string>
-    <string name="AddEditFragmentBottomModalDescription">You must either enter your url or username of that account in order to proceed and save your data</string>
+    <string name="EnterURLorUsername">What to add here?</string>
+    <string name="AddEditFragmentBottomModalDescription">This input field accepts a range of inputs, including social media handles and URLs for various platforms.\n\nIn some cases, such as with WhatsApp, the input field also accepts contact numbers. Please make sure to enter a valid handle, URL, or contact number as applicable.\n\n\nExamples of valid inputs include "@username" for Twitter or Instagram, "https://www.example.com" for a website, or a phone number formatted with the country code for WhatsApp.</string>
     <string name="AreYouSureYouWantToUpdateThisAccount">Are you sure you want to update this account?</string>
     <string name="Update">Update</string>
     <string name="DontUpdate">Don\'t update</string>
@@ -87,7 +87,7 @@
     <string name="no_data_to_clear">No data to clear</string>
     <string name="username123">\@username123</string>
     <string name="select">Select</string>
-    <string name="account_url_username">Account Url / Username</string>
+    <string name="account_url_username">Account URL/Username</string>
     <string name="add_account">Add account</string>
     <string name="youve_used_all_accounts">You\'ve used all accounts</string>
     <string name="data_added_successfully">Data updated successfully</string>
@@ -119,6 +119,8 @@
     <string name="channel_name">Notification Channel Name</string>
     <string name="made_with_version">Made with ♥ v1.0</string>
     <string name="view_full_profile">View full profile</string>
+    <string name="enter">Enter\ </string>
+    <string name="number">\ Number</string>
 
     <string-array name="account_names">
         <item>Phone</item>

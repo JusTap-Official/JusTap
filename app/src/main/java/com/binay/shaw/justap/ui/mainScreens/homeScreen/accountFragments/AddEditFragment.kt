@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -178,6 +179,7 @@ class AddEditFragment : Fragment() {
                 paragraphHeading.text = resources.getString(R.string.EnterURLorUsername)
                 paragraphContent.text =
                     resources.getString(R.string.AddEditFragmentBottomModalDescription)
+                paragraphContent.gravity = Gravity.CENTER
             }
             dialog.root.setBottomSheet(bottomSheet)
         }
@@ -478,24 +480,42 @@ class AddEditFragment : Fragment() {
     private fun chooseAccount(it: String) {
 
         setImageOnAccountNameChange(Util.getImageDrawableFromAccountName(it))
-        binding.accountData.apply {
+        binding.apply {
+            val accountDataTvString = StringBuilder()
+            accountDataTvString.append(resources.getString(R.string.enter))
 
             when (it) {
                 "Phone" -> {
-                    inputType = InputType.TYPE_CLASS_PHONE
-                    hint = resources.getString(R.string.dummy_phone_number)
+                    accountData.apply {
+                        inputType = InputType.TYPE_CLASS_PHONE
+                        hint = resources.getString(R.string.dummy_phone_number)
+                    }
+                    accountDataTvString.append(it).append(resources.getString(R.string.number))
+                    accountInputTV.text = accountDataTvString.toString()
                 }
                 "Email" -> {
-                    inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
-                    hint = resources.getString(R.string.dummy_email)
+                    accountData.apply {
+                        inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+                        hint = resources.getString(R.string.dummy_email)
+                    }
+                    accountDataTvString.append(it)
+                    binding.accountInputTV.text = accountDataTvString.toString()
                 }
                 "WhatsApp" -> {
-                    inputType = InputType.TYPE_CLASS_PHONE
-                    hint = resources.getString(R.string.dummy_phone_number)
+                    accountData.apply {
+                        inputType = InputType.TYPE_CLASS_PHONE
+                        hint = resources.getString(R.string.dummy_phone_number)
+                    }
+                    accountDataTvString.append(it).append(resources.getString(R.string.number))
+                    accountInputTV.text = accountDataTvString.toString()
                 }
                 else -> {
-                    inputType = InputType.TYPE_CLASS_TEXT
-                    hint = resources.getString(R.string.username123)
+                    accountData.apply {
+                        inputType = InputType.TYPE_CLASS_TEXT
+                        hint = resources.getString(R.string.username123)
+                    }
+                    accountDataTvString.append(it).append(" URL/Username")
+                    accountInputTV.text = accountDataTvString.toString()
                 }
             }
 
