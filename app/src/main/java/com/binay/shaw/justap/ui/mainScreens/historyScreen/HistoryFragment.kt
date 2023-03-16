@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
@@ -19,6 +20,7 @@ import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.HistoryAdapter
 import com.binay.shaw.justap.base.BaseFragment
+import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.databinding.FragmentHistoryBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
@@ -36,7 +38,7 @@ class HistoryFragment : BaseFragment() {
 
     private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
-    private lateinit var localUserHistoryViewModel: LocalHistoryViewModel
+    private val localUserHistoryViewModel by viewModels<LocalHistoryViewModel> { ViewModelFactory() }
     private lateinit var historyAdapter: HistoryAdapter
 
 
@@ -284,12 +286,6 @@ class HistoryFragment : BaseFragment() {
             }
 
         }
-
-        localUserHistoryViewModel = ViewModelProvider(
-            this@HistoryFragment,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-        )[LocalHistoryViewModel::
-        class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
