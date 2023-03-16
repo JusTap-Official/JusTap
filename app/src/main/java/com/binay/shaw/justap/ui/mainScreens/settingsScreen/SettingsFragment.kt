@@ -18,15 +18,15 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.SettingsItemAdapter
+import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.databinding.ColorpickerModalBinding
 import com.binay.shaw.justap.databinding.FragmentSettingsBinding
@@ -39,7 +39,6 @@ import com.binay.shaw.justap.helper.Util.setBottomSheet
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.model.SettingsItem
 import com.binay.shaw.justap.ui.authentication.signInScreen.SignInScreen
-import com.binay.shaw.justap.viewModel.AccountsViewModel
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
 import com.binay.shaw.justap.ui.mainScreens.qrScreens.qrGeneratorScreen.QRGeneratorViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -59,15 +58,13 @@ class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
-    private lateinit var recyclerView: RecyclerView
     private lateinit var settingsItemList: ArrayList<SettingsItem>
     private lateinit var settingsItemAdapter: SettingsItemAdapter
     private lateinit var localUserDatabase: LocalUserDatabase
-    private lateinit var localUserViewModel: LocalUserViewModel
-    private lateinit var accountsViewModel: AccountsViewModel
+    private val localUserViewModel by viewModels<LocalUserViewModel> { ViewModelFactory() }
     private lateinit var feedback: ImageView
     private lateinit var localUser: LocalUser
-    private lateinit var qrGeneratorViewModel: QRGeneratorViewModel
+    private val qrGeneratorViewModel by viewModels<QRGeneratorViewModel> { ViewModelFactory() }
     private lateinit var displayMetrics: DisplayMetrics
     private var overlay: Bitmap? = null
 
@@ -77,18 +74,41 @@ class SettingsFragment : Fragment() {
     ): View {
 
         _binding = FragmentSettingsBinding.inflate(layoutInflater, container, false)
-        initialization()
 
+        initObservers()
+        initialization()
+        handleOperations()
+
+        binding.toProfile.setOnClickListener {
+            Navigation.findNavController(binding.root)
+                .navigate(R.id.action_settings_to_profileFragment)
+        }
+
+        feedback.setOnClickListener {
+            val openURL = Intent(Intent.ACTION_VIEW)
+            openURL.data = Uri.parse(requireContext().resources.getString(R.string.mailTo))
+            startActivity(openURL)
+        }
+
+        return binding.root
+    }
+
+    private fun handleOperations() {
+        setupSettingsOptions()
+    }
+
+    private fun setupSettingsOptions() {
         /**set List*/
         settingsItemList = ArrayList()
+        settingsItemList.apply {
+            add(SettingsItem(1, R.drawable.edit_icon, "Edit profile", false))
+            add(SettingsItem(3, R.drawable.scanner_icon, "Customize QR", false))
+            add(SettingsItem(4, R.drawable.info_icon, "About us", false))
+            add(SettingsItem(5, R.drawable.help_icon, "Need help?", false))
+            add(SettingsItem(6, R.drawable.logout_icon, "Log out", false))
+        }
 
-        settingsItemList.add(SettingsItem(1, R.drawable.edit_icon, "Edit profile", false))
-        settingsItemList.add(SettingsItem(3, R.drawable.scanner_icon, "Customize QR", false))
-        settingsItemList.add(SettingsItem(4, R.drawable.info_icon, "About us", false))
-        settingsItemList.add(SettingsItem(5, R.drawable.help_icon, "Need help?", false))
-        settingsItemList.add(SettingsItem(6, R.drawable.logout_icon, "Log out", false))
         /**set find Id*/
-        recyclerView = binding.settingsRV
         /**set Adapter*/
         settingsItemAdapter = SettingsItemAdapter(requireContext(), settingsItemList) {
             //Customize QR Listener
@@ -115,28 +135,32 @@ class SettingsFragment : Fragment() {
                 }
             }
         }
-
         /**setRecycler view Adapter*/
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = settingsItemAdapter
-
-
-        binding.toProfile.setOnClickListener {
-            Navigation.findNavController(binding.root)
-                .navigate(R.id.action_settings_to_profileFragment)
+        binding.settingsRV.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = settingsItemAdapter
         }
+    }
 
-//        binding.include.rightIcon.setOnClickListener {
-//            logout()
-//        }
+    private fun initObservers() {
+        localUserViewModel.fetchUser.observe(viewLifecycleOwner) {
+            if (it != null) {
+                localUser = LocalUser(
+                    it.userID,
+                    it.userName,
+                    it.userEmail,
+                    it.userBio,
+                    it.userProfilePicture,
+                    it.userBannerPicture
+                )
+            }
+            val name = Util.getFirstName(localUser.userName)
+            binding.settingsUserName.text = name
 
-        feedback.setOnClickListener {
-            val openURL = Intent(Intent.ACTION_VIEW)
-            openURL.data = Uri.parse(requireContext().resources.getString(R.string.mailTo))
-            startActivity(openURL)
+            val profileURL = localUser.userProfilePicture.toString()
+            if (profileURL.isNotEmpty())
+                Util.loadImagesWithGlide(binding.profileImage, profileURL)
         }
-
-        return binding.root
     }
 
     private fun needHelp() {
@@ -371,43 +395,12 @@ class SettingsFragment : Fragment() {
             requireContext(), LocalUserDatabase::class.java,
             "localDB"
         ).build()
-        localUserViewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-        )[LocalUserViewModel::class.java]
-
-        accountsViewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-        )[AccountsViewModel::class.java]
-
-        qrGeneratorViewModel =
-            ViewModelProvider(this@SettingsFragment)[QRGeneratorViewModel::class.java]
 
         displayMetrics = DisplayMetrics()
         activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
 
         overlay = ContextCompat.getDrawable(requireContext(), R.drawable.logo_black_stroke)
             ?.toBitmap(72.dpToPx(), 72.dpToPx())
-
-        localUserViewModel.fetchUser.observe(viewLifecycleOwner) {
-            if (it != null) {
-                localUser = LocalUser(
-                    it.userID,
-                    it.userName,
-                    it.userEmail,
-                    it.userBio,
-                    it.userProfilePicture,
-                    it.userBannerPicture
-                )
-            }
-            val name = Util.getFirstName(localUser.userName)
-            binding.settingsUserName.text = name
-
-            val profileURL = localUser.userProfilePicture.toString()
-            if (profileURL.isNotEmpty())
-                Util.loadImagesWithGlide(binding.profileImage, profileURL)
-        }
 
         binding.include.apply {
             leftIcon.apply {

@@ -26,7 +26,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        getToken()
+//        getToken()
         setUpNav()
     }
 
@@ -52,16 +52,16 @@ class MainActivity : BaseActivity() {
         bottomNavigationView.setupWithNavController2(navController)
     }
 
-    private fun getToken() {
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w("Token Error", "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
-            }
-            val token = task.result
-            Log.d("Token", token)
-        })
-    }
+//    private fun getToken() {
+//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+//            if (!task.isSuccessful) {
+//                Log.w("Token Error", "Fetching FCM registration token failed", task.exception)
+//                return@OnCompleteListener
+//            }
+//            val token = task.result
+//            Log.d("Token", token)
+//        })
+//    }
 
     private fun showBottomNav(bottomNavigationView: BottomNavigationView) {
         bottomNavigationView.visibility = View.VISIBLE
