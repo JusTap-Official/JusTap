@@ -12,7 +12,7 @@
     <item android:state_checked="false" android:state_enabled="false">
         <shape android:shape="oval">
             <solid android:color="@color/bg_color"/>
-            <stroke android:color="@color/text_color" android:width="4dp"/>
+            <stroke android:color="@color/drag_handle_color" android:width="2dp"/>
             <size android:height="30dp"
                 android:width="30dp"/>
         </shape>

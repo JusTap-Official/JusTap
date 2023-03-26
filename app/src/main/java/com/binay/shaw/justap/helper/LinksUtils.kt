@@ -42,7 +42,7 @@ object LinksUtils {
             }
             accountNameArray[4] -> {
                 val regex = "github.com"
-                if (isLink(data) or data.contains(regex)) {
+                if (isLink(data) || data.contains(regex)) {
                     openLink(data, context)
                 } else {
                     val githubLink = "https://github.com/$data"

@@ -160,32 +160,27 @@ class ResultFragment : BaseFragment() {
 
     private fun createLocalHistory(user: User, localHistoryViewModel: LocalHistoryViewModel) {
 
-        if (user.profilePictureURI != null) {
-            if (user.profilePictureURI.isNotEmpty()) {
-                val myOptions = RequestOptions()
-                    .override(100, 100)
-                Glide.with(requireContext())
-                    .asBitmap()
-                    .apply(myOptions)
-                    .encodeFormat(Bitmap.CompressFormat.PNG) // Set the output format to PNG
-                    .encodeQuality(50)
-                    .load(user.profilePictureURI)
-                    .into(object : CustomTarget<Bitmap>() {
-                        override fun onResourceReady(
-                            resource: Bitmap,
-                            transition: Transition<in Bitmap>?
-                        ) {
-                            // Save the bitmap to your LocalHistory object
-                            viewModel.saveLocalHistory(user, resource, localHistoryViewModel)
-                        }
+        if (user.profilePictureURI.isNullOrEmpty().not()) {
+            val myOptions = RequestOptions()
+                .override(100, 100)
+            Glide.with(requireContext())
+                .asBitmap()
+                .apply(myOptions)
+                .encodeFormat(Bitmap.CompressFormat.PNG) // Set the output format to PNG
+                .load(user.profilePictureURI)
+                .into(object : CustomTarget<Bitmap>() {
+                    override fun onResourceReady(
+                        resource: Bitmap,
+                        transition: Transition<in Bitmap>?
+                    ) {
+                        // Save the bitmap to your LocalHistory object
+                        viewModel.saveLocalHistory(user, resource, localHistoryViewModel)
+                    }
 
-                        override fun onLoadCleared(placeholder: Drawable?) {
-                            // Do nothing
-                        }
-                    })
-            }else {
-                viewModel.saveLocalHistory(user, null, localHistoryViewModel)
-            }
+                    override fun onLoadCleared(placeholder: Drawable?) {
+                        // Do nothing
+                    }
+                })
         } else {
             viewModel.saveLocalHistory(user, null, localHistoryViewModel)
         }
