@@ -59,8 +59,8 @@
     <string name="badContrast">Contrast is bad, choose different color</string>
     <string name="badContrastDescription">Please choose a different color</string>
     <string name="anErrorOccurred">An error occurred</string>
-    <string name="choose_secondary_color">Choose secondary Color</string>
-    <string name="choose_primary_color">Choose primary Color</string>
+    <string name="choose_secondary_color">Secondary</string>
+    <string name="choose_primary_color">Primary</string>
     <string name="successfullyScanned">Successfully Scanned!</string>
     <string name="reset_colors">Reset Colors</string>
     <string name="noInternet">No Internet available</string>
@@ -119,7 +119,7 @@
     <string name="channel_name">Notification Channel Name</string>
     <string name="result_notification_channel_id">Result Notification Id</string>
     <string name="result_notification_channel_name">Result Notification</string>
-    <string name="made_with_version">Made with ♥ v1.0</string>
+    <string name="made_with_version">Made with ♥ v1.2</string>
     <string name="view_full_profile">View full profile</string>
     <string name="enter">Enter\ </string>
     <string name="number">\ Number</string>
@@ -128,6 +128,8 @@
     <string name="saved_successfully">Saved Successfulyy</string>
     <string name="your_qr_code_is_saved_in_gallery">Your QR Code is successfylly saved in gallery</string>
     <string name="deleted">Deleted</string>
+    <string name="show_profile_image">Show profile image</string>
+    <string name="choose_colors">Choose Colors</string>
 
     <string-array name="account_names">
         <item>Phone</item>

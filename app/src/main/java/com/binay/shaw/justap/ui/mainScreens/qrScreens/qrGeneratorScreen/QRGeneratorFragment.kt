@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -112,6 +113,16 @@ class QRGeneratorFragment : BaseFragment() {
             ResourcesCompat.getColor(resources, R.color.bg_color, null)
         )
 
+        val sharedPreference =
+            requireContext().getSharedPreferences(Constants.qrPref, Context.MODE_PRIVATE)
+
+        val byteString = sharedPreference.getString(Constants.image_pref, null)
+        if (byteString != null) {
+            val byteArray = android.util.Base64.decode(byteString, android.util.Base64.DEFAULT)
+            // use the byteArray as needed
+            overlay = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+        }
+
         viewModel.run {
             generateQR(displayMetrics, overlay,
                 firstSelectedColor,
@@ -121,7 +132,7 @@ class QRGeneratorFragment : BaseFragment() {
                 binding.qrCodePreview.setImageBitmap(it)
             }
 
-            errorMessage.observe(viewLifecycleOwner) { it ->
+            errorMessage.observe(viewLifecycleOwner) {
                 showAlerter(
                     resources.getString(R.string.anErrorOccurred),
                     "",

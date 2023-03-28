@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -22,7 +23,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
-import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.SettingsItemAdapter
 import com.binay.shaw.justap.base.BaseFragment
@@ -32,6 +32,8 @@ import com.binay.shaw.justap.databinding.ColorpickerModalBinding
 import com.binay.shaw.justap.databinding.FragmentSettingsBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
+import com.binay.shaw.justap.helper.Constants
+import com.binay.shaw.justap.helper.ImageUtils
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.createBottomSheet
 import com.binay.shaw.justap.helper.Util.dpToPx
@@ -39,8 +41,9 @@ import com.binay.shaw.justap.helper.Util.setBottomSheet
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.model.SettingsItem
 import com.binay.shaw.justap.ui.authentication.signInScreen.SignInScreen
-import com.binay.shaw.justap.viewModel.LocalUserViewModel
+import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.ui.mainScreens.qrScreens.qrGeneratorScreen.QRGeneratorViewModel
+import com.binay.shaw.justap.viewModel.LocalUserViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.skydoves.colorpickerview.ColorPickerDialog
 import com.skydoves.colorpickerview.flag.BubbleFlag
@@ -50,7 +53,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class SettingsFragment : BaseFragment() {
@@ -178,7 +180,28 @@ class SettingsFragment : BaseFragment() {
 
     private fun customizeQR() {
 
-        val sharedPreference = requireContext().getSharedPreferences("QRPref", Context.MODE_PRIVATE)
+        val profileImageIsPresent = localUser.userProfilePicture.isNullOrEmpty().not()
+
+        val sharedPreference =
+            requireContext().getSharedPreferences(Constants.qrPref, Context.MODE_PRIVATE)
+
+        overlay = ContextCompat.getDrawable(requireContext(), R.drawable.logo_black_stroke)
+            ?.toBitmap(72.dpToPx(), 72.dpToPx())
+
+        val byteString = sharedPreference.getString(Constants.image_pref, null)
+        if (byteString != null) {
+            val byteArray = android.util.Base64.decode(byteString, android.util.Base64.DEFAULT)
+            // use the byteArray as needed
+            overlay = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+        }
+
+        val profileImage = if (profileImageIsPresent) binding.profileImage.drawable else null
+        val profileBitmap = profileImage?.let { ImageUtils.getBitmapFromDrawable(it) }
+        val originalBitmap = ContextCompat.getDrawable(requireContext(), R.drawable.logo_black_stroke)
+            ?.toBitmap(72.dpToPx(), 72.dpToPx())
+        var overlayBitmap = overlay
+
+
 
         val dialog = ColorpickerModalBinding.inflate(layoutInflater)
         val bottomSheet = requireContext().createBottomSheet()
@@ -187,13 +210,19 @@ class SettingsFragment : BaseFragment() {
             var isColorReset = false
 
             var firstSelectedColor = sharedPreference.getInt(
-                "firstColor",
+                Constants.firstColor,
                 ResourcesCompat.getColor(resources, R.color.text_color, null)
             )
             var secondSelectedColor = sharedPreference.getInt(
-                "secondColor",
+                Constants.secondColor,
                 ResourcesCompat.getColor(resources, R.color.bg_color, null)
             )
+
+            if (profileImageIsPresent.not()) {
+                linearLayoutCompat.visibility = View.INVISIBLE
+            }
+            if (originalBitmap!!.sameAs(overlayBitmap).not())
+                showProfileCheckBox.isChecked = true
 
             val defaultPrimaryColor = ResourcesCompat.getColor(
                 resources,
@@ -206,17 +235,17 @@ class SettingsFragment : BaseFragment() {
                 null
             )
 
-            generateQR(
-                firstSelectedColor,
-                secondSelectedColor
-            )
+            overlayBitmap?.let { generateQR(firstSelectedColor, secondSelectedColor, it) }
+
+            showProfileCheckBox.setOnCheckedChangeListener { _, isClicked ->
+                overlayBitmap = if (isClicked) ImageUtils.getRoundedCroppedBitmap(profileBitmap!!) else originalBitmap
+                overlayBitmap?.let { generateQR(firstSelectedColor, secondSelectedColor, it) }
+            }
 
             qrGeneratorViewModel.bitmap.observe(viewLifecycleOwner) {
                 qrCodePreview.setImageBitmap(it)
             }
 
-            optionsHeading.text = resources.getString(R.string.customizeQR)
-            optionsContent.text = resources.getString(R.string.customizeQRDescription)
             positiveOption.text = resources.getString(R.string.SaveChanges)
             negativeOption.text = requireContext().resources.getString(R.string.DontSave)
 
@@ -228,10 +257,9 @@ class SettingsFragment : BaseFragment() {
                             resources.getString(R.string.SaveChanges),
                             ColorEnvelopeListener { envelope, _ ->
                                 firstSelectedColor = envelope.color
-                                generateQR(
+                                overlayBitmap?.let { generateQR(
                                     firstSelectedColor,
-                                    secondSelectedColor
-                                )
+                                    secondSelectedColor, it) }
                             }
                         )
                         .setNegativeButton(
@@ -245,8 +273,8 @@ class SettingsFragment : BaseFragment() {
                     showAlerter(
                         resources.getString(R.string.anErrorOccurred),
                         e.toString()
-                        .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
-                        .substring(36),
+                            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
+                            .substring(36),
                         ContextCompat.getColor(requireContext(), R.color.negative_red),
                         R.drawable.warning,
                         2000L
@@ -263,10 +291,9 @@ class SettingsFragment : BaseFragment() {
                             resources.getString(R.string.SaveChanges),
                             ColorEnvelopeListener { envelope, _ ->
                                 secondSelectedColor = envelope.color
-                                generateQR(
+                                overlayBitmap?.let { generateQR(
                                     firstSelectedColor,
-                                    secondSelectedColor
-                                )
+                                    secondSelectedColor, it) }
                             }
                         )
                         .setNegativeButton(
@@ -292,10 +319,7 @@ class SettingsFragment : BaseFragment() {
             }
 
             resetColors.setOnClickListener {
-                generateQR(
-                    defaultPrimaryColor,
-                    defaultSecondaryColor
-                )
+                overlayBitmap?.let { generateQR(defaultPrimaryColor, defaultSecondaryColor, it) }
                 firstSelectedColor = defaultPrimaryColor
                 secondSelectedColor = defaultSecondaryColor
                 isColorReset = true
@@ -317,10 +341,10 @@ class SettingsFragment : BaseFragment() {
 
                         if (Util.colorIsNotTheSame(firstSelectedColor, defaultPrimaryColor)
                             || Util.colorIsNotTheSame(secondSelectedColor, defaultSecondaryColor)
-                            || isColorReset
+                            || isColorReset || overlayBitmap!!.sameAs(profileBitmap).not()
                         ) {
 
-                            saveColors(sharedPreference, firstSelectedColor, secondSelectedColor)
+                            saveColors(sharedPreference, firstSelectedColor, secondSelectedColor, overlayBitmap!!)
                             showAlerter(
                                 resources.getString(R.string.changesSaved),
                                 resources.getString(R.string.changesSavedDescription),
@@ -332,7 +356,8 @@ class SettingsFragment : BaseFragment() {
                         } else {
                             Util.log("First Colors are : $firstSelectedColor and $defaultPrimaryColor")
                             Util.log("Second Colors are : $secondSelectedColor and $defaultSecondaryColor")
-                            Toast.makeText(requireContext(), "No changes made", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), "No changes made", Toast.LENGTH_SHORT)
+                                .show()
                         }
 
                     } else {
@@ -366,15 +391,22 @@ class SettingsFragment : BaseFragment() {
         dialog.root.setBottomSheet(bottomSheet)
     }
 
-    private fun saveColors(sharedPreference: SharedPreferences, firstSelectedColor: Int, secondSelectedColor: Int) {
+    private fun saveColors(
+        sharedPreference: SharedPreferences,
+        firstSelectedColor: Int,
+        secondSelectedColor: Int,
+        overlayBitmap: Bitmap
+    ) {
         val editor = sharedPreference.edit()
-        editor.putInt("firstColor", firstSelectedColor)
-        editor.putInt("secondColor", secondSelectedColor)
+        val byteString: String = android.util.Base64.encodeToString(ImageUtils.bitmapToByteArray(overlayBitmap), android.util.Base64.DEFAULT)
+        editor.putInt(Constants.firstColor, firstSelectedColor)
+        editor.putInt(Constants.secondColor, secondSelectedColor)
+        editor.putString(Constants.image_pref, byteString)
         editor.apply()
         Util.log("Saved")
     }
 
-    private fun generateQR(color1: Int, color2: Int) {
+    private fun generateQR(color1: Int, color2: Int, overlay: Bitmap) {
         qrGeneratorViewModel.generateQR(
             displayMetrics, overlay,
             color1,
@@ -396,9 +428,6 @@ class SettingsFragment : BaseFragment() {
 
         displayMetrics = DisplayMetrics()
         activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
-
-        overlay = ContextCompat.getDrawable(requireContext(), R.drawable.logo_black_stroke)
-            ?.toBitmap(72.dpToPx(), 72.dpToPx())
 
         binding.include.apply {
             leftIcon.apply {
@@ -438,6 +467,10 @@ class SettingsFragment : BaseFragment() {
                 bottomSheet.dismiss()
 
                 lifecycleScope.launch(Dispatchers.Main) {
+                    val sharedPreferences = requireContext().getSharedPreferences(Constants.qrPref, Context.MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.clear()
+                    editor.apply()
                     val signOutFromFirebase =
                         launch(Dispatchers.IO) { FirebaseAuth.getInstance().signOut() }
                     signOutFromFirebase.join()
