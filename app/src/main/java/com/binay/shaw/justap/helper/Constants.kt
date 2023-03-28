@@ -30,4 +30,6 @@ object Constants {
     const val myGitHub = "https://github.com/binayshaw7777"
     const val myTwitter = "https://twitter.com/binayplays7777"
     const val myWebsite = "https://bit.ly/binayshaw7777"
+
+    const val APP_URL = "https://play.google.com/store/apps/details?id=com.binay.shaw.justap"
 }

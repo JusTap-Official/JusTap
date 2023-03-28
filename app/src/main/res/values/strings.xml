@@ -130,6 +130,10 @@
     <string name="deleted">Deleted</string>
     <string name="show_profile_image">Show profile image</string>
     <string name="choose_colors">Choose Colors</string>
+    <string name="wohoo_update_available">Wohoo, Update Available!</string>
+    <string name="new_update_description">Would you like to update it now?</string>
+    <string name="update">Update</string>
+    <string name="skip_for_now">Skip for now</string>
 
     <string-array name="account_names">
         <item>Phone</item>
