@@ -39,6 +39,7 @@ class ForgotPasswordScreen : BaseActivity() {
                 }
             }
             errorLiveData.observe(this@ForgotPasswordScreen) {
+                stopProgress()
                 Toast.makeText(this@ForgotPasswordScreen, it.toString(), Toast.LENGTH_SHORT).show()
             }
         }

@@ -36,7 +36,7 @@ class FirebaseViewModel : ViewModel() {
     }
 
     fun resetPassword(email: String) = viewModelScope.launch(Dispatchers.IO) {
-        val progress = FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+        FirebaseAuth.getInstance().sendPasswordResetEmail(email)
             .addOnSuccessListener {
                 resetPasswordRequest.postValue(true)
             }.addOnFailureListener {
@@ -54,6 +54,8 @@ class FirebaseViewModel : ViewModel() {
                 }.addOnFailureListener {
                     errorLiveData.postValue(it.message.toString())
                 }
+        } else {
+            errorLiveData.postValue("Please check your details")
         }
     }
 
@@ -143,6 +145,8 @@ class FirebaseViewModel : ViewModel() {
                 }.addOnFailureListener {
                     errorLiveData.postValue(it.message.toString())
                 }
+        } else {
+            errorLiveData.postValue("Please check your details")
         }
     }
 }

@@ -81,6 +81,7 @@ class SignUpScreen : BaseActivity() {
                     startActivity(Intent(this@SignUpScreen, SignInScreen::class.java))
             }
             errorLiveData.observe(this@SignUpScreen) {
+                stopProgress()
                 Toast.makeText(
                     this@SignUpScreen,
                     it,

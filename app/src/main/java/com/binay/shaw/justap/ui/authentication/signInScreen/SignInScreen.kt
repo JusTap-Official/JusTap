@@ -130,6 +130,8 @@ class SignInScreen : BaseActivity() {
                 fetchUserForLogIn()
             }
             errorLiveData.observe(this@SignInScreen) {
+                stopProgress()
+                binding.etPassword.setText("")
                 Toast.makeText(
                     this@SignInScreen,
                     "Sign Failed: $it",
