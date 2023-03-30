@@ -53,6 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:buttonTint="@color/text_color"
             android:gravity="center" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -84,6 +85,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/reset_colors"
+            android:textSize="16sp"
+            android:fontFamily="@font/roboto_medium"
             android:textColor="@color/medium_blue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

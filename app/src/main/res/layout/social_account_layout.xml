@@ -29,12 +29,13 @@
             android:layout_height="match_parent">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/accountSwitch"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -42,12 +43,12 @@
                     android:id="@+id/accountLogo"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/logo_black_circle" />
+                    android:src="@drawable/logo" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginHorizontal="16dp"
                     android:gravity="center_vertical"
                     android:orientation="vertical">
 
@@ -55,7 +56,9 @@
                         android:id="@+id/accountTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/roboto_bold"
+                        android:maxLines="1"
                         android:textColor="@color/text_color"
                         android:textSize="18sp"
                         tools:text="Account name" />
@@ -65,7 +68,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
+                        android:ellipsize="end"
                         android:fontFamily="@font/roboto"
+                        android:maxLines="1"
                         android:textColor="@color/text_color"
                         android:textSize="12sp"
                         tools:text="Account data" />

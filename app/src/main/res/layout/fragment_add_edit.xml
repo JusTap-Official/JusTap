@@ -32,7 +32,7 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/logo_black_square"
+            android:src="@drawable/logo"
             android:visibility="gone"
             tools:visibility="visible"/>
 

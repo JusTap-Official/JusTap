@@ -28,7 +28,7 @@ import com.binay.shaw.justap.adapter.SettingsItemAdapter
 import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.data.LocalUserDatabase
-import com.binay.shaw.justap.databinding.ColorpickerModalBinding
+import com.binay.shaw.justap.databinding.CustomizeQrModalBinding
 import com.binay.shaw.justap.databinding.FragmentSettingsBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
@@ -185,7 +185,7 @@ class SettingsFragment : BaseFragment() {
         val sharedPreference =
             requireContext().getSharedPreferences(Constants.qrPref, Context.MODE_PRIVATE)
 
-        overlay = ContextCompat.getDrawable(requireContext(), R.drawable.logo_black_stroke)
+        overlay = ContextCompat.getDrawable(requireContext(), R.drawable.logo)
             ?.toBitmap(72.dpToPx(), 72.dpToPx())
 
         val byteString = sharedPreference.getString(Constants.image_pref, null)
@@ -197,13 +197,13 @@ class SettingsFragment : BaseFragment() {
 
         val profileImage = if (profileImageIsPresent) binding.profileImage.drawable else null
         val profileBitmap = profileImage?.let { ImageUtils.getBitmapFromDrawable(it) }
-        val originalBitmap = ContextCompat.getDrawable(requireContext(), R.drawable.logo_black_stroke)
+        val originalBitmap = ContextCompat.getDrawable(requireContext(), R.drawable.logo)
             ?.toBitmap(72.dpToPx(), 72.dpToPx())
         var overlayBitmap = overlay
 
 
 
-        val dialog = ColorpickerModalBinding.inflate(layoutInflater)
+        val dialog = CustomizeQrModalBinding.inflate(layoutInflater)
         val bottomSheet = requireContext().createBottomSheet()
         dialog.apply {
 
@@ -238,7 +238,7 @@ class SettingsFragment : BaseFragment() {
             overlayBitmap?.let { generateQR(firstSelectedColor, secondSelectedColor, it) }
 
             showProfileCheckBox.setOnCheckedChangeListener { _, isClicked ->
-                overlayBitmap = if (isClicked) ImageUtils.getRoundedCroppedBitmap(profileBitmap!!) else originalBitmap
+                overlayBitmap = if (isClicked) profileBitmap else originalBitmap
                 overlayBitmap?.let { generateQR(firstSelectedColor, secondSelectedColor, it) }
             }
 
@@ -427,7 +427,7 @@ class SettingsFragment : BaseFragment() {
         ).build()
 
         displayMetrics = DisplayMetrics()
-        activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
+        requireActivity().windowManager?.defaultDisplay?.getMetrics(displayMetrics)
 
         binding.include.apply {
             leftIcon.apply {

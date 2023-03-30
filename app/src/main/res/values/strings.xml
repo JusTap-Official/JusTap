@@ -23,9 +23,12 @@
     <string name="DiscardChangedDescription">Are you sure you discard changes?</string>
     <string name="ContinueEditing">Continue editing</string>
     <string name="ConfirmChanges">Confirm change</string>
+    <string name="AddNewAccount">Add new account?</string>
     <string name="SaveChanges">Save Changes</string>
+    <string name="yes_add_new_account">Yes add new accounts</string>
     <string name="DontSave">Don\'t save</string>
     <string name="ConfirmChangesDescription">Are you sure you want to make changed?</string>
+    <string name="ConfirmAddDescription">Are you sure you want to add new listing?</string>
     <string name="EditProfile">Edit Profile</string>
     <string name="AboutMe">About me</string>
     <string name="LogIn">Log In</string>
@@ -119,7 +122,7 @@
     <string name="channel_name">Notification Channel Name</string>
     <string name="result_notification_channel_id">Result Notification Id</string>
     <string name="result_notification_channel_name">Result Notification</string>
-    <string name="made_with_version">Made with ♥ v1.2</string>
+    <string name="made_with_version">Made with ♥ v1.3</string>
     <string name="view_full_profile">View full profile</string>
     <string name="enter">Enter\ </string>
     <string name="number">\ Number</string>
@@ -134,6 +137,7 @@
     <string name="new_update_description">Would you like to update it now?</string>
     <string name="update">Update</string>
     <string name="skip_for_now">Skip for now</string>
+    <string name="fill_all_the_inputs">Fill all input fields</string>
 
     <string-array name="account_names">
         <item>Phone</item>

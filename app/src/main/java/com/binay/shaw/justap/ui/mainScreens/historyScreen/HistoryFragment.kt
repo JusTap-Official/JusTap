@@ -132,7 +132,9 @@ class HistoryFragment : BaseFragment() {
                     } else {
                         binding.clearText.visibility = View.GONE
                         setCompoundDrawablesWithIntrinsicBounds(R.drawable.search, 0, 0, 0)
-                        historyAdapter.setData(localUserHistoryViewModel.accountListLiveData.value!!)
+                        localUserHistoryViewModel.accountListLiveData.value?.let {
+                            historyAdapter.setData(it)
+                        }
                     }
                 }
             })
@@ -202,6 +204,7 @@ class HistoryFragment : BaseFragment() {
         dialog.root.setBottomSheet(bottomSheet)
     }
 
+    @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
     private fun initialization() {
 
         (activity as MainActivity).supportActionBar?.hide()
@@ -293,6 +296,13 @@ class HistoryFragment : BaseFragment() {
                 }
             }
         requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (historyAdapter.itemCount == 0) {
+            binding.emptyState.visibility = View.VISIBLE
+        } else binding.emptyState.visibility = View.GONE
     }
 
     override fun onDestroy() {

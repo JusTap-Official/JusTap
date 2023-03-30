@@ -4,10 +4,13 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
@@ -21,6 +24,7 @@ import android.util.Patterns
 import android.view.View
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.binay.shaw.justap.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -144,7 +148,7 @@ object Util {
         bitmap.setPixels(pixels, 0, dimension, 0, 0, w, h)
 
         return if (overlayBitmap != null) {
-            bitmap.addOverlayToCenter(overlayBitmap)
+            bitmap.addOverlayToCenter(ImageUtils.getRoundedCroppedBitmap(overlayBitmap)!!)
         } else {
             bitmap
         }
@@ -166,35 +170,70 @@ object Util {
         return (this * Resources.getSystem().displayMetrics.density).toInt()
     }
 
-
-    fun saveMediaToStorage(bitmap: Bitmap, context: Context): Boolean {
-        var success = false
+    /**
+     * Extension function that saves a Bitmap to the device storage and returns the Uri of the saved image.
+     */
+    fun Bitmap.saveToStorageAndGetUri(context: Context): Uri? {
         val filename = "${System.currentTimeMillis()}.jpg"
-        var fos: OutputStream? = null
+        var outputStream: OutputStream? = null
+        var uri: Uri? = null
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            context.contentResolver?.also { resolver ->
-                val contentValues = ContentValues().apply {
-                    put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
-                    put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
-                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
-                }
-                val imageUri: Uri? =
-                    resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-                fos = imageUri?.let { resolver.openOutputStream(it) }
+            // Use MediaStore API to save the image for Android Q (API level 29) and above
+            val contentValues = ContentValues().apply {
+                put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+                put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+                put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
             }
+
+            val contentResolver = context.contentResolver
+            uri = contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+            outputStream = uri?.let { contentResolver?.openOutputStream(it) }
         } else {
-            val imagesDir =
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-            val image = File(imagesDir, filename)
-            fos = FileOutputStream(image)
+            // Use traditional file API to save the image for below Android Q
+            val imagesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+            val imageFile = File(imagesDir, filename)
+            uri = Uri.fromFile(imageFile)
+            outputStream = FileOutputStream(imageFile)
         }
-        fos?.use {
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+
+        outputStream?.use {
+            this.compress(Bitmap.CompressFormat.JPEG, 100, it)
             log("Saved to Photos")
-            success = true
         }
-        return success
+        return uri
     }
+
+
+
+//    fun saveMediaToStorage(bitmap: Bitmap, context: Context): Boolean {
+//        var success = false
+//        val filename = "${System.currentTimeMillis()}.jpg"
+//        var fos: OutputStream? = null
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//            context.contentResolver?.also { resolver ->
+//                val contentValues = ContentValues().apply {
+//                    put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+//                    put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
+//                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+//                }
+//                val imageUri: Uri? =
+//                    resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+//                fos = imageUri?.let { resolver.openOutputStream(it) }
+//            }
+//        } else {
+//            val imagesDir =
+//                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+//            val image = File(imagesDir, filename)
+//            fos = FileOutputStream(image)
+//        }
+//        fos?.use {
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+//            log("Saved to Photos")
+//            success = true
+//        }
+//        return success
+//    }
 
     fun loadImagesWithGlide(imageView: ImageView, url: String) {
         Glide.with(imageView)
@@ -329,5 +368,52 @@ object Util {
         val date = Date()
         return dateFormat.format(date)
     }
+
+    /**
+     * Extension function that shares an image and text using an Android Intent
+     */
+    fun ImageView.shareImageAndText(context: Context, shareText: String) {
+        // Get the Drawable from the ImageView
+        val drawable: Drawable? = this.drawable
+
+        // Convert the Drawable to a Bitmap
+        val bitmap: Bitmap = (drawable as? BitmapDrawable)?.bitmap ?: Bitmap.createBitmap(drawable?.intrinsicWidth ?: 0, drawable?.intrinsicHeight ?: 0, Bitmap.Config.ARGB_8888)
+        drawable?.draw(Canvas(bitmap))
+
+        // Share the Bitmap and text using an Intent
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "image/jpeg"
+
+        // Add the Bitmap as an attachment to the Intent
+        val imageUri = bitmap.saveToStorageAndGetUri(context)
+        shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri)
+
+        // Add some text to the Intent
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareText)
+
+        // Start the Intent chooser to share the content
+        val chooserIntent = Intent.createChooser(shareIntent, "Share Image")
+        context.startActivity(chooserIntent)
+    }
+
+    /**
+     * Function that converts a Bitmap to a Uri
+     */
+    private fun getUriFromBitmap(context: Context, bitmap: Bitmap): Uri? {
+        var uri: Uri? = null
+        val file = File(context.externalCacheDir, "image.jpg")
+        val outputStream = FileOutputStream(file)
+        try {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            outputStream.flush()
+            uri = FileProvider.getUriForFile(context, context.applicationContext.packageName + ".provider", file)
+        } catch (e: Exception) {
+            Log.e("Share", "Error writing bitmap", e)
+        } finally {
+            outputStream.close()
+        }
+        return uri
+    }
+
 
 }

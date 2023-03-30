@@ -129,12 +129,12 @@ class AddEditFragment : BaseFragment() {
 
     private fun onConfirmHandler() {
         binding.confirmChanges.setOnClickListener {
-            if (binding.confirmChanges.text.equals("Add account")) {
+            if (binding.confirmChanges.text.equals(getString(R.string.add_account))) {
                 val accountData = binding.accountData.text.toString()
                 if (dataIsValid(viewModel.selectedAccount.value.toString(), accountData)) {
                     saveData(accountData)
                 } else {
-                    Toast.makeText(requireContext(), "Fill all input fields", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), getString(R.string.fill_all_the_inputs), Toast.LENGTH_SHORT)
                         .show()
                     return@setOnClickListener
                 }
@@ -143,7 +143,7 @@ class AddEditFragment : BaseFragment() {
                 if (newData.isNotEmpty()) {
                     updateData(newData)
                 } else {
-                    Toast.makeText(requireContext(), "Fill all input fields", Toast.LENGTH_SHORT)
+                    Toast.makeText(requireContext(), getString(R.string.fill_all_the_inputs), Toast.LENGTH_SHORT)
                         .show()
                     return@setOnClickListener
                 }
@@ -238,14 +238,14 @@ class AddEditFragment : BaseFragment() {
             positiveOption.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
-                    R.color.negative_red
+                    R.color.text_color
                 )
             )
             negativeOption.text = resources.getString(R.string.DontUpdate)
             negativeOption.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
-                    R.color.text_color
+                    R.color.negative_red
                 )
             )
 
@@ -335,21 +335,21 @@ class AddEditFragment : BaseFragment() {
         dialog.apply {
 
             optionsHeading.text =
-                requireContext().resources.getString(R.string.ConfirmChanges)
+                requireContext().resources.getString(R.string.AddNewAccount)
             optionsContent.text =
-                requireContext().resources.getString(R.string.ConfirmChangesDescription)
-            positiveOption.text = requireContext().resources.getString(R.string.SaveChanges)
+                requireContext().resources.getString(R.string.ConfirmAddDescription)
+            positiveOption.text = requireContext().resources.getString(R.string.yes_add_new_account)
             positiveOption.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
-                    R.color.negative_red
+                    R.color.text_color
                 )
             )
             negativeOption.text = requireContext().resources.getString(R.string.DontSave)
             negativeOption.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
-                    R.color.text_color
+                    R.color.negative_red
                 )
             )
             positiveOption.setOnClickListener {

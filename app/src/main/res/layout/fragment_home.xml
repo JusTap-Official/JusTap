@@ -7,6 +7,19 @@
     android:background="@drawable/background"
     tools:context=".ui.mainScreens.homeScreen.HomeFragment">
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/empty_state"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginHorizontal="26dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/accounts_rv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/accounts_rv"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true" />
+
     <!--ToolBar-->
     <include
         android:id="@+id/include"

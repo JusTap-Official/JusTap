@@ -24,10 +24,12 @@ import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.databinding.FragmentQRGeneratorBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
 import com.binay.shaw.justap.helper.Constants
-import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.createBottomSheet
 import com.binay.shaw.justap.helper.Util.dpToPx
+import com.binay.shaw.justap.helper.Util.saveToStorageAndGetUri
 import com.binay.shaw.justap.helper.Util.setBottomSheet
+import com.binay.shaw.justap.helper.Util.shareImageAndText
+import com.binay.shaw.justap.viewModel.LocalUserViewModel
 import java.util.*
 
 @SuppressLint("ClickableViewAccessibility")
@@ -35,10 +37,12 @@ class QRGeneratorFragment : BaseFragment() {
 
     private var _binding: FragmentQRGeneratorBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by viewModels<QRGeneratorViewModel> {  ViewModelFactory() }
+    private val viewModel by viewModels<QRGeneratorViewModel> { ViewModelFactory() }
+    private val localViewModel by viewModels<LocalUserViewModel> { ViewModelFactory() }
     private lateinit var displayMetrics: DisplayMetrics
     private var overlay: Bitmap? = null
     private lateinit var sharedPreference: SharedPreferences
+    private lateinit var userName: String
 
 
     override fun onCreateView(
@@ -57,47 +61,54 @@ class QRGeneratorFragment : BaseFragment() {
 
     private fun clickHandlers() {
         binding.apply {
-            qrCodePreview.setOnClickListener {
-                Toast.makeText(requireContext(), "Long press to save in Gallery", Toast.LENGTH_SHORT).show()
-            }
 
             qrInfo.setOnClickListener {
                 val dialog = ParagraphModalBinding.inflate(layoutInflater)
                 val bottomSheet = requireActivity().createBottomSheet()
                 dialog.apply {
-                    paragraphHeading.text = requireContext().resources.getString(R.string.OfflineMode)
-                    paragraphContent.text = requireContext().resources.getString(R.string.OfflineModeInfo)
+                    paragraphHeading.text =
+                        requireContext().resources.getString(R.string.OfflineMode)
+                    paragraphContent.text =
+                        requireContext().resources.getString(R.string.OfflineModeInfo)
                 }
                 dialog.root.setBottomSheet(bottomSheet)
             }
 
-            qrCodePreview.setOnLongClickListener {
-                Util.saveMediaToStorage(viewModel.bitmap.value as Bitmap, requireContext()).also { status ->
-                    if (status) {
-                        showAlerter(
-                            resources.getString(R.string.saved_successfully),
-                            resources.getString(R.string.your_qr_code_is_saved_in_gallery),
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.positive_green
-                            ),
-                            R.drawable.check,
-                            800L
-                        )
-                    }
+            include.leftIcon.setOnClickListener {
+                if (viewModel.bitmap.value?.saveToStorageAndGetUri(requireContext()) != null) {
+                    showAlerter(
+                        resources.getString(R.string.saved_successfully),
+                        resources.getString(R.string.your_qr_code_is_saved_in_gallery),
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.positive_green
+                        ),
+                        R.drawable.check,
+                        800L
+                    )
                 }
             }
 
-            onlineOfflineModeSwitch.setOnTouchListener{
-                    _, event -> event.actionMasked == MotionEvent.ACTION_MOVE
+            include.rightIcon.setOnClickListener {
+                val message = "Hi this is $userName,\nHere is my JusTap QR Code!\n\nDownload: ${Constants.APP_URL}"
+                binding.qrCodePreview.shareImageAndText(requireContext(), message)
+            }
+
+            onlineOfflineModeSwitch.setOnTouchListener { _, event ->
+                event.actionMasked == MotionEvent.ACTION_MOVE
             }
 
             onlineOfflineModeSwitch.setOnClickListener {
-                Toast.makeText(requireContext(), resources.getString(R.string.tapped), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    resources.getString(R.string.tapped),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
             scanQRCode.setOnClickListener {
-                Navigation.findNavController(binding.root).navigate(R.id.action_scanner_to_scannerFragment)
+                Navigation.findNavController(binding.root)
+                    .navigate(R.id.action_scanner_to_scannerFragment)
             }
         }
     }
@@ -124,9 +135,11 @@ class QRGeneratorFragment : BaseFragment() {
         }
 
         viewModel.run {
-            generateQR(displayMetrics, overlay,
+            generateQR(
+                displayMetrics, overlay,
                 firstSelectedColor,
-                secondSelectedColor)
+                secondSelectedColor
+            )
 
             bitmap.observe(viewLifecycleOwner) {
                 binding.qrCodePreview.setImageBitmap(it)
@@ -141,18 +154,41 @@ class QRGeneratorFragment : BaseFragment() {
                     2000L
                 )
             }
+
+            localViewModel.fetchUser.observe(viewLifecycleOwner) {
+                userName = it.userName
+            }
         }
     }
 
     private fun initialization() {
 
         (activity as MainActivity).supportActionBar?.hide()
-        binding.include.toolbarTitle.text = requireContext().resources.getString(R.string.MyQRCode)
+        binding.include.apply {
+            toolbarTitle.text = requireContext().resources.getString(R.string.MyQRCode)
+            leftIcon.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.download_icon,
+                    null
+                )
+            )
+            leftIcon.visibility = View.VISIBLE
+            rightIcon.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.share_icon,
+                    null
+                )
+            )
+            rightIcon.visibility = View.VISIBLE
+        }
         displayMetrics = DisplayMetrics()
         activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
-        overlay = ContextCompat.getDrawable(requireContext(), R.drawable.logo_black_stroke)
+        overlay = ContextCompat.getDrawable(requireContext(), R.drawable.logo)
             ?.toBitmap(72.dpToPx(), 72.dpToPx())
-        sharedPreference = requireContext().getSharedPreferences(Constants.qrPref, Context.MODE_PRIVATE)
+        sharedPreference =
+            requireContext().getSharedPreferences(Constants.qrPref, Context.MODE_PRIVATE)
     }
 
     override fun onDestroy() {
