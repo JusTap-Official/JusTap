@@ -106,7 +106,7 @@ class AddEditFragment : BaseFragment() {
                             R.color.positive_green
                         ),
                         R.drawable.check,
-                        8000L
+                        800L
                     )
 
                     binding.progressAnimation.progressParent.visibility =

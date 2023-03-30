@@ -44,6 +44,7 @@ import com.binay.shaw.justap.ui.authentication.signInScreen.SignInScreen
 import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.ui.mainScreens.qrScreens.qrGeneratorScreen.QRGeneratorViewModel
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
+import com.google.android.play.core.review.ReviewManager
 import com.google.firebase.auth.FirebaseAuth
 import com.skydoves.colorpickerview.ColorPickerDialog
 import com.skydoves.colorpickerview.flag.BubbleFlag
@@ -106,7 +107,8 @@ class SettingsFragment : BaseFragment() {
             add(SettingsItem(3, R.drawable.scanner_icon, "Customize QR", false))
             add(SettingsItem(4, R.drawable.info_icon, "About us", false))
             add(SettingsItem(5, R.drawable.help_icon, "Need help?", false))
-            add(SettingsItem(6, R.drawable.logout_icon, "Log out", false))
+            add(SettingsItem(6, R.drawable.rate_icon, "Rate JusTap", false))
+            add(SettingsItem(7, R.drawable.logout_icon, "Log out", false))
         }
 
         /**set find Id*/
@@ -132,6 +134,9 @@ class SettingsFragment : BaseFragment() {
                     needHelp()
                 }
                 4 -> {
+                    openPlayStore()
+                }
+                5 -> {
                     logout()
                 }
             }
@@ -176,6 +181,12 @@ class SettingsFragment : BaseFragment() {
             }
         }
         dialog.root.setBottomSheet(bottomSheet)
+    }
+
+    private fun openPlayStore() {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(Constants.APP_URL)
+        startActivity(intent)
     }
 
     private fun customizeQR() {
