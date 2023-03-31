@@ -2,18 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/options_modal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingHorizontal="20dp"
-    android:paddingVertical="20dp"
-    android:background="@drawable/modal_drawable">
+    android:layout_height="match_parent"
+    tools:context=".ui.mainScreens.settingsScreen.customize_qr.CustomizeQRFragment">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/drag_handle"
+    <!--ToolBar-->
+    <include
+        android:id="@+id/include"
+        layout="@layout/my_toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,11 +18,11 @@
         android:id="@+id/qrCodePreview"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:background="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/linearLayoutCompat"
@@ -94,6 +90,7 @@
         android:id="@+id/linearLayout9"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginTop="24dp"
         android:gravity="center"
         android:orientation="horizontal"
@@ -116,10 +113,10 @@
             android:id="@+id/resetColors"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/reset_colors"
-            android:textSize="16sp"
             android:fontFamily="@font/roboto_medium"
+            android:text="@string/reset_colors"
             android:textColor="@color/medium_blue"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -131,11 +128,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
         android:background="@drawable/normal_button"
         android:text="@string/choose_primary_color"
         android:textAllCaps="false"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
         android:textColor="@android:color/white"
         android:textSize="12sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
@@ -160,30 +157,30 @@
 
     <View
         android:id="@+id/view"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="2dp"
         android:layout_marginTop="40dp"
         android:background="@color/et_box_color"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout9"
+        app:layout_constraintEnd_toEndOf="@+id/pickColorFor2"
         app:layout_constraintHorizontal_bias="0.527"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout9"
+        app:layout_constraintStart_toStartOf="@+id/pickColorFor1"
         app:layout_constraintTop_toBottomOf="@+id/pickColorFor2" />
 
     <TextView
         android:id="@+id/positiveOption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/roboto"
         android:gravity="center"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
-        android:layout_marginTop="20dp"
+        android:text="@string/SaveChanges"
         android:textColor="@color/text_color"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/view"
         app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toBottomOf="@+id/view"
-        tools:text="Positive option" />
+        app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <TextView
         android:id="@+id/negativeOption"
@@ -193,12 +190,12 @@
         android:gravity="center"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
+        android:text="@string/DontUpdate"
         android:textColor="@color/negative_red"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/positiveOption"
         app:layout_constraintStart_toStartOf="@+id/positiveOption"
-        app:layout_constraintTop_toBottomOf="@+id/positiveOption"
-        tools:text="Negative option" />
+        app:layout_constraintTop_toBottomOf="@+id/positiveOption" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

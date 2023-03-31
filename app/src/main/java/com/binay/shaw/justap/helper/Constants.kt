@@ -23,6 +23,7 @@ object Constants {
     const val secondColor = "secondColor"
     const val qrPref = "QRPref"
     const val image_pref = "image_pref"
+    const val isQRCodeCircular = "isQRCodeCircular"
 
     //Personal data:
     const val myEmail = "binayshaw7777@gmail.com"

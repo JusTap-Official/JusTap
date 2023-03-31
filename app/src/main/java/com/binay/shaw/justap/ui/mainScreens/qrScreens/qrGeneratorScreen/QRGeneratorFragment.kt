@@ -134,11 +134,14 @@ class QRGeneratorFragment : BaseFragment() {
             overlay = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
         }
 
+        val isQRCodeCircular = sharedPreference.getBoolean(Constants.isQRCodeCircular, false)
+
         viewModel.run {
             generateQR(
                 displayMetrics, overlay,
                 firstSelectedColor,
-                secondSelectedColor
+                secondSelectedColor,
+                isQRCodeCircular
             )
 
             bitmap.observe(viewLifecycleOwner) {

@@ -2,6 +2,7 @@ package com.binay.shaw.justap.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 /**
  * Created by binay on 02,January,2023
@@ -16,4 +17,4 @@ data class LocalUser(
     val userBio: String?,
     val userProfilePicture: String?,
     val userBannerPicture: String?
-)
+) : Serializable

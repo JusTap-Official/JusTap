@@ -138,6 +138,7 @@
     <string name="update">Update</string>
     <string name="skip_for_now">Skip for now</string>
     <string name="fill_all_the_inputs">Fill all input fields</string>
+    <string name="switch_qr_shape">Switch QR Shape</string>
 
     <string-array name="account_names">
         <item>Phone</item>

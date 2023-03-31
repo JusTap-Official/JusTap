@@ -6,7 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.binay.shaw.justap.helper.Encryption
 import com.binay.shaw.justap.helper.Util
-import com.binay.shaw.justap.helper.Util.encodeAsQrCodeBitmap
+import com.binay.shaw.justap.helper.encodeAsQrCodeBitmap
+import com.binay.shaw.justap.helper.roundedQRGenerator
 
 
 class QRGeneratorViewModel : ViewModel() {
@@ -27,7 +28,8 @@ class QRGeneratorViewModel : ViewModel() {
         displayMetrics: DisplayMetrics,
         overlay: Bitmap?,
         color1: Int,
-        color2: Int
+        color2: Int,
+        isCircular: Boolean? = false
     ) {
         val message = Util.userID
 
@@ -39,7 +41,11 @@ class QRGeneratorViewModel : ViewModel() {
 
             val size = displayMetrics.widthPixels.coerceAtMost(displayMetrics.heightPixels)
 
-            bitmap.value = encrypted.encodeAsQrCodeBitmap(size, overlay, color1, color2)
+            if (isCircular == true) {
+                bitmap.value = encrypted.roundedQRGenerator(size, overlay, color1, color2)
+            } else {
+                bitmap.value = encrypted.encodeAsQrCodeBitmap(size, overlay, color1, color2)
+            }
 
         } catch (e: Exception) {
             errorMessage.value = e.message.toString()

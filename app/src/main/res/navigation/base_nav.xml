@@ -38,6 +38,9 @@
         <action
             android:id="@+id/action_settings_to_resultFragment"
             app:destination="@id/resultFragment" />
+        <action
+            android:id="@+id/action_settings_to_customizeQRFragment"
+            app:destination="@id/customizeQRFragment" />
     </fragment>
     <fragment
         android:id="@+id/scanner"
@@ -98,6 +101,20 @@
         <argument
             android:name="accounts"
             app:argType="com.binay.shaw.justap.model.Accounts"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+    <fragment
+        android:id="@+id/customizeQRFragment"
+        android:name="com.binay.shaw.justap.ui.mainScreens.settingsScreen.customize_qr.CustomizeQRFragment"
+        android:label="fragment_customize_q_r"
+        tools:layout="@layout/fragment_customize_q_r" >
+        <argument
+            android:name="user"
+            app:argType="com.binay.shaw.justap.model.LocalUser" />
+        <argument
+            android:name="profile_picture"
+            app:argType="android.graphics.Bitmap"
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>
