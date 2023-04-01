@@ -40,9 +40,6 @@ import kotlin.collections.HashMap
 
 object Util {
 
-    const val resumeURL: String =
-        "https://binayshaw7777.github.io/BinayShaw.github.io/Binay%20Shaw%20CSE%2024.pdf"
-
     var userID: String = "0"
 
     var unusedAccounts = mutableListOf<String>()

@@ -146,6 +146,9 @@
     <string name="switch_qr_shape">Switch QR Shape</string>
     <string name="no_history_to_show">No History To Show\nWe will update this once\nyou scan a JusTap QR</string>
     <string name="no_accounts_to_show_click_on_the_to_create_one">No Accounts To Show\nClick on \'+\' to Create One</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
+    <string name="whatsapp">WhatsApp</string>
 
     <string-array name="account_names">
         <item>Phone</item>

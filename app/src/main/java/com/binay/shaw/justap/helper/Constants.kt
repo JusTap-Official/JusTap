@@ -33,4 +33,5 @@ object Constants {
     const val myWebsite = "https://bit.ly/binayshaw7777"
 
     const val APP_URL = "https://play.google.com/store/apps/details?id=com.binay.shaw.justap"
+    const val resumeURL = "https://binayshaw7777.github.io/BinayShaw.github.io/Binay%20Shaw%20CSE%2024.pdf"
 }

@@ -20,9 +20,12 @@ import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.databinding.FragmentAddEditBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
+import com.binay.shaw.justap.helper.Logger
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.createBottomSheet
 import com.binay.shaw.justap.helper.Util.setBottomSheet
+import com.binay.shaw.justap.helper.Validator.Companion.isValidEmail
+import com.binay.shaw.justap.helper.Validator.Companion.isValidPhone
 import com.binay.shaw.justap.viewModel.AccountsViewModel
 import com.binay.shaw.justap.model.Accounts
 
@@ -129,24 +132,23 @@ class AddEditFragment : BaseFragment() {
 
     private fun onConfirmHandler() {
         binding.confirmChanges.setOnClickListener {
-            if (binding.confirmChanges.text.equals(getString(R.string.add_account))) {
-                val accountData = binding.accountData.text.toString()
-                if (dataIsValid(viewModel.selectedAccount.value.toString(), accountData)) {
-                    saveData(accountData)
-                } else {
-                    Toast.makeText(requireContext(), getString(R.string.fill_all_the_inputs), Toast.LENGTH_SHORT)
-                        .show()
-                    return@setOnClickListener
+            val isSaveMode = binding.confirmChanges.text.equals(getString(R.string.add_account))
+            val editTextInput = binding.accountData.text.toString()
+            var selectedAccount = viewModel.selectedAccount.value.toString()
+
+            args.accounts?.let {
+                if (isSaveMode.not()) {
+                    selectedAccount = it.accountName
                 }
+            }
+
+            if (dataIsValid(selectedAccount, editTextInput)) {
+                if (isSaveMode)
+                    saveData(editTextInput)
+                else
+                    updateData(editTextInput)
             } else {
-                val newData = binding.accountData.text.toString()
-                if (newData.isNotEmpty()) {
-                    updateData(newData)
-                } else {
-                    Toast.makeText(requireContext(), getString(R.string.fill_all_the_inputs), Toast.LENGTH_SHORT)
-                        .show()
-                    return@setOnClickListener
-                }
+                return@setOnClickListener
             }
         }
     }
@@ -394,8 +396,26 @@ class AddEditFragment : BaseFragment() {
     }
 
     private fun dataIsValid(selectedAccount: String?, accountData: String): Boolean {
-        if (selectedAccount.isNullOrEmpty() || accountData.isEmpty())
+        if (selectedAccount.isNullOrEmpty() || accountData.isEmpty()) {
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.fill_all_the_inputs),
+                Toast.LENGTH_SHORT
+            )
+                .show()
             return false
+        }
+        if (selectedAccount == getString(R.string.email) && accountData.isValidEmail(false).not()) {
+            Toast.makeText(requireContext(), "Invalid Email", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if ((selectedAccount == getString(R.string.phone)
+                    || selectedAccount == getString(R.string.whatsapp))
+            && accountData.isValidPhone(false).not()
+        ) {
+            Toast.makeText(requireContext(), "Invalid Phone Number", Toast.LENGTH_SHORT).show()
+            return false
+        }
         return true
     }
 
@@ -505,7 +525,8 @@ class AddEditFragment : BaseFragment() {
                         inputType = InputType.TYPE_CLASS_TEXT
                         hint = resources.getString(R.string.username123)
                     }
-                    accountDataTvString.append(it).append(resources.getString(R.string.url_username))
+                    accountDataTvString.append(it)
+                        .append(resources.getString(R.string.url_username))
                     accountInputTV.text = accountDataTvString.toString()
                 }
             }

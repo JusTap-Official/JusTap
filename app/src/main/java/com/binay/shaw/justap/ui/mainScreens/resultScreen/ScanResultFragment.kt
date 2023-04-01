@@ -21,6 +21,7 @@ import com.binay.shaw.justap.adapter.ResultItemAdapter
 import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.databinding.FragmentScanResultBinding
+import com.binay.shaw.justap.helper.Constants
 import com.binay.shaw.justap.helper.ImageUtils
 import com.binay.shaw.justap.helper.LinksUtils
 import com.binay.shaw.justap.helper.Util
@@ -82,7 +83,7 @@ class ResultFragment : BaseFragment() {
             downloadResume.apply {
                 visibility = View.VISIBLE
                 setOnClickListener {
-                    val download = Intent(Intent.ACTION_VIEW, Uri.parse(Util.resumeURL))
+                    val download = Intent(Intent.ACTION_VIEW, Uri.parse(Constants.resumeURL))
                     startActivity(download)
                 }
             }
