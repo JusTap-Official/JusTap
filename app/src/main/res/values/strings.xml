@@ -149,6 +149,10 @@
     <string name="email">Email</string>
     <string name="phone">Phone</string>
     <string name="whatsapp">WhatsApp</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="need_help">Need help?</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="rate_justap">Rate JusTap</string>
 
     <string-array name="account_names">
         <item>Phone</item>

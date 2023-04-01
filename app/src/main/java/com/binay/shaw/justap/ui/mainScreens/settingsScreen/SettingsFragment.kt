@@ -32,6 +32,7 @@ import com.binay.shaw.justap.helper.Util.createBottomSheet
 import com.binay.shaw.justap.helper.Util.setBottomSheet
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.model.SettingsItem
+import com.binay.shaw.justap.model.SettingsState
 import com.binay.shaw.justap.ui.authentication.signInScreen.SignInScreen
 import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
@@ -85,48 +86,43 @@ class SettingsFragment : BaseFragment() {
     }
 
     private fun setupSettingsOptions() {
-        /**set List*/
-        settingsItemList = ArrayList()
         settingsItemList.apply {
-            add(SettingsItem(0, R.drawable.edit_stroke, "Edit profile", false))
-            add(SettingsItem(1, R.drawable.scanner_icon, "Customize QR", false))
-            add(SettingsItem(2, R.drawable.info_icon, "About us", false))
-            add(SettingsItem(3, R.drawable.help_icon, "Need help?", false))
-            add(SettingsItem(4, R.drawable.dark_mode_icon, "Dark Mode", true))
-            add(SettingsItem(5, R.drawable.rate_icon, "Rate JusTap", false))
-            add(SettingsItem(6, R.drawable.logout_icon, "Log out", false))
+            add(SettingsItem(0, R.drawable.edit_stroke, getString(R.string.edit_profile), false))
+            add(SettingsItem(1, R.drawable.scanner_icon, getString(R.string.customizeQR), false))
+            add(SettingsItem(2, R.drawable.info_icon, getString(R.string.AboutMe), false))
+            add(SettingsItem(3, R.drawable.help_icon, getString(R.string.need_help), false))
+            add(SettingsItem(4, R.drawable.dark_mode_icon, getString(R.string.dark_mode), true))
+            add(SettingsItem(5, R.drawable.rate_icon, getString(R.string.rate_justap), false))
+            add(SettingsItem(6, R.drawable.logout_icon, getString(R.string.LogoutTitle), false))
         }
 
-        /**set find Id*/
-        /**set Adapter*/
         settingsItemAdapter = SettingsItemAdapter(requireContext(), settingsItemList) {
-            //Customize QR Listener
-            Util.log("Item clicked: $it")
+
             when (it) {
-                0 -> {
+                SettingsState.getSettingsState(SettingsState.TO_EDIT_PROFILE) -> {
                     Navigation.findNavController(binding.root)
                         .navigate(R.id.action_settings_to_editProfileFragment)
                 }
-
-                1 -> gotoCustomizeQR()
-
-                2 -> {
+                SettingsState.getSettingsState(SettingsState.TO_CUSTOMIZE_QR) -> {
+                    gotoCustomizeQR()
+                }
+                SettingsState.getSettingsState(SettingsState.TO_ABOUT_US) -> {
                     val action = SettingsFragmentDirections.actionSettingsToResultFragment(
                         resultString = null,
                         isResult = false
                     )
                     Navigation.findNavController(binding.root).navigate(action)
                 }
-                3 -> {
+                SettingsState.getSettingsState(SettingsState.TO_NEED_HELP) -> {
                     needHelp()
                 }
-                4 -> {
+                SettingsState.getSettingsState(SettingsState.TO_DARK_MODE) -> {
                     switchDarkMode()
                 }
-                5 -> {
+                SettingsState.getSettingsState(SettingsState.TO_RATE_APP) -> {
                     openPlayStore()
                 }
-                6 -> {
+                SettingsState.getSettingsState(SettingsState.TO_LOGOUT) -> {
                     logout()
                 }
             }
@@ -211,21 +207,21 @@ class SettingsFragment : BaseFragment() {
     private fun initialization() {
 
         (activity as MainActivity).supportActionBar?.hide()
-        binding.include.toolbarTitle.text =
-            requireContext().resources.getString(R.string.Settings)
-        localUserDatabase = Room.databaseBuilder(
-            requireContext(), LocalUserDatabase::class.java,
-            "localDB"
-        ).build()
-
         binding.include.apply {
+            toolbarTitle.text =
+                requireContext().resources.getString(R.string.Settings)
             leftIcon.apply {
                 feedback = this
                 setImageResource(R.drawable.feedback_icon)
                 visibility = View.VISIBLE
             }
         }
+        localUserDatabase = Room.databaseBuilder(
+            requireContext(), LocalUserDatabase::class.java,
+            "localDB"
+        ).build()
 
+        settingsItemList = ArrayList()
         isDarkModeEnabled = DarkMode.getDarkMode(requireContext())
     }
 

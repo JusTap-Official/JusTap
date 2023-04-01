@@ -14,7 +14,6 @@ import com.binay.shaw.justap.databinding.SettingsItemBinding
 import com.binay.shaw.justap.helper.DarkMode
 import com.binay.shaw.justap.model.SettingsItem
 
-
 class SettingsItemAdapter(
     val context: Context,
     private val settingsItemList: ArrayList<SettingsItem>,

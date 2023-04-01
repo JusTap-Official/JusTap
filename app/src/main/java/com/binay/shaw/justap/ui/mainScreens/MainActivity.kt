@@ -4,7 +4,6 @@ package com.binay.shaw.justap.ui.mainScreens
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -13,7 +12,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.base.BaseActivity
 import com.binay.shaw.justap.databinding.ActivityMainBinding
-import com.binay.shaw.justap.helper.DarkMode
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
