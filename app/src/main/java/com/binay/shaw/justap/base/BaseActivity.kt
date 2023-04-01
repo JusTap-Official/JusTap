@@ -5,6 +5,8 @@ import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import com.binay.shaw.justap.helper.DarkMode
 import com.tapadoo.alerter.Alerter
 
 
@@ -14,6 +16,15 @@ abstract class BaseActivity : AppCompatActivity() {
 //    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
 //        super.onCreate(savedInstanceState, persistentState)
 //    }
+
+    fun setTheme() {
+        val darkModeEnabled = DarkMode.getDarkMode(this)
+        if (darkModeEnabled) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+    }
 
     override fun onStart() {
         super.onStart()

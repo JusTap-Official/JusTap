@@ -23,7 +23,7 @@ class ForgotPasswordScreen : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityForgotPasswordScreenBinding.inflate(layoutInflater)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        setTheme()
         setContentView(binding.root)
 
         initObservers()

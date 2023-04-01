@@ -29,10 +29,10 @@ class SplashActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme()
         setContentView(R.layout.activity_splash)
 
         checkForUpdate()
-//        makeIntent(Util.isUserLoggedIn())
     }
 
     private fun checkForUpdate() {

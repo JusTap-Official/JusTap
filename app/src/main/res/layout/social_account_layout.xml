@@ -59,7 +59,7 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/roboto_bold"
                         android:maxLines="1"
-                        android:textColor="@color/text_color"
+                        android:textColor="@color/black"
                         android:textSize="18sp"
                         tools:text="Account name" />
 
@@ -71,7 +71,7 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/roboto"
                         android:maxLines="1"
-                        android:textColor="@color/text_color"
+                        android:textColor="@color/black"
                         android:textSize="12sp"
                         tools:text="Account data" />
 

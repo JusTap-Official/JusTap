@@ -1,13 +1,17 @@
 package com.binay.shaw.justap.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Typeface
 import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.SettingsItemBinding
+import com.binay.shaw.justap.helper.DarkMode
 import com.binay.shaw.justap.model.SettingsItem
 
 
@@ -28,18 +32,34 @@ class SettingsItemAdapter(
         )
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: SettingsViewHolder, position: Int) {
         val newList = settingsItemList[position]
-        holder.binding.settingsItemName.apply {
-            text = newList.itemName
-            if (newList.itemID == 7) {
-                setTextColor(ResourcesCompat.getColor(resources, R.color.negative_red, null))
-                setTypeface(null, Typeface.BOLD)
+        holder.binding.apply {
+            settingsItemName.apply {
+                text = newList.itemName
+                if (newList.itemID == 6) {
+                    setTextColor(ResourcesCompat.getColor(resources, R.color.negative_red, null))
+                    setTypeface(null, Typeface.BOLD)
+                }
+            }
+            if (newList.isSwitchOn) {
+                settingsSwitch.apply {
+                    visibility = View.VISIBLE
+                    isChecked = DarkMode.getDarkMode(context)
+                    setOnTouchListener { _, event ->
+                        event.actionMasked == MotionEvent.ACTION_MOVE
+                    }
+                    setOnClickListener {
+                        listener(position)
+                    }
+                }
             }
         }
 
         holder.binding.root.setOnClickListener {
-            listener(position)
+            if (newList.itemID != 4)
+                listener(position)
         }
         holder.binding.settingsItemIcon.setImageResource(newList.drawableInt)
     }

@@ -7,18 +7,18 @@ import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.base.BaseActivity
 import com.binay.shaw.justap.base.ViewModelFactory
-import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.databinding.ActivitySignInScreenBinding
+import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.ui.authentication.ForgotPasswordScreen
 import com.binay.shaw.justap.ui.authentication.signUpScreen.SignUpScreen
+import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.viewModel.AccountsViewModel
-import com.binay.shaw.justap.viewModel.LocalUserViewModel
-import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.viewModel.FirebaseViewModel
+import com.binay.shaw.justap.viewModel.LocalUserViewModel
 
 
 class SignInScreen : BaseActivity() {
@@ -33,6 +33,7 @@ class SignInScreen : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignInScreenBinding.inflate(layoutInflater)
+        setTheme()
         setContentView(binding.root)
 
         initObservers()
@@ -152,12 +153,16 @@ class SignInScreen : BaseActivity() {
             saveAccountsList(listAccounts)
         }
 
-        startActivity(
-            Intent(
-                this@SignInScreen,
-                MainActivity::class.java
-            )
-        ).also { finish() }
+        val intent = Intent(this@SignInScreen, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+
+//        startActivity(
+//            Intent(
+//                this@SignInScreen,
+//                MainActivity::class.java
+//            )
+//        ).also { finish() }
     }
 
     private fun saveAccountsList(listAccounts: List<Accounts>?) {

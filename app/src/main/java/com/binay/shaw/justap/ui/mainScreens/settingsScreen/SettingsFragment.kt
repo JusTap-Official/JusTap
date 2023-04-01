@@ -25,6 +25,7 @@ import com.binay.shaw.justap.databinding.FragmentSettingsBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
 import com.binay.shaw.justap.helper.Constants
+import com.binay.shaw.justap.helper.DarkMode
 import com.binay.shaw.justap.helper.ImageUtils
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.createBottomSheet
@@ -35,8 +36,10 @@ import com.binay.shaw.justap.ui.authentication.signInScreen.SignInScreen
 import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 
@@ -50,6 +53,7 @@ class SettingsFragment : BaseFragment() {
     private val localUserViewModel by viewModels<LocalUserViewModel> { ViewModelFactory() }
     private lateinit var feedback: ImageView
     private lateinit var localUser: LocalUser
+    private var isDarkModeEnabled: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -84,28 +88,27 @@ class SettingsFragment : BaseFragment() {
         /**set List*/
         settingsItemList = ArrayList()
         settingsItemList.apply {
-            add(SettingsItem(1, R.drawable.edit_icon, "Edit profile", false))
-            add(SettingsItem(3, R.drawable.scanner_icon, "Customize QR", false))
-            add(SettingsItem(4, R.drawable.info_icon, "About us", false))
-            add(SettingsItem(5, R.drawable.help_icon, "Need help?", false))
-            add(SettingsItem(6, R.drawable.rate_icon, "Rate JusTap", false))
-            add(SettingsItem(7, R.drawable.logout_icon, "Log out", false))
+            add(SettingsItem(0, R.drawable.edit_stroke, "Edit profile", false))
+            add(SettingsItem(1, R.drawable.scanner_icon, "Customize QR", false))
+            add(SettingsItem(2, R.drawable.info_icon, "About us", false))
+            add(SettingsItem(3, R.drawable.help_icon, "Need help?", false))
+            add(SettingsItem(4, R.drawable.dark_mode_icon, "Dark Mode", true))
+            add(SettingsItem(5, R.drawable.rate_icon, "Rate JusTap", false))
+            add(SettingsItem(6, R.drawable.logout_icon, "Log out", false))
         }
 
         /**set find Id*/
         /**set Adapter*/
         settingsItemAdapter = SettingsItemAdapter(requireContext(), settingsItemList) {
             //Customize QR Listener
+            Util.log("Item clicked: $it")
             when (it) {
                 0 -> {
                     Navigation.findNavController(binding.root)
                         .navigate(R.id.action_settings_to_editProfileFragment)
                 }
 
-                1 -> {
-//                    customizeQR()
-                    gotoCustomizeQR()
-                }
+                1 -> gotoCustomizeQR()
 
                 2 -> {
                     val action = SettingsFragmentDirections.actionSettingsToResultFragment(
@@ -118,9 +121,12 @@ class SettingsFragment : BaseFragment() {
                     needHelp()
                 }
                 4 -> {
-                    openPlayStore()
+                    switchDarkMode()
                 }
                 5 -> {
+                    openPlayStore()
+                }
+                6 -> {
                     logout()
                 }
             }
@@ -129,6 +135,19 @@ class SettingsFragment : BaseFragment() {
         binding.settingsRV.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = settingsItemAdapter
+        }
+    }
+
+    private fun switchDarkMode() {
+        try {
+            CoroutineScope(Dispatchers.Default).launch {
+                DarkMode.setDarkMode(requireContext(), isDarkModeEnabled.not())
+                withContext(Dispatchers.Main) {
+                    requireActivity().recreate()
+                }
+            }
+        } catch (e: Exception) {
+            Util.log("Dark mode error: ${e.message}")
         }
     }
 
@@ -206,6 +225,8 @@ class SettingsFragment : BaseFragment() {
                 visibility = View.VISIBLE
             }
         }
+
+        isDarkModeEnabled = DarkMode.getDarkMode(requireContext())
     }
 
     private fun logout() {
