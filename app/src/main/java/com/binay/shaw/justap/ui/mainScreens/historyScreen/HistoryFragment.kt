@@ -26,6 +26,7 @@ import com.binay.shaw.justap.databinding.ParagraphModalBinding
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.createBottomSheet
 import com.binay.shaw.justap.helper.Util.setBottomSheet
+import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.model.LocalHistory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -57,10 +58,19 @@ class HistoryFragment : BaseFragment() {
         localUserHistoryViewModel.run {
             getAllHistory.observe(viewLifecycleOwner) {
                 Util.log("Accounts Scanned: $it")
+                updateEmptyState(it)
                 accountListLiveData.value = emptyList()
                 accountListLiveData.postValue(it)
                 historyAdapter.setData(it)
             }
+        }
+    }
+
+    private fun updateEmptyState(localHistoryLIST: List<LocalHistory>?) {
+        if (localHistoryLIST.isNullOrEmpty()) {
+            binding.emptyState.visibility = View.VISIBLE
+        } else {
+            binding.emptyState.visibility = View.GONE
         }
     }
 

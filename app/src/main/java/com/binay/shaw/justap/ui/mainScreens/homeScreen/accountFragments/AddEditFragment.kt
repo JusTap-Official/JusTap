@@ -233,8 +233,8 @@ class AddEditFragment : BaseFragment() {
         dialog.apply {
 
             optionsHeading.text = resources.getString(R.string.UpdateChanges)
-            optionsContent.text = resources.getString(R.string.AreYouSureYouWantToUpdateThisAccount)
-            positiveOption.text = resources.getString(R.string.Update)
+            optionsContent.text = resources.getString(R.string.AreYouSureToUpdateThisSocial)
+            positiveOption.text = resources.getString(R.string.YesUpdate)
             positiveOption.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
@@ -284,9 +284,9 @@ class AddEditFragment : BaseFragment() {
         val bottomSheet = requireContext().createBottomSheet()
         dialog.apply {
 
-            optionsHeading.text = requireContext().resources.getString(R.string.ConfirmChanges)
-            optionsContent.text = resources.getString(R.string.AreYouSureYouWantToDeleteThisAccount)
-            positiveOption.text = resources.getString(R.string.Delete)
+            optionsHeading.text = requireContext().resources.getString(R.string.ConfirmDelete)
+            optionsContent.text = resources.getString(R.string.AreYouSureToDeleteThisSocial)
+            positiveOption.text = resources.getString(R.string.YesDelete)
             positiveOption.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
@@ -335,10 +335,10 @@ class AddEditFragment : BaseFragment() {
         dialog.apply {
 
             optionsHeading.text =
-                requireContext().resources.getString(R.string.AddNewAccount)
+                requireContext().resources.getString(R.string.AddNewSocial)
             optionsContent.text =
                 requireContext().resources.getString(R.string.ConfirmAddDescription)
-            positiveOption.text = requireContext().resources.getString(R.string.yes_add_new_account)
+            positiveOption.text = requireContext().resources.getString(R.string.yes_save)
             positiveOption.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),

@@ -83,10 +83,19 @@ class HomeFragment : BaseFragment() {
 
         accountsViewModel.getAllUser.observe(viewLifecycleOwner) {
             Util.log(it.toString())
+            updateEmptyState(it)
             accountsList.clear()
             accountsList.addAll(it)
             recyclerViewAdapter.setData(it)
             recyclerViewAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun updateEmptyState(accountList: List<Accounts>?) {
+        if (accountList.isNullOrEmpty()) {
+            binding.emptyState.visibility = View.VISIBLE
+        } else {
+            binding.emptyState.visibility = View.GONE
         }
     }
 
@@ -185,21 +194,21 @@ class HomeFragment : BaseFragment() {
             layoutManager = LinearLayoutManager(requireContext())
         }
 
-        handleOnScrollFAB()
+//        handleOnScrollFAB()
     }
 
-    private fun handleOnScrollFAB() {
-        binding.accountsRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (dy > 0 && binding.fabText.visibility == View.VISIBLE) {
-                    binding.fabText.visibility = View.GONE
-                } else if (dy < 0 && binding.fabText.visibility != View.VISIBLE) {
-                    binding.fabText.visibility = View.VISIBLE
-                }
-            }
-        })
-    }
+//    private fun handleOnScrollFAB() {
+//        binding.accountsRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                if (dy > 0 && binding.fabText.visibility == View.VISIBLE) {
+//                    binding.fabText.visibility = View.GONE
+//                } else if (dy < 0 && binding.fabText.visibility != View.VISIBLE) {
+//                    binding.fabText.visibility = View.VISIBLE
+//                }
+//            }
+//        })
+//    }
 
     override fun onDestroy() {
         super.onDestroy()

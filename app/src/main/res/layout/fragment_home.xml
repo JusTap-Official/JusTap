@@ -7,19 +7,6 @@
     android:background="@drawable/background"
     tools:context=".ui.mainScreens.homeScreen.HomeFragment">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/empty_state"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginHorizontal="26dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/accounts_rv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/accounts_rv"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true" />
-
     <!--ToolBar-->
     <include
         android:id="@+id/include"
@@ -129,17 +116,49 @@
             app:srcCompat="@drawable/add"
             app:tint="@color/white" />
 
-        <TextView
-            android:id="@+id/fab_text"
+<!--        <TextView-->
+<!--            android:id="@+id/fab_text"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:fontFamily="sans-serif"-->
+<!--            android:paddingEnd="15dp"-->
+<!--            android:text="Add account"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"-->
+<!--            android:textColor="@android:color/white"-->
+<!--            android:textSize="14sp" />-->
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/empty_state"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="26dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/empty_state" />
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:paddingEnd="15dp"
-            android:text="Add account"
-            android:textAllCaps="false"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-            android:textColor="@android:color/white"
-            android:textSize="14sp" />
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="@string/no_accounts_to_show_click_on_the_to_create_one"
+            android:textColor="@color/text_color"
+            android:textSize="16sp"
+            android:textAlignment="center" />
 
     </LinearLayout>
 
