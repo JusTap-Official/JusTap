@@ -2,16 +2,25 @@ package com.binay.shaw.justap.helper
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.ContentResolver
 import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.VectorDrawable
+import android.net.Uri
+import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
+import androidx.annotation.RequiresApi
+import androidx.core.content.FileProvider
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.FragmentImagePreviewBinding
 import com.bumptech.glide.Glide
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 
 object ImageUtils {
@@ -107,5 +116,33 @@ object ImageUtils {
             }
             else -> null
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.P)
+    fun getBitmapFromFileUri(contentResolver: ContentResolver, fileUri: Uri): Bitmap? {
+        var bitmap: Bitmap? = null
+        try {
+            val source: ImageDecoder.Source = ImageDecoder.createSource(contentResolver, fileUri)
+            bitmap = ImageDecoder.decodeBitmap(source)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return bitmap
+    }
+
+    fun getUriFromBitmap(context: Context, bitmap: Bitmap): Uri? {
+        var uri: Uri? = null
+        val file = File(context.externalCacheDir, "image.jpg")
+        val outputStream = FileOutputStream(file)
+        try {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+            outputStream.flush()
+            uri = FileProvider.getUriForFile(context, context.applicationContext.packageName + ".provider", file)
+        } catch (e: Exception) {
+            Log.e("Share", "Error writing bitmap", e)
+        } finally {
+            outputStream.close()
+        }
+        return uri
     }
 }

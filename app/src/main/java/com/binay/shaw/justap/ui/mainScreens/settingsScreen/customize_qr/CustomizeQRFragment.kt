@@ -208,7 +208,7 @@ class CustomizeQRFragment : BaseFragment() {
                         if (Util.colorIsNotTheSame(firstSelectedColor, defaultPrimaryColor)
                             || Util.colorIsNotTheSame(secondSelectedColor, defaultSecondaryColor)
                             || isColorReset || overlayBitmap.sameAs(currentOverlay).not() ||
-                                    originalQRShape != isQRCodeCircular
+                            originalQRShape != isQRCodeCircular
                         ) {
 
                             saveColors(

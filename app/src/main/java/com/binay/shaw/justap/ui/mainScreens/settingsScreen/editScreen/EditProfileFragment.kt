@@ -3,13 +3,14 @@ package com.binay.shaw.justap.ui.mainScreens.settingsScreen.editScreen
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.*
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +20,7 @@ import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.databinding.FragmentEditProfileBinding
 import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
+import com.binay.shaw.justap.helper.ImageUtils
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.createBottomSheet
 import com.binay.shaw.justap.helper.Util.setBottomSheet
@@ -33,7 +35,7 @@ import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.launch
 import kotlin.collections.HashMap
 
-
+@RequiresApi(Build.VERSION_CODES.P)
 class EditProfileFragment : BaseFragment() {
 
     private var _binding: FragmentEditProfileBinding? = null
@@ -274,10 +276,8 @@ class EditProfileFragment : BaseFragment() {
 
             when (resultCode) {
                 Activity.RESULT_OK -> {
-                    //Image Uri will not be null for RESULT_OK
                     val fileUri = data?.data!!
-
-                    val bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, fileUri)
+                    val bitmap = ImageUtils.getBitmapFromFileUri(requireContext().contentResolver, fileUri)
                     Util.log("Image Uri is: $fileUri && Bitmap is: $bitmap")
                     if (editImageMode == 1) {
                         profilePictureURI = fileUri

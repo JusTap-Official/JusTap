@@ -13,6 +13,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
@@ -35,7 +36,7 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
-@Suppress("DEPRECATION")
+@RequiresApi(Build.VERSION_CODES.S)
 class ScannerFragment : BaseFragment() {
 
     companion object {
@@ -60,9 +61,7 @@ class ScannerFragment : BaseFragment() {
                 val display = requireActivity().display
                 display?.getRealMetrics(metrics)
             } else {
-                @Suppress("DEPRECATION")
                 val display = requireActivity().windowManager.defaultDisplay
-                @Suppress("DEPRECATION")
                 display.getMetrics(metrics)
             }
             return aspectRatio(metrics.widthPixels, metrics.heightPixels)
