@@ -88,9 +88,9 @@ class SignInScreen : BaseActivity() {
 
     private fun togglePassword() {
         hideKeyboard()
-        isPasswordVisible = isPasswordVisible.not()
         val showPasswordResId =
             if (isPasswordVisible) R.drawable.visibility_on else R.drawable.visibility_off
+        isPasswordVisible = isPasswordVisible.not()
         val passwordTransMethod = if (isPasswordVisible) null else PasswordTransformationMethod()
 
         binding.passwordToggle.setImageResource(showPasswordResId)
