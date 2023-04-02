@@ -81,7 +81,7 @@ class QRGeneratorFragment : BaseFragment() {
                         resources.getString(R.string.your_qr_code_is_saved_in_gallery),
                         ContextCompat.getColor(
                             requireContext(),
-                            R.color.positive_green
+                            R.color.positive
                         ),
                         R.drawable.check,
                         800L
@@ -117,11 +117,11 @@ class QRGeneratorFragment : BaseFragment() {
 
         val firstSelectedColor = sharedPreference.getInt(
             Constants.firstColor,
-            ResourcesCompat.getColor(resources, R.color.text_color, null)
+            ResourcesCompat.getColor(resources, R.color.qr_code_primary, null)
         )
         val secondSelectedColor = sharedPreference.getInt(
             Constants.secondColor,
-            ResourcesCompat.getColor(resources, R.color.bg_color, null)
+            ResourcesCompat.getColor(resources, R.color.qr_code_secondary, null)
         )
 
         val sharedPreference =
@@ -152,7 +152,7 @@ class QRGeneratorFragment : BaseFragment() {
                 showAlerter(
                     resources.getString(R.string.anErrorOccurred),
                     "",
-                    ContextCompat.getColor(requireContext(), R.color.negative_red),
+                    ContextCompat.getColor(requireContext(), R.color.negative),
                     R.drawable.warning,
                     2000L
                 )

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="black_and_white">#FFFFFF</color>
+    <color name="white_and_black">#000000</color>
+    <color name="primary_button_color">#006AFF</color>
+    <color name="card_color">#272D33</color>
+    <color name="card_shadow_color">#30373D</color>
+    <color name="qr_code_primary">#1B1E20</color>
+    <color name="qr_code_secondary">#ffffff</color>
+    <color name="negative">#FF6262</color>
+    <color name="positive">#78FFAE</color>
+    <color name="neutral">#3388FF</color>
+    <color name="input_box_color">#222527</color>
+    <color name="input_border_color">#2A2D2E</color>
+    <color name="gray">#707070</color>
+    <color name="drag_handle">#3F464C</color>
+    <color name="card_stroke">#2F353C</color>
+    <color name="text_color">#ffffff</color>
+    <color name="background_color">#1B1E20</color>
+    <color name="accounts_card_color">#23282E</color>
+    <color name="white_and_blue">#006AFF</color>
+    <color name="themed_black_white">#ffffff</color>
+    <color name="themed_white_black">#272D33</color>
+    <color name="bottom_nav_color">#272D33</color>
+</resources>

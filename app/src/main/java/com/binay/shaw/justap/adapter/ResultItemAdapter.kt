@@ -1,5 +1,6 @@
 package com.binay.shaw.justap.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,6 +43,7 @@ class ResultItemAdapter(
 
     override fun getItemCount() = accountsList.size
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setData(accounts: List<Accounts>) {
         accountsList = accounts
         notifyDataSetChanged()

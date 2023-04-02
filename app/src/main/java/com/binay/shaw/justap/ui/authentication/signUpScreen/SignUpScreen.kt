@@ -23,6 +23,7 @@ class SignUpScreen : BaseActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme()
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -143,9 +144,9 @@ class SignUpScreen : BaseActivity() {
 
     private fun togglePassword() {
         hideKeyboard()
-        isPasswordVisible = isPasswordVisible.not()
         val showPasswordResId =
             if (isPasswordVisible) R.drawable.visibility_on else R.drawable.visibility_off
+        isPasswordVisible = isPasswordVisible.not()
         val passwordTransMethod = if (isPasswordVisible) null else PasswordTransformationMethod()
 
         binding.passwordToggle.setImageResource(showPasswordResId)

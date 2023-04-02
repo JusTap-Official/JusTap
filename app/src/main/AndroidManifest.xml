@@ -25,6 +25,7 @@
         <activity
             android:name=".ui.SplashActivity"
             android:exported="true"
+            android:configChanges="uiMode"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,6 +39,7 @@
         <activity
             android:name=".ui.authentication.ForgotPasswordScreen"
             android:exported="true"
+            android:configChanges="uiMode"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
@@ -46,6 +48,7 @@
         <activity
             android:name=".ui.authentication.signInScreen.SignInScreen"
             android:exported="true"
+            android:configChanges="uiMode"
             android:screenOrientation="portrait">
 
             <meta-data
@@ -55,6 +58,7 @@
         <activity
             android:name=".ui.authentication.signUpScreen.SignUpScreen"
             android:exported="true"
+            android:configChanges="uiMode"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"

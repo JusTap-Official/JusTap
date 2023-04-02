@@ -42,30 +42,30 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/card_borderStripe" />
+                android:background="@color/card_stroke" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/dialogPositive"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/bg_color"
+                android:background="@color/white_and_black"
                 android:text="Yes"
                 android:textAllCaps="false"
-                android:textColor="@color/positive_green" />
+                android:textColor="@color/black_and_white" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/card_borderStripe" />
+                android:background="@color/card_stroke" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/dialogNegative"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/bg_color"
+                android:background="@color/white_and_black"
                 android:text="Cancel"
                 android:textAllCaps="false"
-                android:textColor="@color/negative_red" />
+                android:textColor="@color/negative" />
 
         </LinearLayout>
 

@@ -12,17 +12,14 @@ import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
-import android.os.Build
-import android.os.Environment
-import android.os.Vibrator
-import android.os.VibratorManager
+import android.os.*
 import android.provider.MediaStore
 import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.widget.ImageView
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import com.binay.shaw.justap.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -110,8 +107,8 @@ object Util {
      */
     fun Bitmap.saveToStorageAndGetUri(context: Context): Uri? {
         val filename = "${System.currentTimeMillis()}.jpg"
-        var outputStream: OutputStream? = null
-        var uri: Uri? = null
+        val outputStream: OutputStream?
+        val uri: Uri?
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             // Use MediaStore API to save the image for Android Q (API level 29) and above
@@ -138,6 +135,7 @@ object Util {
         }
         return uri
     }
+
 
 
 
@@ -271,16 +269,12 @@ object Util {
         return firstColor != secondColor
     }
 
+    @Suppress("DEPRECATION")
+    @RequiresApi(Build.VERSION_CODES.S)
     fun vibrateDevice(duration: Long, context: Context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val vibratorManager =
-                context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
-            vibratorManager.defaultVibrator.vibrate(duration)
-        } else {
-            @Suppress("DEPRECATION")
-            val vibratorManager = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-            vibratorManager.vibrate(500L)
-        }
+        val vibratorManager = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+        val vibrator = vibratorManager.defaultVibrator
+        vibrator.vibrate(duration)
     }
 
     fun showNoInternet(activity: Activity) {
@@ -290,7 +284,7 @@ object Util {
             .setBackgroundColorInt(
                 ContextCompat.getColor(
                     activity.baseContext,
-                    R.color.negative_red
+                    R.color.negative
                 )
             )
             .setIcon(R.drawable.wifi_off)
@@ -330,25 +324,5 @@ object Util {
         val chooserIntent = Intent.createChooser(shareIntent, "Share Image")
         context.startActivity(chooserIntent)
     }
-
-    /**
-     * Function that converts a Bitmap to a Uri
-     */
-    private fun getUriFromBitmap(context: Context, bitmap: Bitmap): Uri? {
-        var uri: Uri? = null
-        val file = File(context.externalCacheDir, "image.jpg")
-        val outputStream = FileOutputStream(file)
-        try {
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-            outputStream.flush()
-            uri = FileProvider.getUriForFile(context, context.applicationContext.packageName + ".provider", file)
-        } catch (e: Exception) {
-            Log.e("Share", "Error writing bitmap", e)
-        } finally {
-            outputStream.close()
-        }
-        return uri
-    }
-
 
 }

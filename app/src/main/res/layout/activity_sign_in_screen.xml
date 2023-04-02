@@ -57,7 +57,7 @@
             android:fontFamily="@font/roboto"
             android:paddingStart="15dp"
             android:layout_marginTop="5dp"
-            android:textColor="@color/negative_red"
+            android:textColor="@color/negative"
             android:textSize="13sp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/etEmail"
@@ -100,7 +100,7 @@
             android:fontFamily="@font/roboto"
             android:paddingStart="15dp"
             android:layout_marginTop="5dp"
-            android:textColor="@color/negative_red"
+            android:textColor="@color/negative"
             android:textSize="13sp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/etPassword"
@@ -115,7 +115,7 @@
             android:paddingHorizontal="15dp"
             android:paddingVertical="10dp"
             android:text="@string/forgot_password"
-            android:textColor="@color/medium_blue"
+            android:textColor="@color/neutral"
             android:textSize="16sp"
             app:layout_goneMarginTop="10dp"
             app:layout_constraintEnd_toEndOf="@+id/etPassword"
@@ -157,7 +157,7 @@
                 android:paddingHorizontal="15dp"
                 android:paddingVertical="5dp"
                 android:text="@string/create"
-                android:textColor="@color/medium_blue"
+                android:textColor="@color/neutral"
                 android:textSize="16sp" />
 
         </LinearLayout>

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    style="@style/background_style"
     tools:context=".ui.mainScreens.settingsScreen.SettingsFragment">
 
     <!--ToolBar-->
@@ -54,7 +55,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_bold"
             android:text="@string/view_full_profile"
-            android:textColor="@color/medium_blue"
+            android:textColor="@color/neutral"
             android:textSize="16sp" />
 
     </LinearLayout>

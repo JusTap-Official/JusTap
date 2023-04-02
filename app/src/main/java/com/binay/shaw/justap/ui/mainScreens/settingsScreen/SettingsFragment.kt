@@ -25,18 +25,22 @@ import com.binay.shaw.justap.databinding.FragmentSettingsBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
 import com.binay.shaw.justap.helper.Constants
+import com.binay.shaw.justap.helper.DarkMode
 import com.binay.shaw.justap.helper.ImageUtils
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.createBottomSheet
 import com.binay.shaw.justap.helper.Util.setBottomSheet
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.model.SettingsItem
+import com.binay.shaw.justap.model.SettingsState
 import com.binay.shaw.justap.ui.authentication.signInScreen.SignInScreen
 import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 
@@ -50,6 +54,7 @@ class SettingsFragment : BaseFragment() {
     private val localUserViewModel by viewModels<LocalUserViewModel> { ViewModelFactory() }
     private lateinit var feedback: ImageView
     private lateinit var localUser: LocalUser
+    private var isDarkModeEnabled: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -81,46 +86,43 @@ class SettingsFragment : BaseFragment() {
     }
 
     private fun setupSettingsOptions() {
-        /**set List*/
-        settingsItemList = ArrayList()
         settingsItemList.apply {
-            add(SettingsItem(1, R.drawable.edit_icon, "Edit profile", false))
-            add(SettingsItem(3, R.drawable.scanner_icon, "Customize QR", false))
-            add(SettingsItem(4, R.drawable.info_icon, "About us", false))
-            add(SettingsItem(5, R.drawable.help_icon, "Need help?", false))
-            add(SettingsItem(6, R.drawable.rate_icon, "Rate JusTap", false))
-            add(SettingsItem(7, R.drawable.logout_icon, "Log out", false))
+            add(SettingsItem(0, R.drawable.edit_stroke, getString(R.string.edit_profile), false))
+            add(SettingsItem(1, R.drawable.scanner_icon, getString(R.string.customizeQR), false))
+            add(SettingsItem(2, R.drawable.info_icon, getString(R.string.AboutMe), false))
+            add(SettingsItem(3, R.drawable.help_icon, getString(R.string.need_help), false))
+            add(SettingsItem(4, R.drawable.dark_mode_icon, getString(R.string.dark_mode), true))
+            add(SettingsItem(5, R.drawable.rate_icon, getString(R.string.rate_justap), false))
+            add(SettingsItem(6, R.drawable.logout_icon, getString(R.string.LogoutTitle), false))
         }
 
-        /**set find Id*/
-        /**set Adapter*/
         settingsItemAdapter = SettingsItemAdapter(requireContext(), settingsItemList) {
-            //Customize QR Listener
+
             when (it) {
-                0 -> {
+                SettingsState.getSettingsState(SettingsState.TO_EDIT_PROFILE) -> {
                     Navigation.findNavController(binding.root)
                         .navigate(R.id.action_settings_to_editProfileFragment)
                 }
-
-                1 -> {
-//                    customizeQR()
+                SettingsState.getSettingsState(SettingsState.TO_CUSTOMIZE_QR) -> {
                     gotoCustomizeQR()
                 }
-
-                2 -> {
+                SettingsState.getSettingsState(SettingsState.TO_ABOUT_US) -> {
                     val action = SettingsFragmentDirections.actionSettingsToResultFragment(
                         resultString = null,
                         isResult = false
                     )
                     Navigation.findNavController(binding.root).navigate(action)
                 }
-                3 -> {
+                SettingsState.getSettingsState(SettingsState.TO_NEED_HELP) -> {
                     needHelp()
                 }
-                4 -> {
+                SettingsState.getSettingsState(SettingsState.TO_DARK_MODE) -> {
+                    switchDarkMode()
+                }
+                SettingsState.getSettingsState(SettingsState.TO_RATE_APP) -> {
                     openPlayStore()
                 }
-                5 -> {
+                SettingsState.getSettingsState(SettingsState.TO_LOGOUT) -> {
                     logout()
                 }
             }
@@ -129,6 +131,19 @@ class SettingsFragment : BaseFragment() {
         binding.settingsRV.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = settingsItemAdapter
+        }
+    }
+
+    private fun switchDarkMode() {
+        try {
+            CoroutineScope(Dispatchers.Default).launch {
+                DarkMode.setDarkMode(requireContext(), isDarkModeEnabled.not())
+                withContext(Dispatchers.Main) {
+                    requireActivity().recreate()
+                }
+            }
+        } catch (e: Exception) {
+            Util.log("Dark mode error: ${e.message}")
         }
     }
 
@@ -192,20 +207,22 @@ class SettingsFragment : BaseFragment() {
     private fun initialization() {
 
         (activity as MainActivity).supportActionBar?.hide()
-        binding.include.toolbarTitle.text =
-            requireContext().resources.getString(R.string.Settings)
-        localUserDatabase = Room.databaseBuilder(
-            requireContext(), LocalUserDatabase::class.java,
-            "localDB"
-        ).build()
-
         binding.include.apply {
+            toolbarTitle.text =
+                requireContext().resources.getString(R.string.Settings)
             leftIcon.apply {
                 feedback = this
                 setImageResource(R.drawable.feedback_icon)
                 visibility = View.VISIBLE
             }
         }
+        localUserDatabase = Room.databaseBuilder(
+            requireContext(), LocalUserDatabase::class.java,
+            "localDB"
+        ).build()
+
+        settingsItemList = ArrayList()
+        isDarkModeEnabled = DarkMode.getDarkMode(requireContext())
     }
 
     private fun logout() {
@@ -221,7 +238,7 @@ class SettingsFragment : BaseFragment() {
             positiveOption.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
-                    R.color.negative_red
+                    R.color.negative
                 )
             )
 

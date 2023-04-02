@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.binay.shaw.justap.data.LocalUserDatabase
-import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.model.LocalHistory
 import com.binay.shaw.justap.repository.LocalHistoryRepository
 import kotlinx.coroutines.Dispatchers

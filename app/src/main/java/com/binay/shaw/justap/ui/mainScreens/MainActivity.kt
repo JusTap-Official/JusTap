@@ -2,7 +2,6 @@ package com.binay.shaw.justap.ui.mainScreens
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.navigation.NavController
@@ -13,9 +12,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.base.BaseActivity
 import com.binay.shaw.justap.databinding.ActivityMainBinding
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.messaging.FirebaseMessaging
 
 
 class MainActivity : BaseActivity() {
@@ -23,10 +20,11 @@ class MainActivity : BaseActivity() {
     private var timer = 0L
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme()
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        getToken()
+
         setUpNav()
     }
 
@@ -51,17 +49,6 @@ class MainActivity : BaseActivity() {
 
         bottomNavigationView.setupWithNavController2(navController)
     }
-
-//    private fun getToken() {
-//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-//            if (!task.isSuccessful) {
-//                Log.w("Token Error", "Fetching FCM registration token failed", task.exception)
-//                return@OnCompleteListener
-//            }
-//            val token = task.result
-//            Log.d("Token", token)
-//        })
-//    }
 
     private fun showBottomNav(bottomNavigationView: BottomNavigationView) {
         bottomNavigationView.visibility = View.VISIBLE

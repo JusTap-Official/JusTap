@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatDelegate
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.base.BaseActivity
 import com.binay.shaw.justap.base.ViewModelFactory
@@ -21,9 +20,9 @@ class ForgotPasswordScreen : BaseActivity() {
     private val firebaseViewModel by viewModels<FirebaseViewModel> { ViewModelFactory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme()
         super.onCreate(savedInstanceState)
         binding = ActivityForgotPasswordScreenBinding.inflate(layoutInflater)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setContentView(binding.root)
 
         initObservers()

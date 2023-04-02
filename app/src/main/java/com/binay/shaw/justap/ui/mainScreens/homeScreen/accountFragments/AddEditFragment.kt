@@ -20,7 +20,6 @@ import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.databinding.FragmentAddEditBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
-import com.binay.shaw.justap.helper.Logger
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.createBottomSheet
 import com.binay.shaw.justap.helper.Util.setBottomSheet
@@ -65,7 +64,7 @@ class AddEditFragment : BaseFragment() {
                         "",
                         ContextCompat.getColor(
                             requireContext(),
-                            R.color.positive_green
+                            R.color.positive
                         ),
                         R.drawable.check,
                         800L
@@ -86,7 +85,7 @@ class AddEditFragment : BaseFragment() {
                         "",
                         ContextCompat.getColor(
                             requireContext(),
-                            R.color.negative_red
+                            R.color.negative
                         ),
                         R.drawable.delete,
                         800L
@@ -106,7 +105,7 @@ class AddEditFragment : BaseFragment() {
                         "",
                         ContextCompat.getColor(
                             requireContext(),
-                            R.color.positive_green
+                            R.color.positive
                         ),
                         R.drawable.check,
                         800L
@@ -205,7 +204,7 @@ class AddEditFragment : BaseFragment() {
                 positiveOption.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
-                        R.color.negative_red
+                        R.color.negative
                     )
                 )
                 negativeOption.text = requireContext().resources.getString(R.string.ContinueEditing)
@@ -247,7 +246,7 @@ class AddEditFragment : BaseFragment() {
             negativeOption.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
-                    R.color.negative_red
+                    R.color.negative
                 )
             )
 
@@ -292,7 +291,7 @@ class AddEditFragment : BaseFragment() {
             positiveOption.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
-                    R.color.negative_red
+                    R.color.negative
                 )
             )
             negativeOption.text = resources.getString(R.string.DontDelete)
@@ -351,7 +350,7 @@ class AddEditFragment : BaseFragment() {
             negativeOption.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
-                    R.color.negative_red
+                    R.color.negative
                 )
             )
             positiveOption.setOnClickListener {

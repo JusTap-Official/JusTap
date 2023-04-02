@@ -7,18 +7,18 @@ import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.base.BaseActivity
 import com.binay.shaw.justap.base.ViewModelFactory
-import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.databinding.ActivitySignInScreenBinding
+import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.ui.authentication.ForgotPasswordScreen
 import com.binay.shaw.justap.ui.authentication.signUpScreen.SignUpScreen
+import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.viewModel.AccountsViewModel
-import com.binay.shaw.justap.viewModel.LocalUserViewModel
-import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.viewModel.FirebaseViewModel
+import com.binay.shaw.justap.viewModel.LocalUserViewModel
 
 
 class SignInScreen : BaseActivity() {
@@ -31,6 +31,7 @@ class SignInScreen : BaseActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme()
         super.onCreate(savedInstanceState)
         binding = ActivitySignInScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -87,9 +88,9 @@ class SignInScreen : BaseActivity() {
 
     private fun togglePassword() {
         hideKeyboard()
-        isPasswordVisible = isPasswordVisible.not()
         val showPasswordResId =
             if (isPasswordVisible) R.drawable.visibility_on else R.drawable.visibility_off
+        isPasswordVisible = isPasswordVisible.not()
         val passwordTransMethod = if (isPasswordVisible) null else PasswordTransformationMethod()
 
         binding.passwordToggle.setImageResource(showPasswordResId)
@@ -152,12 +153,9 @@ class SignInScreen : BaseActivity() {
             saveAccountsList(listAccounts)
         }
 
-        startActivity(
-            Intent(
-                this@SignInScreen,
-                MainActivity::class.java
-            )
-        ).also { finish() }
+        val intent = Intent(this@SignInScreen, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun saveAccountsList(listAccounts: List<Accounts>?) {

@@ -28,11 +28,11 @@ class SplashActivity : BaseActivity() {
     private lateinit var task: Task<AppUpdateInfo>
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
         checkForUpdate()
-//        makeIntent(Util.isUserLoggedIn())
     }
 
     private fun checkForUpdate() {
@@ -61,7 +61,7 @@ class SplashActivity : BaseActivity() {
             positiveOption.setTextColor(
                 ContextCompat.getColor(
                     this@SplashActivity,
-                    R.color.negative_red
+                    R.color.negative
                 )
             )
 

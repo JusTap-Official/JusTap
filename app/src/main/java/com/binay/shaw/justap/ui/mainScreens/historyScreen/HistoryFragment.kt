@@ -178,7 +178,7 @@ class HistoryFragment : BaseFragment() {
             positiveOption.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
-                    R.color.negative_red
+                    R.color.negative
                 )
             )
             negativeOption.text = requireContext().resources.getString(R.string.DontClearHistory)
@@ -199,7 +199,7 @@ class HistoryFragment : BaseFragment() {
                             resources.getString(R.string.clearHistoryDescription),
                             ContextCompat.getColor(
                                 requireContext(),
-                                R.color.positive_green
+                                R.color.positive
                             ),
                             R.drawable.delete,
                             2000L
@@ -250,7 +250,7 @@ class HistoryFragment : BaseFragment() {
                         positiveOption.setTextColor(
                             ContextCompat.getColor(
                                 requireContext(),
-                                R.color.negative_red
+                                R.color.negative
                             )
                         )
                         negativeOption.text =
@@ -272,7 +272,7 @@ class HistoryFragment : BaseFragment() {
                                         "${userToDelete.username} was remove from History!",
                                         ContextCompat.getColor(
                                             requireContext(),
-                                            R.color.positive_green
+                                            R.color.positive
                                         ),
                                         R.drawable.delete,
                                         2000L
