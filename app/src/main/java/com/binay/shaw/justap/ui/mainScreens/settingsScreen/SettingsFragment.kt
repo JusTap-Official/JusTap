@@ -238,7 +238,7 @@ class SettingsFragment : BaseFragment() {
             positiveOption.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
-                    R.color.negative_red
+                    R.color.negative
                 )
             )
 

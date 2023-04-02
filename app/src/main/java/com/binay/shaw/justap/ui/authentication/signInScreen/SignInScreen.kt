@@ -154,15 +154,8 @@ class SignInScreen : BaseActivity() {
         }
 
         val intent = Intent(this@SignInScreen, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
-
-//        startActivity(
-//            Intent(
-//                this@SignInScreen,
-//                MainActivity::class.java
-//            )
-//        ).also { finish() }
+        finish()
     }
 
     private fun saveAccountsList(listAccounts: List<Accounts>?) {

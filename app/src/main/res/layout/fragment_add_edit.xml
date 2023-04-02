@@ -134,20 +134,20 @@
                     android:paddingEnd="20dp"
                     android:text="@string/cancel"
                     android:textAllCaps="false"
-                    android:textColor="@color/text_color" />
+                    android:textColor="@color/white" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/confirmChanges"
                     android:layout_width="160dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="10dp"
-                    android:background="@drawable/normal_button"
+                    android:background="@drawable/primary_button"
                     android:fontFamily="@font/roboto"
                     android:paddingStart="20dp"
                     android:paddingEnd="20dp"
                     android:text="@string/add_account"
                     android:textAllCaps="false"
-                    android:textColor="@color/bg_color" />
+                    android:textColor="@color/white" />
 
             </LinearLayout>
 

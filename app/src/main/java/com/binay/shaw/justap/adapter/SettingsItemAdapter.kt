@@ -38,7 +38,7 @@ class SettingsItemAdapter(
             settingsItemName.apply {
                 text = newList.itemName
                 if (newList.itemID == 6) {
-                    setTextColor(ResourcesCompat.getColor(resources, R.color.negative_red, null))
+                    setTextColor(ResourcesCompat.getColor(resources, R.color.negative, null))
                     setTypeface(null, Typeface.BOLD)
                 }
             }

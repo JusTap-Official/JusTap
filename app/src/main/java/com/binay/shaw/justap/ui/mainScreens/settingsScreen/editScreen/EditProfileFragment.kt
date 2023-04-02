@@ -135,7 +135,7 @@ class EditProfileFragment : BaseFragment() {
                 positiveOption.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
-                        R.color.negative_red
+                        R.color.negative
                     )
                 )
                 negativeOption.text = requireContext().resources.getString(R.string.ContinueEditing)
@@ -188,7 +188,7 @@ class EditProfileFragment : BaseFragment() {
             positiveOption.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
-                    R.color.negative_red
+                    R.color.negative
                 )
             )
             negativeOption.text = requireContext().resources.getString(R.string.DontSave)
@@ -250,7 +250,7 @@ class EditProfileFragment : BaseFragment() {
                             resources.getString(R.string.profile_updated_description),
                             ContextCompat.getColor(
                                 requireContext(),
-                                R.color.positive_green
+                                R.color.positive
                             ),
                             R.drawable.check,
                             2500L

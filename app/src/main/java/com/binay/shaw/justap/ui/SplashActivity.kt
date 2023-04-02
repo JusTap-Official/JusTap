@@ -61,7 +61,7 @@ class SplashActivity : BaseActivity() {
             positiveOption.setTextColor(
                 ContextCompat.getColor(
                     this@SplashActivity,
-                    R.color.negative_red
+                    R.color.negative
                 )
             )
 

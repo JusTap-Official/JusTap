@@ -24,178 +24,210 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include" />
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/linearLayoutCompat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/qrCodePreview"
-        app:layout_constraintStart_toStartOf="@+id/qrCodePreview"
-        app:layout_constraintTop_toBottomOf="@+id/qrCodePreview">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/show_profile_image_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_medium"
-            android:text="@string/show_profile_image"
-            android:textColor="@color/text_color"
-            android:textSize="18sp" />
-
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/show_profile_check_box"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:buttonTint="@color/text_color"
-            android:gravity="center" />
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/ciruclar_qr_linear_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayoutCompat"
-        app:layout_constraintStart_toStartOf="@+id/linearLayoutCompat"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat">
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/switch_qr_shape"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_medium"
-            android:text="@string/switch_qr_shape"
-            android:textColor="@color/text_color"
-            android:textSize="18sp" />
-
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/switch_qr_shape_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:buttonTint="@color/text_color"
-            android:gravity="center" />
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/linearLayout9"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/customize_options_recycler_view"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="24dp"
-        android:gravity="center"
-        android:orientation="horizontal"
+        android:layout_height="0dp"
+        android:layout_marginVertical="15dp"
+        android:layout_marginHorizontal="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/save_qr_settings"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ciruclar_qr_linear_layout">
+        app:layout_constraintTop_toBottomOf="@+id/qrCodePreview"
+        tools:itemCount="4"
+        tools:listitem="@layout/layout_customize_qr_recycler_view_item" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_bold"
-            android:text="@string/choose_colors"
-            android:textColor="@color/text_color"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/resetColors"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_medium"
-            android:text="@string/reset_colors"
-            android:textColor="@color/medium_blue"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <Button
-        android:id="@+id/pickColorFor1"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/save_qr_settings"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/normal_button"
-        android:text="@string/choose_primary_color"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
-        app:layout_constraintStart_toStartOf="@+id/linearLayout9"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout9" />
-
-    <Button
-        android:id="@+id/pickColorFor2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/normal_button"
-        android:text="@string/choose_secondary_color"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout9"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout9" />
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:layout_marginTop="40dp"
-        android:background="@color/et_box_color"
-        app:layout_constraintEnd_toEndOf="@+id/pickColorFor2"
-        app:layout_constraintHorizontal_bias="0.527"
-        app:layout_constraintStart_toStartOf="@+id/pickColorFor1"
-        app:layout_constraintTop_toBottomOf="@+id/pickColorFor2" />
-
-    <TextView
-        android:id="@+id/positiveOption"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/roboto"
-        android:gravity="center"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
+        android:background="@drawable/primary_button"
         android:text="@string/SaveChanges"
-        android:textColor="@color/text_color"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
+        android:textAllCaps="false"
+        android:paddingVertical="12dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/negativeOption"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto"
-        android:gravity="center"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:text="@string/DontUpdate"
-        android:textColor="@color/negative_red"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/positiveOption"
-        app:layout_constraintStart_toStartOf="@+id/positiveOption"
-        app:layout_constraintTop_toBottomOf="@+id/positiveOption" />
+<!--    <androidx.appcompat.widget.LinearLayoutCompat-->
+<!--        android:id="@+id/linearLayoutCompat"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:gravity="center"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/qrCodePreview"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/qrCodePreview"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/qrCodePreview">-->
+
+<!--        <androidx.appcompat.widget.AppCompatTextView-->
+<!--            android:id="@+id/show_profile_image_text_view"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:fontFamily="@font/roboto_medium"-->
+<!--            android:text="@string/show_profile_image"-->
+<!--            android:textColor="@color/text_color"-->
+<!--            android:textSize="18sp" />-->
+
+<!--        <androidx.appcompat.widget.AppCompatCheckBox-->
+<!--            android:id="@+id/show_profile_check_box"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="10dp"-->
+<!--            android:buttonTint="@color/text_color"-->
+<!--            android:gravity="center" />-->
+
+<!--    </androidx.appcompat.widget.LinearLayoutCompat>-->
+
+
+<!--    <androidx.appcompat.widget.LinearLayoutCompat-->
+<!--        android:id="@+id/ciruclar_qr_linear_layout"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:gravity="center"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/linearLayoutCompat"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/linearLayoutCompat"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat">-->
+
+<!--        <androidx.appcompat.widget.AppCompatTextView-->
+<!--            android:id="@+id/switch_qr_shape"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:fontFamily="@font/roboto_medium"-->
+<!--            android:text="@string/switch_qr_shape"-->
+<!--            android:textColor="@color/text_color"-->
+<!--            android:textSize="18sp" />-->
+
+<!--        <androidx.appcompat.widget.AppCompatCheckBox-->
+<!--            android:id="@+id/switch_qr_shape_checkbox"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="10dp"-->
+<!--            android:buttonTint="@color/text_color"-->
+<!--            android:gravity="center" />-->
+
+<!--    </androidx.appcompat.widget.LinearLayoutCompat>-->
+
+
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:id="@+id/linearLayout9"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginHorizontal="20dp"-->
+<!--        android:layout_marginTop="24dp"-->
+<!--        android:gravity="center"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/ciruclar_qr_linear_layout">-->
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:fontFamily="@font/roboto_bold"-->
+<!--            android:text="@string/choose_colors"-->
+<!--            android:textColor="@color/text_color"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/resetColors"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:fontFamily="@font/roboto_medium"-->
+<!--            android:text="@string/reset_colors"-->
+<!--            android:textColor="@color/medium_blue"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--    <Button-->
+<!--        android:id="@+id/pickColorFor1"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:layout_marginEnd="10dp"-->
+<!--        android:background="@drawable/normal_button"-->
+<!--        android:text="@string/choose_primary_color"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:textColor="@android:color/white"-->
+<!--        android:textSize="12sp"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/guideline"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/linearLayout9"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/linearLayout9" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/pickColorFor2"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_marginStart="10dp"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:background="@drawable/normal_button"-->
+<!--        android:text="@string/choose_secondary_color"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:textColor="@android:color/white"-->
+<!--        android:textSize="12sp"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/linearLayout9"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/guideline"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/linearLayout9" />-->
+
+<!--    <View-->
+<!--        android:id="@+id/view"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="2dp"-->
+<!--        android:layout_marginTop="40dp"-->
+<!--        android:background="@color/et_box_color"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/pickColorFor2"-->
+<!--        app:layout_constraintHorizontal_bias="0.527"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/pickColorFor1"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/pickColorFor2" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/positiveOption"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:fontFamily="@font/roboto"-->
+<!--        android:gravity="center"-->
+<!--        android:paddingTop="15dp"-->
+<!--        android:paddingBottom="15dp"-->
+<!--        android:text="@string/SaveChanges"-->
+<!--        android:textColor="@color/text_color"-->
+<!--        android:textSize="16sp"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/view"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/view"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/view" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/negativeOption"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:fontFamily="@font/roboto"-->
+<!--        android:gravity="center"-->
+<!--        android:paddingTop="15dp"-->
+<!--        android:paddingBottom="15dp"-->
+<!--        android:text="@string/DontUpdate"-->
+<!--        android:textColor="@color/negative_red"-->
+<!--        android:textSize="16sp"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/positiveOption"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/positiveOption"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/positiveOption" />-->
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

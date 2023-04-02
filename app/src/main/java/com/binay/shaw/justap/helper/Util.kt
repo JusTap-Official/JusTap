@@ -284,7 +284,7 @@ object Util {
             .setBackgroundColorInt(
                 ContextCompat.getColor(
                     activity.baseContext,
-                    R.color.negative_red
+                    R.color.negative
                 )
             )
             .setIcon(R.drawable.wifi_off)

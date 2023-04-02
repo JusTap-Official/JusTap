@@ -5,15 +5,12 @@ import android.app.Activity
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.SocialAccountLayoutBinding
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.ui.mainScreens.homeScreen.HomeFragmentDirections
-import com.tapadoo.alerter.Alerter
 
 
 private var accountsList: List<Accounts> = ArrayList()
@@ -74,6 +71,7 @@ class AccountsItemAdapter(
     override fun getItemCount() = accountsList.size
 
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setData(accounts: List<Accounts>) {
         accountsList = accounts
         notifyDataSetChanged()
