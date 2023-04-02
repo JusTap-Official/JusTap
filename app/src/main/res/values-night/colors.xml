@@ -28,4 +28,5 @@
     <color name="white_and_blue">#006AFF</color>
     <color name="themed_black_white">#ffffff</color>
     <color name="themed_white_black">#272D33</color>
+    <color name="bottom_nav_color">#272D33</color>
 </resources>

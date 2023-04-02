@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.JusTap" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
+        <item name="colorPrimary">@color/neutral</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/text_color</item>
         <!-- Secondary brand color. -->

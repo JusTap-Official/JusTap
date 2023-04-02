@@ -52,8 +52,8 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="10dp"
-            android:textColorHint="@android:color/darker_gray"
-            app:boxBackgroundColor="#F5F8FA">
+            android:textColorHint="@color/gray"
+            app:boxBackgroundColor="@color/input_box_color">
 
             <AutoCompleteTextView
                 android:id="@+id/account_name"
@@ -63,7 +63,7 @@
                 android:hint="@string/select"
                 android:inputType="none"
                 android:paddingStart="16dp"
-                android:textColor="@color/black"
+                android:textColor="@color/text_color"
                 android:textSize="16sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -134,7 +134,7 @@
                     android:paddingEnd="20dp"
                     android:text="@string/cancel"
                     android:textAllCaps="false"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/text_color" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/confirmChanges"

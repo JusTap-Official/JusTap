@@ -33,7 +33,7 @@
             android:layout_width="25dp"
             android:layout_height="55dp"
             android:indeterminate="true"
-            android:indeterminateTint="@color/white_and_black"
+            android:indeterminateTint="@color/white"
             android:indeterminateTintMode="src_atop"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -6,7 +6,6 @@
     android:id="@+id/progress_parent"
     android:visibility="gone"
     android:background="@android:color/transparent">
-    <!--android:visibility="gone"-->
 
     <androidx.cardview.widget.CardView
         android:layout_width="250dp"
