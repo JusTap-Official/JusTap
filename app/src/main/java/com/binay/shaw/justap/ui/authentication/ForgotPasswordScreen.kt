@@ -21,9 +21,9 @@ class ForgotPasswordScreen : BaseActivity() {
     private val firebaseViewModel by viewModels<FirebaseViewModel> { ViewModelFactory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme()
         super.onCreate(savedInstanceState)
         binding = ActivityForgotPasswordScreenBinding.inflate(layoutInflater)
-        setTheme()
         setContentView(binding.root)
 
         initObservers()

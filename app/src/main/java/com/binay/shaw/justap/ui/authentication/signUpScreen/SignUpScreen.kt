@@ -23,9 +23,9 @@ class SignUpScreen : BaseActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme()
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpScreenBinding.inflate(layoutInflater)
-        setTheme()
         setContentView(binding.root)
 
         initViews()

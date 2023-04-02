@@ -28,8 +28,8 @@ class SplashActivity : BaseActivity() {
     private lateinit var task: Task<AppUpdateInfo>
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         setTheme()
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
         checkForUpdate()
