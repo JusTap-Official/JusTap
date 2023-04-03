@@ -24,10 +24,7 @@ import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.databinding.FragmentSettingsBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
-import com.binay.shaw.justap.helper.Constants
-import com.binay.shaw.justap.helper.DarkMode
-import com.binay.shaw.justap.helper.ImageUtils
-import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.helper.*
 import com.binay.shaw.justap.helper.Util.createBottomSheet
 import com.binay.shaw.justap.helper.Util.setBottomSheet
 import com.binay.shaw.justap.model.LocalUser
@@ -66,6 +63,7 @@ class SettingsFragment : BaseFragment() {
         initObservers()
         initialization()
         handleOperations()
+        lifecycle.addObserver(LifeCyclePrinter("LIFECYCLE"))
 
         binding.toProfile.setOnClickListener {
             Navigation.findNavController(binding.root)
@@ -136,7 +134,7 @@ class SettingsFragment : BaseFragment() {
 
     private fun switchDarkMode() {
         try {
-            CoroutineScope(Dispatchers.Default).launch {
+            CoroutineScope(Dispatchers.IO).launch {
                 DarkMode.setDarkMode(requireContext(), isDarkModeEnabled.not())
                 withContext(Dispatchers.Main) {
                     requireActivity().recreate()

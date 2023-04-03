@@ -86,4 +86,17 @@ class MainActivity : BaseActivity() {
             navController.popBackStack()
         }
     }
+
+//    override fun recreate() {
+////        finish()
+////        overridePendingTransition(
+////            androidx.appcompat.R.anim.abc_fade_in,
+////            androidx.appcompat.R.anim.abc_fade_out
+////        )
+//        startActivity(intent)
+//        overridePendingTransition(
+//            androidx.appcompat.R.anim.abc_fade_in,
+//            androidx.appcompat.R.anim.abc_fade_out
+//        )
+//    }
 }
