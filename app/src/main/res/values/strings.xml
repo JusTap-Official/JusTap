@@ -153,6 +153,8 @@
     <string name="need_help">Need help?</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="rate_justap">Rate JusTap</string>
+    <string name="reset_qr">Reset QR</string>
+    <string name="no_changes_made">No changes made</string>
 
     <string-array name="account_names">
         <item>Phone</item>

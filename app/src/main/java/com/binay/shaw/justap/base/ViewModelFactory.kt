@@ -9,6 +9,7 @@ import com.binay.shaw.justap.ui.mainScreens.historyScreen.LocalHistoryViewModel
 import com.binay.shaw.justap.ui.mainScreens.homeScreen.accountFragments.AddEditViewModel
 import com.binay.shaw.justap.ui.mainScreens.qrScreens.qrGeneratorScreen.QRGeneratorViewModel
 import com.binay.shaw.justap.ui.mainScreens.resultScreen.ScanResultViewModel
+import com.binay.shaw.justap.ui.mainScreens.settingsScreen.customize_qr.CustomizeQRViewModel
 import com.binay.shaw.justap.ui.mainScreens.settingsScreen.editScreen.EditProfileViewModel
 import com.binay.shaw.justap.viewModel.FirebaseViewModel
 
@@ -45,6 +46,9 @@ class ViewModelFactory : ViewModelProvider.Factory {
                 }
                 isAssignableFrom(FirebaseViewModel::class.java) -> {
                     FirebaseViewModel()
+                }
+                isAssignableFrom(CustomizeQRViewModel::class.java) -> {
+                    CustomizeQRViewModel(application)
                 }
                 else -> throw IllegalArgumentException("Unknown ViewModel class")
             }

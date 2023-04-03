@@ -4,14 +4,16 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.binay.shaw.justap.R
@@ -21,11 +23,17 @@ import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.databinding.FragmentCustomizeQRBinding
 import com.binay.shaw.justap.helper.Constants
 import com.binay.shaw.justap.helper.ImageUtils
+import com.binay.shaw.justap.helper.Logger
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.helper.Util.dpToPx
 import com.binay.shaw.justap.model.CustomizeQRItems
 import com.binay.shaw.justap.model.CustomizeQROptions
-import com.binay.shaw.justap.ui.mainScreens.qrScreens.qrGeneratorScreen.QRGeneratorViewModel
+import com.binay.shaw.justap.model.QRCode
+import com.skydoves.colorpickerview.ColorPickerDialog
+import com.skydoves.colorpickerview.flag.BubbleFlag
+import com.skydoves.colorpickerview.flag.FlagMode
+import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
+import java.util.*
 
 
 class CustomizeQRFragment : BaseFragment() {
@@ -34,21 +42,18 @@ class CustomizeQRFragment : BaseFragment() {
     private val binding get() = _binding!!
     private val args: CustomizeQRFragmentArgs by navArgs()
     private lateinit var adapter: CustomizeQRAdapter
+    private val customizeQRViewModel by viewModels<CustomizeQRViewModel> { ViewModelFactory() }
 
-
-    private lateinit var currentOverlay: Bitmap
-    private val qrGeneratorViewModel by viewModels<QRGeneratorViewModel> { ViewModelFactory() }
-    private lateinit var displayMetrics: DisplayMetrics
     private lateinit var sharedPreference: SharedPreferences
-    private var firstSelectedColor: Int = -1
-    private var secondSelectedColor: Int = -1
-    private var defaultPrimaryColor: Int = -1
-    private var defaultSecondaryColor: Int = -1
     private var profileBitmap: Bitmap? = null
-    private var byteString: String? = null
-    private var isQRCodeCircular: Boolean = false
-    private var originalQRShape: Boolean = false
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        profileBitmap = args.profilePicture
+        sharedPreference =
+            requireContext().getSharedPreferences(Constants.qrPref, Context.MODE_PRIVATE)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,232 +63,154 @@ class CustomizeQRFragment : BaseFragment() {
 
         initObservers()
         initViews()
-//        clickHandlers()
+        clickHandlers()
 
         return binding.root
     }
 
-//    private fun clickHandlers() {
-//        binding.apply {
-//            include.leftIcon.setOnClickListener {
-//                requireActivity().onBackPressedDispatcher.onBackPressed()
-//            }
-//
-//            val originalBitmap = currentOverlay
-//
+    private fun clickHandlers() {
+        binding.apply {
+
+            include.leftIcon.setOnClickListener {
+                requireActivity().onBackPressedDispatcher.onBackPressed()
+            }
+
+            saveQrSettings.setOnClickListener {
+                saveColors()
+            }
+
+            saveResetSettings.setOnClickListener {
+                resetChanges()
+            }
+        }
+    }
+
+    private fun resetChanges() {
+        customizeQRViewModel.run {
+            val qrObject = qrObjectLiveData.value!!
+            qrObject.primaryColor = defaultPrimaryColor.value!!
+            qrObject.secondaryColor = defaultSecondaryColor.value!!
+            qrObject.overlay = defaultOverlay.value!!
+            qrObject.isCircular = false
+            qrReset.value = true
+            setupQRObject(qrObject)
+        }
+    }
+
+
 //            if (byteString != null) {
 //                val byteArray = android.util.Base64.decode(byteString, android.util.Base64.DEFAULT)
 //                // use the byteArray as needed
 //                currentOverlay = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
 //            }
-//
-//            val overlayBitmap = currentOverlay
-//
-//            var isColorReset = false
-//
-//
-//            if (profileBitmap == null) {
-//                linearLayoutCompat.visibility = View.INVISIBLE
-//            }
-//            if (originalBitmap.sameAs(currentOverlay).not())
-//                showProfileCheckBox.isChecked = true
-//
-//            if (isQRCodeCircular) {
-//                switchQrShapeCheckbox.isChecked = true
-//            }
-//
-//
-//            generateQR(firstSelectedColor, secondSelectedColor, currentOverlay, isQRCodeCircular)
-//
-//            switchQrShapeCheckbox.setOnCheckedChangeListener { _, _ ->
-//                isQRCodeCircular = isQRCodeCircular.not()
-//                generateQR(
-//                    firstSelectedColor, secondSelectedColor,
-//                    currentOverlay, isQRCodeCircular
-//                )
-//            }
-//
-//            showProfileCheckBox.setOnCheckedChangeListener { _, isClicked ->
-//                currentOverlay = if (isClicked) profileBitmap!! else originalBitmap
-//                generateQR(
-//                    firstSelectedColor, secondSelectedColor,
-//                    currentOverlay, isQRCodeCircular
-//                )
-//            }
-//
-//            pickColorFor1.setOnClickListener {
-//                try {
-//                    val builder = ColorPickerDialog.Builder(requireContext())
-//                        .setTitle(resources.getString(R.string.chooseColorForForeground))
-//                        .setPositiveButton(
-//                            resources.getString(R.string.SaveChanges),
-//                            ColorEnvelopeListener { envelope, _ ->
-//                                firstSelectedColor = envelope.color
-//                                generateQR(
-//                                    firstSelectedColor,
-//                                    secondSelectedColor, currentOverlay, isQRCodeCircular
-//                                )
-//                            }
-//                        )
-//                        .setNegativeButton(
-//                            resources.getString(R.string.cancel)
-//                        ) { dialogInterface, _ -> dialogInterface.dismiss() }
-//                    builder.colorPickerView.flagView =
-//                        BubbleFlag(requireContext()).apply { flagMode = FlagMode.FADE }
-//                    builder.show()
-//                } catch (e: java.lang.IllegalArgumentException) {
-//                    Util.log("Exception: $e")
-//                    showAlerter(
-//                        resources.getString(R.string.anErrorOccurred),
-//                        e.toString()
-//                            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
-//                            .substring(36),
-//                        ContextCompat.getColor(requireContext(), R.color.negative_red),
-//                        R.drawable.warning,
-//                        2000L
-//                    )
-//                }
-//            }
-//
-//            pickColorFor2.setOnClickListener {
-//                try {
-//
-//                    val builder = ColorPickerDialog.Builder(requireContext())
-//                        .setTitle(resources.getString(R.string.chooseColorForBackground))
-//                        .setPositiveButton(
-//                            resources.getString(R.string.SaveChanges),
-//                            ColorEnvelopeListener { envelope, _ ->
-//                                secondSelectedColor = envelope.color
-//                                generateQR(
-//                                    firstSelectedColor,
-//                                    secondSelectedColor, currentOverlay, isQRCodeCircular
-//                                )
-//                            }
-//                        )
-//                    BubbleFlag(requireContext()).apply { flagMode = FlagMode.FADE }
-//                    builder.show()
-//                } catch (e: java.lang.IllegalArgumentException) {
-//                    Util.log("Exception: $e")
-//                    showAlerter(
-//                        resources.getString(R.string.anErrorOccurred),
-//                        e.toString()
-//                            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
-//                            .substring(36),
-//                        ContextCompat.getColor(requireContext(), R.color.negative_red),
-//                        R.drawable.warning,
-//                        2000L
-//                    )
-//                }
-//            }
-//
-//            resetColors.setOnClickListener {
-//                generateQR(
-//                    defaultPrimaryColor, defaultSecondaryColor,
-//                    overlayBitmap, isQRCodeCircular
-//                )
-//                firstSelectedColor = defaultPrimaryColor
-//                secondSelectedColor = defaultSecondaryColor
-//                isColorReset = true
-//            }
-//
-//            positiveOption.setOnClickListener {
-//                try {
-//
-//                    val contrastRatio = 1.5f
-//                    val contrastVar1 =
-//                        ColorUtils.calculateContrast(firstSelectedColor, secondSelectedColor)
-//                    val contrastVar2 =
-//                        ColorUtils.calculateContrast(firstSelectedColor, secondSelectedColor)
-//                    Util.log("Contrast is: $contrastVar1 and $contrastVar2")
-//
-//                    if (contrastVar1 > contrastRatio || contrastVar2 > contrastRatio) {
-//                        Util.log("Contrast Choice is Okay")
-//
-//
-//                        if (Util.colorIsNotTheSame(firstSelectedColor, defaultPrimaryColor)
-//                            || Util.colorIsNotTheSame(secondSelectedColor, defaultSecondaryColor)
-//                            || isColorReset || overlayBitmap.sameAs(currentOverlay).not() ||
-//                            originalQRShape != isQRCodeCircular
-//                        ) {
-//
-//                            saveColors(
-//                                sharedPreference, firstSelectedColor, secondSelectedColor,
-//                                currentOverlay, isQRCodeCircular
-//                            )
-//                            showAlerter(
-//                                resources.getString(R.string.changesSaved),
-//                                resources.getString(R.string.changesSavedDescription),
-//                                ContextCompat.getColor(requireContext(), R.color.positive_green),
-//                                R.drawable.check,
-//                                2500L
-//                            )
-//                            requireActivity().onBackPressedDispatcher.onBackPressed()
-//                        } else {
-//                            Util.log("First Colors are : $firstSelectedColor and $defaultPrimaryColor")
-//                            Util.log("Second Colors are : $secondSelectedColor and $defaultSecondaryColor")
-//                            Util.log("Overlay : $currentOverlay")
-//                            Util.log("isCircular : $isQRCodeCircular")
-//                            Toast.makeText(requireContext(), "No changes made", Toast.LENGTH_SHORT)
-//                                .show()
-//                        }
-//
-//                    } else {
-//                        showAlerter(
-//                            resources.getString(R.string.badContrast),
-//                            resources.getString(R.string.badContrastDescription),
-//                            ContextCompat.getColor(requireContext(), R.color.negative_red),
-//                            R.drawable.warning,
-//                            2000L
-//                        )
-//                        Util.log("Contrast choice is bad")
-//                    }
-//                } catch (e: java.lang.IllegalArgumentException) {
-//                    Util.log("Exception: $e")
-//                    showAlerter(
-//                        resources.getString(R.string.anErrorOccurred),
-//                        e.toString()
-//                            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
-//                            .substring(36),
-//                        ContextCompat.getColor(requireContext(), R.color.negative_red),
-//                        R.drawable.warning,
-//                        2500L
-//                    )
-//                }
-//            }
-//            negativeOption.setOnClickListener {
-//                requireActivity().onBackPressedDispatcher.onBackPressed()
-//                Util.log("Customization of QR is Cancelled.")
-//            }
-//        }
-//    }
 
-    private fun saveColors(
-        sharedPreference: SharedPreferences,
-        firstSelectedColor: Int,
-        secondSelectedColor: Int,
-        overlayBitmap: Bitmap,
-        isQRCodeCircular: Boolean
-    ) {
-        val editor = sharedPreference.edit()
-        val byteString: String = android.util.Base64.encodeToString(
-            ImageUtils.bitmapToByteArray(overlayBitmap),
-            android.util.Base64.DEFAULT
+
+    private fun saveColors() {
+        val qrObject = customizeQRViewModel.qrObjectLiveData.value!!
+        val savedPrimaryColor = customizeQRViewModel.savedQRPrimaryColor.value!!
+        val savedSecondaryColor = customizeQRViewModel.savedQRSecondaryColor.value!!
+        val defaultOverlay = customizeQRViewModel.defaultOverlay.value!!
+        val savedIsCircular = customizeQRViewModel.savedQRisCircular.value!!
+        val resetColor = customizeQRViewModel.qrReset.value!!
+
+        val changesAreOkay =
+            checkTheQR(
+                qrObject,
+                savedPrimaryColor,
+                savedSecondaryColor,
+                resetColor,
+                defaultOverlay,
+                savedIsCircular
+            )
+        if (changesAreOkay.not()) {
+            return
+        }
+
+        saveInSharedPrefs(qrObject)
+
+        showAlerter(
+            resources.getString(R.string.changesSaved),
+            resources.getString(R.string.changesSavedDescription),
+            ContextCompat.getColor(requireContext(), R.color.positive),
+            R.drawable.check,
+            2500L
         )
-        editor.putInt(Constants.firstColor, firstSelectedColor)
-        editor.putInt(Constants.secondColor, secondSelectedColor)
-        editor.putString(Constants.image_pref, byteString)
-        editor.putBoolean(Constants.isQRCodeCircular, isQRCodeCircular)
-        editor.apply()
-        Util.log("Saved")
+
+        findNavController().popBackStack()
     }
 
-    private fun generateQR(color1: Int, color2: Int, overlay: Bitmap, isShapeCircular: Boolean?) {
-        qrGeneratorViewModel.generateQR(
-            displayMetrics, overlay,
-            color1,
-            color2,
-            isShapeCircular
+    private fun saveInSharedPrefs(qrObject: QRCode) {
+        val editor = sharedPreference.edit()
+        val byteString: String = android.util.Base64.encodeToString(
+            ImageUtils.bitmapToByteArray(qrObject.overlay!!),
+            android.util.Base64.DEFAULT
         )
+        editor.putInt(Constants.firstColor, qrObject.primaryColor)
+        editor.putInt(Constants.secondColor, qrObject.secondaryColor)
+        editor.putString(Constants.image_pref, byteString)
+        editor.putBoolean(Constants.isQRCodeCircular, qrObject.isCircular)
+        editor.apply()
+    }
+
+    private fun checkTheQR(
+        qrObject: QRCode,
+        savedPrimaryColor: Int,
+        savedSecondaryColor: Int,
+        isChangesReset: Boolean,
+        defaultOverlay: Bitmap,
+        savedIsCircular: Boolean
+    ): Boolean {
+        try {
+            val contrastRatio = 1.5f
+            val contrastVar1 =
+                ColorUtils.calculateContrast(qrObject.primaryColor, qrObject.secondaryColor)
+            val contrastVar2 =
+                ColorUtils.calculateContrast(qrObject.primaryColor, qrObject.secondaryColor)
+            Logger.debugLog("Contrast is: $contrastVar1 and $contrastVar2")
+
+            if (contrastVar1 > contrastRatio || contrastVar2 > contrastRatio) {
+
+                Logger.debugLog("Contrast Choice is Okay")
+                Logger.debugLog("First Colors is same: ${qrObject.primaryColor == savedPrimaryColor}")
+                Logger.debugLog("Second Colors is same: ${qrObject.secondaryColor == savedSecondaryColor}")
+                Logger.debugLog("Overlay is same: ${qrObject.overlay == defaultOverlay}")
+                Logger.debugLog("isCircular is same: ${qrObject.isCircular == savedIsCircular}")
+
+                return if (Util.colorIsNotTheSame(qrObject.primaryColor, savedPrimaryColor)
+                    || Util.colorIsNotTheSame(qrObject.secondaryColor, savedSecondaryColor)
+                    || isChangesReset || qrObject.overlay!!.sameAs(defaultOverlay).not() ||
+                    qrObject.isCircular != savedIsCircular
+                ) {
+                    true
+                } else {
+                    Toast.makeText(requireContext(), getString(R.string.no_changes_made), Toast.LENGTH_SHORT)
+                        .show()
+                    false
+                }
+            } else {
+                showAlerter(
+                    resources.getString(R.string.badContrast),
+                    resources.getString(R.string.badContrastDescription),
+                    ContextCompat.getColor(requireContext(), R.color.negative),
+                    R.drawable.warning,
+                    2000L
+                )
+                Logger.debugLog("Contrast choice is bad")
+                return false
+            }
+        } catch (e: java.lang.IllegalArgumentException) {
+            Util.log("Exception: $e")
+            showAlerter(
+                resources.getString(R.string.anErrorOccurred),
+                e.toString()
+                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
+                    .substring(36),
+                ContextCompat.getColor(requireContext(), R.color.negative),
+                R.drawable.warning,
+                2500L
+            )
+            return false
+        }
     }
 
     private fun initViews() {
@@ -294,42 +221,6 @@ class CustomizeQRFragment : BaseFragment() {
             }
 
             setUpRecyclerView()
-
-            profileBitmap = args.profilePicture
-
-            sharedPreference =
-                requireContext().getSharedPreferences(Constants.qrPref, Context.MODE_PRIVATE)
-            displayMetrics = DisplayMetrics()
-            requireActivity().windowManager?.defaultDisplay?.getMetrics(displayMetrics)
-
-            firstSelectedColor = sharedPreference.getInt(
-                Constants.firstColor,
-                ResourcesCompat.getColor(resources, R.color.text_color, null)
-            )
-            secondSelectedColor = sharedPreference.getInt(
-                Constants.secondColor,
-                ResourcesCompat.getColor(resources, R.color.white_and_black, null)
-            )
-
-            defaultPrimaryColor = ResourcesCompat.getColor(
-                resources,
-                R.color.text_color,
-                null
-            )
-            defaultSecondaryColor = ResourcesCompat.getColor(
-                resources,
-                R.color.white_and_black,
-                null
-            )
-
-            byteString = sharedPreference.getString(Constants.image_pref, null)
-            isQRCodeCircular = sharedPreference.getBoolean(Constants.isQRCodeCircular, false)
-            originalQRShape = isQRCodeCircular
-
-            currentOverlay = ContextCompat.getDrawable(requireContext(), R.drawable.logo)
-                ?.toBitmap(72.dpToPx(), 72.dpToPx())!!
-
-            generateQR(firstSelectedColor, secondSelectedColor, currentOverlay, isQRCodeCircular)
         }
     }
 
@@ -342,21 +233,25 @@ class CustomizeQRFragment : BaseFragment() {
         ) {
             when (it) {
                 CustomizeQRItems.getOptionState(CustomizeQRItems.PRIMARY_COLOR) -> {
-
+                    pickColor(true)
                 }
                 CustomizeQRItems.getOptionState(CustomizeQRItems.SECONDARY_COLOR) -> {
-
+                    pickColor(false)
                 }
                 CustomizeQRItems.getOptionState(CustomizeQRItems.ADD_IMAGE) -> {
 
                 }
                 CustomizeQRItems.getOptionState(CustomizeQRItems.CHANGE_SHAPE) -> {
-
+                    customizeQRViewModel.run {
+                        val qrObject = qrObjectLiveData.value!!
+                        qrObject.isCircular = qrObject.isCircular.not()
+                        setupQRObject(qrObject)
+                    }
                 }
             }
         }
 
-        val options = listOf<CustomizeQROptions>(
+        val options = listOf(
             CustomizeQROptions(
                 "Primary Color",
                 ResourcesCompat.getDrawable(resources, R.drawable.colors_icon, null)!!
@@ -379,10 +274,93 @@ class CustomizeQRFragment : BaseFragment() {
         binding.customizeOptionsRecyclerView.adapter = adapter
     }
 
+    private fun pickColor(isPrimaryColor: Boolean) {
+        try {
+            val builder = ColorPickerDialog.Builder(requireContext())
+                .setTitle(resources.getString(R.string.chooseColorForForeground))
+                .setPositiveButton(
+                    resources.getString(R.string.SaveChanges),
+                    ColorEnvelopeListener { envelope, _ ->
+                        customizeQRViewModel.run {
+                            val qrObject = qrObjectLiveData.value!!
+                            if (isPrimaryColor) {
+                                qrObject.primaryColor = envelope.color
+                            } else {
+                                qrObject.secondaryColor = envelope.color
+                            }
+                            setupQRObject(qrObject)
+                        }
+                    }
+                )
+                .setNegativeButton(
+                    resources.getString(R.string.cancel)
+                ) { dialogInterface, _ -> dialogInterface.dismiss() }
+            builder.colorPickerView.flagView =
+                BubbleFlag(requireContext()).apply { flagMode = FlagMode.FADE }
+            builder.show()
+        } catch (e: java.lang.IllegalArgumentException) {
+            Logger.debugLog("Exception: $e")
+            showAlerter(
+                resources.getString(R.string.anErrorOccurred),
+                e.toString()
+                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
+                    .substring(36),
+                ContextCompat.getColor(requireContext(), R.color.negative),
+                R.drawable.warning,
+                2000L
+            )
+        }
+    }
+
     private fun initObservers() {
-        qrGeneratorViewModel.run {
-            bitmap.observe(viewLifecycleOwner) {
+        customizeQRViewModel.run {
+            val displayMetrics = resources.displayMetrics
+            defaultOverlay.value = ContextCompat.getDrawable(requireContext(), R.drawable.logo)
+                ?.toBitmap(72.dpToPx(), 72.dpToPx())!!
+
+            val savedPrimaryColor = sharedPreference.getInt(
+                Constants.firstColor,
+                ResourcesCompat.getColor(resources, R.color.qr_code_primary, null)
+            )
+            savedQRPrimaryColor.value = savedPrimaryColor
+
+            val savedSecondaryColor = sharedPreference.getInt(
+                Constants.secondColor,
+                ResourcesCompat.getColor(resources, R.color.qr_code_secondary, null)
+            )
+            savedQRSecondaryColor.value = savedSecondaryColor
+
+            val isCircular = sharedPreference.getBoolean(Constants.isQRCodeCircular, false)
+            savedQRisCircular.value = isCircular
+
+            val qrObject = QRCode(
+                displayMetrics =
+                displayMetrics.widthPixels.coerceAtMost(displayMetrics.heightPixels),
+                primaryColor = savedPrimaryColor,
+                secondaryColor = savedSecondaryColor,
+                overlay = defaultOverlay.value,
+                isCircular = isCircular
+            )
+
+            setupQRObject(qrObject)
+
+            defaultPrimaryColor.value = ResourcesCompat.getColor(
+                resources,
+                R.color.text_color,
+                null
+            )
+            defaultSecondaryColor.value = ResourcesCompat.getColor(
+                resources,
+                R.color.white_and_black,
+                null
+            )
+
+            qrResultLiveData.observe(viewLifecycleOwner) {
                 binding.qrCodePreview.setImageBitmap(it)
+            }
+
+            errorMessage.observe(viewLifecycleOwner) {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
         }
     }

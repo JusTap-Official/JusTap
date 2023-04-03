@@ -22,6 +22,7 @@ object Constants {
     const val firstColor = "firstColor"
     const val secondColor = "secondColor"
     const val qrPref = "QRPref"
+    const val qrObject = "QRObj"
     const val image_pref = "image_pref"
     const val isQRCodeCircular = "isQRCodeCircular"
 
