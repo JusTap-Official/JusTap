@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.Paint
+import com.binay.shaw.justap.helper.ImageUtils.addBitmapOverlay
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
@@ -180,7 +181,8 @@ fun String.encodeAsQrCodeBitmap(
     bitmap.setPixels(pixels, 0, dimension, 0, 0, w, h)
 
     return if (overlayBitmap != null) {
-        bitmap.addOverlayToCenter(ImageUtils.getRoundedCroppedBitmap(overlayBitmap)!!)
+//        bitmap.addOverlayToCenter(ImageUtils.getRoundedCroppedBitmap(overlayBitmap)!!)
+        bitmap.addBitmapOverlay(ImageUtils.getRoundedCroppedBitmap(overlayBitmap)!!)
     } else {
         bitmap
     }

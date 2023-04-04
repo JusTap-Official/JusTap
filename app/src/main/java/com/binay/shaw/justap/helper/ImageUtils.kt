@@ -33,8 +33,8 @@ object ImageUtils {
     }
 
     fun getRoundedCroppedBitmap(bitmap: Bitmap): Bitmap? {
-        val widthLight = if (bitmap.width > 274) 274 else bitmap.width
-        val heightLight = if (bitmap.height > 274) 274 else bitmap.height
+        val widthLight = bitmap.width
+        val heightLight = bitmap.height
         Util.log("Wid: $widthLight hit: $heightLight")
         val output = Bitmap.createBitmap(
             bitmap.width, bitmap.height,
@@ -144,5 +144,95 @@ object ImageUtils {
             outputStream.close()
         }
         return uri
+    }
+
+
+
+
+
+
+
+
+    fun Context.getBitmapFromUri(uri: Uri): Bitmap? {
+        return when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && uri.isContentUri() -> {
+                getBitmapFromContentUri(uri)
+            }
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && uri.isTreeUri() -> {
+                getBitmapFromDocumentUri(uri)
+            }
+            uri.isMediaUri() -> {
+                getBitmapFromMediaUri(uri)
+            }
+            else -> {
+                getBitmapFromFileUri(uri)
+            }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun Context.getBitmapFromContentUri(uri: Uri): Bitmap? {
+        val source = ImageDecoder.createSource(this.contentResolver, uri)
+        return ImageDecoder.decodeBitmap(source)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun Context.getBitmapFromDocumentUri(uri: Uri): Bitmap? {
+        val source = ImageDecoder.createSource(this.contentResolver, uri)
+        return ImageDecoder.decodeBitmap(source)
+    }
+
+    private fun Context.getBitmapFromMediaUri(uri: Uri): Bitmap? {
+        val contentResolver = this.contentResolver
+        return try {
+            val inputStream = contentResolver.openInputStream(uri)
+            BitmapFactory.decodeStream(inputStream)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    private fun Context.getBitmapFromFileUri(uri: Uri): Bitmap? {
+        val filePath = uri.path
+        return try {
+            val file = filePath?.let { File(it) }
+            BitmapFactory.decodeFile(file?.absolutePath)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    private fun Uri.isMediaUri(): Boolean {
+        return "media" == authority
+    }
+
+    private fun Uri.isContentUri(): Boolean {
+        return "content" == scheme
+    }
+
+    private fun Uri.isTreeUri(): Boolean {
+        return "tree" == scheme
+    }
+
+
+    fun Bitmap.addBitmapOverlay(overlayBitmap: Bitmap): Bitmap {
+        // Create a new bitmap with the same dimensions as the base bitmap
+        val resultBitmap = Bitmap.createBitmap(this.width, this.height, Bitmap.Config.ARGB_8888)
+
+        // Create a new canvas with the result bitmap as its target
+        val canvas = Canvas(resultBitmap)
+
+        // Draw the base bitmap on the canvas
+        canvas.drawBitmap(this, 0f, 0f, null)
+
+        // Calculate the x and y coordinates to place the overlay bitmap in the center of the canvas
+        val x = (canvas.width - overlayBitmap.width) / 2f
+        val y = (canvas.height - overlayBitmap.height) / 2f
+
+        // Draw the overlay bitmap on the canvas, centered on top of the base bitmap
+        canvas.drawBitmap(overlayBitmap, x, y, null)
+
+        // Return the result bitmap with the overlay placed on top of the base bitmap
+        return resultBitmap
     }
 }

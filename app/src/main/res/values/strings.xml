@@ -155,6 +155,9 @@
     <string name="rate_justap">Rate JusTap</string>
     <string name="reset_qr">Reset QR</string>
     <string name="no_changes_made">No changes made</string>
+    <string name="select_image">Select Image</string>
+    <string name="save_image">Save Image</string>
+    <string name="image_picker">Image Picker</string>
 
     <string-array name="account_names">
         <item>Phone</item>

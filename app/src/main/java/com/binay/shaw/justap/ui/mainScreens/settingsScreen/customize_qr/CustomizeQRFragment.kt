@@ -3,6 +3,7 @@ package com.binay.shaw.justap.ui.mainScreens.settingsScreen.customize_qr
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +15,6 @@ import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.CustomizeQRAdapter
@@ -40,17 +40,13 @@ class CustomizeQRFragment : BaseFragment() {
 
     private var _binding: FragmentCustomizeQRBinding? = null
     private val binding get() = _binding!!
-    private val args: CustomizeQRFragmentArgs by navArgs()
     private lateinit var adapter: CustomizeQRAdapter
     private val customizeQRViewModel by viewModels<CustomizeQRViewModel> { ViewModelFactory() }
-
     private lateinit var sharedPreference: SharedPreferences
-    private var profileBitmap: Bitmap? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        profileBitmap = args.profilePicture
         sharedPreference =
             requireContext().getSharedPreferences(Constants.qrPref, Context.MODE_PRIVATE)
     }
@@ -96,13 +92,6 @@ class CustomizeQRFragment : BaseFragment() {
             setupQRObject(qrObject)
         }
     }
-
-
-//            if (byteString != null) {
-//                val byteArray = android.util.Base64.decode(byteString, android.util.Base64.DEFAULT)
-//                // use the byteArray as needed
-//                currentOverlay = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
-//            }
 
 
     private fun saveColors() {
@@ -239,7 +228,7 @@ class CustomizeQRFragment : BaseFragment() {
                     pickColor(false)
                 }
                 CustomizeQRItems.getOptionState(CustomizeQRItems.ADD_IMAGE) -> {
-
+                    findNavController().navigate(R.id.action_customizeQRFragment_to_imagePickerFragment)
                 }
                 CustomizeQRItems.getOptionState(CustomizeQRItems.CHANGE_SHAPE) -> {
                     customizeQRViewModel.run {
@@ -273,6 +262,25 @@ class CustomizeQRFragment : BaseFragment() {
 
         binding.customizeOptionsRecyclerView.adapter = adapter
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // In Fragment A, retrieve the Bitmap from the SavedStateHandle
+        val navController = findNavController()
+        navController.currentBackStackEntry?.savedStateHandle?.getLiveData<Bitmap>("qrOverlay")?.observe(viewLifecycleOwner) { bitmap ->
+            // Do something with the Bitmap
+            bitmap?.let {
+                customizeQRViewModel.run {
+                    val qrObject = qrObjectLiveData.value!!
+                    qrObject.overlay = it
+                    selectedOverlayLiveData.value = bitmap
+                    setupQRObject(qrObject)
+                }
+            }
+        }
+    }
+
 
     private fun pickColor(isPrimaryColor: Boolean) {
         try {
@@ -330,6 +338,13 @@ class CustomizeQRFragment : BaseFragment() {
             )
             savedQRSecondaryColor.value = savedSecondaryColor
 
+            val byteString = sharedPreference.getString(Constants.image_pref, null)
+            byteString?.let {
+                val byteArray = android.util.Base64.decode(it, android.util.Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+                savedQROverlay.value = bitmap
+            }
+
             val isCircular = sharedPreference.getBoolean(Constants.isQRCodeCircular, false)
             savedQRisCircular.value = isCircular
 
@@ -338,7 +353,7 @@ class CustomizeQRFragment : BaseFragment() {
                 displayMetrics.widthPixels.coerceAtMost(displayMetrics.heightPixels),
                 primaryColor = savedPrimaryColor,
                 secondaryColor = savedSecondaryColor,
-                overlay = defaultOverlay.value,
+                overlay = if (savedQROverlay.value != null) savedQROverlay.value else defaultOverlay.value,
                 isCircular = isCircular
             )
 
@@ -346,12 +361,12 @@ class CustomizeQRFragment : BaseFragment() {
 
             defaultPrimaryColor.value = ResourcesCompat.getColor(
                 resources,
-                R.color.text_color,
+                R.color.qr_code_primary,
                 null
             )
             defaultSecondaryColor.value = ResourcesCompat.getColor(
                 resources,
-                R.color.white_and_black,
+                R.color.qr_code_secondary,
                 null
             )
 

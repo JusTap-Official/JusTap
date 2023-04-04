@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.common.ImagePickerFragment">
+
+    <!--ToolBar-->
+    <include
+        android:id="@+id/include"
+        layout="@layout/my_toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/image_preview_placeholder"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include"
+        app:srcCompat="@drawable/blank_avatar_placeholder" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/save_image_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/primary_button"
+        android:fontFamily="@font/roboto"
+        android:layout_marginBottom="20dp"
+        android:text="@string/save_image"
+        android:textAllCaps="false"
+        android:visibility="gone"
+        android:textColor="@color/white_and_black"
+        app:layout_constraintBottom_toTopOf="@+id/select_image_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/select_image_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/primary_button"
+        android:fontFamily="@font/roboto"
+        android:text="@string/select_image"
+        android:layout_marginBottom="40dp"
+        android:textAllCaps="false"
+        android:layout_marginHorizontal="20dp"
+        android:textColor="@color/white_and_black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

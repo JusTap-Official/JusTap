@@ -20,10 +20,14 @@ class CustomizeQRViewModel(application: Application): BaseViewModel(application)
     var displayMetricsSize = MutableLiveData<Int>()
     var defaultOverlay = MutableLiveData<Bitmap>()
     val defaultSecondaryColor = MutableLiveData<Int>()
-    val byteStringLiveData = MutableLiveData<String>()
+
+    val selectedOverlayLiveData = MutableLiveData<Bitmap>()
+
     val savedQRPrimaryColor = MutableLiveData<Int>()
     val savedQRSecondaryColor = MutableLiveData<Int>()
     var savedQRisCircular = MutableLiveData<Boolean>()
+    var savedQROverlay = MutableLiveData<Bitmap>()
+
     val errorMessage = MutableLiveData<String>()
     val qrReset = MutableLiveData<Boolean>()
     val message: String = Constants.APP_URL
