@@ -48,6 +48,7 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/secondary_button"
         android:paddingVertical="12dp"
+        android:fontFamily="@font/roboto"
         android:text="@string/reset_qr"
         android:backgroundTint="@color/negative"
         android:textAllCaps="false"
@@ -70,6 +71,7 @@
         android:layout_marginBottom="20dp"
         android:textColor="@color/white"
         android:textSize="14sp"
+        android:fontFamily="@font/roboto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

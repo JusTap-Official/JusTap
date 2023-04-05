@@ -23,6 +23,7 @@
         android:background="@drawable/edittext_box"
         android:fontFamily="@font/roboto"
         android:hint="@string/search_by_name_binay"
+        android:textColorHint="@color/hint_color"
         android:inputType="textEmailAddress"
         android:drawableStart="@drawable/search"
         android:drawablePadding="10dp"

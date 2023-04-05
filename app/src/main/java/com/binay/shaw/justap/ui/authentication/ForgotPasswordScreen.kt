@@ -54,6 +54,9 @@ class ForgotPasswordScreen : BaseActivity() {
         binding.btnResetPassword.progressButtonBg.setOnClickListener {
             resetPassword()
         }
+        binding.include.leftIcon.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
     }
 
     private fun resetPassword() {
@@ -111,7 +114,12 @@ class ForgotPasswordScreen : BaseActivity() {
 
     private fun initialization() {
         supportActionBar?.hide()
-        binding.include.toolbarTitle.text = resources.getString(R.string.LogIn)
-        binding.btnResetPassword.buttonText.text = resources.getString(R.string.SendResetLink)
+        binding.apply {
+            include.apply {
+                toolbarTitle.text = getString(R.string.forgot_password_title)
+                leftIcon.visibility = View.VISIBLE
+            }
+            btnResetPassword.buttonText.text = resources.getString(R.string.SendResetLink)
+        }
     }
 }
