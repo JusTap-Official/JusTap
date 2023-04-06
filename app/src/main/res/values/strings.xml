@@ -164,6 +164,10 @@
     <string name="account_name">Account name</string>
     <string name="share_this_qr_to_exchange_contacts">Share this QR to exchange contacts</string>
     <string name="saving_changes">Saving changes...</string>
+    <string name="change_shape">Change Shape</string>
+    <string name="add_overlay">Add Overlay</string>
+    <string name="secondary_color">Secondary Color</string>
+    <string name="primary_color">Primary Color</string>
 
     <string-array name="account_names">
         <item>Phone</item>
