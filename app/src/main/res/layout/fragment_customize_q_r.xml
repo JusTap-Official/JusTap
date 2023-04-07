@@ -54,7 +54,6 @@
         android:textAllCaps="false"
         android:textColor="@color/negative"
         android:textSize="14sp"
-        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/save_qr_settings"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
