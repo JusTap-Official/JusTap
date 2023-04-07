@@ -75,9 +75,9 @@ class CustomizeQRFragment : BaseFragment() {
                 saveColors()
             }
 
-//            saveResetSettings.setOnClickListener {
-//                resetChanges()
-//            }
+            saveResetSettings.setOnClickListener {
+                resetChanges()
+            }
         }
     }
 
@@ -230,16 +230,16 @@ class CustomizeQRFragment : BaseFragment() {
                 CustomizeQRItems.getOptionState(CustomizeQRItems.ADD_IMAGE) -> {
                     findNavController().navigate(R.id.action_customizeQRFragment_to_imagePickerFragment)
                 }
-//                CustomizeQRItems.getOptionState(CustomizeQRItems.CHANGE_SHAPE) -> {
-//                    customizeQRViewModel.run {
-//                        val qrObject = qrObjectLiveData.value!!
-//                        qrObject.isCircular = qrObject.isCircular.not()
-//                        setupQRObject(qrObject)
-//                    }
-//                }
-                CustomizeQRItems.getOptionState(CustomizeQRItems.RESET) -> {
-                    resetChanges()
+                CustomizeQRItems.getOptionState(CustomizeQRItems.CHANGE_SHAPE) -> {
+                    customizeQRViewModel.run {
+                        val qrObject = qrObjectLiveData.value!!
+                        qrObject.isCircular = qrObject.isCircular.not()
+                        setupQRObject(qrObject)
+                    }
                 }
+//                CustomizeQRItems.getOptionState(CustomizeQRItems.RESET) -> {
+//                    resetChanges()
+//                }
             }
         }
 
@@ -256,14 +256,14 @@ class CustomizeQRFragment : BaseFragment() {
                 getString(R.string.add_overlay),
                 ResourcesCompat.getDrawable(resources, R.drawable.add_image_icon, null)!!
             ),
-            CustomizeQROptions(
-                "Reset",
-                ResourcesCompat.getDrawable(resources, R.drawable.refresh_icon, null)!!
-            )
 //            CustomizeQROptions(
-//                getString(R.string.change_shape),
-//                ResourcesCompat.getDrawable(resources, R.drawable.shape_icon, null)!!
-//            ),
+//                "Reset",
+//                ResourcesCompat.getDrawable(resources, R.drawable.refresh_icon, null)!!
+//            )
+            CustomizeQROptions(
+                getString(R.string.change_shape),
+                ResourcesCompat.getDrawable(resources, R.drawable.shape_icon, null)!!
+            ),
         )
 
         

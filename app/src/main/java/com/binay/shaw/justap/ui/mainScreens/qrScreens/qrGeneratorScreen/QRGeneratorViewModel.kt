@@ -33,18 +33,19 @@ class QRGeneratorViewModel : ViewModel() {
     ) {
         val message = Util.userID
 
-        val encryption = Encryption.getDefault("Key", "Salt", ByteArray(16))
-
-        val encrypted = encryption.encryptOrNull(message)
-        Util.log("Encrypted Key $encrypted")
+//        val encryption = Encryption.getDefault("Key", "Salt", ByteArray(16))
+//
+//        val encrypted = encryption.encryptOrNull(message)
+//        Util.log("Encrypted Key $encrypted")
+        Util.log("Encrypted Key $message")
         try {
 
             val size = displayMetrics.widthPixels.coerceAtMost(displayMetrics.heightPixels)
 
             if (isCircular == true) {
-                bitmap.value = encrypted.roundedQRGenerator(size, overlay, color1, color2)
+                bitmap.value = message.roundedQRGenerator(size, overlay, color1, color2)
             } else {
-                bitmap.value = encrypted.encodeAsQrCodeBitmap(size, overlay, color1, color2)
+                bitmap.value = message.encodeAsQrCodeBitmap(size, overlay, color1, color2)
             }
 
         } catch (e: Exception) {

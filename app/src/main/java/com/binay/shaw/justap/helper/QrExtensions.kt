@@ -39,7 +39,7 @@ fun String.roundedQRGenerator(
     val leftPadding = (outputWidth - inputWidth * multiple) / 2
     val topPadding = (outputHeight - inputHeight * multiple) / 2
     val FINDER_PATTERN_SIZE = 7
-    val CIRCLE_SCALE_DOWN_FACTOR = 32f / 30f //Gotta work on this range!
+    val CIRCLE_SCALE_DOWN_FACTOR = 16f / 30f //Gotta work on this range!
 //    val CIRCLE_SCALE_DOWN_FACTOR = 21f / 30f
     val circleSize = (multiple * CIRCLE_SCALE_DOWN_FACTOR).toInt()
 //    val circleSize = (multiple * CIRCLE_SCALE_DOWN_FACTOR).toInt()
@@ -63,7 +63,7 @@ fun String.roundedQRGenerator(
                     canvas.drawCircle(
                         outputX.toFloat(),
                         outputY.toFloat(),
-                        circleSize * 0.6f,
+                        circleSize.toFloat(),
                         paint
                     )
                 }

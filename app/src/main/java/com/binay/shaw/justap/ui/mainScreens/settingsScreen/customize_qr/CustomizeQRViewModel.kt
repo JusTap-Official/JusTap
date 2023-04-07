@@ -30,7 +30,7 @@ class CustomizeQRViewModel(application: Application): BaseViewModel(application)
 
     val errorMessage = MutableLiveData<String>()
     val qrReset = MutableLiveData<Boolean>()
-    val message: String = Constants.APP_URL
+    val message: String = Constants.myEmail
 
     init {
         qrReset.value = false
