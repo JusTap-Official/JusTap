@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.Paint
+import com.binay.shaw.justap.helper.ImageUtils.addBitmapOverlay
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
@@ -38,7 +39,7 @@ fun String.roundedQRGenerator(
     val leftPadding = (outputWidth - inputWidth * multiple) / 2
     val topPadding = (outputHeight - inputHeight * multiple) / 2
     val FINDER_PATTERN_SIZE = 7
-    val CIRCLE_SCALE_DOWN_FACTOR = 32f / 30f //Gotta work on this range!
+    val CIRCLE_SCALE_DOWN_FACTOR = 16f / 30f //Gotta work on this range!
 //    val CIRCLE_SCALE_DOWN_FACTOR = 21f / 30f
     val circleSize = (multiple * CIRCLE_SCALE_DOWN_FACTOR).toInt()
 //    val circleSize = (multiple * CIRCLE_SCALE_DOWN_FACTOR).toInt()
@@ -62,7 +63,7 @@ fun String.roundedQRGenerator(
                     canvas.drawCircle(
                         outputX.toFloat(),
                         outputY.toFloat(),
-                        circleSize * 0.6f,
+                        circleSize.toFloat(),
                         paint
                     )
                 }
@@ -180,7 +181,8 @@ fun String.encodeAsQrCodeBitmap(
     bitmap.setPixels(pixels, 0, dimension, 0, 0, w, h)
 
     return if (overlayBitmap != null) {
-        bitmap.addOverlayToCenter(ImageUtils.getRoundedCroppedBitmap(overlayBitmap)!!)
+//        bitmap.addOverlayToCenter(ImageUtils.getRoundedCroppedBitmap(overlayBitmap)!!)
+        bitmap.addBitmapOverlay(ImageUtils.getRoundedCroppedBitmap(overlayBitmap)!!)
     } else {
         bitmap
     }

@@ -146,12 +146,7 @@ class SettingsFragment : BaseFragment() {
     }
 
     private fun gotoCustomizeQR() {
-        val profileImageIsPresent = localUser.userProfilePicture.isNullOrEmpty().not()
-        val profileImage = if (profileImageIsPresent) binding.profileImage.drawable else null
-        val profileBitmap = profileImage?.let { bitmap -> ImageUtils.getBitmapFromDrawable(bitmap) }
-        val action =
-            SettingsFragmentDirections.actionSettingsToCustomizeQRFragment(localUser, profileBitmap)
-        findNavController().navigate(action)
+        findNavController().navigate(R.id.action_settings_to_customizeQRFragment)
     }
 
     private fun initObservers() {

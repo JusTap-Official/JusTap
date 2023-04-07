@@ -242,7 +242,7 @@ class ScannerFragment : BaseFragment() {
 
                     Util.vibrateDevice(500L, requireContext())
 
-                    val encryption = Encryption.getDefault("Key", "Salt", ByteArray(16))
+//                    val encryption = Encryption.getDefault("Key", "Salt", ByteArray(16))
                     Util.log("Scanned encrypted Result: $data")
 
                     if (isLink(data)) {
@@ -253,11 +253,11 @@ class ScannerFragment : BaseFragment() {
                         }
 
                     } else {
-                        val decrypted = encryption.decryptOrNull(data)
+//                        val decrypted = encryption.decryptOrNull(data)
 
                         val action =
                             ScannerFragmentDirections.actionScannerFragmentToResultFragment(
-                                resultString = decrypted,
+                                resultString = data,
                                 isResult = true
                             )
                         findNavController().navigate(action)

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/options_modal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -37,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:fontFamily="@font/roboto_medium"
-            android:text="What do you want to do?"
+            tools:text="What do you want to do?"
             android:textColor="@color/text_color"
             android:textSize="20sp" />
 
@@ -48,7 +49,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/roboto"
             android:gravity="center"
-            android:text="Description about the option"
+            tools:text="Description about the option"
             android:textColor="@color/text_color"
             android:layout_marginBottom="10dp"
             android:textSize="16sp" />
@@ -62,7 +63,7 @@
             android:paddingBottom="15dp"
             android:fontFamily="@font/roboto"
             android:gravity="center"
-            android:text="Positive option"
+            tools:text="Positive option"
             android:textColor="@color/text_color"
             android:textSize="16sp" />
 
@@ -75,7 +76,7 @@
             android:fontFamily="@font/roboto"
             android:gravity="center"
             android:visibility="gone"
-            android:text="Neutral option"
+            tools:text="Neutral option"
             android:textColor="@color/text_color"
             android:textSize="16sp" />
 
@@ -87,7 +88,7 @@
             android:paddingBottom="15dp"
             android:fontFamily="@font/roboto"
             android:gravity="center"
-            android:text="Negative option"
+            tools:text="Negative option"
             android:textColor="@color/negative"
             android:layout_marginBottom="25dp"
             android:textSize="16sp" />

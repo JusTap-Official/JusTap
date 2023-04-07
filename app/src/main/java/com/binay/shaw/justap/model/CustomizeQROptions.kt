@@ -12,6 +12,7 @@ enum class CustomizeQRItems(int: Int) {
     SECONDARY_COLOR(1),
     ADD_IMAGE(2),
     CHANGE_SHAPE(3);
+//    RESET(3);
 
     companion object {
         fun getOptionState(state: CustomizeQRItems) : Int {
@@ -20,6 +21,7 @@ enum class CustomizeQRItems(int: Int) {
                 SECONDARY_COLOR -> 1
                 ADD_IMAGE -> 2
                 CHANGE_SHAPE -> 3
+//                RESET -> 3
             }
         }
     }

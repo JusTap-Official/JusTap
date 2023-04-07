@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:fontFamily="@font/roboto"
-            android:text="Account name"
+            android:text="@string/account_name"
             android:textColor="@color/text_color"
             android:textSize="16sp" />
 
@@ -61,6 +61,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/roboto"
                 android:hint="@string/select"
+                android:textColorHint="@color/hint_color"
                 android:inputType="none"
                 android:paddingStart="16dp"
                 android:textColor="@color/text_color"
@@ -108,6 +109,8 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/edittext_box"
                 android:hint="@string/username123"
+                android:fontFamily="@font/roboto"
+                android:textColorHint="@color/hint_color"
                 android:paddingStart="16dp"
                 tools:ignore="RtlSymmetry" />
 

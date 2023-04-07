@@ -51,6 +51,7 @@
             android:paddingStart="16dp"
             android:textColor="@color/text_color"
             android:textSize="16sp"
+            android:textColorHint="@color/hint_color"
             app:layout_constraintStart_toStartOf="@+id/textView6"
             app:layout_constraintTop_toBottomOf="@+id/textView6"
             tools:ignore="RtlSymmetry" />
@@ -80,6 +81,7 @@
             android:inputType="textEmailAddress"
             android:paddingStart="16dp"
             android:textSize="16sp"
+            android:textColorHint="@color/hint_color"
             app:layout_constraintEnd_toEndOf="@+id/etName"
             app:layout_constraintStart_toStartOf="@+id/etName"
             app:layout_constraintTop_toBottomOf="@+id/nameHelperTV"
@@ -112,6 +114,7 @@
             android:longClickable="false"
             android:paddingHorizontal="15dp"
             android:textSize="16sp"
+            android:textColorHint="@color/hint_color"
             app:layout_constraintEnd_toEndOf="@+id/emailHelperTV"
             app:layout_constraintStart_toStartOf="@+id/emailHelperTV"
             app:layout_constraintTop_toBottomOf="@+id/emailHelperTV"

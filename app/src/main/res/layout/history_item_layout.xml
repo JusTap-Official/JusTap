@@ -15,9 +15,9 @@
         android:outlineSpotShadowColor="@color/card_shadow_color"
         android:paddingHorizontal="16dp"
         android:paddingVertical="10dp"
-        app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="10dp"
         app:cardElevation="4dp"
+        app:cardBackgroundColor="@color/accounts_card_color"
         app:cardPreventCornerOverlap="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,6 +35,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/linearLayout7"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:padding="10dp"
+                android:visibility="gone"
                 android:backgroundTint="@color/text_color"
                 app:layout_constraintTop_toTopOf="@+id/linearLayout7"
                 app:srcCompat="@drawable/menu_dots" />

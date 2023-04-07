@@ -120,6 +120,7 @@
     <string name="dummy_phone_number">+91-XXX-XXX-XXXX</string>
     <string name="dummy_email">xyz1234@gmail.com</string>
     <string name="forgot_password">Forgot password?</string>
+    <string name="forgot_password_title">Forgot password</string>
     <string name="create">Create</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="email_sent">Email Sent</string>
@@ -155,6 +156,18 @@
     <string name="rate_justap">Rate JusTap</string>
     <string name="reset_qr">Reset QR</string>
     <string name="no_changes_made">No changes made</string>
+    <string name="select_image">Select Image</string>
+    <string name="save_image">Save Image</string>
+    <string name="image_picker">Image Picker</string>
+    <string name="sign_in">Sign In</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="account_name">Account name</string>
+    <string name="share_this_qr_to_exchange_contacts">Share this QR to exchange contacts</string>
+    <string name="saving_changes">Saving changes...</string>
+    <string name="change_shape">Change Shape</string>
+    <string name="add_overlay">Add Overlay</string>
+    <string name="secondary_color">Secondary Color</string>
+    <string name="primary_color">Primary Color</string>
 
     <string-array name="account_names">
         <item>Phone</item>

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.text.InputType
 import android.view.*
 import android.widget.ImageView
 import android.widget.Toast
@@ -277,7 +278,8 @@ class EditProfileFragment : BaseFragment() {
             when (resultCode) {
                 Activity.RESULT_OK -> {
                     val fileUri = data?.data!!
-                    val bitmap = ImageUtils.getBitmapFromFileUri(requireContext().contentResolver, fileUri)
+                    val bitmap =
+                        ImageUtils.getBitmapFromFileUri(requireContext().contentResolver, fileUri)
                     Util.log("Image Uri is: $fileUri && Bitmap is: $bitmap")
                     if (editImageMode == 1) {
                         profilePictureURI = fileUri
@@ -298,8 +300,8 @@ class EditProfileFragment : BaseFragment() {
 
                 }
                 else -> {
-                    Toast.makeText(requireContext(), "Task Cancelled", Toast.LENGTH_SHORT).show()
-                    clearImageRequestOperations()
+//                    Toast.makeText(requireContext(), "Task Cancelled", Toast.LENGTH_SHORT).show()
+//                    clearImageRequestOperations()
                 }
             }
         }
@@ -308,7 +310,7 @@ class EditProfileFragment : BaseFragment() {
         if (editImageMode == 1)
             binding.avatarProgressBar.visibility = View.GONE
         else if (editImageMode == 2)
-        binding.bannerProgressBar.visibility = View.GONE
+            binding.bannerProgressBar.visibility = View.GONE
         editImageMode = 0
     }
 
@@ -351,8 +353,16 @@ class EditProfileFragment : BaseFragment() {
                 it.userProfilePicture,
                 it.userBannerPicture
             )
-            binding.newNameET.hint = localUser.userName
-            binding.newBioET.hint = localUser.userBio
+            binding.apply {
+                newNameET.hint = localUser.userName
+                newBioET.apply {
+                    hint = localUser.userBio
+                    isSingleLine = false
+                    inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE
+                    maxLines = 3
+                    gravity = Gravity.START or Gravity.TOP
+                }
+            }
             val profileURL = localUser.userProfilePicture.toString()
             val bannerURL = localUser.userBannerPicture.toString()
             if (profileURL.isNotEmpty())

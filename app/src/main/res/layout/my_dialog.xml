@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -24,7 +25,7 @@
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/roboto_bold"
                 android:gravity="center"
-                android:text="Title"
+                tools:text="Title"
                 android:textColor="@color/text_color"
                 android:textSize="20sp" />
 
@@ -35,7 +36,7 @@
                 android:layout_marginBottom="25dp"
                 android:fontFamily="@font/roboto"
                 android:gravity="center"
-                android:text="Message goes here..."
+                tools:text="Message goes here..."
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -49,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white_and_black"
-                android:text="Yes"
+                tools:text="Yes"
                 android:textAllCaps="false"
                 android:textColor="@color/black_and_white" />
 
@@ -63,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white_and_black"
-                android:text="Cancel"
+                tools:text="Cancel"
                 android:textAllCaps="false"
                 android:textColor="@color/negative" />
 

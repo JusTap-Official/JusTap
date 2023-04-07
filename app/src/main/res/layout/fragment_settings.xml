@@ -77,6 +77,7 @@
         android:layout_height="wrap_content"
         android:text="@string/made_with_version"
         android:textColor="@color/text_color"
+        android:fontFamily="@font/roboto"
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="@+id/settingsRV"
         app:layout_constraintStart_toStartOf="@+id/settingsRV"
