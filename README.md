@@ -47,7 +47,7 @@ This app uses [MVVM(Model View View-Model)](https://developer.android.com/topic/
 ![JusTap-App-Flow](https://user-images.githubusercontent.com/62587060/219847606-3ccbd2b1-fa1c-46f3-8115-10e570324eac.png)
 
 ## Launched and featured on
-<a href="https://www.producthunt.com/posts/justap?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-justap" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=382778&theme=light" alt="JusTap - Just&#0032;tap&#0044;&#0032;scan&#0044;&#0032;and&#0032;connect&#0033; | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+<a href="https://www.producthunt.com/posts/justap?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-justap" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=382778&theme=light" alt="JusTap - Just&#0032;tap&#0044;&#0032;scan&#0044;&#0032;and&#0032;connect&#0033; | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a> <a href="https://play.google.com/store/apps/details?id=com.binay.shaw.justap"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height=84px /></a>
 
 ## Connect with me:
 - [LinkedIn](https://www.linkedin.com/in/binayshaw7777/) ![Linkedin](https://i.stack.imgur.com/gVE0j.png)
