@@ -69,9 +69,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:ellipsize="end"
-                        android:fontFamily="@font/roboto"
+                        android:fontFamily="@font/roboto_medium"
                         android:maxLines="1"
-                        android:textColor="@color/text_color"
+                        android:textColor="@color/light_gray"
                         android:textSize="12sp"
                         tools:text="Account data" />
 

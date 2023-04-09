@@ -86,9 +86,9 @@
             android:id="@+id/profileBioTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto"
-            android:textColor="@color/text_color"
-            android:textSize="16sp"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="@color/light_gray"
+            android:textSize="13sp"
             tools:text="User bio goes here..." />
 
         <androidx.appcompat.widget.AppCompatButton

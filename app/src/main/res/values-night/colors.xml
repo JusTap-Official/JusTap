@@ -20,6 +20,7 @@
     <color name="input_box_color">#222527</color>
     <color name="input_border_color">#2A2D2E</color>
     <color name="gray">#707070</color>
+    <color name="light_gray">#B6B6B6</color>
     <color name="drag_handle">#3F464C</color>
     <color name="card_stroke">#2F353C</color>
     <color name="text_color">#ffffff</color>
