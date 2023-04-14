@@ -7,6 +7,8 @@
 JusTap is a mobile app for secure and easy exchange of contact information and social links using QR codes, replacing traditional business cards.<br>
 Ideal for networking events.
 
+<a href="https://play.google.com/store/apps/details?id=com.binay.shaw.justap"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height=84px />
+
 <em><strong>JusTap makes exchanging contacts a breeze - just tap, scan, and connect!</strong></em>
 
 ## Purpose of this app 🔥
