@@ -168,6 +168,16 @@
     <string name="add_overlay">Add Overlay</string>
     <string name="secondary_color">Secondary Color</string>
     <string name="primary_color">Primary Color</string>
+    <string name="illustration_placeholder">Illustration Placeholder</string>
+    <string name="next">Next</string>
+    <string name="get_started">Get Started</string>
+    <string name="skip">Skip</string>
+    <string name="connect_with_ease">Connect with ease</string>
+    <string name="exchange_contact_info_and_social_links_quickly_and_securely_with_justap_just_tap_scan_and_connect">Exchange contact info and social links quickly and securely with JusTap. Just tap, scan, and connect!</string>
+    <string name="fast_and_efficient">Fast and efficient</string>
+    <string name="justap_is_the_quickest_and_most_efficient_way_to_exchange_details_with_others_just_tap_and_scan">JusTap is the quickest and most efficient way to exchange details with others. Just tap and scan.</string>
+    <string name="all_in_one_place">All in one place</string>
+    <string name="keep_all_your_contact_info_and_social_links_in_one_convenient_location_with_justap_stay_organized_and_connected">Keep all your contact info and social links in one convenient location with JusTap. Stay organized and connected.</string>
 
     <string-array name="account_names">
         <item>Phone</item>

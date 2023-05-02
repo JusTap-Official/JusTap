@@ -25,6 +25,8 @@ object Constants {
     const val qrObject = "QRObj"
     const val image_pref = "image_pref"
     const val isQRCodeCircular = "isQRCodeCircular"
+    const val onBoardingPref = "onBoardingPref"
+    const val isIntroOpened = "isIntroOpened"
 
     //Personal data:
     const val myEmail = "binayshaw7777@gmail.com"
