@@ -1,18 +1,14 @@
 package com.binay.shaw.justap.ui.mainScreens.settingsScreen
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.app.ActivityCompat.recreate
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -21,11 +17,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.binay.shaw.justap.R
+import com.binay.shaw.justap.adapter.LanguageItemAdapter
 import com.binay.shaw.justap.adapter.SettingsItemAdapter
 import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.databinding.FragmentSettingsBinding
+import com.binay.shaw.justap.databinding.LanguageModalBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
 import com.binay.shaw.justap.helper.*
@@ -148,25 +146,22 @@ class SettingsFragment : BaseFragment() {
     }
 
     private fun showTranslationPrompt() {
-        val listItems = arrayOf("English", "हिंदी")
+        val languageList = getLanguageItems()
 
-        val mBuilder = AlertDialog.Builder(requireContext())
-        mBuilder.setTitle("Choose Language")
-        mBuilder.setSingleChoiceItems(listItems, -1) { dialog, which ->
-            when (which) {
-                0 -> {
-                    setLocate("en")
-                }
-
-                1 -> {
-                    setLocate("hi")
-                }
+        val dialog = LanguageModalBinding.inflate(layoutInflater)
+        val bottomSheet = requireActivity().createBottomSheet()
+        dialog.apply {
+            val languageAdapter = LanguageItemAdapter(languageList) { selectedLanguage ->
+                setLocate(selectedLanguage)
+                requireActivity().recreate()
+                bottomSheet.dismiss()
             }
-            requireActivity().recreate()
-            dialog.dismiss()
+            languageRecyclerView.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter = languageAdapter
+            }
         }
-        val mDialog = mBuilder.create()
-        mDialog.show()
+        dialog.root.setBottomSheet(bottomSheet)
     }
 
 

@@ -179,6 +179,10 @@
     <string name="justap_is_the_quickest_and_most_efficient_way_to_exchange_details_with_others_just_tap_and_scan">JusTap is the quickest and most efficient way to exchange details with others. Just tap and scan.</string>
     <string name="all_in_one_place">All in one place</string>
     <string name="keep_all_your_contact_info_and_social_links_in_one_convenient_location_with_justap_stay_organized_and_connected">Keep all your contact info and social links in one convenient location with JusTap. Stay organized and connected.</string>
+    <string name="country_flag">Country Flag</string>
+    <string name="change_language">Change Language</string>
+    <string name="please_select_any_one_from_the_options">Please select any one from the options</string>
+    <string name="modal_handle">Modal Handle</string>
 
     <string-array name="account_names">
         <item>Phone</item>
