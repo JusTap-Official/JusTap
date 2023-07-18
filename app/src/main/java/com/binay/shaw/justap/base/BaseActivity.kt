@@ -1,21 +1,18 @@
 package com.binay.shaw.justap.base
 
 
+import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.binay.shaw.justap.helper.DarkMode
-import com.tapadoo.alerter.Alerter
+import java.util.Locale
 
 
 abstract class BaseActivity : AppCompatActivity() {
-//    private lateinit var progressDialogue: Dialog
-
-//    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-//        super.onCreate(savedInstanceState, persistentState)
-//    }
 
     fun setTheme() {
         val darkModeEnabled = DarkMode.getDarkMode(this)
@@ -26,9 +23,25 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
+    fun loadLocate() {
+        val sharedPreferences = getSharedPreferences("Settings", Activity.MODE_PRIVATE)
+        val language = sharedPreferences.getString("My_Lang", "")
+        if (language != null) {
+            setLocate(language)
+        }
+    }
+
+    private fun setLocate(lang: String) {
+        val locale = Locale(lang)
+        Locale.setDefault(locale)
+
+        val config = Configuration()
+        config.locale = locale
+        baseContext.resources.updateConfiguration(config, baseContext.resources.displayMetrics)
+    }
+
     override fun onStart() {
         super.onStart()
-
         supportActionBar?.hide()
     }
 
@@ -40,88 +53,6 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         hideKeyboard()
-//        hideProgress()
-    }
-
-//    protected open fun observeProgress(viewModel: BaseViewModel, isDismissible: Boolean = true) {
-//        viewModel.progressLiveData.observe(this) { progress ->
-//            if (progress) {
-//                showProgress(isDismissible)
-//            } else {
-//                hideProgress()
-//            }
-//        }
-//    }
-
-//    protected open fun obServeErrorAndException(apiError: ApiError, viewModel: BaseViewModel) {
-//        showErrorDialog(null, apiError.message)
-//        observerException(viewModel)
-//    }
-
-//    protected open fun observeErrorAndException(viewModel: BaseViewModel) {
-//        viewModel.errorLiveData.observe(this) {
-//            showErrorDialog(null, it.message)
-//        }
-//        observerException(viewModel)
-//    }
-
-//    protected open fun observerException(viewModel: BaseViewModel) {
-//        viewModel.exceptionLiveData.observe(this) { exception ->
-//            if (exception is IOException) {
-//                showNoInternetDialog()
-//            } else {
-//                showErrorDialog()
-//            }
-//        }
-//    }
-
-//    private fun showNoInternetDialog() {
-//        showErrorDialog(getString(R.string.no_internet), getString(R.string.no_internet_message))
-//    }
-
-//    fun showErrorDialog(
-//        header: String? = null,
-//        message: String? = null,
-//    ) {
-//        val builder = AlertDialog.Builder(this)
-//        builder.setTitle(if (header.isNullOrEmpty()) getString(R.string.error) else header)
-//        builder.setMessage(if (message.isNullOrEmpty()) getString(R.string.some_error_occoured) else message)
-//        builder.setPositiveButton(R.string.ok) { dialogInterface, _ ->
-//            dialogInterface.dismiss()
-//        }
-//        builder.setOnDismissListener {
-//            finish()
-//        }
-//        builder.setCancelable(false)
-//        val dialog = builder.create()
-//        dialog.show()
-//    }
-
-//    protected fun showProgress(isDismissible: Boolean) {
-//        if (this::progressDialogue.isInitialized.not()) {
-//            progressDialogue = RelativeLayoutProgressDialog.onCreateDialogModel(this).apply {
-//                setCancelable(isDismissible)
-//            }
-//        }
-//        if (progressDialogue.isShowing.not()) {
-//            progressDialogue.show()
-//        }
-//    }
-
-//    protected fun hideProgress() {
-//        if (this::progressDialogue.isInitialized && progressDialogue.isShowing) {
-//            progressDialogue.hide()
-//        }
-//    }
-
-    fun showAlerter(title: String, message: String, color: Int, drawable: Int, timing: Long) {
-        Alerter.create(this)
-            .setTitle(title)
-            .setText(message)
-            .setBackgroundColorInt(color)
-            .setIcon(drawable)
-            .setDuration(timing)
-            .show()
     }
 
     fun hideKeyboard() {
@@ -131,35 +62,4 @@ abstract class BaseActivity : AppCompatActivity() {
             imm.hideSoftInputFromWindow(it.windowToken, 0)
         }
     }
-
-    /**
-     * Sets the Status Bar Color
-     * @param color, is the id value of the color resource
-     */
-//    protected fun changeStatusBarColor(color: Int) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            WindowCompat.getInsetsController(window, window.decorView).apply {
-//                isAppearanceLightStatusBars = true
-//            }
-//            window.statusBarColor = ContextCompat.getColor(this, color)
-//        }
-//    }
-
-//    abstract fun getScreenName(): String
-
-    /**
-     * Return App preference being set and used throughout the app
-     * @return [AppPreference]
-     */
-//    fun getAppPreference(): AppPreference {
-//        return (application as NagarApp).appSharedPreference
-//    }
-
-    /**
-     * Return User preference data(i.e user profile) being set and used throughout the app.
-     * @return [UserPreference]
-     */
-//    fun getUserPreference(): UserPreference {
-//        return (application as NagarApp).userSharedPreference
-//    }
 }

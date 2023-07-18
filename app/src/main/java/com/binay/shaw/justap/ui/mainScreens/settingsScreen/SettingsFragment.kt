@@ -1,14 +1,18 @@
 package com.binay.shaw.justap.ui.mainScreens.settingsScreen
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.app.ActivityCompat.recreate
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -90,8 +94,9 @@ class SettingsFragment : BaseFragment() {
             add(SettingsItem(2, R.drawable.info_icon, getString(R.string.AboutMe), false))
             add(SettingsItem(3, R.drawable.help_icon, getString(R.string.need_help), false))
             add(SettingsItem(4, R.drawable.dark_mode_icon, getString(R.string.dark_mode), true))
-            add(SettingsItem(5, R.drawable.rate_icon, getString(R.string.rate_justap), false))
-            add(SettingsItem(6, R.drawable.logout_icon, getString(R.string.LogoutTitle), false))
+            add(SettingsItem(5, R.drawable.translate_icon, getString(R.string.language), false))
+            add(SettingsItem(6, R.drawable.rate_icon, getString(R.string.rate_justap), false))
+            add(SettingsItem(7, R.drawable.logout_icon, getString(R.string.LogoutTitle), false))
         }
 
         settingsItemAdapter = SettingsItemAdapter(requireContext(), settingsItemList) {
@@ -101,9 +106,11 @@ class SettingsFragment : BaseFragment() {
                     Navigation.findNavController(binding.root)
                         .navigate(R.id.action_settings_to_editProfileFragment)
                 }
+
                 SettingsState.getSettingsState(SettingsState.TO_CUSTOMIZE_QR) -> {
                     gotoCustomizeQR()
                 }
+
                 SettingsState.getSettingsState(SettingsState.TO_ABOUT_US) -> {
                     val action = SettingsFragmentDirections.actionSettingsToResultFragment(
                         resultString = null,
@@ -111,15 +118,23 @@ class SettingsFragment : BaseFragment() {
                     )
                     Navigation.findNavController(binding.root).navigate(action)
                 }
+
                 SettingsState.getSettingsState(SettingsState.TO_NEED_HELP) -> {
                     needHelp()
                 }
+
                 SettingsState.getSettingsState(SettingsState.TO_DARK_MODE) -> {
                     switchDarkMode()
                 }
+
+                SettingsState.getSettingsState(SettingsState.TO_TRANSLATE) -> {
+                    showTranslationPrompt()
+                }
+
                 SettingsState.getSettingsState(SettingsState.TO_RATE_APP) -> {
                     openPlayStore()
                 }
+
                 SettingsState.getSettingsState(SettingsState.TO_LOGOUT) -> {
                     logout()
                 }
@@ -131,6 +146,29 @@ class SettingsFragment : BaseFragment() {
             adapter = settingsItemAdapter
         }
     }
+
+    private fun showTranslationPrompt() {
+        val listItems = arrayOf("English", "हिंदी")
+
+        val mBuilder = AlertDialog.Builder(requireContext())
+        mBuilder.setTitle("Choose Language")
+        mBuilder.setSingleChoiceItems(listItems, -1) { dialog, which ->
+            when (which) {
+                0 -> {
+                    setLocate("en")
+                }
+
+                1 -> {
+                    setLocate("hi")
+                }
+            }
+            requireActivity().recreate()
+            dialog.dismiss()
+        }
+        val mDialog = mBuilder.create()
+        mDialog.show()
+    }
+
 
     private fun switchDarkMode() {
         try {

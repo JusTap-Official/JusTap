@@ -22,6 +22,7 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme()
         super.onCreate(savedInstanceState)
+        loadLocate()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

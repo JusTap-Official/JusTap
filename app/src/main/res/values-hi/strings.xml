@@ -1,43 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">JusTap</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="scanner_info_title">How to scan?</string>
-    <string name="scanner_info_content">Give camera access to JusTap by allowing the permission and then hold the phone facing the QR.\nDon\'t worry about the orientation of QR Code.\nNote:\n1. Stay online if the other person has turned on Offline Mode\n2. Stay online to access the result links\n3.The scanned result will be saved in History which you can check out anytime.</string>
-    <string name="Scanner">Scanner</string>
-    <string name="OfflineMode">Offline Mode</string>
+    <string name="scanner_info_title">स्कैन कैसे करें?</string>
+    <string name="scanner_info_content">अनुमति देकर JusTap को कैमरा एक्सेस दें और फिर फ़ोन को QR की ओर मुंह करके रखें।\nQR कोड के ओरिएंटेशन के बारे में चिंता न करें।\nकृपया ध्यान दें:\n1. यदि दूसरे व्यक्ति ने ऑफलाइन मोड चालू कर दिया है तो ऑनलाइन रहें\n2. रिजल्ट लिंक तक पहुंचने के लिए ऑनलाइन रहें\n3. स्कैन किया गया रिजल्ट हिस्ट्री में सेव हो जाएगा जिसे आप कभी भी देख सकते हैं।</string>
+    <string name="Scanner">स्कैनर</string>
+    <string name="OfflineMode">ऑफ़लाइन मोड</string>
     <string name="OfflineModeInfo">Turn on the switch if you\'re not connected to Internet and still want to share contacts using JusTap.This is totally up to you and optional, this does not affects you data or QR Code.</string>
-    <string name="MyQRCode">My QR Code</string>
-    <string name="LogoutTitle">Logout</string>
-    <string name="LogoutDescription">Are you sure you want to logout?</string>
-    <string name="LogoutCancel">Cancel logout</string>
+    <string name="MyQRCode">मेरा QR कोड</string>
+    <string name="LogoutTitle">लॉग आउट करें</string>
+    <string name="LogoutDescription">क्या आप लॉग आउट करना चाहते हैं?</string>
+    <string name="LogoutCancel">लॉगआउट रद्द करें</string>
     <string name="Settings">Settings</string>
     <string name="mailTo">mailto:binayshaw7777@gmail.com?Subject=JusTap%20Android%20application%20feedback%20main&amp;Body=Your%20feedback%20is%20important%20to%20us%21</string>
-    <string name="Home">Home</string>
-    <string name="ClearHistory">Clear History</string>
-    <string name="ClearHistoryDescription">Are you sure you want to clear history?</string>
-    <string name="DontClearHistory">Don\'t clear</string>
-    <string name="History">History</string>
-    <string name="Profile">Profile</string>
-    <string name="DiscardChanged">Discard Changes</string>
-    <string name="Discard">Discard</string>
-    <string name="DiscardChangedDescription">Are you sure you discard changes?</string>
-    <string name="ContinueEditing">Continue editing</string>
-    <string name="ConfirmChanges">Confirm change</string>
-    <string name="ConfirmDelete">Confirm Delete</string>
-    <string name="AddNewAccount">Add new account?</string>
-    <string name="AddNewSocial">Add new Social?</string>
-    <string name="SaveChanges">Save Changes</string>
-    <string name="yes_save">Yes Save</string>
-    <string name="DontSave">Don\'t save</string>
+    <string name="Home">घर</string>
+    <string name="ClearHistory">इतिहास साफ़ करें</string>
+    <string name="ClearHistoryDescription">क्या आप वाकई इतिहास साफ़ करना चाहते हैं?</string>
+    <string name="DontClearHistory">साफ़ मत करो</string>
+    <string name="History">इतिहास</string>
+    <string name="Profile">प्रोफ़ाइल</string>
+    <string name="DiscardChanged">परिवर्तन को त्यागें</string>
+    <string name="Discard">रद्द करें</string>
+    <string name="DiscardChangedDescription">क्या आप वाकई बदलावों को रद्द करना चाहते हैं?</string>
+    <string name="ContinueEditing">एडिटिंग जारी रखें</string>
+    <string name="ConfirmChanges">परिवर्तन की पुष्टि करें</string>
+    <string name="ConfirmDelete">डिलीट करें</string>
+    <string name="AddNewAccount">एक नया अकाउंट बनाएं?</string>
+    <string name="AddNewSocial">एक नया सोशल बनाएं?</string>
+    <string name="SaveChanges">परिवर्तनों को सेव करें</string>
+    <string name="yes_save">हाँ सेव करे</string>
+    <string name="DontSave">इसे सेव मत करो</string>
     <string name="ConfirmChangesDescription">Are you sure you want to make changed?</string>
     <string name="ConfirmAddDescription">Are you sure to add new Social?</string>
     <string name="EditProfile">Edit Profile</string>
-    <string name="AboutMe">About me</string>
-    <string name="LogIn">Log In</string>
-    <string name="SendResetLink">Send reset link</string>
-    <string name="HowToUse">How to use?</string>
+    <string name="AboutMe">मेरे बारे मेँ</string>
+    <string name="LogIn">लॉग इन करें</string>
+    <string name="SendResetLink">रीसेट लिंक भेजें</string>
+    <string name="HowToUse">इसका उपयोग कैसे करें?</string>
     <string name="HowToUseDescription">Once you add the accounts from the floating button at the bottom right corner, you can see all your accounts in the list as shown.\n\nThe list displays:\n1.Name\n2.Logo\n3.Your account data\n4.Switch\n\nTurning on/off the switch will allow/restrict the account to show in the result when your QR is scanned.\nIn other words, turning off the switch will not show it in the scanner\'s result screen, and turning it on will show and will be clickable as well.</string>
-    <string name="EnterURLorUsername">What to add here?</string>
+    <string name="EnterURLorUsername">यहाँ क्या ऐड करना चाहते हैं?</string>
     <string name="AddEditFragmentBottomModalDescription">This input field accepts a range of inputs, including social media handles and URLs for various platforms.\n\nIn some cases, such as with WhatsApp, the input field also accepts contact numbers. Please make sure to enter a valid handle, URL, or contact number as applicable.\n\n\nExamples of valid inputs include "@username" for Twitter or Instagram, "https://www.example.com" for a website, or a phone number formatted with the country code for WhatsApp.</string>
     <string name="AreYouSureToUpdateThisSocial">Are you sure to update this Social?</string>
     <string name="Update">Update</string>
@@ -45,9 +46,9 @@
     <string name="DontUpdate">Don\'t update</string>
     <string name="AreYouSureYouWantToDeleteThisAccount">Are you sure you want to delete this account type?</string>
     <string name="AreYouSureToDeleteThisSocial">Are you sure to delete this Social?</string>
-    <string name="Delete">Delete</string>
-    <string name="YesDelete">Yes Delete</string>
-    <string name="DontDelete">Don\'t delete</string>
+    <string name="Delete">डिलीट</string>
+    <string name="YesDelete">डिलीट करें</string>
+    <string name="DontDelete">रद्द करें</string>
     <string name="AddAccount">Add account</string>
     <string name="EditAccount">Edit account</string>
     <string name="UpdateChanges">Update changes</string>
@@ -57,7 +58,7 @@
     <string name="AboutMeDescription">Android Intern @HumaraNagar | Ex. @Edvora</string>
     <string name="createAccount">Create Account</string>
     <string name="createANewAccount">Create a new account</string>
-    <string name="customizeQR">Customize QR</string>
+    <string name="customizeQR">कस्टमाइज़ QR</string>
     <string name="customizeQRDescription">You can customize your QR Code\nMake sure to use proper colors</string>
     <string name="chooseColorForForeground">Choose color for foreground</string>
     <string name="chooseColorForBackground">Choose color for background</string>
@@ -128,8 +129,8 @@
     <string name="channel_name">Notification Channel Name</string>
     <string name="result_notification_channel_id">Result Notification Id</string>
     <string name="result_notification_channel_name">Result Notification</string>
-    <string name="made_with_version">Made with ♥ v1.3</string>
-    <string name="view_full_profile">View full profile</string>
+    <string name="made_with_version">♥ के साथ बनाया गया v1.3</string>
+    <string name="view_full_profile">पूरा प्रोफाइल देखें</string>
     <string name="enter">Enter\ </string>
     <string name="number">\ Number</string>
     <string name="url_username">" URL/Username"</string>
@@ -150,11 +151,11 @@
     <string name="email">Email</string>
     <string name="phone">Phone</string>
     <string name="whatsapp">WhatsApp</string>
-    <string name="edit_profile">Edit profile</string>
-    <string name="need_help">Need help?</string>
-    <string name="dark_mode">Dark Mode</string>
-    <string name="rate_justap">Rate JusTap</string>
-    <string name="language">Language</string>
+    <string name="edit_profile">प्रोफ़ाइल एडिट करें</string>
+    <string name="need_help">मदद चाहिए?</string>
+    <string name="dark_mode">डार्क मोड</string>
+    <string name="rate_justap">JusTap को रेट करें</string>
+    <string name="language">भाषा</string>
     <string name="reset_qr">Reset QR</string>
     <string name="no_changes_made">No changes made</string>
     <string name="select_image">Select Image</string>
@@ -179,44 +180,4 @@
     <string name="justap_is_the_quickest_and_most_efficient_way_to_exchange_details_with_others_just_tap_and_scan">JusTap is the quickest and most efficient way to exchange details with others. Just tap and scan.</string>
     <string name="all_in_one_place">All in one place</string>
     <string name="keep_all_your_contact_info_and_social_links_in_one_convenient_location_with_justap_stay_organized_and_connected">Keep all your contact info and social links in one convenient location with JusTap. Stay organized and connected.</string>
-
-    <string-array name="account_names">
-        <item>Phone</item>
-        <item>Email</item>
-        <item>Instagram</item>
-        <item>LinkedIn</item>
-        <item>GitHub</item>
-        <item>Facebook</item>
-        <item>Twitter</item>
-        <item>YouTube</item>
-        <item>Snapchat</item>
-        <item>Twitch</item>
-        <item>Website</item>
-        <item>Discord</item>
-        <item>LinkTree</item>
-        <item>Custom Link</item>
-        <item>Telegram</item>
-        <item>Spotify</item>
-        <item>WhatsApp</item>
-    </string-array>
-
-    <string-array name="icon_id">
-        <item>R.drawable.phone</item>
-        <item>R.drawable.email</item>
-        <item>R.drawable.instagram</item>
-        <item>R.drawable.linkedin</item>
-        <item>R.drawable.github</item>
-        <item>R.drawable.facebook</item>
-        <item>R.drawable.twitter</item>
-        <item>R.drawable.twitter</item>
-        <item>R.drawable.snapchat</item>
-        <item>R.drawable.twitch</item>
-        <item>R.drawable.website</item>
-        <item>R.drawable.discord</item>
-        <item>R.drawable.linktree</item>
-        <item>R.drawable.custom_link</item>
-        <item>R.drawable.telegram</item>
-        <item>R.drawable.spotify</item>
-        <item>R.drawable.whatsapp</item>
-    </string-array>
 </resources>
