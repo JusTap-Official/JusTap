@@ -42,7 +42,7 @@ class SettingsItemAdapter(
                     setTypeface(null, Typeface.BOLD)
                 }
             }
-            if (newList.isSwitchOn) {
+            if (newList.isSwitchOn == true) {
                 settingsSwitch.apply {
                     visibility = View.VISIBLE
                     isChecked = DarkMode.getDarkMode(context)

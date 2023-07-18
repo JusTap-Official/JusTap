@@ -206,7 +206,7 @@ class ResultFragment : BaseFragment() {
         if (args.isResult) {
             binding.include.toolbarTitle.text = resources.getString(R.string.ScanCompleted)
         } else {
-            binding.include.toolbarTitle.text = resources.getString(R.string.AboutMe)
+            binding.include.toolbarTitle.text = resources.getString(R.string.AboutUs)
         }
     }
 

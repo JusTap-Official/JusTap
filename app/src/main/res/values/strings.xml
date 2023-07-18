@@ -32,7 +32,7 @@
     <string name="ConfirmChangesDescription">Are you sure you want to make changed?</string>
     <string name="ConfirmAddDescription">Are you sure to add new Social?</string>
     <string name="EditProfile">Edit Profile</string>
-    <string name="AboutMe">About me</string>
+    <string name="AboutUs">About us</string>
     <string name="LogIn">Log In</string>
     <string name="SendResetLink">Send reset link</string>
     <string name="HowToUse">How to use?</string>

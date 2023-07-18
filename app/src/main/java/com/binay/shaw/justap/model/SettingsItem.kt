@@ -5,7 +5,7 @@ data class SettingsItem(
     val itemID: Int,
     val drawableInt: Int,
     val itemName: String,
-    val isSwitchOn: Boolean,
+    val isSwitchOn: Boolean? = false,
 )
 
 enum class SettingsState(int: Int) {

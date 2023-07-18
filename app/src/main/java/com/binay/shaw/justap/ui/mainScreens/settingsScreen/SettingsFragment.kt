@@ -89,14 +89,14 @@ class SettingsFragment : BaseFragment() {
 
     private fun setupSettingsOptions() {
         settingsItemList.apply {
-            add(SettingsItem(0, R.drawable.edit_stroke, getString(R.string.edit_profile), false))
-            add(SettingsItem(1, R.drawable.scanner_icon, getString(R.string.customizeQR), false))
-            add(SettingsItem(2, R.drawable.info_icon, getString(R.string.AboutMe), false))
-            add(SettingsItem(3, R.drawable.help_icon, getString(R.string.need_help), false))
+            add(SettingsItem(0, R.drawable.edit_stroke, getString(R.string.edit_profile)))
+            add(SettingsItem(1, R.drawable.scanner_icon, getString(R.string.customizeQR)))
+            add(SettingsItem(2, R.drawable.info_icon, getString(R.string.AboutUs)))
+            add(SettingsItem(3, R.drawable.help_icon, getString(R.string.need_help)))
             add(SettingsItem(4, R.drawable.dark_mode_icon, getString(R.string.dark_mode), true))
-            add(SettingsItem(5, R.drawable.translate_icon, getString(R.string.language), false))
-            add(SettingsItem(6, R.drawable.rate_icon, getString(R.string.rate_justap), false))
-            add(SettingsItem(7, R.drawable.logout_icon, getString(R.string.LogoutTitle), false))
+            add(SettingsItem(5, R.drawable.translate_icon, getString(R.string.language)))
+            add(SettingsItem(6, R.drawable.rate_icon, getString(R.string.rate_justap)))
+            add(SettingsItem(7, R.drawable.logout_icon, getString(R.string.LogoutTitle)))
         }
 
         settingsItemAdapter = SettingsItemAdapter(requireContext(), settingsItemList) {
