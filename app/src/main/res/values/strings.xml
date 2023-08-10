@@ -29,10 +29,10 @@
     <string name="SaveChanges">Save Changes</string>
     <string name="yes_save">Yes Save</string>
     <string name="DontSave">Don\'t save</string>
-    <string name="ConfirmChangesDescription">Are you sure you want to make changed?</string>
+    <string name="ConfirmChangesDescription">Are you sure you want to make changes?</string>
     <string name="ConfirmAddDescription">Are you sure to add new Social?</string>
     <string name="EditProfile">Edit Profile</string>
-    <string name="AboutMe">About me</string>
+    <string name="AboutUs">About us</string>
     <string name="LogIn">Log In</string>
     <string name="SendResetLink">Send reset link</string>
     <string name="HowToUse">How to use?</string>
@@ -95,7 +95,7 @@
     <string name="no_data_to_clear">No data to clear</string>
     <string name="username123">\@username123</string>
     <string name="select">Select</string>
-    <string name="account_url_username">Account URL/Username</string>
+    <string name="account_url_username">Account URL/username</string>
     <string name="add_account">Add account</string>
     <string name="youve_used_all_accounts">You\'ve used all accounts</string>
     <string name="data_added_successfully">Data updated successfully</string>
@@ -144,7 +144,7 @@
     <string name="update">Update</string>
     <string name="skip_for_now">Skip for now</string>
     <string name="fill_all_the_inputs">Fill all input fields</string>
-    <string name="switch_qr_shape">Switch QR Shape</string>
+    <string name="switch_qr_shape">Change QR Design</string>
     <string name="no_history_to_show">No History To Show\nWe will update this once\nyou scan a JusTap QR</string>
     <string name="no_accounts_to_show_click_on_the_to_create_one">No Accounts To Show\nClick on \'+\' to Create One</string>
     <string name="email">Email</string>
@@ -154,6 +154,7 @@
     <string name="need_help">Need help?</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="rate_justap">Rate JusTap</string>
+    <string name="language">Language</string>
     <string name="reset_qr">Reset QR</string>
     <string name="no_changes_made">No changes made</string>
     <string name="select_image">Select Image</string>
@@ -178,6 +179,10 @@
     <string name="justap_is_the_quickest_and_most_efficient_way_to_exchange_details_with_others_just_tap_and_scan">JusTap is the quickest and most efficient way to exchange details with others. Just tap and scan.</string>
     <string name="all_in_one_place">All in one place</string>
     <string name="keep_all_your_contact_info_and_social_links_in_one_convenient_location_with_justap_stay_organized_and_connected">Keep all your contact info and social links in one convenient location with JusTap. Stay organized and connected.</string>
+    <string name="country_flag">Country Flag</string>
+    <string name="change_language">Change Language</string>
+    <string name="please_select_any_one_from_the_options">Please select any one from the options</string>
+    <string name="modal_handle">Modal Handle</string>
 
     <string-array name="account_names">
         <item>Phone</item>
