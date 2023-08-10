@@ -29,7 +29,7 @@
     <string name="SaveChanges">Save Changes</string>
     <string name="yes_save">Yes Save</string>
     <string name="DontSave">Don\'t save</string>
-    <string name="ConfirmChangesDescription">Are you sure you want to make changed?</string>
+    <string name="ConfirmChangesDescription">Are you sure you want to make changes?</string>
     <string name="ConfirmAddDescription">Are you sure to add new Social?</string>
     <string name="EditProfile">Edit Profile</string>
     <string name="AboutUs">About us</string>
@@ -95,7 +95,7 @@
     <string name="no_data_to_clear">No data to clear</string>
     <string name="username123">\@username123</string>
     <string name="select">Select</string>
-    <string name="account_url_username">Account URL/Username</string>
+    <string name="account_url_username">Account URL/username</string>
     <string name="add_account">Add account</string>
     <string name="youve_used_all_accounts">You\'ve used all accounts</string>
     <string name="data_added_successfully">Data updated successfully</string>
@@ -144,7 +144,7 @@
     <string name="update">Update</string>
     <string name="skip_for_now">Skip for now</string>
     <string name="fill_all_the_inputs">Fill all input fields</string>
-    <string name="switch_qr_shape">Switch QR Shape</string>
+    <string name="switch_qr_shape">Change QR Design</string>
     <string name="no_history_to_show">No History To Show\nWe will update this once\nyou scan a JusTap QR</string>
     <string name="no_accounts_to_show_click_on_the_to_create_one">No Accounts To Show\nClick on \'+\' to Create One</string>
     <string name="email">Email</string>
