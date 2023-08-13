@@ -1,7 +1,9 @@
 package com.binay.shaw.justap.helper
 
+import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.model.Language
@@ -17,6 +19,19 @@ fun Fragment.setLocate(lang: String) {
     requireContext().resources.updateConfiguration(config, requireContext().resources.displayMetrics)
 
     val editor = requireContext().getSharedPreferences("Settings", Context.MODE_PRIVATE).edit()
+    editor.putString("My_Lang", lang)
+    editor.apply()
+}
+
+fun Activity.setLocate(lang: String) {
+    val locale = Locale(lang)
+    Locale.setDefault(locale)
+
+    val config = Configuration()
+    config.setLocale(locale)
+    resources.updateConfiguration(config, resources.displayMetrics)
+
+    val editor = getSharedPreferences("Settings", Context.MODE_PRIVATE).edit()
     editor.putString("My_Lang", lang)
     editor.apply()
 }

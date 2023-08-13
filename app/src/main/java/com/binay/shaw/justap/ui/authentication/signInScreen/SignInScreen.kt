@@ -32,6 +32,7 @@ class SignInScreen : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme()
+        loadLocate()
         super.onCreate(savedInstanceState)
         binding = ActivitySignInScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
