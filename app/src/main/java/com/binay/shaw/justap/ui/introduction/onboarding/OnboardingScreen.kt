@@ -19,6 +19,7 @@ class OnboardingScreen : BaseActivity() {
     private var position = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        loadLocate()
         super.onCreate(savedInstanceState)
         binding = ActivityOnboardingScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)

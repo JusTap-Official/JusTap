@@ -17,11 +17,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.binay.shaw.justap.R
+import com.binay.shaw.justap.adapter.LanguageItemAdapter
 import com.binay.shaw.justap.adapter.SettingsItemAdapter
 import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.databinding.FragmentSettingsBinding
+import com.binay.shaw.justap.databinding.LanguageModalBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
 import com.binay.shaw.justap.helper.*
@@ -85,13 +87,14 @@ class SettingsFragment : BaseFragment() {
 
     private fun setupSettingsOptions() {
         settingsItemList.apply {
-            add(SettingsItem(0, R.drawable.edit_stroke, getString(R.string.edit_profile), false))
-            add(SettingsItem(1, R.drawable.scanner_icon, getString(R.string.customizeQR), false))
-            add(SettingsItem(2, R.drawable.info_icon, getString(R.string.AboutMe), false))
-            add(SettingsItem(3, R.drawable.help_icon, getString(R.string.need_help), false))
+            add(SettingsItem(0, R.drawable.edit_stroke, getString(R.string.edit_profile)))
+            add(SettingsItem(1, R.drawable.scanner_icon, getString(R.string.customizeQR)))
+            add(SettingsItem(2, R.drawable.info_icon, getString(R.string.AboutUs)))
+            add(SettingsItem(3, R.drawable.help_icon, getString(R.string.need_help)))
             add(SettingsItem(4, R.drawable.dark_mode_icon, getString(R.string.dark_mode), true))
-            add(SettingsItem(5, R.drawable.rate_icon, getString(R.string.rate_justap), false))
-            add(SettingsItem(6, R.drawable.logout_icon, getString(R.string.LogoutTitle), false))
+            add(SettingsItem(5, R.drawable.translate_icon, getString(R.string.language)))
+            add(SettingsItem(6, R.drawable.rate_icon, getString(R.string.rate_justap)))
+            add(SettingsItem(7, R.drawable.logout_icon, getString(R.string.LogoutTitle)))
         }
 
         settingsItemAdapter = SettingsItemAdapter(requireContext(), settingsItemList) {
@@ -101,9 +104,11 @@ class SettingsFragment : BaseFragment() {
                     Navigation.findNavController(binding.root)
                         .navigate(R.id.action_settings_to_editProfileFragment)
                 }
+
                 SettingsState.getSettingsState(SettingsState.TO_CUSTOMIZE_QR) -> {
                     gotoCustomizeQR()
                 }
+
                 SettingsState.getSettingsState(SettingsState.TO_ABOUT_US) -> {
                     val action = SettingsFragmentDirections.actionSettingsToResultFragment(
                         resultString = null,
@@ -111,15 +116,23 @@ class SettingsFragment : BaseFragment() {
                     )
                     Navigation.findNavController(binding.root).navigate(action)
                 }
+
                 SettingsState.getSettingsState(SettingsState.TO_NEED_HELP) -> {
                     needHelp()
                 }
+
                 SettingsState.getSettingsState(SettingsState.TO_DARK_MODE) -> {
                     switchDarkMode()
                 }
+
+                SettingsState.getSettingsState(SettingsState.TO_TRANSLATE) -> {
+                    showTranslationPrompt()
+                }
+
                 SettingsState.getSettingsState(SettingsState.TO_RATE_APP) -> {
                     openPlayStore()
                 }
+
                 SettingsState.getSettingsState(SettingsState.TO_LOGOUT) -> {
                     logout()
                 }
@@ -131,6 +144,26 @@ class SettingsFragment : BaseFragment() {
             adapter = settingsItemAdapter
         }
     }
+
+    private fun showTranslationPrompt() {
+        val languageList = getLanguageItems()
+
+        val dialog = LanguageModalBinding.inflate(layoutInflater)
+        val bottomSheet = requireActivity().createBottomSheet()
+        dialog.apply {
+            val languageAdapter = LanguageItemAdapter(languageList) { selectedLanguage ->
+                setLocate(selectedLanguage)
+                requireActivity().recreate()
+                bottomSheet.dismiss()
+            }
+            languageRecyclerView.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter = languageAdapter
+            }
+        }
+        dialog.root.setBottomSheet(bottomSheet)
+    }
+
 
     private fun switchDarkMode() {
         try {

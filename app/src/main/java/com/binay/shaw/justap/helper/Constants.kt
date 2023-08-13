@@ -2,7 +2,6 @@ package com.binay.shaw.justap.helper
 
 
 object Constants {
-    const val localDB = "localDB"
     const val users = "Users"
     const val userID = "userID"
     const val name = "name"
@@ -22,7 +21,6 @@ object Constants {
     const val firstColor = "firstColor"
     const val secondColor = "secondColor"
     const val qrPref = "QRPref"
-    const val qrObject = "QRObj"
     const val image_pref = "image_pref"
     const val isQRCodeCircular = "isQRCodeCircular"
     const val onBoardingPref = "onBoardingPref"
@@ -33,7 +31,7 @@ object Constants {
     const val myLinkedIn = "https://www.linkedin.com/in/binayshaw7777/"
     const val myGitHub = "https://github.com/binayshaw7777"
     const val myTwitter = "https://twitter.com/binayplays7777"
-    const val myWebsite = "https://bit.ly/binayshaw7777"
+    const val myWebsite = "https://binayshaw7777.github.io/Portfolio/"
 
     const val APP_URL = "https://play.google.com/store/apps/details?id=com.binay.shaw.justap"
     const val resumeURL = "https://binayshaw7777.github.io/BinayShaw.github.io/Binay%20Shaw%20CSE%2024.pdf"

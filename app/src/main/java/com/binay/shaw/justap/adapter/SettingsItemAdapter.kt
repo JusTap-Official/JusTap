@@ -37,12 +37,12 @@ class SettingsItemAdapter(
         holder.binding.apply {
             settingsItemName.apply {
                 text = newList.itemName
-                if (newList.itemID == 6) {
+                if (newList.itemID == 7) {
                     setTextColor(ResourcesCompat.getColor(resources, R.color.negative, null))
                     setTypeface(null, Typeface.BOLD)
                 }
             }
-            if (newList.isSwitchOn) {
+            if (newList.isSwitchOn == true) {
                 settingsSwitch.apply {
                     visibility = View.VISIBLE
                     isChecked = DarkMode.getDarkMode(context)
