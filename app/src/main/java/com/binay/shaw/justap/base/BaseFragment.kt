@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
@@ -42,6 +43,7 @@ abstract class BaseFragment : Fragment() {
         val firebaseUserId = FirebaseAuth.getInstance().uid
         if (firebaseUserId == null) {
             clearDataAndLogout(lifecycleScope, requireContext(), requireActivity())
+            Toast.makeText(requireContext(), getString(R.string.anErrorOccurred), Toast.LENGTH_SHORT).show()
         }
     }
 
