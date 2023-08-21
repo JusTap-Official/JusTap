@@ -20,13 +20,20 @@ import android.view.View
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.binay.shaw.justap.R
+import com.binay.shaw.justap.data.LocalUserDatabase
+import com.binay.shaw.justap.ui.authentication.signInScreen.SignInScreen
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.tapadoo.alerter.Alerter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -272,9 +279,13 @@ object Util {
     @Suppress("DEPRECATION")
     @RequiresApi(Build.VERSION_CODES.S)
     fun vibrateDevice(duration: Long, context: Context) {
-        val vibratorManager = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
-        val vibrator = vibratorManager.defaultVibrator
-        vibrator.vibrate(duration)
+        try {
+            val vibratorManager =
+                context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as? VibratorManager
+            vibratorManager?.defaultVibrator?.vibrate(duration)
+        } catch (e: Exception) {
+            FirebaseCrashlytics.getInstance().recordException(e)
+        }
     }
 
     fun showNoInternet(activity: Activity) {
@@ -323,6 +334,24 @@ object Util {
         // Start the Intent chooser to share the content
         val chooserIntent = Intent.createChooser(shareIntent, "Share Image")
         context.startActivity(chooserIntent)
+    }
+
+    fun clearDataAndLogout(scope: CoroutineScope, context: Context, activity: Activity) {
+        scope.launch(Dispatchers.Main) {
+            val sharedPreferences =
+                context.getSharedPreferences(Constants.qrPref, Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.clear()
+            editor.apply()
+            val signOutFromFirebase =
+                launch(Dispatchers.IO) { FirebaseAuth.getInstance().signOut() }
+            signOutFromFirebase.join()
+            LocalUserDatabase.getDatabase(context).clearTables()
+            val intent = Intent(context, SignInScreen::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            context.startActivity(intent).also { activity.finish() }
+            log("Logged out")
+        }
     }
 
 }
