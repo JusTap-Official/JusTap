@@ -3,7 +3,7 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
+        maven ( url = "https://jitpack.io" )
     }
 }
 dependencyResolutionManagement {
@@ -11,8 +11,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
+        maven ( url = "https://jitpack.io" )
     }
 }
 rootProject.name = "JusTap"
-include ':app'
+include (":app")
