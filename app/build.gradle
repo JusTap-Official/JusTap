@@ -91,6 +91,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-messaging:23.1.2'
     implementation("com.google.firebase:firebase-perf-ktx")
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.2.1'
 
 
     //Room Database

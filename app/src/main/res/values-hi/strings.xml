@@ -180,6 +180,7 @@
     <string name="justap_is_the_quickest_and_most_efficient_way_to_exchange_details_with_others_just_tap_and_scan">JusTap दूसरों के साथ सोशल अकाउंट का आदान-प्रदान करने का सबसे तेज़ और सबसे कुशल तरीका है। बस टैप करें और स्कैन करें।</string>
     <string name="all_in_one_place">सभी एक ही स्थान पर</string>
     <string name="keep_all_your_contact_info_and_social_links_in_one_convenient_location_with_justap_stay_organized_and_connected">जस्टैप के साथ अपने सभी संपर्क जानकारी और सामाजिक लिंक को एक सुविधाजनक स्थान पर रखें। संगठित और जुड़े रहें।</string>
+    <string name="default_notification_channel_id">justap</string>
 
     <string name="country_flag">Country Flag</string>
     <string name="change_language">भाषा बदलें</string>
