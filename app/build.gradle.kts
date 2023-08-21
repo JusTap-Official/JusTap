@@ -17,8 +17,8 @@ android {
         applicationId = "com.binay.shaw.justap"
         minSdk = 21
         targetSdk = 33
-        versionCode = 6
-        versionName = "2.1.1"
+        versionCode = 7
+        versionName = "2.1.2"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
