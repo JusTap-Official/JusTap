@@ -9,18 +9,23 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.binay.shaw.justap.helper.DarkMode
+import com.google.firebase.perf.FirebasePerformance
+import com.google.firebase.perf.metrics.Trace
 import java.util.Locale
 
 
 abstract class BaseActivity : AppCompatActivity() {
 
     fun setTheme() {
+        val trace: Trace = FirebasePerformance.getInstance().newTrace("Dark Mode Trace")
+        trace.start()
         val darkModeEnabled = DarkMode.getDarkMode(this)
         if (darkModeEnabled) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
+        trace.stop()
     }
 
     fun loadLocate() {
