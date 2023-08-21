@@ -183,6 +183,7 @@
     <string name="change_language">Change Language</string>
     <string name="please_select_any_one_from_the_options">Please select any one from the options</string>
     <string name="modal_handle">Modal Handle</string>
+    <string name="default_notification_channel_id">justap</string>
 
     <string-array name="account_names">
         <item>Phone</item>

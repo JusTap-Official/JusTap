@@ -278,7 +278,7 @@ class SettingsFragment : BaseFragment() {
 
             positiveOption.setOnClickListener {
                 bottomSheet.dismiss()
-                clearDataAndLogout()
+                Util.clearDataAndLogout(lifecycleScope, requireContext(), requireActivity())
             }
             negativeOption.setOnClickListener {
                 bottomSheet.dismiss()
@@ -286,24 +286,6 @@ class SettingsFragment : BaseFragment() {
             }
         }
         dialog.root.setBottomSheet(bottomSheet)
-    }
-
-    private fun clearDataAndLogout() {
-        lifecycleScope.launch(Dispatchers.Main) {
-            val sharedPreferences =
-                requireContext().getSharedPreferences(Constants.qrPref, Context.MODE_PRIVATE)
-            val editor = sharedPreferences.edit()
-            editor.clear()
-            editor.apply()
-            val signOutFromFirebase =
-                launch(Dispatchers.IO) { FirebaseAuth.getInstance().signOut() }
-            signOutFromFirebase.join()
-            LocalUserDatabase.getDatabase(requireContext()).clearTables()
-            val intent = Intent(requireContext(), SignInScreen::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent).also { requireActivity().finish() }
-            Util.log("Logged out")
-        }
     }
 
     override fun onDestroy() {

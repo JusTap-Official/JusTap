@@ -3,14 +3,19 @@ package com.binay.shaw.justap.base
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.binay.shaw.justap.R
+import com.binay.shaw.justap.helper.Util.clearDataAndLogout
+import com.google.firebase.auth.FirebaseAuth
 import com.tapadoo.alerter.Alerter
 
 
@@ -31,6 +36,15 @@ abstract class BaseFragment : Fragment() {
             parentActivity = it as T
         }
         return parentActivity
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val firebaseUserId = FirebaseAuth.getInstance().uid
+        if (firebaseUserId == null) {
+            clearDataAndLogout(lifecycleScope, requireContext(), requireActivity())
+            Toast.makeText(requireContext(), getString(R.string.anErrorOccurred), Toast.LENGTH_SHORT).show()
+        }
     }
 
 
