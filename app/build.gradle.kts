@@ -7,6 +7,7 @@ plugins {
     id ("com.google.firebase.crashlytics")
     id ("kotlin-kapt")
     id ("com.google.firebase.firebase-perf")
+    id ("dagger.hilt.android.plugin")
 }
 
 android {
@@ -30,10 +31,13 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles ( getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro" )
         }
         getByName("debug") {
             isDebuggable = true
+            isMinifyEnabled = false
+            isShrinkResources = false
         }
     }
     compileOptions {
@@ -66,6 +70,11 @@ dependencies {
     testImplementation ("com.google.truth:truth:1.1.3")
     androidTestImplementation ("androidx.test:runner:1.5.2")
     androidTestImplementation ("androidx.test:rules:1.5.0")
+
+    //Dagger Hilt
+    implementation ("com.google.dagger:hilt-android:2.44.2")
+    kapt ("com.google.dagger:hilt-compiler:2.44")
+    kapt ("androidx.hilt:hilt-compiler:1.0.0")
 
 
     //Navigation
