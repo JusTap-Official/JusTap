@@ -1,30 +1,23 @@
 package com.binay.shaw.justap.viewModel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.repository.AccountsRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class AccountsViewModel @Inject constructor(
+    private val repository: AccountsRepository,
+) : ViewModel() {
 
 
-class AccountsViewModel(
-    application: Application
-) : AndroidViewModel(application) {
+    val getAllUser: LiveData<List<Accounts>> = repository.getAccountsList
 
-
-    val getAllUser : LiveData<List<Accounts>>
-    private val repository: AccountsRepository
-
-
-    init {
-        val dao = LocalUserDatabase.getDatabase(application).accountsDao()
-        repository = AccountsRepository(dao)
-        getAllUser = repository.getAccountsList
-    }
 
     fun deleteAccount(accounts: Accounts) =
         viewModelScope.launch(Dispatchers.IO) {

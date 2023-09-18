@@ -3,7 +3,6 @@ package com.binay.shaw.justap.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.binay.shaw.justap.viewModel.AccountsViewModel
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
 import com.binay.shaw.justap.ui.mainScreens.historyScreen.LocalHistoryViewModel
 import com.binay.shaw.justap.ui.mainScreens.homeScreen.accountFragments.AddEditViewModel
@@ -37,9 +36,6 @@ class ViewModelFactory : ViewModelProvider.Factory {
                 }
                 isAssignableFrom(EditProfileViewModel::class.java) -> {
                     EditProfileViewModel()
-                }
-                isAssignableFrom(AccountsViewModel::class.java) -> {
-                    AccountsViewModel(application)
                 }
                 isAssignableFrom(LocalUserViewModel::class.java) -> {
                     LocalUserViewModel(application)

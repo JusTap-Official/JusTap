@@ -3,9 +3,11 @@ package com.binay.shaw.justap.repository
 import androidx.lifecycle.LiveData
 import com.binay.shaw.justap.data.AccountsDAO
 import com.binay.shaw.justap.model.Accounts
+import javax.inject.Inject
 
 
-class AccountsRepository(
+class AccountsRepository
+@Inject constructor(
     private val accountsDAO: AccountsDAO
 ) {
 

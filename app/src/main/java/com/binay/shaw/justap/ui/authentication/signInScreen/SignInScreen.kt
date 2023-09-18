@@ -19,12 +19,13 @@ import com.binay.shaw.justap.ui.mainScreens.MainActivity
 import com.binay.shaw.justap.viewModel.AccountsViewModel
 import com.binay.shaw.justap.viewModel.FirebaseViewModel
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class SignInScreen : BaseActivity() {
 
     private lateinit var binding: ActivitySignInScreenBinding
-    private val accountsViewModel by viewModels<AccountsViewModel> { ViewModelFactory() }
+    private val accountsViewModel: AccountsViewModel by viewModels()
     private val localUserViewModel by viewModels<LocalUserViewModel> { ViewModelFactory() }
     private val firebaseViewModel by viewModels<FirebaseViewModel> { ViewModelFactory() }
     private var isPasswordVisible = false

@@ -24,15 +24,16 @@ import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.viewModel.AccountsViewModel
 import com.binay.shaw.justap.ui.mainScreens.homeScreen.accountFragments.AddEditViewModel
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
 class HomeFragment : BaseFragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val localUserViewModel by viewModels<LocalUserViewModel> { ViewModelFactory() }
-    private val accountsViewModel by viewModels<AccountsViewModel> { ViewModelFactory() }
+    private val accountsViewModel: AccountsViewModel by viewModels()
     private lateinit var localUser: LocalUser
     private var accountsList = mutableListOf<Accounts>()
     private lateinit var recyclerViewAdapter: AccountsItemAdapter

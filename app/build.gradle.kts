@@ -5,9 +5,9 @@ plugins {
     id ("kotlin-parcelize")
     id ("androidx.navigation.safeargs.kotlin")
     id ("com.google.firebase.crashlytics")
-    id ("kotlin-kapt")
     id ("com.google.firebase.firebase-perf")
     id ("dagger.hilt.android.plugin")
+    id ("kotlin-kapt")
 }
 
 android {

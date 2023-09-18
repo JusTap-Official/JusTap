@@ -10,8 +10,10 @@ import com.binay.shaw.justap.helper.Constants
 import com.binay.shaw.justap.helper.Util
 import com.binay.shaw.justap.ui.authentication.signInScreen.SignInScreen
 import com.binay.shaw.justap.ui.introduction.onboarding.OnboardingScreen
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 
+@AndroidEntryPoint
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : BaseActivity() {
 
