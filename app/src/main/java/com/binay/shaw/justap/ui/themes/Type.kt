@@ -264,7 +264,7 @@ fun FontCard(family: String, size: String, style: TextStyle) {
 @Preview
 @Composable
 fun PreviewTypography() {
-    IonageTheme {
+    JusTapTheme {
         Surface {
             Row {
                 Column {
