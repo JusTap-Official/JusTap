@@ -11,12 +11,12 @@ plugins {
 
 android {
     namespace = "com.binay.shaw.justap"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.binay.shaw.justap"
         minSdk = 21
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 7
         versionName = "2.1.2"
         vectorDrawables.useSupportLibrary = true
@@ -38,6 +38,10 @@ android {
         }
     }
 
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.6"
+    }
+
     lint {
         abortOnError = false
     }
@@ -53,11 +57,11 @@ android {
 
 dependencies {
 
-    val lifecycleVersion = "2.6.1"
-    val cameraX = "1.3.0-alpha05"
-    val navVersion = "2.5.3"
-    val roomVersion = "2.5.1"
-    val lottieVersion = "5.2.0"
+    val lifecycleVersion = "2.7.0"
+    val cameraX = "1.3.1"
+    val navVersion = "2.7.7"
+    val roomVersion = "2.6.1"
+    val lottieVersion = "6.1.0"
 
     // Compose
     val composeBom = platform("androidx.compose:compose-bom:2023.10.01")
@@ -84,9 +88,9 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     //Default Pre-defined
-    implementation ("androidx.core:core-ktx:1.9.0")
+    implementation ("androidx.core:core-ktx:1.12.0")
     implementation ("androidx.appcompat:appcompat:1.6.1")
-    implementation ("com.google.android.material:material:1.8.0")
+    implementation ("com.google.android.material:material:1.11.0")
     implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
 
     //Test
@@ -113,14 +117,14 @@ dependencies {
 
     //Firebase
     implementation (platform("com.google.firebase:firebase-bom:31.1.1"))
-    implementation ("com.google.firebase:firebase-auth-ktx:21.2.0")
-    implementation ("com.google.firebase:firebase-database-ktx:20.1.0")
-    implementation ("com.google.firebase:firebase-storage-ktx:20.1.0")
-    implementation ("com.google.android.gms:play-services-auth:20.4.1")
+    implementation ("com.google.firebase:firebase-auth-ktx:22.3.1")
+    implementation ("com.google.firebase:firebase-database-ktx:20.3.0")
+    implementation ("com.google.firebase:firebase-storage-ktx:20.3.0")
+    implementation ("com.google.android.gms:play-services-auth:21.0.0")
     implementation ("com.google.firebase:firebase-crashlytics-ktx")
     implementation ("com.google.firebase:firebase-analytics-ktx")
     implementation ("com.google.firebase:firebase-perf-ktx")
-    implementation ("com.google.firebase:firebase-messaging-ktx:23.2.1")
+    implementation ("com.google.firebase:firebase-messaging-ktx:23.4.1")
 
 
     //Room Database
@@ -130,15 +134,15 @@ dependencies {
     implementation("androidx.room:room-ktx:$roomVersion")
 
     //Coroutines
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     //QR Code generator
     implementation ("com.google.zxing:core:3.5.1")
 
     //ML Kit
-    implementation ("com.google.mlkit:barcode-scanning:17.1.0")
+    implementation ("com.google.mlkit:barcode-scanning:17.2.0")
 
     //CameraX
     implementation ("androidx.camera:camera-camera2:$cameraX")
