@@ -7,6 +7,7 @@ plugins {
     id ("com.google.firebase.crashlytics")
     id ("kotlin-kapt")
     id ("com.google.firebase.firebase-perf")
+    id ("com.google.dagger.hilt.android")
 }
 
 android {
@@ -86,6 +87,17 @@ dependencies {
     androidTestImplementation(composeBom)
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    //DataStore (SharedPrefs)
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+
+    //hilt
+    implementation("com.google.dagger:hilt-android:2.44")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    implementation("androidx.hilt:hilt-work:1.0.0")
+    kapt("androidx.hilt:hilt-compiler:1.0.0")
+    implementation("androidx.work:work-runtime-ktx:2.8.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
     //Default Pre-defined
     implementation ("androidx.core:core-ktx:1.12.0")
