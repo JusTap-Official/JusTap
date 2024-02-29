@@ -91,6 +91,8 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+    lintChecks("com.slack.lint.compose:compose-lint-checks:1.3.1")
+
     //DataStore (SharedPrefs)
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
