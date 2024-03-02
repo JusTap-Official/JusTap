@@ -5,9 +5,8 @@ Welcome to the documentation for the model classes used in our Android project. 
 ## Table of Contents
 
 1. [User](#user)
-2. [LocalUser](#localuser)
-3. [SocialAccount](#socialaccount)
-4. [ScannedUser](#scanneduser)
+2. [SocialAccount](#socialaccount)
+3. [ScannedUser](#scanneduser)
 
 ---
 
@@ -56,52 +55,6 @@ val user = User(
 ---
 
 
-## LocalUser
-
-Represents a user stored in the local database.
-
-### Properties
-
-| Property             | Type      | Nullable | Description                                            |
-|----------------------|-----------|----------|--------------------------------------------------------|
-| `userID`             | `String`  | No       | Unique identifier for the user.                        |
-| `userName`           | `String`  | No       | Name of the user.                                      |
-| `userEmail`          | `String`  | No       | Email address of the user.                             |
-| `userBio`            | `String?` | Yes      | Biography of the user.                                 |
-| `userProfilePicture` | `String?` | Yes      | URI for the profile picture of the user.              |
-| `userBannerPicture`  | `String?` | Yes      | URI for the profile banner of the user.               |
-
-### Usage
-
-```kotlin
-@Entity(tableName = "userDatabase")
-data class LocalUser(
-    @PrimaryKey(autoGenerate = false)
-    val userID: String,
-    val userName: String,
-    val userEmail: String,
-    val userBio: String?,
-    val userProfilePicture: String?,
-    val userBannerPicture: String?
-) : Serializable
-```
-
-
-### Example 
-
-```kotlin
-val localUser = LocalUser(
-    userID = "123456789",
-    userName = "John Doe",
-    userEmail = "john.doe@example.com",
-    userBio = "Software Engineer",
-    userProfilePicture = "https://example.com/profile_picture.jpg",
-    userBannerPicture = "https://example.com/profile_banner.jpg"
-)
-```
-
----
-
 # SocialAccount
 
 Represents a social media or contact account.
@@ -114,24 +67,20 @@ Represents a social media or contact account.
 | `accountName`   | `String`  | No       | Name or username associated with the account.          |
 | `isVisible`     | `Boolean` | No       | Flag indicating whether the account is visible.        |
 | `accountType`   | `String`  | No       | Type of the account (e.g., Facebook, Twitter, Email). |
-| `isVerified`    | `Boolean` | No       | Flag indicating whether the account is verified.       |
 | `creationDate`  | `Long`    | No       | Timestamp representing the creation date of the account.|
 | `lastUpdated`   | `Long`    | No       | Timestamp representing the last update date of the account.|
 
 ## Usage
 
 ```kotlin
-@Entity(tableName = "socialAccountsDatabase")
 data class SocialAccount(
-    @PrimaryKey(autoGenerate = false)
     var accountID: Int,
     val accountName: String,
     var isVisible: Boolean,
     var accountType: String,
-    var isVerified: Boolean = false,
-    var creationDate: Long = 0,
-    var lastUpdated: Long = 0
-) : Serializable
+    var creationDate: Long = System.currentTimeMillis(),
+    var lastUpdated: Long = System.currentTimeMillis()
+)
 ```
 
 
@@ -143,7 +92,6 @@ val socialAccount = SocialAccount(
     accountName = "example_username",
     isVisible = true,
     accountType = "Twitter",
-    isVerified = true,
     creationDate = System.currentTimeMillis(), // Example timestamp for creation date
     lastUpdated = System.currentTimeMillis()   // Example timestamp for last update
 )
@@ -168,14 +116,11 @@ Represents a scanned user entry in the local history.
 ### Usage
 
 ```kotlin
-@Entity(tableName = "scannedUserDatabase")
 data class ScannedUser(
-    @PrimaryKey
     var scanID: String,
     var userID: String,
     var username: String,
     var updatedAt: Long?,
-    @TypeConverters(BitmapConverter::class)
     var profileImage: Bitmap?
 )
 ```
@@ -191,3 +136,5 @@ val scannedAccount = ScannedUser(
     profileImage = profileImage
 )
 ```
+
+---
