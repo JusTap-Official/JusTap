@@ -15,10 +15,10 @@ import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.databinding.FragmentHomeBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
-import com.binay.shaw.justap.helper.ImageUtils
-import com.binay.shaw.justap.helper.Util
-import com.binay.shaw.justap.helper.Util.createBottomSheet
-import com.binay.shaw.justap.helper.Util.setBottomSheet
+import com.binay.shaw.justap.utilities.ImageUtils
+import com.binay.shaw.justap.utilities.Util
+import com.binay.shaw.justap.utilities.Util.createBottomSheet
+import com.binay.shaw.justap.utilities.Util.setBottomSheet
 import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.viewModel.AccountsViewModel

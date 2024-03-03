@@ -3,8 +3,8 @@ package com.binay.shaw.justap.presentation.mainScreens.homeScreen.accountFragmen
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.binay.shaw.justap.helper.Constants
-import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.utilities.Constants
+import com.binay.shaw.justap.utilities.Util
 import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.viewModel.AccountsViewModel
 import com.google.firebase.database.FirebaseDatabase

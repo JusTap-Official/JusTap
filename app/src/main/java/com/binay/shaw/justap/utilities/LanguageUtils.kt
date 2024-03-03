@@ -1,9 +1,8 @@
-package com.binay.shaw.justap.helper
+package com.binay.shaw.justap.utilities
 
 import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.model.Language

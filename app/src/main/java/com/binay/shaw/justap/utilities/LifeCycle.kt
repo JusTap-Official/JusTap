@@ -1,4 +1,4 @@
-package com.binay.shaw.justap.helper
+package com.binay.shaw.justap.utilities
 
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner

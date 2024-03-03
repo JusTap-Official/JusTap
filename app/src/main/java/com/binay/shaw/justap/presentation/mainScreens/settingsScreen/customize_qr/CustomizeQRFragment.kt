@@ -21,11 +21,11 @@ import com.binay.shaw.justap.adapter.CustomizeQRAdapter
 import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.databinding.FragmentCustomizeQRBinding
-import com.binay.shaw.justap.helper.Constants
-import com.binay.shaw.justap.helper.ImageUtils
-import com.binay.shaw.justap.helper.Logger
-import com.binay.shaw.justap.helper.Util
-import com.binay.shaw.justap.helper.Util.dpToPx
+import com.binay.shaw.justap.utilities.Constants
+import com.binay.shaw.justap.utilities.ImageUtils
+import com.binay.shaw.justap.utilities.Logger
+import com.binay.shaw.justap.utilities.Util
+import com.binay.shaw.justap.utilities.Util.dpToPx
 import com.binay.shaw.justap.model.CustomizeQRItems
 import com.binay.shaw.justap.model.CustomizeQROptions
 import com.binay.shaw.justap.model.QRCode

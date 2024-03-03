@@ -1,6 +1,6 @@
-package com.binay.shaw.justap.helper
+package com.binay.shaw.justap.utilities
 
-import com.binay.shaw.justap.helper.Validator.Companion.isValidEmail
+import com.binay.shaw.justap.utilities.Validator.Companion.isValidEmail
 import org.junit.Assert.*
 import org.junit.Test
 

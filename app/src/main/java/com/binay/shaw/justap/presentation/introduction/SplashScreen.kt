@@ -28,9 +28,9 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.binay.shaw.justap.R
-import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.utilities.Util
 import com.binay.shaw.justap.presentation.introduction.onboarding.OnboardingScreen
-import com.binay.shaw.justap.presentation.mainScreens.MainActivity
+import com.binay.shaw.justap.presentation.MainActivity
 import com.binay.shaw.justap.presentation.themes.JusTapTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay

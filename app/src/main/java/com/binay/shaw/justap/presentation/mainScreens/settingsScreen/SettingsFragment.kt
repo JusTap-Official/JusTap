@@ -1,7 +1,6 @@
 package com.binay.shaw.justap.presentation.mainScreens.settingsScreen
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -26,16 +25,14 @@ import com.binay.shaw.justap.databinding.FragmentSettingsBinding
 import com.binay.shaw.justap.databinding.LanguageModalBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
-import com.binay.shaw.justap.helper.*
-import com.binay.shaw.justap.helper.Util.createBottomSheet
-import com.binay.shaw.justap.helper.Util.setBottomSheet
+import com.binay.shaw.justap.utilities.*
+import com.binay.shaw.justap.utilities.Util.createBottomSheet
+import com.binay.shaw.justap.utilities.Util.setBottomSheet
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.model.SettingsItem
 import com.binay.shaw.justap.model.SettingsState
-import com.binay.shaw.justap.presentation.authentication.signInScreen.SignInScreen
-import com.binay.shaw.justap.presentation.mainScreens.MainActivity
+import com.binay.shaw.justap.presentation.MainActivity
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -232,7 +229,7 @@ class SettingsFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     private fun initialization() {
 
-        (activity as MainActivity).supportActionBar?.hide()
+//        (activity as MainActivity).supportActionBar?.hide()
         binding.include.apply {
             toolbarTitle.text =
                 requireContext().resources.getString(R.string.Settings)

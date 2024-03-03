@@ -1,4 +1,4 @@
-package com.binay.shaw.justap.helper
+package com.binay.shaw.justap.utilities
 
 fun String.compressString(): String {
     val output = StringBuilder()

@@ -11,11 +11,11 @@ import com.binay.shaw.justap.R
 import com.binay.shaw.justap.base.BaseActivity
 import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.databinding.ActivitySignInScreenBinding
-import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.utilities.Util
 import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.presentation.authentication.ForgotPasswordScreen
 import com.binay.shaw.justap.presentation.authentication.signUpScreen.SignUpScreen
-import com.binay.shaw.justap.presentation.mainScreens.MainActivity
+import com.binay.shaw.justap.presentation.MainActivity
 import com.binay.shaw.justap.viewModel.AccountsViewModel
 import com.binay.shaw.justap.viewModel.FirebaseViewModel
 import com.binay.shaw.justap.viewModel.LocalUserViewModel

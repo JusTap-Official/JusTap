@@ -4,10 +4,10 @@ import android.app.Application
 import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import com.binay.shaw.justap.base.BaseViewModel
-import com.binay.shaw.justap.helper.Constants
-import com.binay.shaw.justap.helper.Logger
-import com.binay.shaw.justap.helper.encodeAsQrCodeBitmap
-import com.binay.shaw.justap.helper.roundedQRGenerator
+import com.binay.shaw.justap.utilities.Constants
+import com.binay.shaw.justap.utilities.Logger
+import com.binay.shaw.justap.utilities.encodeAsQrCodeBitmap
+import com.binay.shaw.justap.utilities.roundedQRGenerator
 import com.binay.shaw.justap.model.QRCode
 
 

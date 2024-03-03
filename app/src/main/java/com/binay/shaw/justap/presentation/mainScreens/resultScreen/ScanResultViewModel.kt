@@ -5,8 +5,8 @@ import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.binay.shaw.justap.base.BaseViewModel
-import com.binay.shaw.justap.helper.Constants
-import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.utilities.Constants
+import com.binay.shaw.justap.utilities.Util
 import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.model.LocalHistory
 import com.binay.shaw.justap.model.User

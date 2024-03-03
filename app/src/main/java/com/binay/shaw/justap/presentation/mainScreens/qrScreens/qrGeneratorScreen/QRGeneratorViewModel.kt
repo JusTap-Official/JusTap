@@ -4,10 +4,9 @@ import android.graphics.Bitmap
 import android.util.DisplayMetrics
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.binay.shaw.justap.helper.Encryption
-import com.binay.shaw.justap.helper.Util
-import com.binay.shaw.justap.helper.encodeAsQrCodeBitmap
-import com.binay.shaw.justap.helper.roundedQRGenerator
+import com.binay.shaw.justap.utilities.Util
+import com.binay.shaw.justap.utilities.encodeAsQrCodeBitmap
+import com.binay.shaw.justap.utilities.roundedQRGenerator
 
 
 class QRGeneratorViewModel : ViewModel() {

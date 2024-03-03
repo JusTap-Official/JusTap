@@ -18,15 +18,14 @@ import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
-import com.binay.shaw.justap.presentation.mainScreens.MainActivity
+import com.binay.shaw.justap.presentation.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.databinding.FragmentQRScannerBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
-import com.binay.shaw.justap.helper.Encryption
-import com.binay.shaw.justap.helper.Util
-import com.binay.shaw.justap.helper.Util.createBottomSheet
-import com.binay.shaw.justap.helper.Util.setBottomSheet
+import com.binay.shaw.justap.utilities.Util
+import com.binay.shaw.justap.utilities.Util.createBottomSheet
+import com.binay.shaw.justap.utilities.Util.setBottomSheet
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
@@ -101,7 +100,7 @@ class ScannerFragment : BaseFragment() {
     }
 
     private fun initialization() {
-        (activity as MainActivity).supportActionBar?.hide()
+//        (activity as MainActivity).supportActionBar?.hide()
         binding.include.apply {
             toolbarTitle.text = requireContext().resources.getString(R.string.Scanner)
             leftIcon.visibility = View.VISIBLE

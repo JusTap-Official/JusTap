@@ -86,7 +86,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".presentation.mainScreens.MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <meta-data

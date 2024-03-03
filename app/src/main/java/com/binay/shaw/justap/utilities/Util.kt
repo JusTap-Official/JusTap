@@ -1,4 +1,4 @@
-package com.binay.shaw.justap.helper
+package com.binay.shaw.justap.utilities
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -20,7 +20,6 @@ import android.view.View
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.lifecycleScope
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.presentation.authentication.signInScreen.SignInScreen

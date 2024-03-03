@@ -15,16 +15,16 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.binay.shaw.justap.presentation.mainScreens.MainActivity
+import com.binay.shaw.justap.presentation.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.ResultItemAdapter
 import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.databinding.FragmentScanResultBinding
-import com.binay.shaw.justap.helper.Constants
-import com.binay.shaw.justap.helper.ImageUtils
-import com.binay.shaw.justap.helper.LinksUtils
-import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.utilities.Constants
+import com.binay.shaw.justap.utilities.ImageUtils
+import com.binay.shaw.justap.utilities.LinksUtils
+import com.binay.shaw.justap.utilities.Util
 import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.model.User
 import com.binay.shaw.justap.presentation.mainScreens.historyScreen.LocalHistoryViewModel
@@ -188,7 +188,7 @@ class ResultFragment : BaseFragment() {
     }
 
     private fun initialization() {
-        (activity as MainActivity).supportActionBar?.hide()
+//        (activity as MainActivity).supportActionBar?.hide()
         binding.include.leftIcon.visibility = View.VISIBLE
 
         recyclerViewAdapter = ResultItemAdapter {

@@ -148,6 +148,9 @@ dependencies {
     implementation("com.google.firebase:firebase-perf-ktx")
     implementation("com.google.firebase:firebase-messaging-ktx:23.4.1")
 
+    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.7")
+
+
 
     //Room Database
     implementation("androidx.room:room-runtime:$roomVersion")

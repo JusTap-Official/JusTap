@@ -9,7 +9,7 @@ import androidx.activity.viewModels
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.base.BaseActivity
 import com.binay.shaw.justap.base.ViewModelFactory
-import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.utilities.Util
 import com.binay.shaw.justap.databinding.ActivitySignUpScreenBinding
 import com.binay.shaw.justap.presentation.authentication.signInScreen.SignInScreen
 import com.binay.shaw.justap.viewModel.FirebaseViewModel

@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import com.binay.shaw.justap.helper.Logger
+import com.binay.shaw.justap.utilities.Logger
 import com.binay.shaw.justap.presentation.themes.DMSansFontFamily
 import com.binay.shaw.justap.presentation.themes.JusTapTheme
 

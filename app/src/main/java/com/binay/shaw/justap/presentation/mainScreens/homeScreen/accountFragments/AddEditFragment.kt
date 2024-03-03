@@ -13,18 +13,18 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.binay.shaw.justap.presentation.mainScreens.MainActivity
+import com.binay.shaw.justap.presentation.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.databinding.FragmentAddEditBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
-import com.binay.shaw.justap.helper.Util
-import com.binay.shaw.justap.helper.Util.createBottomSheet
-import com.binay.shaw.justap.helper.Util.setBottomSheet
-import com.binay.shaw.justap.helper.Validator.Companion.isValidEmail
-import com.binay.shaw.justap.helper.Validator.Companion.isValidPhone
+import com.binay.shaw.justap.utilities.Util
+import com.binay.shaw.justap.utilities.Util.createBottomSheet
+import com.binay.shaw.justap.utilities.Util.setBottomSheet
+import com.binay.shaw.justap.utilities.Validator.Companion.isValidEmail
+import com.binay.shaw.justap.utilities.Validator.Companion.isValidPhone
 import com.binay.shaw.justap.viewModel.AccountsViewModel
 import com.binay.shaw.justap.model.Accounts
 
@@ -431,7 +431,7 @@ class AddEditFragment : BaseFragment() {
     private fun initialization() {
 
         //Top app bar
-        (activity as MainActivity).supportActionBar?.hide()
+//        (activity as MainActivity).supportActionBar?.hide()
         binding.include.apply {
 
             //Mode = 0 -> Add | Mode = 1 -> Edit

@@ -1,4 +1,4 @@
-package com.binay.shaw.justap.helper
+package com.binay.shaw.justap.utilities
 
 import android.util.Log
 //import com.binay.shaw.justap.BuildConfig

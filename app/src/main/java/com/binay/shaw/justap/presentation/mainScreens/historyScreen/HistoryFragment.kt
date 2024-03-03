@@ -15,7 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.binay.shaw.justap.presentation.mainScreens.MainActivity
+import com.binay.shaw.justap.presentation.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.adapter.HistoryAdapter
 import com.binay.shaw.justap.base.BaseFragment
@@ -23,10 +23,9 @@ import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.databinding.FragmentHistoryBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
-import com.binay.shaw.justap.helper.Util
-import com.binay.shaw.justap.helper.Util.createBottomSheet
-import com.binay.shaw.justap.helper.Util.setBottomSheet
-import com.binay.shaw.justap.model.Accounts
+import com.binay.shaw.justap.utilities.Util
+import com.binay.shaw.justap.utilities.Util.createBottomSheet
+import com.binay.shaw.justap.utilities.Util.setBottomSheet
 import com.binay.shaw.justap.model.LocalHistory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -217,7 +216,7 @@ class HistoryFragment : BaseFragment() {
     @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
     private fun initialization() {
 
-        (activity as MainActivity).supportActionBar?.hide()
+//        (activity as MainActivity).supportActionBar?.hide()
         binding.apply {
             include.apply {
                 toolbarTitle.text = requireContext().resources.getString(R.string.History)

@@ -16,8 +16,8 @@ import androidx.navigation.fragment.findNavController
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.databinding.FragmentImagePickerBinding
-import com.binay.shaw.justap.helper.ImageUtils.getBitmapFromUri
-import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.utilities.ImageUtils.getBitmapFromUri
+import com.binay.shaw.justap.utilities.Util
 import com.github.dhaval2404.imagepicker.ImagePicker
 
 

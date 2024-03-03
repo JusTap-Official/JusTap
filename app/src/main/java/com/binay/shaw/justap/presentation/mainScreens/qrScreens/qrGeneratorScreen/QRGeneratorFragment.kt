@@ -17,18 +17,18 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
-import com.binay.shaw.justap.presentation.mainScreens.MainActivity
+import com.binay.shaw.justap.presentation.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.databinding.FragmentQRGeneratorBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
-import com.binay.shaw.justap.helper.Constants
-import com.binay.shaw.justap.helper.Util.createBottomSheet
-import com.binay.shaw.justap.helper.Util.dpToPx
-import com.binay.shaw.justap.helper.Util.saveToStorageAndGetUri
-import com.binay.shaw.justap.helper.Util.setBottomSheet
-import com.binay.shaw.justap.helper.Util.shareImageAndText
+import com.binay.shaw.justap.utilities.Constants
+import com.binay.shaw.justap.utilities.Util.createBottomSheet
+import com.binay.shaw.justap.utilities.Util.dpToPx
+import com.binay.shaw.justap.utilities.Util.saveToStorageAndGetUri
+import com.binay.shaw.justap.utilities.Util.setBottomSheet
+import com.binay.shaw.justap.utilities.Util.shareImageAndText
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
 import java.util.*
 
@@ -166,7 +166,7 @@ class QRGeneratorFragment : BaseFragment() {
 
     private fun initialization() {
 
-        (activity as MainActivity).supportActionBar?.hide()
+//        (activity as MainActivity).supportActionBar?.hide()
         binding.include.apply {
             toolbarTitle.text = requireContext().resources.getString(R.string.MyQRCode)
             leftIcon.setImageDrawable(

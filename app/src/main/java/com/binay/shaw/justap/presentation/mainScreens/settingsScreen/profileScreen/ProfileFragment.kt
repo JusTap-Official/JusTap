@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
-import com.binay.shaw.justap.presentation.mainScreens.MainActivity
+import com.binay.shaw.justap.presentation.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.databinding.FragmentProfileBinding
-import com.binay.shaw.justap.helper.ImageUtils
-import com.binay.shaw.justap.helper.Util
+import com.binay.shaw.justap.utilities.ImageUtils
+import com.binay.shaw.justap.utilities.Util
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
 
@@ -126,7 +126,7 @@ class ProfileFragment : BaseFragment() {
 //    }
 
     private fun initialization() {
-        (activity as MainActivity).supportActionBar?.hide()
+//        (activity as MainActivity).supportActionBar?.hide()
 
         binding.include.apply {
             toolbarTitle.text = requireContext().resources.getString(R.string.Profile)

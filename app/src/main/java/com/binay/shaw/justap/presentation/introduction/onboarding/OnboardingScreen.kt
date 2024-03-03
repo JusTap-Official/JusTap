@@ -8,7 +8,7 @@ import android.view.animation.AnimationUtils
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.base.BaseActivity
 import com.binay.shaw.justap.databinding.ActivityOnboardingScreenBinding
-import com.binay.shaw.justap.helper.Constants
+import com.binay.shaw.justap.utilities.Constants
 import com.binay.shaw.justap.presentation.authentication.signInScreen.SignInScreen
 import com.google.android.material.tabs.TabLayout
 

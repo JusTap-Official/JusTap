@@ -1,4 +1,4 @@
-package com.binay.shaw.justap.helper
+package com.binay.shaw.justap.utilities
 
 
 object Constants {
@@ -35,4 +35,10 @@ object Constants {
 
     const val APP_URL = "https://play.google.com/store/apps/details?id=com.binay.shaw.justap"
     const val resumeURL = "https://binayshaw7777.github.io/BinayShaw.github.io/Binay%20Shaw%20CSE%2024.pdf"
+
+    // Screens
+    const val HOME_SCREEN = "HOME_SCREEN"
+    const val CONNECT_SCREEN = "CONNECT_SCREEN"
+    const val HISTORY_SCREEN = "HISTORY_SCREEN"
+    const val ACCOUNT_SCREEN = "ACCOUNT_SCREEN"
 }

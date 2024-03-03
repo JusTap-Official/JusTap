@@ -1,10 +1,10 @@
-package com.binay.shaw.justap.helper
+package com.binay.shaw.justap.utilities
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.Paint
-import com.binay.shaw.justap.helper.ImageUtils.addBitmapOverlay
+import com.binay.shaw.justap.utilities.ImageUtils.addBitmapOverlay
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
