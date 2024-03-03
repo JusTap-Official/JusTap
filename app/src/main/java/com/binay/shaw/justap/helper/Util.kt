@@ -23,7 +23,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.data.LocalUserDatabase
-import com.binay.shaw.justap.ui.authentication.signInScreen.SignInScreen
+import com.binay.shaw.justap.presentation.authentication.signInScreen.SignInScreen
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.bottomsheet.BottomSheetBehavior
