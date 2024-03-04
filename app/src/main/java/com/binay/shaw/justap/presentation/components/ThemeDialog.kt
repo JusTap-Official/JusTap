@@ -60,7 +60,10 @@ fun ThemeDialog(
             Text(
                 text = "Dark Mode",
                 modifier = Modifier
-                    .onClick { themeViewModel.switchToDarkMode() }
+                    .onClick {
+                        themeViewModel.switchToDarkMode()
+                        onDismissRequest()
+                    }
                     .fillMaxWidth()
                     .padding(vertical = 8.dp, horizontal = 16.dp),
                 style = normal16
@@ -69,7 +72,10 @@ fun ThemeDialog(
             Text(
                 text = "Light Mode",
                 modifier = Modifier
-                    .onClick { themeViewModel.switchToLightMode() }
+                    .onClick {
+                        themeViewModel.switchToLightMode()
+                        onDismissRequest()
+                    }
                     .fillMaxWidth()
                     .padding(vertical = 8.dp, horizontal = 16.dp),
                 style = normal16
@@ -78,7 +84,10 @@ fun ThemeDialog(
             Text(
                 text = "Dynamic Theme",
                 modifier = Modifier
-                    .onClick { themeViewModel.switchToDynamicThemeMode() }
+                    .onClick {
+                        themeViewModel.switchToDynamicThemeMode()
+                        onDismissRequest()
+                    }
                     .fillMaxWidth()
                     .padding(vertical = 8.dp, horizontal = 16.dp),
                 style = normal16

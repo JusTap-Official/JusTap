@@ -21,8 +21,8 @@ import com.binay.shaw.justap.presentation.themes.JusTapTheme
 
 @Composable
 fun MyButton(
-    modifier: Modifier = Modifier,
     text: String,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     shape: Shape = ButtonDefaults.shape,
     colors: ButtonColors = ButtonDefaults.buttonColors(
@@ -56,7 +56,7 @@ fun MyButton(
 
 @Preview
 @Composable
-fun MyButtonPreview() {
+private fun MyButtonPreview() {
     JusTapTheme {
         MyButton(text = "My Button") {
             Logger.debugLog("Log this message!")

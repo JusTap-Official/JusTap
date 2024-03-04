@@ -14,12 +14,13 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class ThemeState(val isDarkMode: Boolean)
+data class ThemeState(val isDarkMode: Boolean, val isDynamicTheme: Boolean)
 
 @HiltViewModel
 class ThemeViewModel @Inject constructor(dataStoreUtil: DataStoreUtil) : ViewModel() {
 
-    private val _themeState = MutableStateFlow(ThemeState(false))
+    private val _themeState =
+        MutableStateFlow(ThemeState(isDarkMode = false, isDynamicTheme = false))
     val themeState: StateFlow<ThemeState> = _themeState
 
     private val dataStore = dataStoreUtil.dataStore
@@ -27,12 +28,14 @@ class ThemeViewModel @Inject constructor(dataStoreUtil: DataStoreUtil) : ViewMod
     init {
         viewModelScope.launch(Dispatchers.IO) {
             dataStore.data.map { preferences ->
-                ThemeState(preferences[IS_DARK_MODE_KEY] ?: false)
+                ThemeState(
+                    isDarkMode = preferences[IS_DARK_MODE_KEY] ?: false,
+                    isDynamicTheme = preferences[IS_DYNAMIC_THEME_MODE_KEY] ?: false
+                )
             }.collect {
                 _themeState.value = it
             }
         }
-
     }
 
     fun toggleTheme() {
@@ -62,7 +65,7 @@ class ThemeViewModel @Inject constructor(dataStoreUtil: DataStoreUtil) : ViewMod
     fun switchToDynamicThemeMode() {
         viewModelScope.launch(Dispatchers.IO) {
             dataStore.edit { preferences ->
-                preferences[IS_DYNAMIC_THEME_MODE_KEY] = true
+                preferences[IS_DYNAMIC_THEME_MODE_KEY] = !(preferences[IS_DYNAMIC_THEME_MODE_KEY] ?: false)
             }
         }
     }
