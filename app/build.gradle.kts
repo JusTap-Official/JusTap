@@ -10,6 +10,8 @@ plugins {
     id("com.google.dagger.hilt.android")
 }
 
+val ktlint by configurations.creating
+
 android {
     namespace = "com.binay.shaw.justap"
     compileSdk = 34
@@ -59,6 +61,40 @@ android {
     }
 }
 
+val ktlintCheck by tasks.registering(JavaExec::class) {
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    description = "Check Kotlin code style"
+    classpath = ktlint
+    mainClass.set("com.pinterest.ktlint.Main")
+    // see https://pinterest.github.io/ktlint/install/cli/#command-line-usage for more information
+    args(
+        "**/src/**/*.kt",
+        "**.kts",
+        "!**/build/**",
+    )
+}
+
+//tasks.check {
+//    dependsOn(ktlintCheck)
+    // run -> ./gradlew ktlintCheck
+//}
+
+tasks.register<JavaExec>("ktlintFormat") {
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    description = "Check Kotlin code style and format"
+    classpath = ktlint
+    mainClass.set("com.pinterest.ktlint.Main")
+    jvmArgs("--add-opens=java.base/java.lang=ALL-UNNAMED")
+    // see https://pinterest.github.io/ktlint/install/cli/#command-line-usage for more information
+    args(
+        "-F",
+        "**/src/**/*.kt",
+        "**.kts",
+        "!**/build/**",
+    )
+    // run -> ./gradlew ktlintFormat
+}
+
 dependencies {
 
     val lifecycleVersion = "2.7.0"
@@ -93,6 +129,12 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     lintChecks("com.slack.lint.compose:compose-lint-checks:1.3.1")
+    ktlint("com.pinterest.ktlint:ktlint-cli:1.2.1") {
+        attributes {
+            attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
+        }
+    }
+    // ktlint(project(":custom-ktlint-ruleset")) // in case of custom ruleset
 
     //DataStore (SharedPrefs)
     implementation("androidx.datastore:datastore-preferences:1.0.0")
