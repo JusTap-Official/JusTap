@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.binay.shaw.justap.data.datastore.DataStoreUtil
 import com.binay.shaw.justap.data.datastore.DataStoreUtil.Companion.IS_DARK_MODE_KEY
+import com.binay.shaw.justap.data.datastore.DataStoreUtil.Companion.IS_DYNAMIC_THEME_MODE_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,6 +39,30 @@ class ThemeViewModel @Inject constructor(dataStoreUtil: DataStoreUtil) : ViewMod
         viewModelScope.launch(Dispatchers.IO) {
             dataStore.edit { preferences ->
                 preferences[IS_DARK_MODE_KEY] = !(preferences[IS_DARK_MODE_KEY] ?: false)
+            }
+        }
+    }
+
+    fun switchToDarkMode() {
+        viewModelScope.launch(Dispatchers.IO) {
+            dataStore.edit { preferences ->
+                preferences[IS_DARK_MODE_KEY] = true
+            }
+        }
+    }
+
+    fun switchToLightMode() {
+        viewModelScope.launch(Dispatchers.IO) {
+            dataStore.edit { preferences ->
+                preferences[IS_DARK_MODE_KEY] = false
+            }
+        }
+    }
+
+    fun switchToDynamicThemeMode() {
+        viewModelScope.launch(Dispatchers.IO) {
+            dataStore.edit { preferences ->
+                preferences[IS_DYNAMIC_THEME_MODE_KEY] = true
             }
         }
     }

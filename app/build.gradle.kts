@@ -29,6 +29,7 @@ android {
     buildFeatures {
         viewBinding = true
         compose = true
+        buildConfig = true
     }
 
     buildTypes {
@@ -226,6 +227,9 @@ dependencies {
 
     //Circular ImageView
     implementation("de.hdodenhof:circleimageview:3.1.0")
+
+    // Coil - Image Loading
+    implementation("io.coil-kt:coil-compose:2.4.0")
 
     //Custom AlertBar (Top)
     implementation("com.github.tapadoo:alerter:7.2.4")
