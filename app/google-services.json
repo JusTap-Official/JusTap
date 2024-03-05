@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "142637459628",
+    "firebase_url": "https://justap-7777-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "justap-7777",
+    "storage_bucket": "justap-7777.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:142637459628:android:5d3653dde857ae49d21709",
+        "android_client_info": {
+          "package_name": "com.binay.shaw.justap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "142637459628-u67hofek1bj0348v6lg6frs0llgei2tv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.binay.shaw.justap",
+            "certificate_hash": "a55e4867e32354cd2474df831f56db37aa5c6d56"
+          }
+        },
+        {
+          "client_id": "142637459628-7u4ere6j7qr84f9pa09qcgp4rt0deneo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChZPBIq_1FzYJjAmlhloqLHKB4q9upqI8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "142637459628-7u4ere6j7qr84f9pa09qcgp4rt0deneo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
