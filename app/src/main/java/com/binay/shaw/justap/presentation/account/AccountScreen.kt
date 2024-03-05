@@ -1,6 +1,8 @@
 package com.binay.shaw.justap.presentation.account
 
 import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.binay.shaw.justap.BuildConfig
@@ -38,6 +41,7 @@ import com.binay.shaw.justap.presentation.components.ThemeDialog
 import com.binay.shaw.justap.presentation.themes.medium14
 import com.binay.shaw.justap.presentation.themes.medium16
 import com.binay.shaw.justap.presentation.themes.normal14
+import com.binay.shaw.justap.utilities.Constants
 import com.binay.shaw.justap.utilities.rememberReviewTask
 import com.google.android.play.core.review.ReviewManagerFactory
 
@@ -160,11 +164,14 @@ fun AccountScreen(
                         }
 
                         AccountOptions.RATE_US -> {
-                            reviewManager.requestReviewFlow().addOnCompleteListener { reviewTask ->
-                                if (reviewTask.isSuccessful) {
-                                    reviewInfo = reviewTask.result
-                                }
-                            }
+//                            reviewManager.requestReviewFlow().addOnCompleteListener { reviewTask ->
+//                                if (reviewTask.isSuccessful) {
+//                                    reviewInfo = reviewTask.result
+//                                }
+//                            }
+                            val intent = Intent(Intent.ACTION_VIEW)
+                            intent.data = Uri.parse(Constants.APP_URL)
+                            context.startActivity(intent)
                         }
 
                         AccountOptions.HELP_AND_SUPPORT -> {
