@@ -14,16 +14,4 @@ enum class AccountOptions(val displayName: String, val iconId: Int) {
     RATE_US("Rate us", R.drawable.ic_google_playstore),
     HELP_AND_SUPPORT("Help and Support", R.drawable.ic_help),
     LOGOUT("Logout", R.drawable.ic_logout);
-
-    companion object {
-        fun getAccountOptions(): PersistentList<AccountOptions> {
-            val persistentList = persistentListOf<AccountOptions>()
-
-            AccountOptions.entries.forEach {
-                persistentList.add(it)
-            }
-
-            return persistentList
-        }
-    }
 }

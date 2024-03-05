@@ -1,5 +1,6 @@
 package com.binay.shaw.justap.presentation.account
 
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,6 +38,8 @@ import com.binay.shaw.justap.presentation.components.ThemeDialog
 import com.binay.shaw.justap.presentation.themes.medium14
 import com.binay.shaw.justap.presentation.themes.medium16
 import com.binay.shaw.justap.presentation.themes.normal14
+import com.binay.shaw.justap.utilities.rememberReviewTask
+import com.google.android.play.core.review.ReviewManagerFactory
 
 @Composable
 fun AccountScreen(
@@ -43,6 +47,20 @@ fun AccountScreen(
 ) {
 
     var openThemeDialog by remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
+
+    val reviewManager = remember {
+        ReviewManagerFactory.create(context)
+    }
+
+    var reviewInfo = rememberReviewTask(reviewManager)
+
+    LaunchedEffect(reviewInfo) {
+        reviewInfo?.let {
+            reviewManager.launchReviewFlow(context as Activity, it)
+        }
+    }
 
     when {
         openThemeDialog -> {
@@ -142,7 +160,11 @@ fun AccountScreen(
                         }
 
                         AccountOptions.RATE_US -> {
-
+                            reviewManager.requestReviewFlow().addOnCompleteListener { reviewTask ->
+                                if (reviewTask.isSuccessful) {
+                                    reviewInfo = reviewTask.result
+                                }
+                            }
                         }
 
                         AccountOptions.HELP_AND_SUPPORT -> {
