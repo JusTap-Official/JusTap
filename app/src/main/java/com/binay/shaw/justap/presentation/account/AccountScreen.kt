@@ -223,7 +223,12 @@ fun AccountScreen(
                 OptionItem(it) { onClickOption ->
                     when (onClickOption) {
                         AccountOptions.INVITE_FRIENDS -> {
-
+                            val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                                putExtra(Intent.EXTRA_TEXT, Constants.inviteFriendsMessage)
+                                type = "text/plain"
+                            }
+                            val shareIntent = Intent.createChooser(sendIntent, null)
+                            context.startActivity(shareIntent)
                         }
 
                         AccountOptions.LANGUAGE -> {
@@ -231,7 +236,9 @@ fun AccountScreen(
                         }
 
                         AccountOptions.PRIVACY_POLICY -> {
-
+                            val intent = Intent(Intent.ACTION_VIEW)
+                            intent.data = Uri.parse(Constants.privacyPolicyUrl)
+                            context.startActivity(intent)
                         }
 
                         AccountOptions.RATE_US -> {

@@ -41,4 +41,9 @@ object Constants {
     const val CONNECT_SCREEN = "CONNECT_SCREEN"
     const val HISTORY_SCREEN = "HISTORY_SCREEN"
     const val ACCOUNT_SCREEN = "ACCOUNT_SCREEN"
+
+    const val inviteFriendsMessage = """
+            Hey there! I've been using this amazing app and thought you might like it too! 😊 Check it out: https://play.google.com/store/apps/details?id=com.binay.shaw.justap
+    """
+    const val privacyPolicyUrl = "https://www.freeprivacypolicy.com/live/22214fe7-0520-4c94-98d5-18354dc8eda3"
 }

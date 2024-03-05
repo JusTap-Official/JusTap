@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.*
@@ -348,9 +349,14 @@ object Util {
             LocalUserDatabase.getDatabase(context).clearTables()
             val intent = Intent(context, SignInScreen::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            context.startActivity(intent).also { (context as Activity).finish() }
+            context.startActivity(intent).also { context.findActivity()?.finish() }
             log("Logged out")
         }
     }
 
+    fun Context.findActivity(): Activity? = when (this) {
+        is Activity -> this
+        is ContextWrapper -> baseContext.findActivity()
+        else -> null
+    }
 }
