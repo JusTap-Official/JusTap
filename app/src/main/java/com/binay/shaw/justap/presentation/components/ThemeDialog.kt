@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -17,6 +18,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -24,6 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.presentation.sharedViewModels.ThemeViewModel
 import com.binay.shaw.justap.presentation.themes.light16
+import com.binay.shaw.justap.presentation.themes.medium14
 import com.binay.shaw.justap.presentation.themes.normal24
 
 @SuppressLint("ComposeModifierMissing")
@@ -95,13 +98,23 @@ fun ThemeDialog(
                     style = light16.copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
                 )
             }
+
             TextButton(
-                onClick = { onDismissRequest() },
+                onClick = {
+                    onDismissRequest()
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Transparent,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                ),
                 modifier = Modifier
                     .align(Alignment.End)
                     .padding(end = 24.dp)
             ) {
-                Text("Dismiss")
+                Text(
+                    text = "Dismiss",
+                    style = medium14
+                )
             }
         }
     }

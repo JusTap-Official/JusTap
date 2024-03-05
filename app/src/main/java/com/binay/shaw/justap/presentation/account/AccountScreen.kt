@@ -118,7 +118,7 @@ fun AccountScreen(
                     ) {
                         Text(
                             "Logout",
-                            style = medium16
+                            style = medium14
                         )
                     }
                 },
@@ -134,7 +134,7 @@ fun AccountScreen(
                     ) {
                         Text(
                             stringResource(id = R.string.cancel),
-                            style = medium16
+                            style = medium14
                         )
                     }
                 },
@@ -253,7 +253,9 @@ fun AccountScreen(
                         }
 
                         AccountOptions.HELP_AND_SUPPORT -> {
-
+                            val openURL = Intent(Intent.ACTION_VIEW)
+                            openURL.data = Uri.parse(context.resources.getString(R.string.mailTo))
+                            context.startActivity(openURL)
                         }
 
                         AccountOptions.LOGOUT -> {
