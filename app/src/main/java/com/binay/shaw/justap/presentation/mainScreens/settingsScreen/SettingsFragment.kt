@@ -25,19 +25,22 @@ import com.binay.shaw.justap.databinding.FragmentSettingsBinding
 import com.binay.shaw.justap.databinding.LanguageModalBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
-import com.binay.shaw.justap.utilities.*
-import com.binay.shaw.justap.utilities.Util.createBottomSheet
-import com.binay.shaw.justap.utilities.Util.setBottomSheet
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.model.SettingsItem
 import com.binay.shaw.justap.model.SettingsState
-import com.binay.shaw.justap.presentation.MainActivity
+import com.binay.shaw.justap.utilities.Constants
+import com.binay.shaw.justap.utilities.DarkMode
+import com.binay.shaw.justap.utilities.LifeCyclePrinter
+import com.binay.shaw.justap.utilities.Util
+import com.binay.shaw.justap.utilities.Util.createBottomSheet
+import com.binay.shaw.justap.utilities.Util.setBottomSheet
+import com.binay.shaw.justap.utilities.getLanguageItems
+import com.binay.shaw.justap.utilities.setLocate
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.*
 
 
 class SettingsFragment : BaseFragment() {
@@ -275,7 +278,7 @@ class SettingsFragment : BaseFragment() {
 
             positiveOption.setOnClickListener {
                 bottomSheet.dismiss()
-                Util.clearDataAndLogout(lifecycleScope, requireContext(), requireActivity())
+                Util.clearDataAndLogout(lifecycleScope, requireContext())
             }
             negativeOption.setOnClickListener {
                 bottomSheet.dismiss()

@@ -42,7 +42,7 @@ abstract class BaseFragment : Fragment() {
         super.onCreate(savedInstanceState)
         val firebaseUserId = FirebaseAuth.getInstance().uid
         if (firebaseUserId == null) {
-            clearDataAndLogout(lifecycleScope, requireContext(), requireActivity())
+            clearDataAndLogout(lifecycleScope, requireContext())
             Toast.makeText(requireContext(), getString(R.string.anErrorOccurred), Toast.LENGTH_SHORT).show()
         }
     }

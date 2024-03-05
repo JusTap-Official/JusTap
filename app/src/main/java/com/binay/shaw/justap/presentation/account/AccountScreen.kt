@@ -17,21 +17,28 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.startActivity
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.binay.shaw.justap.BuildConfig
@@ -41,7 +48,9 @@ import com.binay.shaw.justap.presentation.components.ThemeDialog
 import com.binay.shaw.justap.presentation.themes.medium14
 import com.binay.shaw.justap.presentation.themes.medium16
 import com.binay.shaw.justap.presentation.themes.normal14
+import com.binay.shaw.justap.presentation.themes.normal16
 import com.binay.shaw.justap.utilities.Constants
+import com.binay.shaw.justap.utilities.Util
 import com.binay.shaw.justap.utilities.rememberReviewTask
 import com.google.android.play.core.review.ReviewManagerFactory
 
@@ -53,10 +62,13 @@ fun AccountScreen(
     var openThemeDialog by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     val reviewManager = remember {
         ReviewManagerFactory.create(context)
     }
+
+    var openLogoutDialog by remember { mutableStateOf(false) }
 
     var reviewInfo = rememberReviewTask(reviewManager)
 
@@ -69,6 +81,65 @@ fun AccountScreen(
     when {
         openThemeDialog -> {
             ThemeDialog(onDismissRequest = { openThemeDialog = false })
+        }
+
+        openLogoutDialog -> {
+            AlertDialog(
+                onDismissRequest = { openLogoutDialog = false },
+                icon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_logout),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                },
+                title = {
+                    Text(
+                        text = "Logout?",
+                        style = normal16.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
+                    )
+                },
+                text = {
+                    Text(
+                        text = "Are you sure you want to logout?",
+                        style = normal16.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    )
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            Util.clearDataAndLogout(scope, context)
+                            openLogoutDialog = false
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Transparent,
+                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    ) {
+                        Text(
+                            "Logout",
+                            style = medium16
+                        )
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            openLogoutDialog = false
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Transparent,
+                            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    ) {
+                        Text(
+                            stringResource(id = R.string.cancel),
+                            style = medium16
+                        )
+                    }
+                },
+                containerColor = MaterialTheme.colorScheme.background
+            )
         }
     }
 
@@ -179,7 +250,7 @@ fun AccountScreen(
                         }
 
                         AccountOptions.LOGOUT -> {
-
+                            openLogoutDialog = true
                         }
 
                         else -> {}

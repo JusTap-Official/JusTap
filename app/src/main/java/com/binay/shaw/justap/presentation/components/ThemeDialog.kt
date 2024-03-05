@@ -2,6 +2,7 @@ package com.binay.shaw.justap.presentation.components
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,16 +17,14 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.presentation.sharedViewModels.ThemeViewModel
-import com.binay.shaw.justap.presentation.themes.normal16
+import com.binay.shaw.justap.presentation.themes.light16
 import com.binay.shaw.justap.presentation.themes.normal24
-import com.binay.shaw.justap.utilities.onClick
 
 @SuppressLint("ComposeModifierMissing")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,7 +39,7 @@ fun ThemeDialog(
     ) {
         Column(
             Modifier
-                .background(Color.White, RoundedCornerShape(28.dp))
+                .background(MaterialTheme.colorScheme.background, RoundedCornerShape(28.dp))
                 .padding(vertical = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -57,42 +56,45 @@ fun ThemeDialog(
                 style = normal24.copy(MaterialTheme.colorScheme.onSurface)
             )
 
-            Text(
-                text = "Dark Mode",
-                modifier = Modifier
-                    .onClick {
-                        themeViewModel.switchToDarkMode()
-                        onDismissRequest()
-                    }
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp, horizontal = 16.dp),
-                style = normal16
-            )
+            Column {
 
-            Text(
-                text = "Light Mode",
-                modifier = Modifier
-                    .onClick {
-                        themeViewModel.switchToLightMode()
-                        onDismissRequest()
-                    }
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp, horizontal = 16.dp),
-                style = normal16
-            )
 
-            Text(
-                text = "Dynamic Theme",
-                modifier = Modifier
-                    .onClick {
-                        themeViewModel.switchToDynamicThemeMode()
-                        onDismissRequest()
-                    }
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp, horizontal = 16.dp),
-                style = normal16
-            )
+                Text(
+                    text = "Dark Mode",
+                    modifier = Modifier
+                        .clickable {
+                            themeViewModel.switchToDarkMode()
+                            onDismissRequest()
+                        }
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp, horizontal = 32.dp),
+                    style = light16.copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
+                )
 
+                Text(
+                    text = "Light Mode",
+                    modifier = Modifier
+                        .clickable {
+                            themeViewModel.switchToLightMode()
+                            onDismissRequest()
+                        }
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp, horizontal = 32.dp),
+                    style = light16.copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
+                )
+
+                Text(
+                    text = "Dynamic Theme",
+                    modifier = Modifier
+                        .clickable {
+                            themeViewModel.switchToDynamicThemeMode()
+                            onDismissRequest()
+                        }
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp, horizontal = 32.dp),
+                    style = light16.copy(color = MaterialTheme.colorScheme.onSurfaceVariant),
+                )
+            }
             TextButton(
                 onClick = { onDismissRequest() },
                 modifier = Modifier

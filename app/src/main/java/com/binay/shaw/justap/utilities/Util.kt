@@ -335,7 +335,7 @@ object Util {
         context.startActivity(chooserIntent)
     }
 
-    fun clearDataAndLogout(scope: CoroutineScope, context: Context, activity: Activity) {
+    fun clearDataAndLogout(scope: CoroutineScope, context: Context) {
         scope.launch(Dispatchers.Main) {
             val sharedPreferences =
                 context.getSharedPreferences(Constants.qrPref, Context.MODE_PRIVATE)
@@ -348,7 +348,7 @@ object Util {
             LocalUserDatabase.getDatabase(context).clearTables()
             val intent = Intent(context, SignInScreen::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            context.startActivity(intent).also { activity.finish() }
+            context.startActivity(intent).also { (context as Activity).finish() }
             log("Logged out")
         }
     }
