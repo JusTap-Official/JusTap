@@ -2,7 +2,6 @@ package com.binay.shaw.justap.presentation.themes
 
 import android.app.Activity
 import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.MaterialTheme.typography
@@ -46,16 +45,13 @@ private val LightColorPalette = lightColorScheme(
 
 @Composable
 fun JusTapTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+,
     themeViewModel: ThemeViewModel = hiltViewModel(),
-    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val themeState by themeViewModel.themeState.collectAsState()
 
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+        themeState.isDynamicTheme && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
             if (themeState.isDarkMode) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
