@@ -3,6 +3,7 @@ package com.binay.shaw.justap.presentation.authentication.signInScreen
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
@@ -22,8 +23,6 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.MailOutline
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -51,15 +50,18 @@ import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.presentation.MainActivity
+import com.binay.shaw.justap.presentation.authentication.FirebaseViewModel
 import com.binay.shaw.justap.presentation.authentication.forgotPassword.ForgotPasswordScreen
+import com.binay.shaw.justap.presentation.components.MyButton
+import com.binay.shaw.justap.presentation.components.ProgressDialog
 import com.binay.shaw.justap.presentation.themes.DMSansFontFamily
 import com.binay.shaw.justap.presentation.themes.JusTapTheme
 import com.binay.shaw.justap.utilities.Util.findActivity
+import com.binay.shaw.justap.utilities.Util.isNetworkAvailable
 import com.binay.shaw.justap.utilities.Validator.Companion.isValidEmail
 import com.binay.shaw.justap.utilities.Validator.Companion.isValidPassword
 import com.binay.shaw.justap.utilities.onClick
 import com.binay.shaw.justap.viewModel.AccountsViewModel
-import com.binay.shaw.justap.presentation.authentication.FirebaseViewModel
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -104,6 +106,7 @@ fun SignInScreenContent(
     }
     val userLiveData by firebaseViewModel.userLiveData.observeAsState()
     val errorLiveData by firebaseViewModel.errorLiveData.observeAsState()
+    var isLoading by remember { mutableStateOf(false) }
 
     LaunchedEffect(userLiveData) {
 
@@ -116,13 +119,24 @@ fun SignInScreenContent(
                     accountsViewModel.insertAccount(account)
                 }
             }
-
+            isLoading = false
             val intent = Intent(context, MainActivity::class.java)
             context.findActivity()?.let {
                 it.startActivity(intent)
                 it.finish()
             }
         }
+    }
+
+    LaunchedEffect(errorLiveData) {
+        errorLiveData?.let { error ->
+            isLoading = false
+            Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    if (isLoading) {
+        ProgressDialog {}
     }
 
     Box(
@@ -190,35 +204,39 @@ fun SignInScreenContent(
             Spacer(Modifier.height(12.dp))
 
             Text(
-                stringResource(R.string.forgot_password), modifier = Modifier
-                .align(Alignment.End)
-                .onClick {
-                    context
-                        .findActivity()
-                        ?.let {
-                            it.startActivity(Intent(it, ForgotPasswordScreen::class.java))
-                        }
-                })
+                text = stringResource(R.string.forgot_password), modifier = Modifier
+                    .align(Alignment.End)
+                    .onClick {
+                        context
+                            .findActivity()
+                            ?.let {
+                                it.startActivity(Intent(it, ForgotPasswordScreen::class.java))
+                            }
+                    },
+                color = MaterialTheme.colorScheme.primary
+            )
 
             Spacer(Modifier.weight(1f))
 
-            Button(
-                onClick = {
+            MyButton(
+                text = stringResource(R.string.login),
+                enabled = enableLoginButton,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.End)
+            ) {
+                if (context.isNetworkAvailable()) {
+                    isLoading = true
                     firebaseViewModel.logInUser(
                         userEmail, userPassword
                     )
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.End),
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-                enabled = enableLoginButton
-            ) {
-                Text(
-                    stringResource(R.string.login),
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    style = TextStyle(fontWeight = FontWeight.Bold, fontFamily = DMSansFontFamily)
-                )
+                } else {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.noInternet),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
 

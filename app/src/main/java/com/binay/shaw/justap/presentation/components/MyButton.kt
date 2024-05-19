@@ -12,8 +12,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import com.binay.shaw.justap.utilities.Logger
 import com.binay.shaw.justap.presentation.themes.DMSansFontFamily
@@ -28,6 +30,8 @@ fun MyButton(
     colors: ButtonColors = ButtonDefaults.buttonColors(
         containerColor = MaterialTheme.colorScheme.primaryContainer
     ),
+    textColors: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    textSize: TextUnit = 14.sp,
     elevation: ButtonElevation? = ButtonDefaults.buttonElevation(),
     border: BorderStroke? = null,
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
@@ -47,9 +51,9 @@ fun MyButton(
     ) {
         Text(
             text = text,
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            color = textColors,
             fontFamily = DMSansFontFamily,
-            fontSize = 14.sp
+            fontSize = textSize
         )
     }
 }

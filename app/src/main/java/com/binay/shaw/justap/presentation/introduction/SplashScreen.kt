@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,10 +29,10 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.binay.shaw.justap.R
-import com.binay.shaw.justap.utilities.Util
-import com.binay.shaw.justap.presentation.introduction.onboarding.OnboardingScreen
 import com.binay.shaw.justap.presentation.MainActivity
+import com.binay.shaw.justap.presentation.authentication.signInScreen.SignInScreen
 import com.binay.shaw.justap.presentation.themes.JusTapTheme
+import com.binay.shaw.justap.utilities.Util
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 
@@ -52,14 +53,17 @@ class SplashScreen : ComponentActivity() {
 
         setContent {
             JusTapTheme {
-                SplashContent(this@SplashScreen)
+                SplashContent(activity = this@SplashScreen)
             }
         }
     }
 }
 
 @Composable
-fun SplashContent(activity: Activity) {
+fun SplashContent(
+    activity: Activity,
+    modifier: Modifier = Modifier
+) {
 
     var isUserLoggedIn: Boolean by remember {
         mutableStateOf(false)
@@ -68,22 +72,22 @@ fun SplashContent(activity: Activity) {
     LaunchedEffect(Unit) {
         isUserLoggedIn = Util.isUserLoggedIn()
 
-        val intent: Intent = if (isUserLoggedIn) {
-            Intent(activity, MainActivity::class.java)
+        val activityToIntent = if (isUserLoggedIn) {
+            MainActivity::class.java
         } else {
-            Intent(activity, OnboardingScreen::class.java)
+            SignInScreen::class.java
         }
 
         activity.run {
             delay(1_000L)
-            startActivity(intent)
+            startActivity(Intent(this, activityToIntent))
             finish()
         }
     }
 
     Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = Color.White
+        modifier = Modifier.fillMaxSize().then(modifier),
+        color = MaterialTheme.colorScheme.background
     ) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Image(

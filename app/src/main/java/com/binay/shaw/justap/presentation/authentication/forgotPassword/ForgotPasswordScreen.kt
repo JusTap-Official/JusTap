@@ -51,6 +51,7 @@ import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.presentation.authentication.FirebaseViewModel
+import com.binay.shaw.justap.presentation.components.MyButton
 import com.binay.shaw.justap.presentation.components.ProgressDialog
 import com.binay.shaw.justap.presentation.themes.DMSansFontFamily
 import com.binay.shaw.justap.presentation.themes.JusTapTheme
@@ -161,22 +162,24 @@ fun ForgotPasswordContent(
 
             Spacer(Modifier.weight(1f))
 
-            Button(
-                onClick = {
-                    if (context.isNetworkAvailable()) {
-                        isLoading = true
-                        firebaseViewModel.resetPassword(userEmail)
-                    } else {
-                        Toast.makeText(context, context.getString(R.string.noInternet), Toast.LENGTH_SHORT).show()
-                    }
-                },
+            MyButton(
+                text = stringResource(R.string.sendResetLink),
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.End),
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
                 enabled = enableSendEmailButton
             ) {
-                Text("Login", color = MaterialTheme.colorScheme.onPrimaryContainer)
+                if (context.isNetworkAvailable()) {
+                    isLoading = true
+                    firebaseViewModel.resetPassword(userEmail)
+                } else {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.noInternet),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }

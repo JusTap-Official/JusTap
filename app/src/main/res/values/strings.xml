@@ -34,7 +34,7 @@
     <string name="EditProfile">Edit Profile</string>
     <string name="AboutUs">About us</string>
     <string name="LogIn">Log In</string>
-    <string name="SendResetLink">Send reset link</string>
+    <string name="sendResetLink">Send reset link</string>
     <string name="HowToUse">How to use?</string>
     <string name="HowToUseDescription">Once you add the accounts from the floating button at the bottom right corner, you can see all your accounts in the list as shown.\n\nThe list displays:\n1.Name\n2.Logo\n3.Your account data\n4.Switch\n\nTurning on/off the switch will allow/restrict the account to show in the result when your QR is scanned.\nIn other words, turning off the switch will not show it in the scanner\'s result screen, and turning it on will show and will be clickable as well.</string>
     <string name="EnterURLorUsername">What to add here?</string>
