@@ -51,6 +51,7 @@ import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.presentation.authentication.FirebaseViewModel
+import com.binay.shaw.justap.presentation.components.ProgressDialog
 import com.binay.shaw.justap.presentation.themes.DMSansFontFamily
 import com.binay.shaw.justap.presentation.themes.JusTapTheme
 import com.binay.shaw.justap.utilities.Util.findActivity
@@ -97,6 +98,7 @@ fun ForgotPasswordContent(
 
     LaunchedEffect(resetPasswordRequestLiveData) {
         if (resetPasswordRequestLiveData == true) {
+            isLoading = false
             context.findActivity()?.let {
                 Toast.makeText(it, "Email sent", Toast.LENGTH_SHORT).show()
                 it.finish()
@@ -106,8 +108,13 @@ fun ForgotPasswordContent(
 
     LaunchedEffect(errorLiveData) {
         errorLiveData?.let { error ->
+            isLoading = false
             Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    if (isLoading) {
+        ProgressDialog {}
     }
 
     Box(
@@ -148,7 +155,7 @@ fun ForgotPasswordContent(
                     onValueChange = { userEmail = it },
                     modifier = Modifier.fillMaxWidth(),
                     shape = MaterialTheme.shapes.large,
-                    placeholder = { Text(text = "johndoe123@gmail.com") }
+                    placeholder = { Text(text = stringResource(R.string.enter_email)) }
                 )
             }
 
@@ -157,9 +164,10 @@ fun ForgotPasswordContent(
             Button(
                 onClick = {
                     if (context.isNetworkAvailable()) {
+                        isLoading = true
                         firebaseViewModel.resetPassword(userEmail)
                     } else {
-                        Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, context.getString(R.string.noInternet), Toast.LENGTH_SHORT).show()
                     }
                 },
                 modifier = Modifier
