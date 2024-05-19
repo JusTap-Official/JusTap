@@ -11,7 +11,7 @@ import com.binay.shaw.justap.presentation.mainScreens.qrScreens.qrGeneratorScree
 import com.binay.shaw.justap.presentation.mainScreens.resultScreen.ScanResultViewModel
 import com.binay.shaw.justap.presentation.mainScreens.settingsScreen.customize_qr.CustomizeQRViewModel
 import com.binay.shaw.justap.presentation.mainScreens.settingsScreen.editScreen.EditProfileViewModel
-import com.binay.shaw.justap.viewModel.FirebaseViewModel
+import com.binay.shaw.justap.presentation.authentication.FirebaseViewModel
 
 /**
  * Created by binay on 02,March,2023

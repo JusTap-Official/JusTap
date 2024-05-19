@@ -1,8 +1,8 @@
-package com.binay.shaw.justap.presentation.authentication.signInScreen
-
+package com.binay.shaw.justap.presentation.authentication.forgotPassword
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
@@ -45,21 +45,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.binay.shaw.justap.presentation.MainActivity
-import com.binay.shaw.justap.presentation.authentication.forgotPassword.ForgotPasswordScreen
+import com.binay.shaw.justap.presentation.authentication.FirebaseViewModel
 import com.binay.shaw.justap.presentation.themes.DMSansFontFamily
 import com.binay.shaw.justap.presentation.themes.JusTapTheme
 import com.binay.shaw.justap.utilities.Util.findActivity
 import com.binay.shaw.justap.utilities.Validator.Companion.isValidEmail
-import com.binay.shaw.justap.utilities.Validator.Companion.isValidPassword
 import com.binay.shaw.justap.utilities.onClick
-import com.binay.shaw.justap.viewModel.AccountsViewModel
-import com.binay.shaw.justap.presentation.authentication.FirebaseViewModel
-import com.binay.shaw.justap.viewModel.LocalUserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SignInScreen : ComponentActivity() {
+class ForgotPasswordScreen : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.light(
@@ -75,48 +71,35 @@ class SignInScreen : ComponentActivity() {
 
         setContent {
             JusTapTheme {
-                SignInScreenContent()
+                ForgotPasswordContent()
             }
         }
     }
 }
 
 @Composable
-fun SignInScreenContent(
+fun ForgotPasswordContent(
     modifier: Modifier = Modifier,
-    accountsViewModel: AccountsViewModel = hiltViewModel(),
-    firebaseViewModel: FirebaseViewModel = hiltViewModel(),
-    localUserViewModel: LocalUserViewModel = hiltViewModel()
+    firebaseViewModel: FirebaseViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-
     var userEmail by rememberSaveable { mutableStateOf("") }
-    var userPassword by rememberSaveable { mutableStateOf("") }
-    val enableLoginButton by remember {
-        derivedStateOf {
-            userEmail.isValidEmail() && userPassword.isValidPassword()
-        }
-    }
-    val userLiveData by firebaseViewModel.userLiveData.observeAsState()
+    val enableSendEmailButton by remember { derivedStateOf { userEmail.isValidEmail() } }
+    val resetPasswordRequestLiveData by firebaseViewModel.resetPasswordRequest.observeAsState()
     val errorLiveData by firebaseViewModel.errorLiveData.observeAsState()
 
-    LaunchedEffect(userLiveData) {
-
-        userLiveData?.let { user ->
-            val listAccounts = firebaseViewModel.accountsLiveData.value
-            localUserViewModel.insertUser(user)
-
-            listAccounts?.let { accounts ->
-                accounts.forEach { account ->
-                    accountsViewModel.insertAccount(account)
-                }
-            }
-
-            val intent = Intent(context, MainActivity::class.java)
+    LaunchedEffect(resetPasswordRequestLiveData) {
+        if (resetPasswordRequestLiveData == true) {
             context.findActivity()?.let {
-                it.startActivity(intent)
+                Toast.makeText(it, "Email sent", Toast.LENGTH_SHORT).show()
                 it.finish()
             }
+        }
+    }
+
+    LaunchedEffect(errorLiveData) {
+        errorLiveData?.let { error ->
+            Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -133,10 +116,10 @@ fun SignInScreenContent(
             Spacer(Modifier.height(10.dp))
 
             Text(
-                text = "Sign In", style = TextStyle(
+                text = "Forgot Password", style = TextStyle(
                     fontFamily = DMSansFontFamily,
                     fontWeight = FontWeight.Medium,
-                    fontSize = 48.sp
+                    fontSize = 36.sp
                 )
             )
 
@@ -158,45 +141,17 @@ fun SignInScreenContent(
                 )
             }
 
-            Spacer(Modifier.height(20.dp))
-
-            Row {
-                Icon(
-                    imageVector = Icons.Default.Key,
-                    contentDescription = "Key outline icon"
-                )
-                OutlinedTextField(
-                    value = userPassword,
-                    onValueChange = { userPassword = it },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = MaterialTheme.shapes.large,
-                    placeholder = { Text(text = "johndoe123@gmail.com") }
-                )
-            }
-
-            Spacer(Modifier.height(12.dp))
-
-            Text("Forgot Password?", modifier = Modifier
-                .align(Alignment.End)
-                .onClick {
-                    context.findActivity()?.let {
-                            it.startActivity(Intent(it, ForgotPasswordScreen::class.java))
-                        }
-                })
-
             Spacer(Modifier.weight(1f))
 
             Button(
                 onClick = {
-                    firebaseViewModel.logInUser(
-                        userEmail, userPassword
-                    )
+                    firebaseViewModel.resetPassword(userEmail)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.End),
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-                enabled = enableLoginButton
+                enabled = enableSendEmailButton
             ) {
                 Text("Login", color = MaterialTheme.colorScheme.onPrimaryContainer)
             }
@@ -204,3 +159,99 @@ fun SignInScreenContent(
 
     }
 }
+
+
+//
+//    private fun initObservers() {
+//        firebaseViewModel.run {
+//            resetPasswordRequest.observe(this@ForgotPasswordScreen) {
+//                if (it) {
+//                    goBackToSignInScreen()
+//                }
+//            }
+//            errorLiveData.observe(this@ForgotPasswordScreen) {
+//                stopProgress()
+//                Toast.makeText(this@ForgotPasswordScreen, it.toString(), Toast.LENGTH_SHORT).show()
+//            }
+//        }
+//    }
+//
+//    private fun goBackToSignInScreen() {
+//        stopProgress()
+//        Toast.makeText(this, R.string.email_sent, Toast.LENGTH_SHORT).show()
+//        startActivity(Intent(this@ForgotPasswordScreen, SignInScreen::class.java))
+//    }
+//
+//    private fun handleClicks() {
+//        binding.btnResetPassword.progressButtonBg.setOnClickListener {
+//            resetPassword()
+//        }
+//        binding.include.leftIcon.setOnClickListener {
+//            onBackPressedDispatcher.onBackPressed()
+//        }
+//    }
+//
+//    private fun resetPassword() {
+//        if (!Util.checkForInternet(this)) {
+//            Util.showNoInternet(this)
+//            return
+//        }
+//        showProgress()
+//        val email = binding.etEmail.text.toString().trim()
+//
+//        val validation = Util.validateUserAuthInput(null, email, null)
+//        if (validation < 7) {
+//            stopProgress()
+//            handleErrorInput(validation)
+//            return
+//        }
+//
+//        firebaseViewModel.resetPassword(email)
+//    }
+//
+//    private fun handleErrorInput(validationCode: Int) {
+//        binding.apply {
+//            when (validationCode) {
+//                2 -> {
+//                    emailHelperTV.text = getString(R.string.enter_email)
+//                    emailHelperTV.visibility = View.VISIBLE
+//                }
+//                3 -> {
+//                    emailHelperTV.text = getString(R.string.invalid_email)
+//                    emailHelperTV.visibility = View.VISIBLE
+//                }
+//            }
+//        }
+//    }
+//
+//
+//    private fun showProgress() {
+//        binding.apply {
+//            emailHelperTV.visibility = View.GONE
+//            btnResetPassword.apply {
+//                buttonText.visibility = View.GONE
+//                buttonProgress.visibility = View.VISIBLE
+//            }
+//        }
+//    }
+//
+//    private fun stopProgress() {
+//        binding.apply {
+//            btnResetPassword.apply {
+//                buttonText.visibility = View.VISIBLE
+//                buttonProgress.visibility = View.GONE
+//            }
+//        }
+//    }
+//
+//    private fun initialization() {
+//        supportActionBar?.hide()
+//        binding.apply {
+//            include.apply {
+//                toolbarTitle.text = getString(R.string.forgot_password_title)
+//                leftIcon.visibility = View.VISIBLE
+//            }
+//            btnResetPassword.buttonText.text = resources.getString(R.string.SendResetLink)
+//        }
+//    }
+//}

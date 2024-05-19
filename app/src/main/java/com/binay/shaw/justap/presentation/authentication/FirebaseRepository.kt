@@ -1,4 +1,4 @@
-package com.binay.shaw.justap.repository
+package com.binay.shaw.justap.presentation.authentication
 
 import com.binay.shaw.justap.utilities.Util
 import com.google.firebase.auth.FirebaseAuth

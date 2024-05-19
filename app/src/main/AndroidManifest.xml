@@ -51,7 +51,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.authentication.ForgotPasswordScreen"
+            android:name=".presentation.authentication.forgotPassword.ForgotPasswordScreen"
             android:configChanges="uiMode"
             android:exported="true"
             android:screenOrientation="portrait">

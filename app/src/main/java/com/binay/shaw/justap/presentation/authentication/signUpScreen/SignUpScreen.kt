@@ -12,7 +12,7 @@ import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.utilities.Util
 import com.binay.shaw.justap.databinding.ActivitySignUpScreenBinding
 import com.binay.shaw.justap.presentation.authentication.signInScreen.SignInScreen
-import com.binay.shaw.justap.viewModel.FirebaseViewModel
+import com.binay.shaw.justap.presentation.authentication.FirebaseViewModel
 
 
 class SignUpScreen : BaseActivity() {

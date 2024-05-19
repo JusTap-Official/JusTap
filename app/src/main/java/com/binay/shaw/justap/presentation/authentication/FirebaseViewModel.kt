@@ -1,4 +1,4 @@
-package com.binay.shaw.justap.viewModel
+package com.binay.shaw.justap.presentation.authentication
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,7 +7,6 @@ import com.binay.shaw.justap.utilities.Util
 import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.model.User
-import com.binay.shaw.justap.repository.FirebaseRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
