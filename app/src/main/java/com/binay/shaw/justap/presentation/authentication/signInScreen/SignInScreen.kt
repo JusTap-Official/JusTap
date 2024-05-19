@@ -8,6 +8,7 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,7 +16,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.MailOutline
@@ -39,12 +42,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.binay.shaw.justap.R
 import com.binay.shaw.justap.presentation.MainActivity
 import com.binay.shaw.justap.presentation.authentication.forgotPassword.ForgotPasswordScreen
 import com.binay.shaw.justap.presentation.themes.DMSansFontFamily
@@ -124,7 +129,9 @@ fun SignInScreenContent(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
+            .statusBarsPadding()
             .padding(horizontal = 16.dp, vertical = 20.dp)
+            .imePadding()
             .then(modifier)
     ) {
 
@@ -133,7 +140,7 @@ fun SignInScreenContent(
             Spacer(Modifier.height(10.dp))
 
             Text(
-                text = "Sign In", style = TextStyle(
+                text = stringResource(R.string.signin), style = TextStyle(
                     fontFamily = DMSansFontFamily,
                     fontWeight = FontWeight.Medium,
                     fontSize = 48.sp
@@ -143,7 +150,9 @@ fun SignInScreenContent(
             Spacer(Modifier.height(40.dp))
 
             Row(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.MailOutline,
@@ -154,13 +163,17 @@ fun SignInScreenContent(
                     onValueChange = { userEmail = it },
                     modifier = Modifier.fillMaxWidth(),
                     shape = MaterialTheme.shapes.large,
-                    placeholder = { Text(text = "johndoe123@gmail.com") }
+                    placeholder = { Text(text = stringResource(R.string.enter_your_email)) }
                 )
             }
 
             Spacer(Modifier.height(20.dp))
 
-            Row {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 Icon(
                     imageVector = Icons.Default.Key,
                     contentDescription = "Key outline icon"
@@ -170,16 +183,19 @@ fun SignInScreenContent(
                     onValueChange = { userPassword = it },
                     modifier = Modifier.fillMaxWidth(),
                     shape = MaterialTheme.shapes.large,
-                    placeholder = { Text(text = "johndoe123@gmail.com") }
+                    placeholder = { Text(text = stringResource(R.string.enter_your_password)) }
                 )
             }
 
             Spacer(Modifier.height(12.dp))
 
-            Text("Forgot Password?", modifier = Modifier
+            Text(
+                stringResource(R.string.forgot_password), modifier = Modifier
                 .align(Alignment.End)
                 .onClick {
-                    context.findActivity()?.let {
+                    context
+                        .findActivity()
+                        ?.let {
                             it.startActivity(Intent(it, ForgotPasswordScreen::class.java))
                         }
                 })
@@ -198,7 +214,11 @@ fun SignInScreenContent(
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
                 enabled = enableLoginButton
             ) {
-                Text("Login", color = MaterialTheme.colorScheme.onPrimaryContainer)
+                Text(
+                    stringResource(R.string.login),
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    style = TextStyle(fontWeight = FontWeight.Bold, fontFamily = DMSansFontFamily)
+                )
             }
         }
 
