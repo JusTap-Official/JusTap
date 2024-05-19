@@ -1,6 +1,5 @@
 package com.binay.shaw.justap.presentation.account
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
@@ -24,7 +23,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,8 +49,6 @@ import com.binay.shaw.justap.presentation.themes.normal14
 import com.binay.shaw.justap.presentation.themes.normal16
 import com.binay.shaw.justap.utilities.Constants
 import com.binay.shaw.justap.utilities.Util
-import com.binay.shaw.justap.utilities.rememberReviewTask
-import com.google.android.play.core.review.ReviewManagerFactory
 
 @Composable
 fun AccountScreen(
@@ -64,28 +60,16 @@ fun AccountScreen(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    val reviewManager = remember {
-        ReviewManagerFactory.create(context)
-    }
-
-    var openLogoutDialog by remember { mutableStateOf(false) }
-
-    var reviewInfo = rememberReviewTask(reviewManager)
-
-    LaunchedEffect(reviewInfo) {
-        reviewInfo?.let {
-            reviewManager.launchReviewFlow(context as Activity, it)
-        }
-    }
+    var showLogoutDialog by remember { mutableStateOf(false) }
 
     when {
         openThemeDialog -> {
             ThemeDialog(onDismissRequest = { openThemeDialog = false })
         }
 
-        openLogoutDialog -> {
+        showLogoutDialog -> {
             AlertDialog(
-                onDismissRequest = { openLogoutDialog = false },
+                onDismissRequest = { showLogoutDialog = false },
                 icon = {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_logout),
@@ -109,7 +93,7 @@ fun AccountScreen(
                     TextButton(
                         onClick = {
                             Util.clearDataAndLogout(scope, context)
-                            openLogoutDialog = false
+                            showLogoutDialog = false
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.Transparent,
@@ -125,7 +109,7 @@ fun AccountScreen(
                 dismissButton = {
                     TextButton(
                         onClick = {
-                            openLogoutDialog = false
+                            showLogoutDialog = false
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.Transparent,
@@ -242,11 +226,6 @@ fun AccountScreen(
                         }
 
                         AccountOptions.RATE_US -> {
-//                            reviewManager.requestReviewFlow().addOnCompleteListener { reviewTask ->
-//                                if (reviewTask.isSuccessful) {
-//                                    reviewInfo = reviewTask.result
-//                                }
-//                            }
                             val intent = Intent(Intent.ACTION_VIEW)
                             intent.data = Uri.parse(Constants.APP_URL)
                             context.startActivity(intent)
@@ -259,7 +238,7 @@ fun AccountScreen(
                         }
 
                         AccountOptions.LOGOUT -> {
-                            openLogoutDialog = true
+                            showLogoutDialog = true
                         }
 
                         else -> {}
