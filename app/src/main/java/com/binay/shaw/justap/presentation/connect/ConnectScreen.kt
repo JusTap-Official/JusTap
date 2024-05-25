@@ -40,6 +40,8 @@ import com.binay.shaw.justap.R
 import com.binay.shaw.justap.presentation.components.DualFloatingActionButton
 import com.binay.shaw.justap.presentation.components.ProgressDialog
 import com.binay.shaw.justap.presentation.mainScreens.qrScreens.qrGeneratorScreen.QRGeneratorViewModel
+import com.binay.shaw.justap.presentation.navigation.LocalNavHost
+import com.binay.shaw.justap.presentation.navigation.Screens
 import com.binay.shaw.justap.utilities.Util.saveBitmapToDevice
 import com.binay.shaw.justap.utilities.composeUtils.rememberQrBitmap
 import dev.shreyaspatil.capturable.capturable
@@ -58,6 +60,7 @@ fun ConnectScreen(
     val context = LocalContext.current
     val captureController = rememberCaptureController()
     var isSavingQrCode by remember { mutableStateOf(false) }
+    val navController = LocalNavHost.current
 
 
     val userId by viewModel.userId.collectAsState()
@@ -78,12 +81,17 @@ fun ConnectScreen(
                 val saveBitmap = bitmapAsync.await().asAndroidBitmap()
                 saveBitmapToDevice(bitmap = saveBitmap, context = context)
                 isSavingQrCode = false
-                Toast.makeText(context,
-                    context.getString(R.string.qr_code_saved_to_device), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.qr_code_saved_to_device), Toast.LENGTH_SHORT
+                ).show()
             } catch (error: Throwable) {
                 isSavingQrCode = false
-                Toast.makeText(context,
-                    context.getString(R.string.error_occurred_while_saving_qr_code), Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.error_occurred_while_saving_qr_code),
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             }
         }
@@ -98,7 +106,7 @@ fun ConnectScreen(
                 largeFloatingActionButtonContentDescription = stringResource(R.string.qr_scanner_button),
                 largeFloatingActionButtonContentText = stringResource(R.string.qr_scanner),
                 onClick = { isSavingQrCode = true },
-                onClickLarge = { }
+                onClickLarge = { navController.navigate(Screens.ConnectScannerScreen.name) }
             )
         }
     ) { innerPadding ->
