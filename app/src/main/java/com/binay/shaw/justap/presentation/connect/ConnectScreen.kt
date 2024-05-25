@@ -16,6 +16,9 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +39,17 @@ fun ConnectScreen(
     modifier: Modifier = Modifier,
     viewModel: QRGeneratorViewModel = hiltViewModel()
 ) {
+
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp
+    val qrSize = (screenWidth.value * 0.75).dp
+
+    val userId by viewModel.userId.collectAsState()
+    val bitmap = rememberQrBitmap(content = userId, size = qrSize)
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchFirebaseUserId()
+    }
 
     Scaffold(
         floatingActionButton = {
@@ -61,16 +75,6 @@ fun ConnectScreen(
             contentAlignment = Alignment.Center
         ) {
 
-            val content = "https://www.google.com"
-            val configuration = LocalConfiguration.current
-
-            val screenHeight = configuration.screenHeightDp.dp
-            val screenWidth = configuration.screenWidthDp.dp
-            val qrSize = (screenWidth.value * 0.75).dp
-
-
-            val bitmap = rememberQrBitmap(content = content, size = qrSize)
-
             if (bitmap != null) {
                 Image(
                     painter = remember(bitmap) { BitmapPainter(bitmap.asImageBitmap()) },
@@ -81,6 +85,7 @@ fun ConnectScreen(
             } else {
                 CircularProgressIndicator()
             }
+
         }
     }
 }

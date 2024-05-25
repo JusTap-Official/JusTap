@@ -31,9 +31,11 @@ import kotlinx.coroutines.launch
  * ```
  */
 @Composable
-fun rememberQrBitmap(content: String, size: Dp): Bitmap? {
+fun rememberQrBitmap(content: String?, size: Dp): Bitmap? {
     val density = LocalDensity.current
     val sizePx = with(density) { size.roundToPx() }
+
+    if (content == null) return null
 
     var bitmap by remember(content) {
         mutableStateOf<Bitmap?>(null)
