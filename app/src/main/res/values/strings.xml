@@ -186,6 +186,9 @@
     <string name="modal_handle">Modal Handle</string>
     <string name="default_notification_channel_id">justap</string>
     <string name="please_wait">Please wait...</string>
+    <string name="account_created_successfully">Account created successfully</string>
+    <string name="hide_password">Hide password</string>
+    <string name="show_password">Show password</string>
 
     <string-array name="account_names">
         <item>Phone</item>
