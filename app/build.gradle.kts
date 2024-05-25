@@ -243,4 +243,7 @@ dependencies {
 
     // Timber
     implementation("com.jakewharton.timber:timber:5.0.1")
+
+    // Capturable
+    implementation("dev.shreyaspatil:capturable:2.1.0")
 }

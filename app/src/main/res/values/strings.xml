@@ -192,6 +192,8 @@
     <string name="download_button">Download Button</string>
     <string name="qr_scanner_button">QR Scanner Button</string>
     <string name="qr_scanner">QR Scanner</string>
+    <string name="qr_code_saved_to_device">QR Code saved to device.</string>
+    <string name="error_occurred_while_saving_qr_code">Error occurred while saving QR Code.</string>
 
     <string-array name="account_names">
         <item>Phone</item>
