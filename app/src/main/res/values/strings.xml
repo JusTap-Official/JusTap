@@ -191,6 +191,7 @@
     <string name="show_password">Show password</string>
     <string name="download_button">Download Button</string>
     <string name="qr_scanner_button">QR Scanner Button</string>
+    <string name="qr_scanner">QR Scanner</string>
 
     <string-array name="account_names">
         <item>Phone</item>
