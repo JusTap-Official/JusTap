@@ -52,6 +52,8 @@ import com.binay.shaw.justap.R
 import com.binay.shaw.justap.presentation.MainActivity
 import com.binay.shaw.justap.presentation.authentication.FirebaseViewModel
 import com.binay.shaw.justap.presentation.authentication.forgotPassword.ForgotPasswordScreen
+import com.binay.shaw.justap.presentation.authentication.signUpScreen.SignUpScreen
+import com.binay.shaw.justap.presentation.components.AuthSwitcher
 import com.binay.shaw.justap.presentation.components.MyButton
 import com.binay.shaw.justap.presentation.components.ProgressDialog
 import com.binay.shaw.justap.presentation.themes.DMSansFontFamily
@@ -224,6 +226,7 @@ fun SignInScreenContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.End)
+                    .padding(vertical = 20.dp)
             ) {
                 if (context.isNetworkAvailable()) {
                     isLoading = true
@@ -238,7 +241,16 @@ fun SignInScreenContent(
                     ).show()
                 }
             }
-        }
 
+            AuthSwitcher(
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(id = R.string.don_t_have_an_account),
+                clickableText = stringResource(id = R.string.sign_up)
+            ) {
+                context.findActivity()?.run {
+                    startActivity(Intent(this, SignUpScreen::class.java))
+                }
+            }
+        }
     }
 }
