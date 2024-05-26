@@ -46,24 +46,24 @@ class HistoryFragment : BaseFragment() {
     ): View {
 
         _binding = FragmentHistoryBinding.inflate(layoutInflater, container, false)
-        initObservers()
+//        initObservers()
         initialization()
         clickHandlers()
 
         return binding.root
     }
 
-    private fun initObservers() {
-        localUserHistoryViewModel.run {
-            getAllHistory.observe(viewLifecycleOwner) {
-                Util.log("Accounts Scanned: $it")
-                updateEmptyState(it)
-                accountListLiveData.value = emptyList()
-                accountListLiveData.postValue(it)
-                historyAdapter.setData(it)
-            }
-        }
-    }
+//    private fun initObservers() {
+//        localUserHistoryViewModel.run {
+//            getAllHistory.observe(viewLifecycleOwner) {
+//                Util.log("Accounts Scanned: $it")
+//                updateEmptyState(it)
+//                accountListLiveData.value = emptyList()
+//                accountListLiveData.postValue(it)
+//                historyAdapter.setData(it)
+//            }
+//        }
+//    }
 
     private fun updateEmptyState(localHistoryLIST: List<LocalHistory>?) {
         if (localHistoryLIST.isNullOrEmpty()) {

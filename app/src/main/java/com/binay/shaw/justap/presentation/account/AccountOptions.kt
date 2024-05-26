@@ -1,17 +1,25 @@
 package com.binay.shaw.justap.presentation.account
 
-import com.binay.shaw.justap.R
-import kotlinx.collections.immutable.PersistentList
-import kotlinx.collections.immutable.persistentListOf
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.Help
+import androidx.compose.material.icons.automirrored.outlined.Logout
+import androidx.compose.material.icons.filled.LightMode
+import androidx.compose.material.icons.filled.QrCode
+import androidx.compose.material.icons.outlined.GroupAdd
+import androidx.compose.material.icons.outlined.Language
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.PrivacyTip
+import androidx.compose.material.icons.outlined.RateReview
+import androidx.compose.ui.graphics.vector.ImageVector
 
-enum class AccountOptions(val displayName: String, val iconId: Int) {
-    EDIT_PROFILE("Edit Profile", R.drawable.ic_account),
-    CUSTOMIZE_QR("Customize QR", R.drawable.ic_customize_qr),
-    THEME("Theme", R.drawable.ic_theme),
-    INVITE_FRIENDS("Invite your friends", R.drawable.ic_invite_friends),
-    LANGUAGE("Language", R.drawable.ic_language),
-    PRIVACY_POLICY("Privacy Policy", R.drawable.ic_privacy_policy),
-    RATE_US("Rate us", R.drawable.ic_google_playstore),
-    HELP_AND_SUPPORT("Help and Support", R.drawable.ic_help),
-    LOGOUT("Logout", R.drawable.ic_logout);
+enum class AccountOptions(val id: Int, val displayName: String, val icon: ImageVector) {
+    EDIT_PROFILE(0, "Edit Profile", Icons.Outlined.Person),
+    CUSTOMIZE_QR(1, "Customize QR", Icons.Default.QrCode),
+    THEME(2, "Theme", Icons.Default.LightMode),
+    INVITE_FRIENDS(3, "Invite your friends", Icons.Outlined.GroupAdd),
+    LANGUAGE(4, "Language", Icons.Outlined.Language),
+    PRIVACY_POLICY(5, "Privacy Policy", Icons.Outlined.PrivacyTip),
+    RATE_US(6, "Rate us", Icons.Outlined.RateReview),
+    HELP_AND_SUPPORT(7, "Help and Support", Icons.AutoMirrored.Outlined.Help),
+    LOGOUT(8, "Logout", Icons.AutoMirrored.Outlined.Logout);
 }

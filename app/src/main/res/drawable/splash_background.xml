@@ -5,6 +5,6 @@
     <item
         android:width="160dp"
         android:height="160dp"
-        android:drawable="@drawable/rounded_app_icon"
+        android:drawable="@drawable/rounded_app_icon_drawable"
         android:gravity="center" />
 </layer-list>

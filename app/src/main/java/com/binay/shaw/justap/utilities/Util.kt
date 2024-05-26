@@ -143,6 +143,40 @@ object Util {
         return uri
     }
 
+    /**
+     * Helper function that saves a Bitmap to the device storage and returns the Uri of the saved image.
+     */
+    fun saveBitmapToDevice(bitmap: Bitmap, context: Context): Uri? {
+        val filename = "${System.currentTimeMillis()}.jpg"
+        val outputStream: OutputStream?
+        val uri: Uri?
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // Use MediaStore API to save the image for Android Q (API level 29) and above
+            val contentValues = ContentValues().apply {
+                put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+                put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+                put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+            }
+
+            val contentResolver = context.contentResolver
+            uri = contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+            outputStream = uri?.let { contentResolver?.openOutputStream(it) }
+        } else {
+            // Use traditional file API to save the image for below Android Q
+            val imagesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+            val imageFile = File(imagesDir, filename)
+            uri = Uri.fromFile(imageFile)
+            outputStream = FileOutputStream(imageFile)
+        }
+
+        outputStream?.use {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+            log("Saved to Photos")
+        }
+        return uri
+    }
+
 
 
 
@@ -358,5 +392,32 @@ object Util {
         is Activity -> this
         is ContextWrapper -> baseContext.findActivity()
         else -> null
+    }
+
+    fun Context?.isNetworkAvailable(): Boolean {
+        if (this == null) return false
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            if (capabilities != null) {
+                when {
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
+                        return true
+                    }
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
+                        return true
+                    }
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> {
+                        return true
+                    }
+                }
+            }
+        } else {
+            val activeNetworkInfo = connectivityManager.activeNetworkInfo
+            if (activeNetworkInfo != null && activeNetworkInfo.isConnected) {
+                return true
+            }
+        }
+        return false
     }
 }

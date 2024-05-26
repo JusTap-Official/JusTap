@@ -1,5 +1,6 @@
 package com.binay.shaw.justap.presentation.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -11,11 +12,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.binay.shaw.justap.presentation.account.AccountOptions
 import com.binay.shaw.justap.presentation.themes.normal16
 
@@ -35,12 +34,11 @@ fun OptionItem(
         horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.Start),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(accountOptions.iconId)
-                .size(coil.size.Size.ORIGINAL) // Set the target size to load the image at.
-                .build(), contentDescription = null,
-            modifier = Modifier.size(24.dp)
+        Image(
+            imageVector = accountOptions.icon,
+            contentDescription = accountOptions.displayName,
+            modifier = Modifier.size(24.dp),
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
         )
 
         Text(

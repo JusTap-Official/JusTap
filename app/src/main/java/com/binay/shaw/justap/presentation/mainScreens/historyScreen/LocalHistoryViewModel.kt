@@ -2,13 +2,15 @@ package com.binay.shaw.justap.presentation.mainScreens.historyScreen
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.model.LocalHistory
 import com.binay.shaw.justap.repository.LocalHistoryRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
@@ -18,13 +20,21 @@ class LocalHistoryViewModel(
 
     val accountListLiveData = MutableLiveData<List<LocalHistory>>()
 
-    val getAllHistory : LiveData<List<LocalHistory>>
+    private val _getAllHistory = MutableStateFlow<List<LocalHistory>>(emptyList())
+    val getAllHistory get() = _getAllHistory.asStateFlow()
+
     private val repository: LocalHistoryRepository
 
     init {
         val dao = LocalUserDatabase.getDatabase(application).localUserHistoryDao()
         repository = LocalHistoryRepository(dao)
-        getAllHistory = repository.getAllHistory
+        getAllHistory()
+    }
+
+    private fun getAllHistory() = viewModelScope.launch(Dispatchers.IO) {
+        repository.getAllHistory.collectLatest {
+            _getAllHistory.value = it
+        }
     }
 
     fun insertUserHistory(localHistory: LocalHistory) {
