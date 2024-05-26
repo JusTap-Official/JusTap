@@ -1,9 +1,8 @@
 package com.binay.shaw.justap.data
 
-
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.binay.shaw.justap.model.LocalHistory
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
@@ -19,5 +18,5 @@ interface LocalHistoryDAO {
     fun clearHistory()
 
     @Query(value = "SELECT * FROM historyDB")
-    fun getAllHistory() : LiveData<List<LocalHistory>>
+    fun getAllHistory() : Flow<List<LocalHistory>>
 }
