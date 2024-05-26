@@ -17,7 +17,7 @@ import com.binay.shaw.justap.presentation.themes.medium20
 fun HomeScreen(
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = Modifier.fillMaxSize().background(White), verticalArrangement = Arrangement.Center) {
+    Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background), verticalArrangement = Arrangement.Center) {
         Text(text = "This is home screen", style = medium20.copy(color = Color.Black))
     }
 }

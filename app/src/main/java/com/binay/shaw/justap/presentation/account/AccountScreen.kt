@@ -27,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,18 +50,29 @@ import com.binay.shaw.justap.presentation.themes.normal14
 import com.binay.shaw.justap.presentation.themes.normal16
 import com.binay.shaw.justap.utilities.Constants
 import com.binay.shaw.justap.utilities.Util
+import com.theapache64.rebugger.Rebugger
 
 @Composable
 fun AccountScreen(
     modifier: Modifier = Modifier
 ) {
-
-    var openThemeDialog by remember { mutableStateOf(false) }
-
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    var showLogoutDialog by remember { mutableStateOf(false) }
+    var openThemeDialog by rememberSaveable { mutableStateOf(false) }
+    var showLogoutDialog by rememberSaveable { mutableStateOf(false) }
+
+    val optionsList by remember { mutableStateOf(AccountOptions.entries.toList()) }
+    val accountOptions = optionsList.take(3)
+    val generalOptions = optionsList.drop(3)
+
+    Rebugger(
+        trackMap = mapOf(
+            "AccountScreen" to "AccountScreen",
+            "openThemeDialog" to openThemeDialog,
+            "showLogoutDialog" to showLogoutDialog
+        )
+    )
 
     when {
         openThemeDialog -> {
@@ -79,13 +91,13 @@ fun AccountScreen(
                 },
                 title = {
                     Text(
-                        text = "Logout?",
+                        text = stringResource(R.string.logout),
                         style = normal16.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
                     )
                 },
                 text = {
                     Text(
-                        text = "Are you sure you want to logout?",
+                        text = stringResource(R.string.are_you_sure_you_want_to_logout),
                         style = normal16.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
                     )
                 },
@@ -101,7 +113,7 @@ fun AccountScreen(
                         )
                     ) {
                         Text(
-                            "Logout",
+                            stringResource(R.string.logout_ask),
                             style = medium14
                         )
                     }
@@ -146,7 +158,7 @@ fun AccountScreen(
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(R.drawable.aboutme_pfp)
-                    .size(coil.size.Size.ORIGINAL) // Set the target size to load the image at.
+                    .size(coil.size.Size.ORIGINAL)
                     .build(), contentDescription = null,
                 modifier = Modifier
                     .size(56.dp)
@@ -168,15 +180,18 @@ fun AccountScreen(
         ) {
             item {
                 Text(
-                    text = "Account",
+                    text = stringResource(id = R.string.account),
                     style = medium14.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 16.dp, top = 18.dp, bottom = 18.dp)
                 )
             }
-            items(AccountOptions.entries.subList(0, 3)) {
-                OptionItem(it) { onClickOption ->
+            items(
+                items = accountOptions,
+                key = { option -> option.id }
+            ) { option ->
+                OptionItem(option) { onClickOption ->
                     when (onClickOption) {
                         AccountOptions.EDIT_PROFILE -> {
 
@@ -196,15 +211,18 @@ fun AccountScreen(
             }
             item {
                 Text(
-                    text = "General",
+                    text = stringResource(R.string.general),
                     style = medium14.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 16.dp, top = 18.dp, bottom = 18.dp)
                 )
             }
-            items(AccountOptions.entries.subList(3, AccountOptions.entries.size)) {
-                OptionItem(it) { onClickOption ->
+            items(
+                items = generalOptions,
+                key = { option -> option.id }
+            ) { option ->
+                OptionItem(option) { onClickOption ->
                     when (onClickOption) {
                         AccountOptions.INVITE_FRIENDS -> {
                             val sendIntent = Intent(Intent.ACTION_SEND).apply {
@@ -248,7 +266,8 @@ fun AccountScreen(
             item {
                 Text(
                     text = "App Version: ${BuildConfig.VERSION_NAME}",
-                    style = normal14.copy(color = MaterialTheme.colorScheme.surfaceTint)
+                    style = normal14.copy(color = MaterialTheme.colorScheme.surfaceTint),
+                    modifier = Modifier.padding(vertical = 16.dp)
                 )
             }
         }

@@ -143,6 +143,40 @@ object Util {
         return uri
     }
 
+    /**
+     * Helper function that saves a Bitmap to the device storage and returns the Uri of the saved image.
+     */
+    fun saveBitmapToDevice(bitmap: Bitmap, context: Context): Uri? {
+        val filename = "${System.currentTimeMillis()}.jpg"
+        val outputStream: OutputStream?
+        val uri: Uri?
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // Use MediaStore API to save the image for Android Q (API level 29) and above
+            val contentValues = ContentValues().apply {
+                put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+                put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+                put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+            }
+
+            val contentResolver = context.contentResolver
+            uri = contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+            outputStream = uri?.let { contentResolver?.openOutputStream(it) }
+        } else {
+            // Use traditional file API to save the image for below Android Q
+            val imagesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+            val imageFile = File(imagesDir, filename)
+            uri = Uri.fromFile(imageFile)
+            outputStream = FileOutputStream(imageFile)
+        }
+
+        outputStream?.use {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+            log("Saved to Photos")
+        }
+        return uri
+    }
+
 
 
 

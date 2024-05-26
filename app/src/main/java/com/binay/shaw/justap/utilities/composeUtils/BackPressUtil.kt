@@ -12,9 +12,10 @@ import androidx.compose.ui.platform.LocalContext
 import kotlinx.coroutines.delay
 
 /**
- * This Utility file applies on Navigation level to avoid mis-click on Back Button.
- * To avoid it, 2 seconds delay is added after initial back press, if pressed back again it exits.
- * */
+ * This utility class is used to handle back button presses on the navigation level.
+ * It prevents accidental back button presses by adding a 2-second delay after the initial back press.
+ * If the back button is pressed again within the delay period, the application will exit.
+ */
 
 sealed class BackPress {
     data object Idle : BackPress()

@@ -8,7 +8,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -26,8 +25,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.presentation.MainActivity
 import com.binay.shaw.justap.presentation.authentication.signInScreen.SignInScreen
@@ -86,16 +87,20 @@ fun SplashContent(
     }
 
     Surface(
-        modifier = Modifier.fillMaxSize().then(modifier),
+        modifier = Modifier
+            .fillMaxSize()
+            .then(modifier),
         color = MaterialTheme.colorScheme.background
     ) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Image(
+
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(R.mipmap.app_icon_round)
+                    .build(), contentDescription = null,
                 modifier = Modifier
                     .size(150.dp)
-                    .clip(CircleShape),
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = null
+                    .clip(CircleShape)
             )
         }
     }

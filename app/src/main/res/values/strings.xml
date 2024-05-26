@@ -189,6 +189,20 @@
     <string name="account_created_successfully">Account created successfully</string>
     <string name="hide_password">Hide password</string>
     <string name="show_password">Show password</string>
+    <string name="download_button">Download Button</string>
+    <string name="qr_scanner_button">QR Scanner Button</string>
+    <string name="qr_scanner">QR Scanner</string>
+    <string name="qr_code_saved_to_device">QR Code saved to device.</string>
+    <string name="error_occurred_while_saving_qr_code">Error occurred while saving QR Code.</string>
+    <string name="connect">Connect</string>
+    <string name="history">History</string>
+    <string name="account">Account</string>
+    <string name="home">Home</string>
+    <string name="toggle_torch">Toggle Torch</string>
+    <string name="general">General</string>
+    <string name="logout">Logout?</string>
+    <string name="are_you_sure_you_want_to_logout">Are you sure you want to logout?</string>
+    <string name="logout_ask">Logout</string>
 
     <string-array name="account_names">
         <item>Phone</item>

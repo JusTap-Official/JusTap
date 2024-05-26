@@ -37,7 +37,7 @@ class QRGeneratorFragment : BaseFragment() {
 
     private var _binding: FragmentQRGeneratorBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by viewModels<QRGeneratorViewModel> { ViewModelFactory() }
+//    private val viewModel by viewModels<QRGeneratorViewModel> { ViewModelFactory() }
     private val localViewModel by viewModels<LocalUserViewModel> { ViewModelFactory() }
     private lateinit var displayMetrics: DisplayMetrics
     private var overlay: Bitmap? = null
@@ -54,64 +54,64 @@ class QRGeneratorFragment : BaseFragment() {
 
         initialization()
         initObservers()
-        clickHandlers()
+//        clickHandlers()
 
         return binding.root
     }
 
-    private fun clickHandlers() {
-        binding.apply {
-
-            qrInfo.setOnClickListener {
-                val dialog = ParagraphModalBinding.inflate(layoutInflater)
-                val bottomSheet = requireActivity().createBottomSheet()
-                dialog.apply {
-                    paragraphHeading.text =
-                        requireContext().resources.getString(R.string.OfflineMode)
-                    paragraphContent.text =
-                        requireContext().resources.getString(R.string.OfflineModeInfo)
-                }
-                dialog.root.setBottomSheet(bottomSheet)
-            }
-
-            include.leftIcon.setOnClickListener {
-                if (viewModel.bitmap.value?.saveToStorageAndGetUri(requireContext()) != null) {
-                    showAlerter(
-                        resources.getString(R.string.saved_successfully),
-                        resources.getString(R.string.your_qr_code_is_saved_in_gallery),
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.positive
-                        ),
-                        R.drawable.check,
-                        800L
-                    )
-                }
-            }
-
-            include.rightIcon.setOnClickListener {
-                val message = "Hi this is $userName,\nHere is my JusTap QR Code!\n\nDownload: ${Constants.APP_URL}"
-                binding.qrCodePreview.shareImageAndText(requireContext(), message)
-            }
-
-            onlineOfflineModeSwitch.setOnTouchListener { _, event ->
-                event.actionMasked == MotionEvent.ACTION_MOVE
-            }
-
-            onlineOfflineModeSwitch.setOnClickListener {
-                Toast.makeText(
-                    requireContext(),
-                    resources.getString(R.string.tapped),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-
-            scanQRCode.setOnClickListener {
-                Navigation.findNavController(binding.root)
-                    .navigate(R.id.action_scanner_to_scannerFragment)
-            }
-        }
-    }
+//    private fun clickHandlers() {
+//        binding.apply {
+//
+//            qrInfo.setOnClickListener {
+//                val dialog = ParagraphModalBinding.inflate(layoutInflater)
+//                val bottomSheet = requireActivity().createBottomSheet()
+//                dialog.apply {
+//                    paragraphHeading.text =
+//                        requireContext().resources.getString(R.string.OfflineMode)
+//                    paragraphContent.text =
+//                        requireContext().resources.getString(R.string.OfflineModeInfo)
+//                }
+//                dialog.root.setBottomSheet(bottomSheet)
+//            }
+//
+//            include.leftIcon.setOnClickListener {
+//                if (viewModel.bitmap.value?.saveToStorageAndGetUri(requireContext()) != null) {
+//                    showAlerter(
+//                        resources.getString(R.string.saved_successfully),
+//                        resources.getString(R.string.your_qr_code_is_saved_in_gallery),
+//                        ContextCompat.getColor(
+//                            requireContext(),
+//                            R.color.positive
+//                        ),
+//                        R.drawable.check,
+//                        800L
+//                    )
+//                }
+//            }
+//
+//            include.rightIcon.setOnClickListener {
+//                val message = "Hi this is $userName,\nHere is my JusTap QR Code!\n\nDownload: ${Constants.APP_URL}"
+//                binding.qrCodePreview.shareImageAndText(requireContext(), message)
+//            }
+//
+//            onlineOfflineModeSwitch.setOnTouchListener { _, event ->
+//                event.actionMasked == MotionEvent.ACTION_MOVE
+//            }
+//
+//            onlineOfflineModeSwitch.setOnClickListener {
+//                Toast.makeText(
+//                    requireContext(),
+//                    resources.getString(R.string.tapped),
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            }
+//
+//            scanQRCode.setOnClickListener {
+//                Navigation.findNavController(binding.root)
+//                    .navigate(R.id.action_scanner_to_scannerFragment)
+//            }
+//        }
+//    }
 
     private fun initObservers() {
 
@@ -136,32 +136,32 @@ class QRGeneratorFragment : BaseFragment() {
 
         val isQRCodeCircular = sharedPreference.getBoolean(Constants.isQRCodeCircular, false)
 
-        viewModel.run {
-            generateQR(
-                displayMetrics, overlay,
-                firstSelectedColor,
-                secondSelectedColor,
-                isQRCodeCircular
-            )
-
-            bitmap.observe(viewLifecycleOwner) {
-                binding.qrCodePreview.setImageBitmap(it)
-            }
-
-            errorMessage.observe(viewLifecycleOwner) {
-                showAlerter(
-                    resources.getString(R.string.anErrorOccurred),
-                    "",
-                    ContextCompat.getColor(requireContext(), R.color.negative),
-                    R.drawable.warning,
-                    2000L
-                )
-            }
-
-            localViewModel.fetchUser.observe(viewLifecycleOwner) {
-                userName = it.userName
-            }
-        }
+//        viewModel.run {
+//            generateQR(
+//                displayMetrics, overlay,
+//                firstSelectedColor,
+//                secondSelectedColor,
+//                isQRCodeCircular
+//            )
+//
+//            bitmap.observe(viewLifecycleOwner) {
+//                binding.qrCodePreview.setImageBitmap(it)
+//            }
+//
+//            errorMessage.observe(viewLifecycleOwner) {
+//                showAlerter(
+//                    resources.getString(R.string.anErrorOccurred),
+//                    "",
+//                    ContextCompat.getColor(requireContext(), R.color.negative),
+//                    R.drawable.warning,
+//                    2000L
+//                )
+//            }
+//
+//            localViewModel.fetchUser.observe(viewLifecycleOwner) {
+//                userName = it.userName
+//            }
+//        }
     }
 
     private fun initialization() {
