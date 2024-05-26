@@ -158,9 +158,9 @@ dependencies {
 //    kapt ("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
 
     //Default Pre-defined
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
+    implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     //Test
