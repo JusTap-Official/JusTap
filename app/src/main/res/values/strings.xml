@@ -203,6 +203,7 @@
     <string name="logout">Logout?</string>
     <string name="are_you_sure_you_want_to_logout">Are you sure you want to logout?</string>
     <string name="logout_ask">Logout</string>
+    <string name="search">Search</string>
 
     <string-array name="account_names">
         <item>Phone</item>

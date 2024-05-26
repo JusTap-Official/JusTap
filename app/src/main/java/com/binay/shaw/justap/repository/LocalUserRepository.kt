@@ -3,6 +3,7 @@ package com.binay.shaw.justap.repository
 import androidx.lifecycle.LiveData
 import com.binay.shaw.justap.data.LocalUserDAO
 import com.binay.shaw.justap.model.LocalUser
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Created by binay on 03,January,2023
@@ -11,7 +12,7 @@ class LocalUserRepository(
     private val localUserDAO: LocalUserDAO
 ) {
 
-    val fetchUser: LiveData<LocalUser> = localUserDAO.fetchLocalUser()
+    val fetchUser: Flow<LocalUser> = localUserDAO.fetchLocalUser()
 
 
     suspend fun insertUser(localUser: LocalUser) {
