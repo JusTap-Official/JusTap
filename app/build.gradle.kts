@@ -139,7 +139,7 @@ dependencies {
     // ktlint(project(":custom-ktlint-ruleset")) // in case of custom ruleset
 
     //DataStore (SharedPrefs)
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
 
     // Dependency Injection
     implementation("com.google.dagger:hilt-android:2.49")
