@@ -266,7 +266,8 @@ fun AccountScreen(
             item {
                 Text(
                     text = "App Version: ${BuildConfig.VERSION_NAME}",
-                    style = normal14.copy(color = MaterialTheme.colorScheme.surfaceTint)
+                    style = normal14.copy(color = MaterialTheme.colorScheme.surfaceTint),
+                    modifier = Modifier.padding(vertical = 16.dp)
                 )
             }
         }
