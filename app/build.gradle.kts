@@ -77,7 +77,7 @@ val ktlintCheck by tasks.registering(JavaExec::class) {
 
 //tasks.check {
 //    dependsOn(ktlintCheck)
-    // run -> ./gradlew ktlintCheck
+// run -> ./gradlew ktlintCheck
 //}
 
 tasks.register<JavaExec>("ktlintFormat") {
@@ -99,10 +99,10 @@ tasks.register<JavaExec>("ktlintFormat") {
 dependencies {
 
     val lifecycleVersion = "2.8.0"
-    val cameraX = "1.3.1"
     val navVersion = "2.7.7"
     val roomVersion = "2.6.1"
     val lottieVersion = "6.1.0"
+    val cameraX = "1.4.0-beta01"
 
     // Compose
     val composeBom = platform("androidx.compose:compose-bom:2024.05.00")
@@ -180,7 +180,6 @@ dependencies {
     implementation("com.airbnb.android:lottie:$lottieVersion")
 
 
-
     //Firebase
     implementation(platform("com.google.firebase:firebase-bom:31.1.1"))
     implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
@@ -193,7 +192,6 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging-ktx:23.4.1")
 
     implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.7")
-
 
 
     //Room Database
@@ -217,6 +215,7 @@ dependencies {
     implementation("androidx.camera:camera-camera2:$cameraX")
     implementation("androidx.camera:camera-lifecycle:$cameraX")
     implementation("androidx.camera:camera-view:$cameraX")
+    implementation("androidx.camera:camera-core:$cameraX")
 
     //ImagePicker
     implementation("com.github.dhaval2404:imagepicker:2.1")
@@ -246,4 +245,7 @@ dependencies {
 
     // Capturable
     implementation("dev.shreyaspatil:capturable:2.1.0")
+
+    // Rebugger
+    implementation("io.github.theapache64:rebugger:1.0.0-rc03")
 }

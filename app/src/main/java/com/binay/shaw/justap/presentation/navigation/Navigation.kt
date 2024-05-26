@@ -1,7 +1,6 @@
 package com.binay.shaw.justap.presentation.navigation
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateColorAsState
@@ -62,7 +61,6 @@ val LocalNavHost = staticCompositionLocalOf<NavHostController> {
 @RequiresApi(Build.VERSION_CODES.S)
 @Composable
 fun Navigation(
-    activity: Activity,
     modifier: Modifier = Modifier
 ) {
 
@@ -83,7 +81,8 @@ fun Navigation(
                     screensWithoutNavBar = screensWithoutNavBar
                 )
             },
-            contentWindowInsets = WindowInsets(0.dp)
+            contentWindowInsets = WindowInsets(0.dp),
+            modifier = Modifier.then(modifier)
         ) {
             NavHost(
                 navController,

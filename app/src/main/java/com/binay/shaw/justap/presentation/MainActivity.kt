@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             JusTapTheme {
                 Surface {
-                    Navigation(this)
+                    Navigation()
                 }
             }
         }

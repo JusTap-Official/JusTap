@@ -198,6 +198,7 @@
     <string name="history">History</string>
     <string name="account">Account</string>
     <string name="home">Home</string>
+    <string name="toggle_torch">Toggle Torch</string>
 
     <string-array name="account_names">
         <item>Phone</item>
