@@ -18,7 +18,7 @@ android {
 
     defaultConfig {
         applicationId = "com.binay.shaw.justap"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 34
         versionCode = 7
         versionName = "2.1.2"
@@ -181,15 +181,15 @@ dependencies {
 
 
     //Firebase
-    implementation(platform("com.google.firebase:firebase-bom:31.1.1"))
-    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
-    implementation("com.google.firebase:firebase-database-ktx:20.3.0")
-    implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
-    implementation("com.google.android.gms:play-services-auth:21.0.0")
+    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
+    implementation("com.google.firebase:firebase-auth-ktx:23.0.0")
+    implementation("com.google.firebase:firebase-database-ktx:21.0.0")
+    implementation("com.google.firebase:firebase-storage-ktx:21.0.0")
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-perf-ktx")
-    implementation("com.google.firebase:firebase-messaging-ktx:23.4.1")
+    implementation("com.google.firebase:firebase-messaging-ktx:24.0.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.7")
 
