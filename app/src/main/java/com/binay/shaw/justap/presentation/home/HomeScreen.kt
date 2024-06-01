@@ -34,8 +34,11 @@ import com.binay.shaw.justap.presentation.components.AccountCard
 import com.binay.shaw.justap.presentation.components.EmptyState
 import com.binay.shaw.justap.presentation.components.SearchBar
 import com.binay.shaw.justap.presentation.mainScreens.homeScreen.accountFragments.AddEditViewModel
+import com.binay.shaw.justap.presentation.navigation.LocalNavHost
+import com.binay.shaw.justap.presentation.navigation.Screens
 import com.binay.shaw.justap.viewModel.AccountsViewModel
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
+import com.theapache64.rebugger.Rebugger
 import timber.log.Timber
 
 
@@ -50,8 +53,26 @@ fun HomeScreen(
 
     val userAccountList by accountViewModel.userAccountList.collectAsState(emptyList())
     val user by localUserViewModel.user.collectAsState()
+    val navController = LocalNavHost.current
 
     var search by remember { mutableStateOf("") }
+    val filteredAccountList = if (search.isBlank()) {
+        userAccountList
+    } else {
+        userAccountList.filter {
+            it.accountName.contains(search, ignoreCase = true) ||
+                    it.accountData.contains(search, ignoreCase = true)
+        }
+    }
+
+    Rebugger(
+        trackMap = mapOf(
+            "userAccountList" to userAccountList,
+            "user" to user,
+            "search" to search,
+            "filteredAccountList" to filteredAccountList
+        )
+    )
 
     LaunchedEffect(Unit) {
         accountViewModel.getAllUserAccounts()
@@ -77,8 +98,7 @@ fun HomeScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    // Navigate to add account screen
-                    Timber.d("Add account clicked")
+                    navController.navigate(Screens.ContactDetailsScreen.name)
                 }
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add account")
@@ -97,29 +117,24 @@ fun HomeScreen(
             SearchBar(
                 search = search,
                 onValueChange = { search = it },
-                onSearchClick = {
-                    // Handle search click
-                    Timber.d("Search clicked with value: $search")
-                }
+                onSearchClick = {}
             )
 
             Spacer(Modifier.height(16.dp))
 
             if (userAccountList.isEmpty()) {
-                Timber.d("User account list is empty")
-                EmptyState(showTextButton = true)  {
+                EmptyState(showTextButton = true) {
                     // Navigate to add account screen
-                    Timber.d("Add account clicked")
+                    navController.navigate(Screens.ContactDetailsScreen.name)
                 }
-
+            } else if (filteredAccountList.isEmpty()) {
+                EmptyState(text = "No accounts found",)
             } else {
-                Timber.d("User account list is not empty")
-
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(
-                        items = userAccountList,
+                        items = filteredAccountList,
                         key = { account -> account.accountID }
                     ) { account ->
                         AccountCard(account) { newValue ->

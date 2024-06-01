@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.presentation.themes.DMSansFontFamily
-import timber.log.Timber
 
 @Composable
 fun EmptyState(
