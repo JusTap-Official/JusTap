@@ -3,8 +3,6 @@ package com.binay.shaw.justap.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.binay.shaw.justap.viewModel.AccountsViewModel
-import com.binay.shaw.justap.viewModel.LocalUserViewModel
 import com.binay.shaw.justap.presentation.mainScreens.historyScreen.LocalHistoryViewModel
 import com.binay.shaw.justap.presentation.mainScreens.homeScreen.accountFragments.AddEditViewModel
 import com.binay.shaw.justap.presentation.mainScreens.resultScreen.ScanResultViewModel
@@ -33,12 +31,6 @@ class ViewModelFactory : ViewModelProvider.Factory {
                 }
                 isAssignableFrom(EditProfileViewModel::class.java) -> {
                     EditProfileViewModel()
-                }
-                isAssignableFrom(AccountsViewModel::class.java) -> {
-                    AccountsViewModel(application)
-                }
-                isAssignableFrom(LocalUserViewModel::class.java) -> {
-                    LocalUserViewModel(application)
                 }
                 isAssignableFrom(FirebaseViewModel::class.java) -> {
                     FirebaseViewModel()

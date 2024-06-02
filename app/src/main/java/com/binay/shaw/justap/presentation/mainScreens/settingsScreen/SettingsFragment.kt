@@ -183,18 +183,18 @@ class SettingsFragment : BaseFragment() {
     }
 
     private fun initObservers() {
-        localUserViewModel.fetchUser.observe(viewLifecycleOwner) {
-            it?.let {
-                createUser(it)
-            }
-
-            val name = Util.getFirstName(localUser.userName)
-            binding.settingsUserName.text = name
-
-            val profileURL = localUser.userProfilePicture.toString()
-            if (profileURL.isNotEmpty())
-                Util.loadImagesWithGlide(binding.profileImage, profileURL)
-        }
+//        localUserViewModel.fetchUser.observe(viewLifecycleOwner) {
+//            it?.let {
+//                createUser(it)
+//            }
+//
+//            val name = Util.getFirstName(localUser.userName)
+//            binding.settingsUserName.text = name
+//
+//            val profileURL = localUser.userProfilePicture.toString()
+//            if (profileURL.isNotEmpty())
+//                Util.loadImagesWithGlide(binding.profileImage, profileURL)
+//        }
     }
 
     private fun createUser(user: LocalUser) {

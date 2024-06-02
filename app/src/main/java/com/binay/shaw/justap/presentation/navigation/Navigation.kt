@@ -44,6 +44,7 @@ import com.binay.shaw.justap.R
 import com.binay.shaw.justap.presentation.account.AccountScreen
 import com.binay.shaw.justap.presentation.connect.ConnectScannerScreen
 import com.binay.shaw.justap.presentation.connect.ConnectScreen
+import com.binay.shaw.justap.presentation.contact.ContactDetailsScreen
 import com.binay.shaw.justap.presentation.history.HistoryScreen
 import com.binay.shaw.justap.presentation.home.HomeScreen
 import com.binay.shaw.justap.presentation.themes.DMSansFontFamily
@@ -68,7 +69,8 @@ fun Navigation(
     val backStackEntry = navController.currentBackStackEntryAsState()
 
     val screensWithoutNavBar = persistentListOf(
-        Screens.ConnectScannerScreen.name
+        Screens.ConnectScannerScreen.name,
+        Screens.ContactDetailsScreen.name
     )
 
     BackPressCompose()
@@ -96,6 +98,9 @@ fun Navigation(
 
                 composable(route = Screens.HomeScreen.name) {
                     HomeScreen()
+                }
+                composable(route = Screens.ContactDetailsScreen.name) {
+                    ContactDetailsScreen()
                 }
 
                 composable(route = Screens.ConnectScreen.name) {

@@ -1,40 +1,29 @@
 package com.binay.shaw.justap.viewModel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.repository.LocalUserRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-/**
- * Created by binay on 03,January,2023
- */
-
-class LocalUserViewModel(
-    application: Application
-) : AndroidViewModel(application) {
-
-
-    val fetchUser: LiveData<LocalUser>
-    val name: LiveData<String>
-    val bio: LiveData<String>
-    val id: LiveData<String>
-    val email: LiveData<String>
+@HiltViewModel
+class LocalUserViewModel @Inject constructor(
     private val repository: LocalUserRepository
+) : ViewModel() {
 
+    private val _user = MutableStateFlow(LocalUser(userName = "Loading..."))
+    val user get() = _user.asStateFlow()
 
-    init {
-        val dao = LocalUserDatabase.getDatabase(application).localUserDao()
-        repository = LocalUserRepository(dao)
-        fetchUser = repository.fetchUser
-        name = repository.getName()
-        bio = repository.getBio()
-        id = repository.getID()
-        email = repository.getEmail()
+    fun getUser() = viewModelScope.launch(Dispatchers.IO) {
+        repository.fetchUser.collectLatest {
+            _user.value = it
+        }
     }
 
     fun deleteUser() = viewModelScope.launch(Dispatchers.IO) {

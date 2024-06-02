@@ -11,10 +11,10 @@ import java.io.Serializable
 @Entity(tableName = "localDB")
 data class LocalUser(
     @PrimaryKey(autoGenerate = false)
-    val userID: String,
-    val userName: String,
-    val userEmail: String,
-    val userBio: String?,
-    val userProfilePicture: String?,
-    val userBannerPicture: String?
+    val userID: String = "",
+    val userName: String = "",
+    val userEmail: String = "",
+    val userBio: String? = "",
+    val userProfilePicture: String? = null,
+    val userBannerPicture: String? = null,
 ) : Serializable
