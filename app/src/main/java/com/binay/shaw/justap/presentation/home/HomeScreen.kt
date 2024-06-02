@@ -1,5 +1,6 @@
 package com.binay.shaw.justap.presentation.home
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,10 +29,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Transparent
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.binay.shaw.justap.domain.Resource
 import com.binay.shaw.justap.presentation.components.AccountCard
 import com.binay.shaw.justap.presentation.components.EmptyState
+import com.binay.shaw.justap.presentation.components.ProgressDialog
 import com.binay.shaw.justap.presentation.components.SearchBar
 import com.binay.shaw.justap.presentation.mainScreens.homeScreen.accountFragments.AddEditViewModel
 import com.binay.shaw.justap.presentation.navigation.LocalNavHost
@@ -51,10 +55,14 @@ fun HomeScreen(
     addEditViewModel: AddEditViewModel = hiltViewModel()
 ) {
 
-    val userAccountList by accountViewModel.userAccountList.collectAsState(emptyList())
-    val user by localUserViewModel.user.collectAsState()
+    val context = LocalContext.current
     val navController = LocalNavHost.current
 
+    val userAccountList by accountViewModel.userAccountList.collectAsState(emptyList())
+    val user by localUserViewModel.user.collectAsState()
+    val updateAccountResult by addEditViewModel.updateAccountResult.collectAsState()
+
+    var showProgress by remember { mutableStateOf(false) }
     var search by remember { mutableStateOf("") }
     val filteredAccountList = if (search.isBlank()) {
         userAccountList
@@ -62,6 +70,32 @@ fun HomeScreen(
         userAccountList.filter {
             it.accountName.contains(search, ignoreCase = true) ||
                     it.accountData.contains(search, ignoreCase = true)
+        }
+    }
+
+    LaunchedEffect(updateAccountResult) {
+        when (updateAccountResult) {
+            is Resource.Success<*> -> {
+                Toast.makeText(context, "Account updated successfully", Toast.LENGTH_SHORT)
+                    .show()
+                showProgress = false
+                addEditViewModel.clearUpdateStatus()
+            }
+
+            is Resource.Error -> {
+                Toast.makeText(context, "Failed to update account", Toast.LENGTH_SHORT).show()
+                showProgress = false
+            }
+
+            is Resource.Loading -> {
+                Timber.d("Updating account")
+                showProgress = true
+                addEditViewModel.clearUpdateStatus()
+            }
+
+            is Resource.Clear -> {
+                showProgress = false
+            }
         }
     }
 
@@ -81,6 +115,10 @@ fun HomeScreen(
 
     LaunchedEffect(userAccountList) {
         Timber.d("User account list: $userAccountList")
+    }
+
+    if (showProgress) {
+        ProgressDialog {}
     }
 
     Scaffold(
@@ -128,7 +166,7 @@ fun HomeScreen(
                     navController.navigate(Screens.ContactDetailsScreen.name)
                 }
             } else if (filteredAccountList.isEmpty()) {
-                EmptyState(text = "No accounts found",)
+                EmptyState(text = "No accounts found")
             } else {
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -139,6 +177,7 @@ fun HomeScreen(
                     ) { account ->
                         AccountCard(account) { newValue ->
                             Timber.d("Switch clicked with value: $newValue")
+                            addEditViewModel.updateVisibility(user.userID, account, newValue)
                         }
                     }
                 }

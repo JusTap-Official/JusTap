@@ -3,13 +3,20 @@ package com.binay.shaw.justap.presentation.mainScreens.homeScreen.accountFragmen
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.binay.shaw.justap.domain.Resource
+import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.utilities.Constants
 import com.binay.shaw.justap.utilities.Util
-import com.binay.shaw.justap.model.Accounts
 import com.binay.shaw.justap.viewModel.AccountsViewModel
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 
 class AddEditViewModel : ViewModel() {
@@ -19,6 +26,9 @@ class AddEditViewModel : ViewModel() {
     val updateStatus = MutableLiveData<Int>()
     private val firebaseDatabase = FirebaseDatabase.getInstance()
     val selectedAccount = MutableLiveData<String>()
+
+    private val _updateAccountResult = MutableStateFlow<Resource<Any>>(Resource.Clear())
+    val updateAccountResult = _updateAccountResult.asStateFlow()
 
     init {
         saveStatus.value = 0
@@ -214,4 +224,34 @@ class AddEditViewModel : ViewModel() {
         }
     }
 
+
+    fun updateVisibility(
+        userId: String,
+        account: Accounts,
+        newVisibility: Boolean
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        _updateAccountResult.value = Resource.Loading("Updating visibility")
+
+        val firebaseDatabaseReference =
+            firebaseDatabase.getReference(
+                "/${Constants.users}/$userId/${Constants.accounts}/${account.accountID}"
+            )
+        val updates: Map<String, Any> = mapOf(
+            "showAccount" to newVisibility
+        )
+
+        try {
+            firebaseDatabaseReference.updateChildren(updates).await()
+            Timber.d("Updated visibility in Firebase")
+            val data = account.copy(showAccount = newVisibility)
+            _updateAccountResult.value = Resource.Success(data)
+        } catch (e: Exception) {
+            Timber.d("Failed to update visibility in Firebase")
+            _updateAccountResult.value = Resource.Error(e)
+        }
+    }
+
+    fun clearUpdateStatus() {
+        _updateAccountResult.value = Resource.Clear()
+    }
 }
