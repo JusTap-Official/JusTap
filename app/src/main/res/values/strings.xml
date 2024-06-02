@@ -206,6 +206,8 @@
     <string name="search">Search</string>
     <string name="quickly_share_your_contacts_by_adding_them">Quickly share your contacts by adding them</string>
     <string name="empty_state">Empty state</string>
+    <string name="save">Save</string>
+    <string name="go_back">Go Back</string>
 
     <string-array name="account_names">
         <item>Phone</item>
