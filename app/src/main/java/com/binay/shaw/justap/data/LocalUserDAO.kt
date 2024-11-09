@@ -3,6 +3,7 @@ package com.binay.shaw.justap.data
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.binay.shaw.justap.model.LocalUser
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Created by binay on 02,January,2023
@@ -21,7 +22,7 @@ interface LocalUserDAO {
     suspend fun updateUser(user: LocalUser)
 
     @Query("SELECT * FROM localDB")
-    fun fetchLocalUser(): LiveData<LocalUser>
+    fun fetchLocalUser(): Flow<LocalUser>
 
     @Query("SELECT userName FROM localDB")
     fun getName(): LiveData<String>

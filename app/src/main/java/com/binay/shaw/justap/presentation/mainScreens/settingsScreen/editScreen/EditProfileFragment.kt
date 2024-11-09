@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.text.InputType
 import android.view.*
 import android.widget.ImageView
 import android.widget.Toast
@@ -13,28 +12,23 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.binay.shaw.justap.presentation.MainActivity
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.databinding.FragmentEditProfileBinding
 import com.binay.shaw.justap.databinding.MyToolbarBinding
 import com.binay.shaw.justap.databinding.OptionsModalBinding
+import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.utilities.ImageUtils
 import com.binay.shaw.justap.utilities.Util
 import com.binay.shaw.justap.utilities.Util.createBottomSheet
 import com.binay.shaw.justap.utilities.Util.setBottomSheet
-import com.binay.shaw.justap.model.LocalUser
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
 import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.launch
-import kotlin.collections.HashMap
 
 @RequiresApi(Build.VERSION_CODES.P)
 class EditProfileFragment : BaseFragment() {
@@ -58,7 +52,7 @@ class EditProfileFragment : BaseFragment() {
     ): View {
 
         _binding = FragmentEditProfileBinding.inflate(layoutInflater, container, false)
-        initialization()
+//        initialization()
 
         toolBar.leftIcon.setOnClickListener {
             handleBackButtonPress()
@@ -293,12 +287,14 @@ class EditProfileFragment : BaseFragment() {
                     }
                     clearImageRequestOperations()
                 }
+
                 ImagePicker.RESULT_ERROR -> {
                     Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT)
                         .show()
                     clearImageRequestOperations()
 
                 }
+
                 else -> {
 //                    Toast.makeText(requireContext(), "Task Cancelled", Toast.LENGTH_SHORT).show()
 //                    clearImageRequestOperations()
@@ -332,53 +328,54 @@ class EditProfileFragment : BaseFragment() {
 
         return false
     }
-
-
-    private fun initialization() {
-//        (activity as MainActivity).supportActionBar?.hide()
-
-        toolBar = binding.include
-        toolBar.toolbarTitle.text = requireContext().resources.getString(R.string.EditProfile)
-        toolBar.leftIcon.visibility = View.VISIBLE
-        localUserViewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-        )[LocalUserViewModel::class.java]
-        localUserViewModel.fetchUser.observe(viewLifecycleOwner) {
-            localUser = LocalUser(
-                it.userID,
-                it.userName,
-                it.userEmail,
-                it.userBio,
-                it.userProfilePicture,
-                it.userBannerPicture
-            )
-            binding.apply {
-                newNameET.hint = localUser.userName
-                newBioET.apply {
-                    hint = localUser.userBio
-                    isSingleLine = false
-                    inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE
-                    maxLines = 3
-                    gravity = Gravity.START or Gravity.TOP
-                }
-            }
-            val profileURL = localUser.userProfilePicture.toString()
-            val bannerURL = localUser.userBannerPicture.toString()
-            if (profileURL.isNotEmpty())
-                Util.loadImagesWithGlide(binding.profileImage, profileURL)
-            if (bannerURL.isNotEmpty())
-                Util.loadImagesWithGlide(binding.profileBannerIV, bannerURL)
-        }
-        storageRef = Firebase.storage.reference
-        firebaseDatabase = FirebaseDatabase.getInstance()
-        editProfileViewModel =
-            ViewModelProvider(this@EditProfileFragment)[EditProfileViewModel::class.java]
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
 }
+
+
+//    private fun initialization() {
+////        (activity as MainActivity).supportActionBar?.hide()
+//
+//        toolBar = binding.include
+//        toolBar.toolbarTitle.text = requireContext().resources.getString(R.string.EditProfile)
+//        toolBar.leftIcon.visibility = View.VISIBLE
+//        localUserViewModel = ViewModelProvider(
+//            this,
+//            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+//        )[LocalUserViewModel::class.java]
+////        localUserViewModel.fetchUser.observe(viewLifecycleOwner) {
+////            localUser = LocalUser(
+////                it.userID,
+////                it.userName,
+////                it.userEmail,
+////                it.userBio,
+////                it.userProfilePicture,
+////                it.userBannerPicture
+////            )
+//            binding.apply {
+//                newNameET.hint = localUser.userName
+//                newBioET.apply {
+//                    hint = localUser.userBio
+//                    isSingleLine = false
+//                    inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE
+//                    maxLines = 3
+//                    gravity = Gravity.START or Gravity.TOP
+//                }
+//            }
+//            val profileURL = localUser.userProfilePicture.toString()
+//            val bannerURL = localUser.userBannerPicture.toString()
+//            if (profileURL.isNotEmpty())
+//                Util.loadImagesWithGlide(binding.profileImage, profileURL)
+//            if (bannerURL.isNotEmpty())
+//                Util.loadImagesWithGlide(binding.profileBannerIV, bannerURL)
+//        }
+//        storageRef = Firebase.storage.reference
+//        firebaseDatabase = FirebaseDatabase.getInstance()
+//        editProfileViewModel =
+//            ViewModelProvider(this@EditProfileFragment)[EditProfileViewModel::class.java]
+//    }
+//
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        _binding = null
+//    }
+
+//}

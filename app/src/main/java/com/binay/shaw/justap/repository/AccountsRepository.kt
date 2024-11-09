@@ -1,15 +1,15 @@
 package com.binay.shaw.justap.repository
 
-import androidx.lifecycle.LiveData
 import com.binay.shaw.justap.data.AccountsDAO
 import com.binay.shaw.justap.model.Accounts
+import kotlinx.coroutines.flow.Flow
 
 
 class AccountsRepository(
     private val accountsDAO: AccountsDAO
 ) {
 
-    val getAccountsList: LiveData<List<Accounts>> = accountsDAO.getAccountsList()
+    val getAccountsList: Flow<List<Accounts>> = accountsDAO.getAccountsList()
 
     suspend fun insertAccount(accounts: Accounts) {
         accountsDAO.insertAccount(accounts)

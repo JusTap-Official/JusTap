@@ -7,13 +7,16 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.content.res.Resources
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
-import android.os.*
+import android.os.Build
+import android.os.Environment
+import android.os.VibratorManager
 import android.provider.MediaStore
 import android.util.Log
 import android.util.Patterns
@@ -22,7 +25,6 @@ import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.binay.shaw.justap.R
-import com.binay.shaw.justap.data.LocalUserDatabase
 import com.binay.shaw.justap.presentation.authentication.signInScreen.SignInScreen
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -38,8 +40,8 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.HashMap
+import java.util.Date
+import java.util.Locale
 
 
 object Util {
@@ -380,7 +382,7 @@ object Util {
             val signOutFromFirebase =
                 launch(Dispatchers.IO) { FirebaseAuth.getInstance().signOut() }
             signOutFromFirebase.join()
-            LocalUserDatabase.getDatabase(context).clearTables()
+//            LocalUserDatabase.getDatabase(context).clearTables()
             val intent = Intent(context, SignInScreen::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent).also { context.findActivity()?.finish() }
