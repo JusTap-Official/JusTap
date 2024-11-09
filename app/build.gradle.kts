@@ -18,7 +18,7 @@ android {
 
     defaultConfig {
         applicationId = "com.binay.shaw.justap"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 34
         versionCode = 7
         versionName = "2.1.2"
@@ -139,7 +139,7 @@ dependencies {
     // ktlint(project(":custom-ktlint-ruleset")) // in case of custom ruleset
 
     //DataStore (SharedPrefs)
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
 
     // Dependency Injection
     implementation("com.google.dagger:hilt-android:2.49")
@@ -158,9 +158,9 @@ dependencies {
 //    kapt ("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
 
     //Default Pre-defined
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
+    implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     //Test
@@ -181,15 +181,15 @@ dependencies {
 
 
     //Firebase
-    implementation(platform("com.google.firebase:firebase-bom:31.1.1"))
-    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
-    implementation("com.google.firebase:firebase-database-ktx:20.3.0")
-    implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
-    implementation("com.google.android.gms:play-services-auth:21.0.0")
+    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
+    implementation("com.google.firebase:firebase-auth-ktx:23.0.0")
+    implementation("com.google.firebase:firebase-database-ktx:21.0.0")
+    implementation("com.google.firebase:firebase-storage-ktx:21.0.0")
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-perf-ktx")
-    implementation("com.google.firebase:firebase-messaging-ktx:23.4.1")
+    implementation("com.google.firebase:firebase-messaging-ktx:24.0.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.7")
 
@@ -201,9 +201,9 @@ dependencies {
     implementation("androidx.room:room-ktx:$roomVersion")
 
     //Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
 
     //QR Code generator
     implementation("com.google.zxing:core:3.5.1")
@@ -229,7 +229,7 @@ dependencies {
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
     // Coil - Image Loading
-    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation("io.coil-kt:coil-compose:2.6.0")
 
     //Custom AlertBar (Top)
     implementation("com.github.tapadoo:alerter:7.2.4")
