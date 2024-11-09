@@ -2,21 +2,31 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32"
+        tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
 
     <application
+        android:name=".JusTapApp"
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="false"
         android:hardwareAccelerated="true"
-        android:icon="@drawable/logo"
+        android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/logo"
+        android:roundIcon="@mipmap/app_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.JusTap"
         android:usesCleartextTraffic="true"
@@ -24,26 +34,24 @@
         <meta-data
             android:name="firebase_performance_logcat_enabled"
             android:value="true" />
+
         <activity
-            android:name=".ui.introduction.onboarding.OnboardingScreen"
+            android:name=".presentation.introduction.onboarding.OnboardingScreen"
             android:exported="false" />
+
         <activity
-            android:name=".ui.introduction.SplashActivity"
-            android:configChanges="uiMode"
+            android:name=".presentation.introduction.SplashScreen"
             android:exported="true"
+            android:theme="@style/SplashTheme"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
         </activity>
         <activity
-            android:name=".ui.authentication.ForgotPasswordScreen"
+            android:name=".presentation.authentication.forgotPassword.ForgotPasswordScreen"
             android:configChanges="uiMode"
             android:exported="true"
             android:screenOrientation="portrait">
@@ -52,7 +60,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.authentication.signInScreen.SignInScreen"
+            android:name=".presentation.authentication.signInScreen.SignInScreen"
             android:configChanges="uiMode"
             android:exported="true"
             android:screenOrientation="portrait">
@@ -61,7 +69,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.authentication.signUpScreen.SignUpScreen"
+            android:name=".presentation.authentication.signUpScreen.SignUpScreen"
             android:configChanges="uiMode"
             android:exported="true"
             android:screenOrientation="portrait">
@@ -70,8 +78,9 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.mainScreens.MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="true"
+            android:theme="@style/MainTheme"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
@@ -87,7 +96,7 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
 
             </intent-filter>
         </service>
@@ -96,7 +105,7 @@
             android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
             android:enabled="true"
             android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>

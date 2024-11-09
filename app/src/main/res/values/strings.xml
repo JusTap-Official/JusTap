@@ -34,7 +34,7 @@
     <string name="EditProfile">Edit Profile</string>
     <string name="AboutUs">About us</string>
     <string name="LogIn">Log In</string>
-    <string name="SendResetLink">Send reset link</string>
+    <string name="sendResetLink">Send reset link</string>
     <string name="HowToUse">How to use?</string>
     <string name="HowToUseDescription">Once you add the accounts from the floating button at the bottom right corner, you can see all your accounts in the list as shown.\n\nThe list displays:\n1.Name\n2.Logo\n3.Your account data\n4.Switch\n\nTurning on/off the switch will allow/restrict the account to show in the result when your QR is scanned.\nIn other words, turning off the switch will not show it in the scanner\'s result screen, and turning it on will show and will be clickable as well.</string>
     <string name="EnterURLorUsername">What to add here?</string>
@@ -90,6 +90,7 @@
     <string name="invalid_password">Password must contains uppercase, lowercase, digit and symbol</string>
     <string name="successfullLoggedIn">Successfully Logged In</string>
     <string name="signin">Sign In</string>
+    <string name="login" translatable="false">Log In</string>
     <string name="enter_name">Enter your name</string>
     <string name="press_once_again_to_exit">Press once again to exit!</string>
     <string name="no_data_to_clear">No data to clear</string>
@@ -184,6 +185,29 @@
     <string name="please_select_any_one_from_the_options">Please select any one from the options</string>
     <string name="modal_handle">Modal Handle</string>
     <string name="default_notification_channel_id">justap</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="account_created_successfully">Account created successfully</string>
+    <string name="hide_password">Hide password</string>
+    <string name="show_password">Show password</string>
+    <string name="download_button">Download Button</string>
+    <string name="qr_scanner_button">QR Scanner Button</string>
+    <string name="qr_scanner">QR Scanner</string>
+    <string name="qr_code_saved_to_device">QR Code saved to device.</string>
+    <string name="error_occurred_while_saving_qr_code">Error occurred while saving QR Code.</string>
+    <string name="connect">Connect</string>
+    <string name="history">History</string>
+    <string name="account">Account</string>
+    <string name="home">Home</string>
+    <string name="toggle_torch">Toggle Torch</string>
+    <string name="general">General</string>
+    <string name="logout">Logout?</string>
+    <string name="are_you_sure_you_want_to_logout">Are you sure you want to logout?</string>
+    <string name="logout_ask">Logout</string>
+    <string name="search">Search</string>
+    <string name="quickly_share_your_contacts_by_adding_them">Quickly share your contacts by adding them</string>
+    <string name="empty_state">Empty state</string>
+    <string name="save">Save</string>
+    <string name="go_back">Go Back</string>
 
     <string-array name="account_names">
         <item>Phone</item>
