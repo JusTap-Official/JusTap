@@ -2,12 +2,14 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
+    id("com.google.devtools.ksp")
     id("kotlin-parcelize")
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.firebase.crashlytics")
     id("kotlin-kapt")
     id("com.google.firebase.firebase-perf")
     id("com.google.dagger.hilt.android")
+    alias(libs.plugins.compose.compiler)
 }
 
 val ktlint by configurations.creating
@@ -28,7 +30,7 @@ android {
 
     buildFeatures {
         viewBinding = true
-        compose = true
+//        compose = true
         buildConfig = true
     }
 
@@ -45,8 +47,8 @@ android {
         }
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.6"
+    composeCompiler {
+        reportsDestination = layout.buildDirectory.dir("compose_compiler")
     }
 
     lint {
@@ -98,154 +100,92 @@ tasks.register<JavaExec>("ktlintFormat") {
 
 dependencies {
 
-    val lifecycleVersion = "2.8.0"
-    val navVersion = "2.7.7"
-    val roomVersion = "2.6.1"
-    val lottieVersion = "6.1.0"
-    val cameraX = "1.4.0-beta01"
+    implementation(libs.androidx.core)
+    implementation(libs.appcompat)
+    implementation(libs.material)
+    implementation(libs.constraintlayout)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.material3)
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.compose.runtime.livedata)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.graphics)
+    implementation(libs.compose.ui.tooling)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.ui.text.google.fonts)
+    implementation(libs.activity.compose)
+    implementation(libs.material.icons)
+    implementation(libs.navigation.compose)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.hilt.navigation)
+    implementation(libs.work.runtime.ktx)
+    implementation(libs.datastore.preferences)
+    implementation(libs.lottie)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.database.ktx)
+    implementation(libs.firebase.storage.ktx)
+    implementation(libs.firebase.messaging.ktx)
+    implementation(libs.firebase.crashlytics.ktx)
+    implementation(libs.firebase.perf)
+    implementation(libs.firebase.analytics.ktx)
+    implementation(libs.firebase.messaging.ktx)
+    implementation(libs.play.services.auth)
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    annotationProcessor(libs.room.compiler)
+    ksp(libs.room.compiler)
+    implementation(libs.coroutines.core)
 
-    // Compose
-    val composeBom = platform("androidx.compose:compose-bom:2024.05.00")
-    implementation(composeBom)
-    implementation("androidx.compose.runtime:runtime")
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.foundation:foundation")
-    implementation("androidx.compose.foundation:foundation-layout")
-    implementation("androidx.compose.material:material")
-    implementation("androidx.compose.material3:material3:1.2.1")
-    implementation("androidx.compose.runtime:runtime-livedata")
-    implementation("androidx.compose.ui:ui-tooling")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion")
-    implementation("androidx.activity:activity-compose:1.9.0")
-    implementation("androidx.navigation:navigation-compose:2.7.7")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycleVersion")
-    implementation("androidx.compose.material:material-icons-extended:1.6.7")
+    implementation(libs.camera.camera2)
+    implementation(libs.camera.lifecycle)
+    implementation(libs.camera.view)
+    implementation(libs.camera.core)
+    implementation(libs.glide)
+    implementation(libs.circleimageview)
+    implementation(libs.coil.compose)
+    implementation(libs.alerter)
+    implementation(libs.colorpicker)
+    implementation(libs.play.core)
+    implementation(libs.timber)
+    implementation(libs.capturable)
+    implementation(libs.rebugger)
+    implementation(libs.truth)
+    implementation(libs.zxing)
 
+    implementation(libs.androidx.navigation.fragment)
 
-    // Compose Test
-    androidTestImplementation(composeBom)
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.lifecycle.runtime.compose)
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.livedata.core)
+    implementation(libs.lifecycle.livedata)
+    implementation(libs.lifecycle.viewmodel)
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.test.manifest)
+//
+//    lintChecks("com.slack.lint.compose:compose-lint-checks:1.3.1")
+//    ktlint("com.pinterest.ktlint:ktlint-cli:1.2.1") {
+//        attributes {
+//            attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
+//        }
+//    }
+//    // ktlint(project(":custom-ktlint-ruleset")) // in case of custom ruleset
 
-    lintChecks("com.slack.lint.compose:compose-lint-checks:1.3.1")
-    ktlint("com.pinterest.ktlint:ktlint-cli:1.2.1") {
-        attributes {
-            attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
-        }
-    }
-    // ktlint(project(":custom-ktlint-ruleset")) // in case of custom ruleset
+//    //Test
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.truth)
+    androidTestImplementation(libs.androidx.runner)
+    androidTestImplementation(libs.androidx.rules)
 
-    //DataStore (SharedPrefs)
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation(libs.kotlinx.collections.immutable)
+//    //ML Kit
+    implementation(libs.barcode.scanning)
 
-    // Dependency Injection
-    implementation("com.google.dagger:hilt-android:2.49")
-    kapt("com.google.dagger:hilt-android-compiler:2.48")
-    implementation("androidx.hilt:hilt-work:1.2.0")
-    kapt("androidx.hilt:hilt-compiler:1.2.0")
-    implementation("androidx.work:work-runtime-ktx:2.9.0")
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-
-    // Lifecycle
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
-
-    // Not a processor, but forces Dagger to use newer metadata lib
-//    kapt ("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
-
-    //Default Pre-defined
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-
-    //Test
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    testImplementation("com.google.truth:truth:1.1.3")
-    androidTestImplementation("androidx.test:runner:1.5.2")
-    androidTestImplementation("androidx.test:rules:1.5.0")
-
-
-    //Navigation
-    implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
-    implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
-
-    //LottieFiles Animation
-    implementation("com.airbnb.android:lottie:$lottieVersion")
-
-
-    //Firebase
-    implementation(platform("com.google.firebase:firebase-bom:31.1.1"))
-    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
-    implementation("com.google.firebase:firebase-database-ktx:20.3.0")
-    implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
-    implementation("com.google.android.gms:play-services-auth:21.0.0")
-    implementation("com.google.firebase:firebase-crashlytics-ktx")
-    implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.firebase:firebase-perf-ktx")
-    implementation("com.google.firebase:firebase-messaging-ktx:23.4.1")
-
-    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.7")
-
-
-    //Room Database
-    implementation("androidx.room:room-runtime:$roomVersion")
-    annotationProcessor("androidx.room:room-compiler:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
-    implementation("androidx.room:room-ktx:$roomVersion")
-
-    //Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-
-    //QR Code generator
-    implementation("com.google.zxing:core:3.5.1")
-
-    //ML Kit
-    implementation("com.google.mlkit:barcode-scanning:17.2.0")
-
-    //CameraX
-    implementation("androidx.camera:camera-camera2:$cameraX")
-    implementation("androidx.camera:camera-lifecycle:$cameraX")
-    implementation("androidx.camera:camera-view:$cameraX")
-    implementation("androidx.camera:camera-core:$cameraX")
-
-    //ImagePicker
-    implementation("com.github.dhaval2404:imagepicker:2.1")
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
-
-    //Glide
-    implementation("com.github.bumptech.glide:glide:4.14.2")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.14.2")
-
-    //Circular ImageView
-    implementation("de.hdodenhof:circleimageview:3.1.0")
-
-    // Coil - Image Loading
-    implementation("io.coil-kt:coil-compose:2.4.0")
-
-    //Custom AlertBar (Top)
-    implementation("com.github.tapadoo:alerter:7.2.4")
-
-    //ColorPicker
-    implementation("com.github.skydoves:colorpickerpreference:2.0.6")
-
-    // In-app update
-    implementation("com.google.android.play:core:1.10.3")
-
-    // Timber
-    implementation("com.jakewharton.timber:timber:5.0.1")
-
-    // Capturable
-    implementation("dev.shreyaspatil:capturable:2.1.0")
-
-    // Rebugger
-    implementation("io.github.theapache64:rebugger:1.0.0-rc03")
+//    //ImagePicker
+    implementation(libs.imagepicker)
 }

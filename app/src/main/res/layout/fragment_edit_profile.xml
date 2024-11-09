@@ -179,7 +179,7 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/secondary_button"
             android:fontFamily="@font/roboto"
-            android:text="@string/action_cancel"
+            android:text="Cancel"
             android:textAllCaps="false"
             android:stateListAnimator="@null"
             android:textColor="@color/text_color"
