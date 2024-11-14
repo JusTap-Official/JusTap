@@ -1,19 +1,19 @@
 [versions]
 androidx-core = "1.12.0"
-appcompat = "1.6.1"
+appcompat = "1.7.0"
 barcodeScanning = "17.3.0"
 espressoCore = "3.6.1"
 imagepicker = "2.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 kotlinxCollectionsImmutable = "0.3.7"
-material = "1.11.0"
-constraintlayout = "2.1.4"
-compose-bom = "2024.05.00"
-compose-material3 = "1.2.1"
-compose-runtime = "1.6.8"
-lifecycle = "2.8.0"
-activity-compose = "1.9.0"
+material = "1.12.0"
+constraintlayout = "2.2.0"
+compose-bom = "2024.10.01"
+compose-material3 = "1.3.1"
+compose-runtime = "1.7.5"
+lifecycle = "2.8.7"
+activity-compose = "1.9.3"
 navigation = "2.7.7"
 constraintlayout-compose = "1.0.1"
 hilt = "2.49"
@@ -23,34 +23,34 @@ hilt-android-compiler = "2.48"
 rules = "1.6.1"
 runner = "1.6.2"
 work-runtime = "2.9.0"
-datastore-preferences = "1.0.0"
+datastore-preferences = "1.1.1"
 lottie = "6.1.0"
-firebase-bom = "31.1.1"
-firebase-auth = "22.3.1"
-firebase-database = "20.3.0"
-firebase-storage = "20.3.0"
-firebase-messaging = "23.4.1"
-play-services-auth = "21.0.0"
+firebase-bom = "33.5.1"
+firebase-auth = "23.1.0"
+firebase-database = "21.0.0"
+firebase-storage = "21.0.1"
+firebase-messaging = "24.0.3"
+play-services-auth = "21.2.0"
 firebase-crashlytics = "31.1.1"
-firebase-crashlytics-pluggin = "2.9.9"
+firebase-crashlytics-pluggin = "3.0.2"
 firebase-analytics = "31.1.1"
 firebase-perf = "31.1.1"
 firebase-perf-pluggin = "1.4.2"
 room = "2.6.1"
 truth = "1.1.3"
-coroutines = "1.7.3"
-android-gradle-plugin = "8.1.0"
+coroutines = "1.9.0"
+android-gradle-plugin = "8.1.4"
 kotlin = "2.0.21"
 kspVersion = "2.0.21-1.0.27"
 google-services = "4.4.2"
-navigation-safeargs = "2.7.7"
-cameraX = "1.4.0-beta01"
+navigation-safeargs = "2.8.3"
+cameraX = "1.4.0"
 glide = "4.14.2"
 circleimageview = "3.1.0"
-coil = "2.4.0"
+coil = "2.7.0"
 alerter = "7.2.4"
 colorpicker = "2.0.6"
-play-core = "1.10.3"
+#play-core = "1.10.3"
 timber = "5.0.1"
 capturable = "2.1.0"
 rebugger = "1.0.0-rc03"
@@ -58,8 +58,8 @@ zxing = "3.5.1"
 navigationFragment = "2.8.3"
 
 firebase-crashlytics-gradle = "3.0.2"
-navigation-safe-args = "2.7.7"
-material-icons = "1.6.7"
+navigation-safe-args = "2.8.3"
+material-icons = "1.7.5"
 
 [libraries]
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
@@ -87,6 +87,8 @@ compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", versi
 compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "compose-material3" }
 lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+activity = { group = "androidx.activity", name = "activity", version.ref = "activity-compose" }
+activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity-compose" }
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hilt-compiler" }
@@ -118,7 +120,7 @@ circleimageview = { group = "de.hdodenhof", name = "circleimageview", version.re
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 alerter = { group = "com.github.tapadoo", name = "alerter", version.ref = "alerter" }
 colorpicker = { group = "com.github.skydoves", name = "colorpickerpreference", version.ref = "colorpicker" }
-play-core = { group = "com.google.android.play", name = "core", version.ref = "play-core" }
+#play-core = { group = "com.google.android.play", name = "core", version.ref = "play-core" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 capturable = { group = "dev.shreyaspatil", name = "capturable", version.ref = "capturable" }
 rebugger = { group = "io.github.theapache64", name = "rebugger", version.ref = "rebugger" }

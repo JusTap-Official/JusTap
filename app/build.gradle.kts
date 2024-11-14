@@ -6,7 +6,6 @@ plugins {
     id("kotlin-parcelize")
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.firebase.crashlytics")
-    id("kotlin-kapt")
     id("com.google.firebase.firebase-perf")
     id("com.google.dagger.hilt.android")
     alias(libs.plugins.compose.compiler)
@@ -20,7 +19,7 @@ android {
 
     defaultConfig {
         applicationId = "com.binay.shaw.justap"
-        minSdk = 21
+        minSdk = 28
         targetSdk = 34
         versionCode = 7
         versionName = "2.1.2"
@@ -30,7 +29,6 @@ android {
 
     buildFeatures {
         viewBinding = true
-//        compose = true
         buildConfig = true
     }
 
@@ -114,6 +112,8 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.ui.text.google.fonts)
     implementation(libs.activity.compose)
+    implementation(libs.activity)
+    implementation(libs.activity.ktx)
     implementation(libs.material.icons)
     implementation(libs.navigation.compose)
     implementation(libs.hilt.android)
@@ -148,7 +148,7 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.alerter)
     implementation(libs.colorpicker)
-    implementation(libs.play.core)
+//    implementation(libs.play.core)
     implementation(libs.timber)
     implementation(libs.capturable)
     implementation(libs.rebugger)
@@ -163,8 +163,13 @@ dependencies {
     implementation(libs.lifecycle.livedata.core)
     implementation(libs.lifecycle.livedata)
     implementation(libs.lifecycle.viewmodel)
+    androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation("com.google.android.play:asset-delivery-ktx:2.0.1")
+    implementation("com.google.android.play:review-ktx:2.0.1")
+
 //
 //    lintChecks("com.slack.lint.compose:compose-lint-checks:1.3.1")
 //    ktlint("com.pinterest.ktlint:ktlint-cli:1.2.1") {
