@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.binay.shaw.justap.databinding.LanguageItemBinding
-import com.binay.shaw.justap.model.Language
+import com.binay.shaw.justap.domain.model.Language
 
 
 class LanguageItemAdapter(

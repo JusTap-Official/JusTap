@@ -10,8 +10,8 @@ import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.binay.shaw.justap.R
-import com.binay.shaw.justap.helper.Logger
-import com.binay.shaw.justap.ui.mainScreens.MainActivity
+import com.binay.shaw.justap.utils.Logger
+import com.binay.shaw.justap.presentation.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage

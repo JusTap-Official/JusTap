@@ -4,9 +4,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.binay.shaw.justap.data.LocalUserDatabase
-import com.binay.shaw.justap.model.LocalUser
-import com.binay.shaw.justap.repository.LocalUserRepository
+import com.binay.shaw.justap.data.local.database.LocalUserDatabase
+import com.binay.shaw.justap.domain.model.LocalUser
+import com.binay.shaw.justap.domain.repository.LocalUserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

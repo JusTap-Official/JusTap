@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.binay.shaw.justap.databinding.LayoutCustomizeQrRecyclerViewItemBinding
-import com.binay.shaw.justap.model.CustomizeQROptions
+import com.binay.shaw.justap.domain.model.CustomizeQROptions
 
 private var options: List<CustomizeQROptions> = ArrayList()
 
