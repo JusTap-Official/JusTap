@@ -24,7 +24,7 @@ import com.binay.shaw.justap.viewModel.LocalUserViewModel
 class SignInScreen : BaseActivity() {
 
     private lateinit var binding: ActivitySignInScreenBinding
-    private val accountsViewModel by viewModels<AccountsViewModel> { ViewModelFactory() }
+    private val accountsViewModel: AccountsViewModel by viewModels()
     private val localUserViewModel by viewModels<LocalUserViewModel> { ViewModelFactory() }
     private val firebaseViewModel by viewModels<FirebaseViewModel> { ViewModelFactory() }
     private var isPasswordVisible = false

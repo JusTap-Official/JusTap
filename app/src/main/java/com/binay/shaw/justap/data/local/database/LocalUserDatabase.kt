@@ -16,10 +16,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-/**
- * Created by binay on 02,January,2023
- */
-
 @Database(entities = [LocalUser::class, Accounts::class, LocalHistory::class], version = 4)
 @TypeConverters(Converters::class)
 abstract class LocalUserDatabase : RoomDatabase() {
@@ -32,24 +28,17 @@ abstract class LocalUserDatabase : RoomDatabase() {
 
     companion object {
         @Volatile
-        var INSTANCE: LocalUserDatabase? = null
+        private var INSTANCE: LocalUserDatabase? = null
 
-        @Synchronized
         fun getDatabase(context: Context): LocalUserDatabase {
-
-            val tempInstance = INSTANCE
-
-            if (tempInstance != null) {
-                return tempInstance
-            }
-            synchronized(this) {
+            return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     LocalUserDatabase::class.java,
                     "account_database"
                 ).build()
                 INSTANCE = instance
-                return instance
+                instance
             }
         }
     }

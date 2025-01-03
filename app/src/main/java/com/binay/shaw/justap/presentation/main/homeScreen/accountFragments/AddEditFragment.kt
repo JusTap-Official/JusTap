@@ -35,7 +35,7 @@ class AddEditFragment : BaseFragment() {
     private val binding get() = _binding!!
     private val args: AddEditFragmentArgs by navArgs()
     private val viewModel by viewModels<AddEditViewModel> { ViewModelFactory() }
-    private val accountsViewModel by viewModels<AccountsViewModel> { ViewModelFactory() }
+    private val accountsViewModel: AccountsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -38,9 +38,6 @@ class ViewModelFactory : ViewModelProvider.Factory {
                 isAssignableFrom(EditProfileViewModel::class.java) -> {
                     EditProfileViewModel()
                 }
-                isAssignableFrom(AccountsViewModel::class.java) -> {
-                    AccountsViewModel(application)
-                }
                 isAssignableFrom(LocalUserViewModel::class.java) -> {
                     LocalUserViewModel(application)
                 }

@@ -7,6 +7,7 @@ plugins {
     id ("com.google.firebase.crashlytics")
     id ("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+//    id("dagger.hilt.android.plugin")
     id ("com.google.firebase.firebase-perf")
 }
 

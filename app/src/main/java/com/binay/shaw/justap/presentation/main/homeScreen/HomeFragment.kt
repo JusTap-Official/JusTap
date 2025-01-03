@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.binay.shaw.justap.R
@@ -15,24 +16,28 @@ import com.binay.shaw.justap.base.BaseFragment
 import com.binay.shaw.justap.base.ViewModelFactory
 import com.binay.shaw.justap.databinding.FragmentHomeBinding
 import com.binay.shaw.justap.databinding.ParagraphModalBinding
+import com.binay.shaw.justap.domain.model.Accounts
+import com.binay.shaw.justap.domain.model.LocalUser
+import com.binay.shaw.justap.presentation.main.homeScreen.accountFragments.AddEditViewModel
 import com.binay.shaw.justap.utils.ImageUtils
 import com.binay.shaw.justap.utils.Util
 import com.binay.shaw.justap.utils.Util.createBottomSheet
 import com.binay.shaw.justap.utils.Util.setBottomSheet
-import com.binay.shaw.justap.domain.model.Accounts
-import com.binay.shaw.justap.domain.model.LocalUser
 import com.binay.shaw.justap.viewModel.AccountsViewModel
-import com.binay.shaw.justap.presentation.main.homeScreen.accountFragments.AddEditViewModel
 import com.binay.shaw.justap.viewModel.LocalUserViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
 class HomeFragment : BaseFragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val localUserViewModel by viewModels<LocalUserViewModel> { ViewModelFactory() }
-    private val accountsViewModel by viewModels<AccountsViewModel> { ViewModelFactory() }
+    private val accountsViewModel: AccountsViewModel by viewModels()
     private lateinit var localUser: LocalUser
     private var accountsList = mutableListOf<Accounts>()
     private lateinit var recyclerViewAdapter: AccountsItemAdapter
@@ -44,8 +49,8 @@ class HomeFragment : BaseFragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
 
-        initObservers()
         initialization()
+        initObservers()
         clickHandlers()
 
         return binding.root
@@ -54,7 +59,11 @@ class HomeFragment : BaseFragment() {
     private fun initObservers() {
         addEditViewModel.updateStatus.observe(viewLifecycleOwner) {
             if (it == 3) {
-                Toast.makeText(requireContext(), resources.getString(R.string.data_added_successfully), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    resources.getString(R.string.data_added_successfully),
+                    Toast.LENGTH_SHORT
+                ).show()
                 addEditViewModel.updateStatus.value = 0
                 recyclerViewAdapter.notifyDataSetChanged()
             }
@@ -80,13 +89,15 @@ class HomeFragment : BaseFragment() {
             }
         }
 
-        accountsViewModel.getAllUser.observe(viewLifecycleOwner) {
-            Util.log(it.toString())
-            updateEmptyState(it)
-            accountsList.clear()
-            accountsList.addAll(it)
-            recyclerViewAdapter.setData(it)
-            recyclerViewAdapter.notifyDataSetChanged()
+        lifecycleScope.launch {
+            accountsViewModel.accounts.collect {
+                Util.log(it.toString())
+                updateEmptyState(it)
+                accountsList.clear()
+                accountsList.addAll(it)
+                recyclerViewAdapter.setData(it)
+                recyclerViewAdapter.notifyDataSetChanged()
+            }
         }
     }
 
@@ -151,15 +162,17 @@ class HomeFragment : BaseFragment() {
         val unusedAccounts = mutableListOf<String>()
         val usedAccounts = mutableListOf<String>()
 
-        accountsViewModel.getAllUser.observe(viewLifecycleOwner) {
-            val allAccounts = resources.getStringArray(R.array.account_names)
-            for (l in it) {
-                usedAccounts.add(l.accountName)
-            }
+        lifecycleScope.launch {
+            accountsViewModel.accounts.collectLatest {
+                val allAccounts = resources.getStringArray(R.array.account_names)
+                for (l in it) {
+                    usedAccounts.add(l.accountName)
+                }
 
-            for (account in allAccounts) {
-                if (!usedAccounts.contains(account))
-                    unusedAccounts.add(account)
+                for (account in allAccounts) {
+                    if (!usedAccounts.contains(account))
+                        unusedAccounts.add(account)
+                }
             }
         }
         Util.unusedAccounts = unusedAccounts
