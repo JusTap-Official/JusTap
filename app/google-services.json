@@ -15,14 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "142637459628-u67hofek1bj0348v6lg6frs0llgei2tv.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.binay.shaw.justap",
-            "certificate_hash": "a55e4867e32354cd2474df831f56db37aa5c6d56"
-          }
-        },
-        {
           "client_id": "142637459628-7u4ere6j7qr84f9pa09qcgp4rt0deneo.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -38,6 +30,13 @@
             {
               "client_id": "142637459628-7u4ere6j7qr84f9pa09qcgp4rt0deneo.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "142637459628-e8tbnq5em1m960hg0r97u7tiuredi5u8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.binayshaw7777.JusTap-iOS"
+              }
             }
           ]
         }
