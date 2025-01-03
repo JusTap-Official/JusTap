@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".JusTap"
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="false"
@@ -25,10 +26,10 @@
             android:name="firebase_performance_logcat_enabled"
             android:value="true" />
         <activity
-            android:name=".ui.introduction.onboarding.OnboardingScreen"
+            android:name=".presentation.intro.onboarding.OnboardingScreen"
             android:exported="false" />
         <activity
-            android:name=".ui.introduction.SplashActivity"
+            android:name=".presentation.intro.SplashActivity"
             android:configChanges="uiMode"
             android:exported="true"
             android:screenOrientation="portrait">
@@ -43,7 +44,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.authentication.ForgotPasswordScreen"
+            android:name=".presentation.auth.ForgotPasswordScreen"
             android:configChanges="uiMode"
             android:exported="true"
             android:screenOrientation="portrait">
@@ -52,7 +53,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.authentication.signInScreen.SignInScreen"
+            android:name=".presentation.auth.sign_in.SignInScreen"
             android:configChanges="uiMode"
             android:exported="true"
             android:screenOrientation="portrait">
@@ -61,7 +62,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.authentication.signUpScreen.SignUpScreen"
+            android:name=".presentation.auth.sign_up.SignUpScreen"
             android:configChanges="uiMode"
             android:exported="true"
             android:screenOrientation="portrait">
@@ -70,7 +71,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.mainScreens.MainActivity"
+            android:name=".presentation.main.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <meta-data

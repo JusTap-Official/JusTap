@@ -6,6 +6,8 @@ plugins {
     id ("androidx.navigation.safeargs.kotlin")
     id ("com.google.firebase.crashlytics")
     id ("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
+//    id("dagger.hilt.android.plugin")
     id ("com.google.firebase.firebase-perf")
 }
 
@@ -25,6 +27,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig  = true
     }
 
     buildTypes {
@@ -71,6 +74,8 @@ dependencies {
     testImplementation ("com.google.truth:truth:1.1.3")
     androidTestImplementation ("androidx.test:runner:1.5.2")
     androidTestImplementation ("androidx.test:rules:1.5.0")
+    androidTestImplementation ("com.google.dagger:hilt-android-testing:2.48")
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.48")
 
 
     //Navigation
@@ -139,4 +144,8 @@ dependencies {
 
     // In-app update
     implementation ("com.google.android.play:core:1.10.3")
+
+    //DaggerHilt
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-compiler:2.48")
 }

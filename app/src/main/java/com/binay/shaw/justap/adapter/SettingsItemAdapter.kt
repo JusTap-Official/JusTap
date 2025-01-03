@@ -11,8 +11,8 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.binay.shaw.justap.R
 import com.binay.shaw.justap.databinding.SettingsItemBinding
-import com.binay.shaw.justap.helper.DarkMode
-import com.binay.shaw.justap.model.SettingsItem
+import com.binay.shaw.justap.utils.DarkMode
+import com.binay.shaw.justap.domain.model.SettingsItem
 
 class SettingsItemAdapter(
     val context: Context,

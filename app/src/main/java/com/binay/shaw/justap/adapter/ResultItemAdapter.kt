@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.binay.shaw.justap.databinding.SocialAccountLayoutBinding
-import com.binay.shaw.justap.helper.Util
-import com.binay.shaw.justap.model.Accounts
+import com.binay.shaw.justap.utils.Util
+import com.binay.shaw.justap.domain.model.Accounts
 
 
 class ResultItemAdapter(

@@ -2,12 +2,12 @@ package com.binay.shaw.justap.viewModel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.binay.shaw.justap.helper.Constants
-import com.binay.shaw.justap.helper.Util
-import com.binay.shaw.justap.model.Accounts
-import com.binay.shaw.justap.model.LocalUser
-import com.binay.shaw.justap.model.User
-import com.binay.shaw.justap.repository.FirebaseRepository
+import com.binay.shaw.justap.utils.Constants
+import com.binay.shaw.justap.utils.Util
+import com.binay.shaw.justap.domain.model.Accounts
+import com.binay.shaw.justap.domain.model.LocalUser
+import com.binay.shaw.justap.domain.model.User
+import com.binay.shaw.justap.domain.repository.FirebaseRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*

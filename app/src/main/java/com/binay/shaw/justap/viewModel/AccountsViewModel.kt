@@ -1,44 +1,50 @@
 package com.binay.shaw.justap.viewModel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.binay.shaw.justap.data.LocalUserDatabase
-import com.binay.shaw.justap.model.Accounts
-import com.binay.shaw.justap.repository.AccountsRepository
+import com.binay.shaw.justap.domain.model.Accounts
+import com.binay.shaw.justap.domain.repository.AccountRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
-class AccountsViewModel(
-    application: Application
-) : AndroidViewModel(application) {
+@HiltViewModel
+class AccountsViewModel @Inject constructor(
+    private val repository: AccountRepository
+) : ViewModel() {
 
 
-    val getAllUser : LiveData<List<Accounts>>
-    private val repository: AccountsRepository
+    var accounts = MutableStateFlow<List<Accounts>>(emptyList())
+        private set
 
 
     init {
-        val dao = LocalUserDatabase.getDatabase(application).accountsDao()
-        repository = AccountsRepository(dao)
-        getAllUser = repository.getAccountsList
+        runIO {
+            repository.getAccounts().collect {
+                accounts.value = it
+            }
+        }
     }
 
-    fun deleteAccount(accounts: Accounts) =
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteAccount(accounts)
-        }
+    fun deleteAccount(accounts: Accounts) = runIO {
+        repository.deleteAccount(accounts)
+    }
 
     fun updateAccount(accounts: Accounts) =
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateAccount(accounts)
         }
 
-    fun insertAccount(accounts: Accounts) =
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.insertAccount(accounts)
-        }
+    fun insertAccount(accounts: Accounts) = runIO {
+        repository.insertAccount(accounts)
+    }
 
+    private fun runIO(block: suspend () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            block()
+        }
+    }
 }

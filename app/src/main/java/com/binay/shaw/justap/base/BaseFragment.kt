@@ -14,7 +14,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.binay.shaw.justap.R
-import com.binay.shaw.justap.helper.Util.clearDataAndLogout
+import com.binay.shaw.justap.utils.Util.clearDataAndLogout
 import com.google.firebase.auth.FirebaseAuth
 import com.tapadoo.alerter.Alerter
 
